@@ -1,0 +1,3 @@
+Recommended extension for VS Code:
+-Material Icon Theme
+-Prettier code formatter

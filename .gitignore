@@ -1,3 +1,6 @@
 # Front-end
 # Back-end
+node_modules
+dist
+.env
 # Other
