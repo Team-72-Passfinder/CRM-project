@@ -19,13 +19,15 @@ function Login() {
     }
 
     return (
-        <div>
-            <h1>Login Form</h1>
-            <form>
-                <input type='text' onChange={ e => { setUsername(e.target.value) }} />
-                <input type='password' onChange={ e => { setPassword(e.target.value) }} />
-                <input type='submit' onClick={submitHandler} />
-            </form>
+        <div className='flex-container'>
+            <div className='loginContent'>
+                <h1>Login</h1>
+                <form>
+                    <input type='text' placeholder='Username' onChange={e => { setUsername(e.target.value) }} />
+                    <input type='password' placeholder='*********' onChange={e => { setPassword(e.target.value) }} />
+                    <input type='submit' onClick={submitHandler} />
+                </form>
+            </div>
         </div>
     );
 }

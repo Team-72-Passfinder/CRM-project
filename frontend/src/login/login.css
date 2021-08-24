@@ -1,0 +1,53 @@
+body {
+    margin: unset;
+    font-family: Open Sans;
+}
+
+.flex-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.loginContent {
+    display: block;
+}
+
+input {
+    display: block;
+    margin: auto;
+}
+
+input[type=text], input[type=password] {
+    width: 280px;
+    height: 50px;
+    border: 1px solid #CED4DA;
+    box-sizing: border-box;
+    border-radius: 10px;
+    padding-left: 8px;
+    margin-block-end: 18px;
+    font-family: Open Sans;
+    font-size: 14px;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+    outline: none;
+    border: 2px solid #343F56;
+}
+
+input[type=submit] {
+    width: 280px;
+    height: 50px;
+    background-color: #343F56;
+    border: 0px;
+    color: white;
+    font-size: 14px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);;
+}
+
+input[type=submit]:active {
+    box-shadow: none;
+}
