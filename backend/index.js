@@ -1,40 +1,37 @@
-const express = require("express");
+//Testing file, not used in actual production
+
+const express = require('express');
 const app = express();
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const logger = require("morgan");
-const mongoose = require("mongoose");
+const cors = require('cors');
+const logger = require('morgan');
+const mongoose = require('mongoose');
 
-mongoose.set("useNewUrlParser", true);
-mongoose.set("useFindAndModify", false);
-mongoose.set("useCreateIndex", true);
+const port = 3000;
+const config = require('./config');
 
-const port = 3031;
-const config = require("./config");
+const examplesRouter = require('./example-route');
 
-const postsRouter = require("./routes/posts");
-
-app.use(logger("dev"));
+app.use(logger('dev'));
 
 const dbUrl = config.dbUrl;
 
 var options = {
-    keepAlive: 1,
-    connectTimeoutMS: 30000,
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
+  keepAlive: 1,
+  connectTimeoutMS: 30000,
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
 };
 
 mongoose.connect(dbUrl, options, (err) => {
-    if (err) console.log(err);
+  if (err) console.log(err);
 });
 
 app.use(cors());
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
-app.use("/posts", postsRouter);
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use('/examples', examplesRouter);
 
 app.listen(port, function () {
-    console.log("Runnning on " + port);
+  console.log('Runnning on ' + port);
 });
 module.exports = app;
