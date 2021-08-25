@@ -1,7 +1,7 @@
 //Testing file, not used in actual production
 
 const express = require('express');
-const Example = require('./example');
+const Example = require('.');
 const router = express.Router();
 
 router.post('/', async (req, res) => {

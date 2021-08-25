@@ -3,15 +3,11 @@
 const express = require('express');
 const app = express();
 const cors = require('cors');
-const logger = require('morgan');
 const mongoose = require('mongoose');
 
 const port = 3000;
 const config = require('./config');
-
 const examplesRouter = require('./example-route');
-
-app.use(logger('dev'));
 
 const dbUrl = config.dbUrl;
 
