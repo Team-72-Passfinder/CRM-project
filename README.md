@@ -10,6 +10,8 @@ We will follow a **trunk-based approach**, where developers collaborate on a sin
 
 For coding style, follow the `README.md` in each folder `frontend` and `backend`.
 
+File and folder naming convention: User lowercase letter and hyphen between words. Examples: `file-name`, `backend`, `main-file.js`, `src/a-very-long-file-name.js` etc..
+
 In addition, it's better to **commit frequently**. This way, we can easily see the reasons for code change and follow the thought process of the developer. Don't mistake between commit and push/pull request though.
 
 **Exception**: For documentation and `README` file (simple text files), you can just push them directly. No need to pull request.
