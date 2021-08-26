@@ -57,7 +57,7 @@ input[type=text]:focus, input[type=password]:focus {
 input[type=submit] {
     width: 280px;
     height: 50px;
-    margin-block-start: 10px;
+    margin-block-start: 18px;
     background-color: #343F56;
     border: 0px;
     color: white;
