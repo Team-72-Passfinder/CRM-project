@@ -4,7 +4,13 @@ Basic welcome here...
 
 ## Coding style
 
-Need update...
+Indent space: 2
+
+Variable name: camelCase. Example: smallNumber, dateOfBirth.
+
+Database model name: Start with uppercase. Example: User, Contact, Event.
+
+Use `const` when require modules.
 
 ## Available Scripts
 
