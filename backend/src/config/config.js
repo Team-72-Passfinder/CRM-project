@@ -1,8 +1,7 @@
-//Testing file, not used in actual production
+//Require to have these value in .env file at root folder
 
 let config = {
-  dbUrl:
-    'mongodb+srv://admin:admin@cluster0.1mxn9.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
+  dbUrl: `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_URL}/${process.env.DB_NAME}?retryWrites=true&w=majority`,
 };
 
 module.exports = config;
