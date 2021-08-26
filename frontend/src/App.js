@@ -7,7 +7,7 @@ import {
     Link
 } from 'react-router-dom'
 
-import Login from './login/login'
+import Login from './pages/login/login'
 
 const App = () => {
     return (
