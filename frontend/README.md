@@ -6,6 +6,22 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 Need update...
 
+* 4 space indentation
+* functions or Class?
+* Folder Structure
+    ```
+    - frontend
+        - public
+        - src
+            - pages
+                - login
+                    - login.js
+                    - login.css
+                ...
+            - App.js
+            - index.js
+    ```
+
 ## Available Scripts
 
 In the project directory, you can run:
