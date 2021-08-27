@@ -1,11 +1,11 @@
-// 
+// Route for testing event database in Postman
 
 module.exports = (app) => {
 
   const events = require('../controllers/event-controller');
 
   // Create a event
-  app.post('/events', events.createEvent);
+  app.post('/events', events.create);
 
   // Update event
   app.put('/events/:eventId', events.update);

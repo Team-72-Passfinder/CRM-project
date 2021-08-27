@@ -2,7 +2,7 @@
 const Event = require('../models/event');
 
 // Create a new event ===================================================
-exports.createEvent = (req, res) => {
+exports.create = (req, res) => {
   // Validate requests 
   var errCatched = validateEvent(req, res);
 
@@ -32,7 +32,6 @@ exports.createEvent = (req, res) => {
 
 
 // Update a events identified by the event's Id ==============================
-// UNDER REVEWING!!!!
 exports.update = (req, res) => {
   // Validate requests
   var errCatched = validateEvent(req, res);
