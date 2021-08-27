@@ -45,7 +45,7 @@ exports.update = (req, res) => {
 
   // Case of updated sucessfully
   Event.findByIdAndUpdate(id, { $set: req.body }, { new: true }).then(() => {
-    res.status(200).send({ message: "Event updated!" });
+    res.status(200).send({ message: "Event data updated!" });
   })
     // Case of error
     .catch((err) => {
