@@ -7,6 +7,7 @@ dotenv.config();
 const port = process.env.port ?? 3000;
 const host = process.env.host ?? 'localhost';
 const config = require('./config/config');
+const eventRoutes = require('./routes/event-routes');
 
 const dbUrl = config.dbUrl;
 
@@ -23,6 +24,10 @@ setUpDatabaseStateLog();
 mongoose.connect(dbUrl, options, (err) => {
   if (err) console.log(err);
 });
+
+
+// Setting routers
+require('./routes/event-routes')(app);
 
 app.listen(port, function () {
   console.log(`⚡Server is running on ${host}:${port}`);
