@@ -10,7 +10,7 @@ exports.create = (req, res) => {
     return;
   }
 
-  // Create a event 
+  // Create an event 
   const event = new Event({
     //_id: Mongoose.Types.ObjectId(),
     name: req.body.name,
@@ -31,7 +31,7 @@ exports.create = (req, res) => {
 };
 
 
-// Update a events identified by the event's Id ==============================
+// Update an events identified by the event's Id ==============================
 exports.update = (req, res) => {
   // Validate requests
   var errCatched = validateEvent(req, res);
@@ -56,7 +56,7 @@ exports.update = (req, res) => {
 }
 
 
-// Delete a events with the specified event's Id ==============================
+// Delete an event with the specified event's Id ==============================
 exports.delete = (req, res) => {
 
   const id = req.params.eventId;

@@ -10,7 +10,7 @@ exports.create = (req, res) => {
     return;
   }
 
-  // Create a user 
+  // Create an user 
   const user = new User({
     //_id: Mongoose.Types.ObjectId(),
     username: req.body.username,
@@ -33,7 +33,7 @@ exports.create = (req, res) => {
 };
 
 
-// Update a users identified by the user's Id ==============================
+// Update an users identified by the user's Id ==============================
 // UNDER REVEWING!!!!
 exports.update = (req, res) => {
   // Validate requests
@@ -59,7 +59,7 @@ exports.update = (req, res) => {
 }
 
 
-// Delete a users with the specified user's Id ==============================
+// Delete an user with the specified user's Id ==============================
 exports.delete = (req, res) => {
 
   const id = req.params.userId;

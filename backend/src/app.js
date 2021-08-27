@@ -37,6 +37,7 @@ mongoose.connect(dbUrl, options, (err) => {
 // Require all files in routers
 require('./routes/event-routes')(app);
 require('./routes/user-routes')(app);
+require('./routes/contact-routes')(app);
 
 app.listen(port, function () {
   console.log(`⚡Server is running on ${host}:${port}`);
