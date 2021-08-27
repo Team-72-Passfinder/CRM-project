@@ -16,7 +16,7 @@ exports.createEvent = (req, res) => {
     });
   }
 
-  if (!req.body.completed) {
+  if (req.body.completed == null) {
     return res.status(400).send({
       message: "Should mark event's completeness!"
     });
@@ -39,7 +39,7 @@ exports.createEvent = (req, res) => {
     });
   });
 
-  console.log("New event created! Id is: ${result.insertedId}");
+  console.log("New event created! Yay");
 };
 /*
 // Retrieve and return all events from the database.
