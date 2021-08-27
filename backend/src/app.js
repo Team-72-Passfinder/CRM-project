@@ -1,8 +1,16 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+var cookieParser = require('cookie-parser');
 
 const app = express();
+
+app.use(express.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(express.static('public'))
+
+app.use(cookieParser('StRoNGs3crE7'))
+
 dotenv.config();
 const port = process.env.port ?? 3000;
 const host = process.env.host ?? 'localhost';
@@ -50,3 +58,7 @@ function setUpDatabaseStateLog() {
     console.log('Disconnected. State: ' + mongoose.connection.readyState); // state 0
   });
 }
+
+require('./models/user')
+
+app.use(require('./routes/userRouter'))
