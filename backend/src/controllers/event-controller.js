@@ -23,7 +23,7 @@ exports.createEvent = (req, res) => {
   }
 
   // Create a event ====================================
-  const event = new event({
+  const event = new Event({
     //_id: Mongoose.Types.ObjectId(),
     name: req.body.name,
     dateTime: req.body.dateTime,
