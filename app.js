@@ -30,9 +30,6 @@ var options = {
 
 setUpDatabaseStateLog();
 
-console.log(process.env.DB_USER);
-console.log(dbUrl);
-
 // Connect to DB
 mongoose.connect(dbUrl, options, (err) => {
   if (err) console.log(err);
