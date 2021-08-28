@@ -1,18 +1,23 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-var cookieParser = require('cookie-parser');
+const bodyparser = require('body-parser')
+
+const cors = require('cors')
 
 const app = express();
+
+app.use(cors({
+    credentials: true,
+    origin: "http://localhost:3000"
+}));
 
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.static('public'))
 
-app.use(cookieParser('StRoNGs3crE7'))
-
 dotenv.config();
-const port = process.env.port ?? 3000;
+const port = process.env.port ?? 5000;
 const host = process.env.host ?? 'localhost';
 const config = require('./config/config');
 

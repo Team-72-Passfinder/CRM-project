@@ -1,15 +1,29 @@
-var JwtCookieComboStrategy = require('passport-jwt-cookiecombo');
-var passport = require('passport')
-    , LocalStrategy = require('passport-local')
+var JwtStrategy = require('passport-jwt').Strategy,
+    ExtractJwt = require('passport-jwt').ExtractJwt;
+
+var passport = require('passport'),
+    LocalStrategy = require('passport-local')
 
 const User = require('mongoose').model('User')
 
 module.exports = function(passport) {
-    passport.use(new JwtCookieComboStrategy({
-        secretOrPublicKey: 'StRoNGs3crE7'
-    }, (payload, done) => {
-        return done(null, payload.user);
-    }));
+    passport.use(new JwtStrategy({
+        jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+        secretOrKey: process.env.PASSPORT_SECRET,
+        passReqToCallback: true,
+    }, function (req, jwt_payload, done) {
+        User.findOne({ _id: jwt_payload._id }, function (err, user) {
+            if (err) {
+                return done(err, false);
+            }
+
+            if (user) {
+                return done(null, user);
+            } else {
+                return done(null, false);
+            }
+        })
+    }))
 
     passport.use('login', new LocalStrategy(
         (username, password, done) => {
@@ -24,33 +38,33 @@ module.exports = function(passport) {
 
                 return done(null, false);
             });
-    }));
+        }));
 
-    passport.use('registration', new LocalStrategy({ 
+    passport.use('registration', new LocalStrategy({
         passReqToCallback: true
     }, function (req, username, password, done) {
-            User.findOne({ username: username }, function (err, user) {
-                if (err) {
-                    return done(err);
-                }
+        User.findOne({ username: username }, function (err, user) {
+            if (err) {
+                return done(err);
+            }
 
-                if (user) {
-                    return done(null, false)
-                }
+            if (user) {
+                return done(null, false)
+            }
 
-                var newUser = new User();
+            var newUser = new User();
 
-                newUser.username = username
-                newUser.password = newUser.hashPassword(password)
-                newUser.email = req.body.email
-                newUser.firstName = req.body.firstName
-                newUser.lastName = req.body.lastName
-                newUser.dateOfBirth = req.body.dateOfBirth
+            newUser.username = username
+            newUser.password = newUser.hashPassword(password)
+            newUser.email = req.body.email
+            newUser.firstName = req.body.firstName
+            newUser.lastName = req.body.lastName
+            newUser.dateOfBirth = req.body.dateOfBirth
 
-                newUser.save();
+            newUser.save();
 
-                return done(null, newUser);
-            });
-        }
+            return done(null, newUser);
+        });
+    }
     ))
 }

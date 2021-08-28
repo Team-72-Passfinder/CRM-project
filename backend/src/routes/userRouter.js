@@ -7,44 +7,29 @@ require('../config/passport')(passport)
 var jwt = require('jsonwebtoken')
 
 router.post('/login', passport.authenticate('login', { session: false }), async (req, res) => {
-    jwt.sign({ user: req.user }, 'StRoNGs3crE7', (err, token) => {
+    const body = { _id: req.user._id }
+
+    jwt.sign(body, process.env.PASSPORT_SECRET, (err, token) => {
         if (err) return res.json(err);
 
-        // Send Set-Cookie header
-        res.cookie('jwt', token, {
-            httpOnly: true,
-            sameSite: true,
-            signed: true,
-            secure: true
-        });
-
         // Return json web token
-        return res.json({
-            jwt: token
-        });
+        return res.json(token)
     });
 })
 
 router.post('/register', passport.authenticate('registration', { session: false }), async (req, res) => {
-    if(!req.user) {
+    if(req.user === null) {
+        console.log('yes')
         return res.send('fail')
     }
 
-    jwt.sign({ user: req.user }, 'StRoNGs3crE7', (err, token) => {
+    const body = { _id: req.user._id }
+
+    jwt.sign(body, process.env.PASSPORT_SECRET, (err, token) => {
         if (err) return res.json(err);
 
-        // Send Set-Cookie header
-        res.cookie('jwt', token, {
-            httpOnly: true,
-            sameSite: true,
-            signed: true,
-            secure: true
-        });
-
         // Return json web token
-        return res.json({
-            jwt: token
-        });
+        return res.json(token)
     });
 })
 
