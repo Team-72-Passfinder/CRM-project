@@ -8,15 +8,15 @@ module.exports = (app) => {
   app.post('/events', events.create);
 
   // Update event
-  app.put('/events/:eventId', events.update);
+  app.put('/events/:id', events.update);
 
   // Delete the event
-  app.delete('/events/:eventId', events.delete);
+  app.delete('/events/:id', events.delete);
 
   // These folowings relate to Search engine??
   // Retrieve all the event
   app.get('/events', events.findAll);
 
   // Read the event
-  app.get('/events/:eventId', events.findOne);
+  app.get('/events/:id', events.findOne);
 }

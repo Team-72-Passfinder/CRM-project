@@ -1,13 +1,26 @@
 // Controller to perform CRUD on event parameter
 const Event = require('../models/event');
+const controller = require('./controller');
 
 // Create a new event ===================================================
 exports.create = (req, res) => {
   // Validate requests 
-  var errCatched = validateEvent(req, res);
+  if (!req.body.name) {
+    return res.status(400).send({
+      message: "Require event name!"
+    });
+  }
 
-  if (errCatched != null) {
-    return;
+  if (!req.body.dateTime) {
+    return res.status(400).send({
+      message: "Require datetime!"
+    });
+  }
+
+  if (req.body.completed == null) {
+    return res.status(400).send({
+      message: "Should mark event's completeness!"
+    });
   }
 
   // Create an event 
@@ -31,106 +44,25 @@ exports.create = (req, res) => {
 };
 
 
-// Update an events identified by the event's Id ==============================
+// Update event identified by the event's Id ==============================
 exports.update = (req, res) => {
-  // Validate requests
-  var errCatched = validateEvent(req, res);
-
-  if (errCatched != null) {
-    return;
-  }
-
-  // Else, update the event 
-  const id = req.params.eventId;
-
-  // Case of updated sucessfully
-  Event.findByIdAndUpdate(id, { $set: req.body }, { new: true }).then(() => {
-    res.status(200).send({ message: "Event data updated!" });
-  })
-    // Case of error
-    .catch((err) => {
-      res.status(400).send({
-        message: "Error when updating event!"
-      });
-    });
+  controller.updateData(Event, req, res);
 }
 
 
 // Delete an event with the specified event's Id ==============================
 exports.delete = (req, res) => {
-
-  const id = req.params.eventId;
-  Event.findByIdAndRemove(id).then(event => {
-    if (!event) {
-      // If no id found -> return error message
-      return res.status(404).send({ message: "No event found to be deleted!" });
-    }
-    // Else, the event should be deleted successfully
-    res.send({ message: "Event is deleted successfully!" });
-  })
-    // Catching error when accessing the database
-    .catch(err => res.status(500).send({ message: "Error accessing the database!" }));
+  controller.deleteData(Event, req, res);
 }
 
 
-// These folowings relate to Search engine??
 // Retrieve and return all events from the database =========================
 exports.findAll = (req, res) => {
-  // Return all events using find()
-  Event.find().then(events => {
-    res.send(events);
-  })
-    // Catching error when accessing the database
-    .catch(err => {
-      res.status(500).send({ message: "Error when accessing the database!" })
-    })
-  console.log("All data in the current DB is loaded!");
+  controller.findAllData(Event, req, res);
 }
 
 
 // Find a single event with the event's id ====================================
 exports.findOne = (req, res) => {
-  // ID
-  const id = req.params.eventId;
-  Event.findById(id).then(event => {
-    // If event with this id is not found
-    if (!event) {
-      // return the error messages
-      return res.status(404).send({
-        message: "No event is found with this id!"
-      });
-    }
-    // else, return the event
-    res.send(event);
-    console.log("Event found!");
-  })
-    // Catching the error when assessing the DB
-    .catch(err => {
-      res.status(500).send({ message: "Error when accessing the database!" })
-    })
+  controller.findOne(Event, req, res);
 };
-
-
-// Function to help validate the events to be inserted/updated to the DB ===== 
-function validateEvent(req, res) {
-  //var eventErr;
-  // Validate requests 
-  if (!req.body.name) {
-    return res.status(400).send({
-      message: "Require event name!"
-    });
-  }
-
-  if (!req.body.dateTime) {
-    return res.status(400).send({
-      message: "Require datetime!"
-    });
-  }
-
-  if (req.body.completed == null) {
-    return res.status(400).send({
-      message: "Should mark event's completeness!"
-    });
-  }
-  return null;
-}
