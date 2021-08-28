@@ -36,7 +36,7 @@ exports.create = (req, res) => {
 };
 
 
-// Update a relationships identified by the relationship's Id ==============================
+// Update a relationship identified by the relationship's Id ==============================
 exports.update = (req, res) => {
   controller.updateData(Relationship, req, res);
 }
