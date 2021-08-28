@@ -13,18 +13,19 @@ function Login() {
     const submitHandler = e => {
         e.preventDefault();
 
-        let loginStatus = login(username, password)
-
-        if(loginStatus.message === 'Success') {
-            console.log('Login working')
-        } else if (loginStatus.message === 'Unauthorized'){
-            setAlert(
+        login(username, password).then(null, onrejected => {
+            if(onrejected === 'Unauthorized') {
                 <div className='error'>
                     <BsFillExclamationTriangleFill className='danger-icon' />
                     <h3>Incorrect username or password</h3>
                 </div>
-            )
-        }
+            } else {
+                <div className='error'>
+                    <BsFillExclamationTriangleFill className='danger-icon' />
+                    <h3>Authentication failed. Please retry again</h3>
+                </div>
+            }
+        })
     }
 
     return (

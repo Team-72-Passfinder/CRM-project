@@ -1,28 +1,27 @@
+const axios = require('axios');
+
 const BASE_URL = "http://localhost:5000"
 
-export function login(username, password) {
+export async function login(username, password) {
     let endpoint = BASE_URL + '/login'
 
-    let data = fetch(endpoint, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify({
-            username: username,
-            password: password
-        })
-    }).then(res => {
-        if(res.ok) {
-            localStorage.setItem('token-myapp', res.json())
-            return {
-                message: 'Success'
-            }
-        }
-    })
 
-    return {
-        message: 'Unauthorized'
-    }
+    await axios.post('http://localhost:5000/login', {
+        username: username,
+        password: password
+    }).then(function (response) {
+        console.log(response)
+        localStorage.setItem('token-myapp', response.data)
+        window.location.href= '/'
+    }).catch(function (error) {
+        console.log(error);
+
+        switch(error.response.status) {
+            case '401':
+            case '400':
+                return Promise.reject('Unauthorized')
+            default:
+                return Promise.reject('Authentication failed')
+
+    }})
 }
