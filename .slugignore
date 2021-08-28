@@ -1,0 +1,14 @@
+# Folder that will be ignored by Heroku when build
+/test
+/docs
+/igm
+/example
+/prototypes
+
+# File type
+*.pdf
+*.docx
+*.png
+*.bmp
+*.jpg
+*.jpeg
