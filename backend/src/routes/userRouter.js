@@ -19,12 +19,7 @@ router.post('/login', passport.authenticate('login', { session: false }), async 
 })
 
 router.post('/register', passport.authenticate('registration', { session: false }), async (req, res) => {
-    if(req.user === null) {
-        console.log('yes')
-        return res.send('fail')
-    }
-
-    let token = jwt.sign({ _id: req.user._id }, process.env.PASSPORT_SECRET, {expiresIn: '10d'});
+    let token = jwt.sign({ _id: req.user._id }, process.env.PASSPORT_SECRET, { expiresIn: '10d'});
 
     return res.json(token)
 })
