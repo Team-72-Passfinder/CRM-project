@@ -15,7 +15,6 @@ dotenv.config();
 const port = process.env.port ?? 3000;
 const host = process.env.host ?? 'localhost';
 const config = require('./config/config');
-const eventRoutes = require('./routes/event-routes');
 
 const dbUrl = config.dbUrl;
 
