@@ -6,7 +6,7 @@ var passport = require('passport'),
 
 const User = require('mongoose').model('User')
 
-passport.use(new JwtStrategy({
+passport.use('jwt', new JwtStrategy({
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
     secretOrKey: process.env.PASSPORT_SECRET,
     passReqToCallback: true,
@@ -15,6 +15,8 @@ passport.use(new JwtStrategy({
         if (err) {
             return done(err, false);
         }
+
+        console.log(jwt_payload)
 
         if (user) {
             return done(null, user);

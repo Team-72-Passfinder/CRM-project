@@ -6,15 +6,16 @@ require('../config/passport')
 
 var jwt = require('jsonwebtoken')
 
+router.get('/profile', passport.authenticate('jwt', { session: false }), async (req, res) => {
+    res.send('success')
+})
+
 router.post('/login', passport.authenticate('login', { session: false }), async (req, res) => {
     const body = { _id: req.user._id }
 
-    jwt.sign(body, process.env.PASSPORT_SECRET, (err, token) => {
-        if (err) return res.json(err);
+    let token = jwt.sign(body, process.env.PASSPORT_SECRET, { expiresIn: '10d' })
 
-        // Return json web token
-        return res.json(token)
-    });
+    return res.json(token)
 })
 
 router.post('/register', passport.authenticate('registration', { session: false }), async (req, res) => {
@@ -23,14 +24,9 @@ router.post('/register', passport.authenticate('registration', { session: false 
         return res.send('fail')
     }
 
-    const body = { _id: req.user._id }
+    let token = jwt.sign({ _id: req.user._id }, process.env.PASSPORT_SECRET, {expiresIn: '10d'});
 
-    jwt.sign(body, process.env.PASSPORT_SECRET, (err, token) => {
-        if (err) return res.json(err);
-
-        // Return json web token
-        return res.json(token)
-    });
+    return res.json(token)
 })
 
 module.exports = router
