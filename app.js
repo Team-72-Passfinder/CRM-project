@@ -1,20 +1,23 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-const bodyParser = require('body-parser');
-
+const config = require('./config/config');
+const userRoute = require('./routes/user');
+const eventRoute = require('./routes/event');
+const contactRoute = require('./routes/contact');
+const relationshipRoute = require('./routes/relationship');
+const conversationRoute = require('./routes/conversation');
+const messageRoute = require('./routes/message');
 const app = express();
 
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(express.urlencoded({ extended: false }));
 
 // parse application/json
-app.use(bodyParser.json())
+app.use(express.json());
 
-dotenv.config();
 const port = process.env.port ?? 3000;
 const host = process.env.host ?? 'localhost';
-const config = require('./config/config');
 
 const dbUrl = config.dbUrl;
 
@@ -27,19 +30,21 @@ var options = {
 
 setUpDatabaseStateLog();
 
+console.log(process.env.DB_USER);
+console.log(dbUrl);
+
 // Connect to DB
 mongoose.connect(dbUrl, options, (err) => {
   if (err) console.log(err);
 });
 
-
-// Require all files in routers
-require('./routes/event-routes')(app);
-require('./routes/user-routes')(app);
-require('./routes/contact-routes')(app);
-require('./routes/relationship-routes')(app);
-require('./routes/conversation-routes')(app);
-require('./routes/message-routes')(app);
+// Get all routes
+app.use(userRoute);
+app.use(eventRoute);
+app.use(relationshipRoute);
+app.use(conversationRoute);
+app.use(messageRoute);
+app.use(contactRoute);
 
 app.listen(port, function () {
   console.log(`⚡Server is running on ${host}:${port}`);
