@@ -2,18 +2,20 @@ const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
-const cors = require('cors')
+const cors = require('cors');
 
 const app = express();
 
-app.use(cors({
+app.use(
+  cors({
     credentials: true,
-    origin: "http://localhost:3000"
-}));
+    origin: 'http://localhost:3000',
+  })
+);
 
-app.use(express.json())
-app.use(express.urlencoded({ extended: true }))
-app.use(express.static('public'))
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.static('public'));
 
 dotenv.config();
 const port = process.env.port ?? 5000;
@@ -45,6 +47,11 @@ app.get('/', function (req, res) {
   res.send(`⚡Server is running on ${host}:${port}`);
 });
 
+app.post('/', function (req, res) {
+  res.send(req.body.user);
+  res.send(req.user.id);
+});
+
 /**
  * Setup output readyState and on-event emitters
  */
@@ -63,6 +70,6 @@ function setUpDatabaseStateLog() {
   });
 }
 
-require('./models/user')
+require('./models/user');
 
-app.use(require('./routes/userRouter'))
+app.use(require('./routes/userTokenRouter'));
