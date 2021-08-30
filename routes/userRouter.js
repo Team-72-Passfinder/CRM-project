@@ -18,9 +18,7 @@ router.post(
   '/login',
   passport.authenticate('login', { session: false }),
   async (req, res) => {
-    const body = { _id: req.user._id };
-
-    let token = jwt.sign(body, process.env.PASSPORT_SECRET, {
+      let token = jwt.sign({ _id: req.user._id }, process.env.PASSPORT_SECRET, {
       expiresIn: '10d',
     });
 

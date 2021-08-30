@@ -72,4 +72,4 @@ function setUpDatabaseStateLog() {
 
 require('./models/user');
 
-app.use(require('./routes/userTokenRouter'));
+app.use(require('./routes/userRouter'));
