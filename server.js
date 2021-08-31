@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const config = require('./config/config');
+const cors = require('cors');
 const userRoute = require('./routes/user');
 const eventRoute = require('./routes/event');
 const contactRoute = require('./routes/contact');
@@ -10,13 +11,15 @@ const conversationRoute = require('./routes/conversation');
 const messageRoute = require('./routes/message');
 const app = express();
 
+app.use(cors())
+
 // parse application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: false }));
 
 // parse application/json
 app.use(express.json());
 
-const port = process.env.port ?? 3000;
+const port = process.env.port ?? 5000;
 const host = process.env.host ?? 'localhost';
 
 const dbUrl = config.dbUrl;
