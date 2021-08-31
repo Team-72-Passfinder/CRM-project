@@ -1,10 +1,21 @@
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
-
+const config = require('./config/config');
+const userRoute = require('./routes/user');
+const eventRoute = require('./routes/event');
+const contactRoute = require('./routes/contact');
+const relationshipRoute = require('./routes/relationship');
+const conversationRoute = require('./routes/conversation');
+const messageRoute = require('./routes/message');
+const app = express();
 const cors = require('cors');
 
-const app = express();
+// parse application/x-www-form-urlencoded
+app.use(express.urlencoded({ extended: false }));
+
+// parse application/json
+app.use(express.json());
 
 app.use(
   cors({
@@ -13,14 +24,8 @@ app.use(
   })
 );
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(express.static('public'));
-
-dotenv.config();
 const port = process.env.port ?? 5000;
 const host = process.env.host ?? 'localhost';
-const config = require('./config/config');
 
 const dbUrl = config.dbUrl;
 
@@ -38,6 +43,14 @@ mongoose.connect(dbUrl, options, (err) => {
   if (err) console.log(err);
 });
 
+// Get all routes
+app.use(userRoute);
+app.use(eventRoute);
+app.use(relationshipRoute);
+app.use(conversationRoute);
+app.use(messageRoute);
+app.use(contactRoute);
+
 app.listen(port, function () {
   console.log(`⚡Server is running on ${host}:${port}`);
 });
@@ -45,11 +58,6 @@ app.listen(port, function () {
 app.get('/', function (req, res) {
   res.send('Hellooo Worlddd!');
   res.send(`⚡Server is running on ${host}:${port}`);
-});
-
-app.post('/', function (req, res) {
-  res.send(req.body.user);
-  res.send(req.user.id);
 });
 
 /**
