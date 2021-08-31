@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { BsFillExclamationTriangleFill, BsExclamationCircleFill } from 'react-icons/bs'
 
+import { login } from '../../api'
+
 import './login.css'
 
 function Login() {
@@ -8,24 +10,22 @@ function Login() {
     const [password, setPassword] = useState('')
     const [alert, setAlert] = useState()
 
-    const dummyUser = {
-        username: 'Benedict-J',
-        password: '123ab'
-    }
-
     const submitHandler = e => {
         e.preventDefault();
 
-        if(dummyUser.username === username && dummyUser.password === password) {
-            console.log('Working authentication')
-        } else {
-            setAlert(
+        login(username, password).then(null, onrejected => {
+            if(onrejected === 'Unauthorized') {
                 <div className='error'>
                     <BsFillExclamationTriangleFill className='danger-icon' />
                     <h3>Incorrect username or password</h3>
                 </div>
-            )
-        }
+            } else {
+                <div className='error'>
+                    <BsFillExclamationTriangleFill className='danger-icon' />
+                    <h3>Authentication failed. Please retry again</h3>
+                </div>
+            }
+        })
     }
 
     return (
@@ -37,13 +37,13 @@ function Login() {
                         {alert}
                     </div>
                     <form>
-                        <input id='username-field' name='username' type='text' placeholder='Username' onChange={ e => { setUsername(e.target.value) }} />
+                        <input id='username-field' name='username' type='text' placeholder='Username' onChange={e => { setUsername(e.target.value) }} />
                         {/* Maybe not going to use this */}
                         {/* <div className='empty-warning' hidden>
                             <BsExclamationCircleFill className='circle-exclamaination' />
                             This field cannot be empty
                         </div> */}
-                        <input id='password-field' type='password' placeholder='*********' onChange={ e => { setPassword(e.target.value) }} />
+                        <input id='password-field' type='password' placeholder='*********' onChange={e => { setPassword(e.target.value) }} />
                         {/* Maybe not going to use this */}
                         {/* <div className='empty-warning' hidden>
                             <BsExclamationCircleFill className='circle-exclamaination' />

@@ -9,6 +9,7 @@ const relationshipRoute = require('./routes/relationship');
 const conversationRoute = require('./routes/conversation');
 const messageRoute = require('./routes/message');
 const app = express();
+const cors = require('cors');
 
 // parse application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: false }));
@@ -16,7 +17,14 @@ app.use(express.urlencoded({ extended: false }));
 // parse application/json
 app.use(express.json());
 
-const port = process.env.port ?? 3000;
+app.use(
+  cors({
+    credentials: true,
+    origin: 'http://localhost:3000',
+  })
+);
+
+const port = process.env.port ?? 5000;
 const host = process.env.host ?? 'localhost';
 
 const dbUrl = config.dbUrl;
@@ -69,3 +77,7 @@ function setUpDatabaseStateLog() {
     console.log('Disconnected. State: ' + mongoose.connection.readyState); // state 0
   });
 }
+
+require('./models/user');
+
+app.use(require('./routes/userRouter'));
