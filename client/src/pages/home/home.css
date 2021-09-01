@@ -1,0 +1,55 @@
+body {
+    width: 100vw;
+    height: 100vh;
+    background: #F0F5F9;
+    font-family: 'Open Sans';
+}
+
+#home-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+}
+
+#home-container-content {
+    display: block;
+}
+
+.search-bar {
+    display: inline-flex;
+    width: 80vw;
+    height: 40px;
+
+    top: 85px;
+
+    background: #C9D6DF;
+    border-radius: 30px;
+    border: 0px;
+
+    align-items: center;
+}
+
+.search-bar #search-icon {
+    margin-left: 15px;
+    margin-right: 10px;
+
+    width: 20px;
+    height: 20px;
+}
+
+#search-input {
+    width: 77%;
+    height: 80%;
+    margin-right: 15px;
+
+    background: none;
+
+    border: none;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+#search-input:focus {
+    outline: none;
+}

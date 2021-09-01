@@ -1,4 +1,8 @@
 import React, { useState, useEffect } from 'react'
+import { BsSearch } from 'react-icons/bs'
+
+import './home.css'
+
 import { getEvents } from '../../api.js';
 
 const sampleEvent = {
@@ -36,6 +40,7 @@ const sampleEvent = {
 // Created using function hooks
 function Home() {
     const [events, setEvents] = useState([])
+    const [searchBar, setSearchBar] = useState('')
 
     useEffect(() => {
         getEvents().then(res => {
@@ -45,15 +50,23 @@ function Home() {
     }, [])
 
     return (
-        <div id='events'>
-            {events.map((event) => {
-                return (
-                    <div id={event._id} key={event._id}>
-                        {event._id}
-                        {event.name}
-                    </div>
-                )
-            })}
+        <div id='home-container'>
+            <div id='home-container-content'>
+                <div className='search-bar'>
+                    <BsSearch id='search-icon' />
+                    <input id='search-input' placeholder='Search event name' onChange={e => setSearchBar(e.target.value)} />
+                </div>
+                <div id='events'>
+                    {events.map((event) => {
+                        return (
+                            <div id={event._id} key={event._id}>
+                                {event._id}
+                                {event.name}
+                            </div>
+                        )
+                    })}
+                </div>
+            </div>
         </div>
     )
 }
