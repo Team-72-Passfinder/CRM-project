@@ -58,5 +58,5 @@ exports.findAll = (req, res) => {
 
 // Find a single relationship with the relationship's id ====================================
 exports.findOne = (req, res) => {
-  controller.findOne(Relationship, req.params.id, res);
+  controller.findOne(Relationship, req, res);
 };

@@ -1,25 +1,25 @@
 [
   {
     "people": [
-      "user_id1",
-      "user_id2"
+      "612b497f5eb1853ce6da5a88",
+      "6128f7781f70352b9160407f"
     ],
     "startedDatetime": "2010-10-10",
     "tag": [
-      "tag1",
-      "tag1"
+      "bestfriends",
+      "adventure"
     ],
     "description": "some description"
   },
   {
     "people": [
-      "user_id3",
-      "user_id4"
+      "6128f7781f70352b9160407f",
+      "6128f7431f70352b9160407d"
     ],
     "startedDatetime": "",
     "tag": [
-      "tag3",
-      "tag4"
+      "animals",
+      "puppies"
     ],
     "description": "this will raise an error of missing datetime!"
   },
