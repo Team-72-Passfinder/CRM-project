@@ -8,7 +8,8 @@ It's a CRM with a different C. This software is used to manage the user's contac
 
 - [Contribute guideline](#contribute-guideline)
 - [Repo structure](#repo-structure)
-- [Coding style](#coding-style)
+  - [Content of .env file](#content-of-env-file)
+- [Coding style (backend)](#coding-style-for-backend)
 - [Example workflow](#example-workflow)
 - [Reading resources](#reading-resources)
 
@@ -18,9 +19,9 @@ We will follow a **trunk-based approach**, where developers collaborate on a sin
 
 **Naming convention**:
 
-- For files and folders, use lowercase letter and hyphen between words. Examples: `file-name`, `backend`, `main-file.js`, `src/a-very-long-file-name.js` etc..
+- For files and folders, use lowercase letter and hyphen between words. Examples: `file-name`, `backend`, `main-file.js`, `src/a-very-long-file-name.js`, etc..
 
-- For branch, they should have a clear and concise name what they are implementing (should focus on one task at a time). Use hyphen or space between words for better clarity.
+- For branch, they should have a clear and concise name what they are implementing (should focus on one task at a time). Use hyphen or space between words for better clarity. Example: `mocha-test`, `schema DB`, `User-Authentication`, etc..
 
 In addition, it's better to **commit frequently**. This way, we can easily see the reasons for code change and follow the thought process of the developer. Don't mistake between commit and push/pull request though.
 
@@ -41,6 +42,10 @@ To install the neccessary dependencies.
 ### `npm run dev`
 
 To runs the server backend in the development mode.
+
+### `npm run test`
+
+To runs the Mocha tests in `/test` folder.
 
 ## Repo structure
 
@@ -79,6 +84,23 @@ To runs the server backend in the development mode.
 |__ etc.
 ```
 
+### Content of .env file
+
+This file is placed at project's root (same as `server.js`)
+
+```bash
+port = _____
+host = _____
+
+#### DB_CONFIG ####
+DB_USER     = _____
+DB_PASSWORD = _____
+DB_URL      = _____
+DB_NAME     = _____
+
+PASSPORT_SECRET = _____
+```
+
 ## Coding style (for backend)
 
 Indent space: 2
@@ -89,7 +111,7 @@ Database model name: Start with uppercase. Example: User, Contact, Event.
 
 Use `const` when require modules.
 
-For frontend, follow the `README.md` in folder `frontend`.
+For frontend, follow the `README.md` in folder `client`.
 
 ## Example workflow
 
