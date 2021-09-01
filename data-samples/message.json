@@ -1,7 +1,11 @@
 [
   {
     "content": "message content 1",
-    "sender": "user1"
+    "sender": "user_id1"
+  },
+  {
+    "content": "message content 2",
+    "sender": "user_id2"
   },
   {
     "content": "",

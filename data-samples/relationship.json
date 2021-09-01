@@ -1,8 +1,32 @@
 [
   {
-    "people": "req.body.people",
-    "startedDatetime": "req.body.startedDatetime",
-    "tag": "req.body.tag || []",
-    "description": "req.body.phoneNumber || ''"
+    "people": [
+      "user_id1",
+      "user_id2"
+    ],
+    "startedDatetime": "2010-10-10",
+    "tag": [
+      "tag1",
+      "tag1"
+    ],
+    "description": "some description"
+  },
+  {
+    "people": [
+      "user_id3",
+      "user_id4"
+    ],
+    "startedDatetime": "",
+    "tag": [
+      "tag3",
+      "tag4"
+    ],
+    "description": "this will raise an error of missing datetime!"
+  },
+  {
+    "people": [],
+    "startedDatetime": "2018-01-01",
+    "tag": [],
+    "description": "this will raise an error of missing people's id!"
   }
 ]
