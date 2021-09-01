@@ -1,0 +1,34 @@
+[
+  {
+    "users": [
+      "user1",
+      "user2"
+    ],
+    "messages": [
+      "hello",
+      "hi!"
+    ]
+  },
+  {
+    "users": [
+      "Tam",
+      "Behrens"
+    ],
+    "messages": []
+  },
+  {
+    "users": [
+      "Nunu",
+      "Koma"
+    ],
+    "messages": [
+      "Sup!?"
+    ]
+  },
+  {
+    "users": [],
+    "messages": [
+      "This will raise an error of missing users!!"
+    ]
+  }
+]
