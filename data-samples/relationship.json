@@ -1,0 +1,8 @@
+[
+  {
+    "people": "req.body.people",
+    "startedDatetime": "req.body.startedDatetime",
+    "tag": "req.body.tag || []",
+    "description": "req.body.phoneNumber || ''"
+  }
+]

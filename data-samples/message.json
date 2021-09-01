@@ -1,0 +1,14 @@
+[
+  {
+    "content": "message content 1",
+    "sender": "user1"
+  },
+  {
+    "content": "",
+    "sender": "this will raise missing content error!"
+  },
+  {
+    "content": "this will raise missing sender error!",
+    "sender": ""
+  }
+]
