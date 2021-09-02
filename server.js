@@ -27,22 +27,6 @@ app.use(
 const port = process.env.port ?? 5000;
 const host = process.env.host ?? 'localhost';
 
-const dbUrl = config.dbUrl;
-
-var options = {
-  keepAlive: 1,
-  connectTimeoutMS: 30000,
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-};
-
-setUpDatabaseStateLog();
-
-// Connect to DB
-mongoose.connect(dbUrl, options, (err) => {
-  if (err) console.log(err);
-});
-
 // Get all routes
 app.use(userRoute);
 app.use(eventRoute);
@@ -51,7 +35,12 @@ app.use(conversationRoute);
 app.use(messageRoute);
 app.use(contactRoute);
 
-app.listen(port, function () {
+// Authentication
+require('./models/user');
+app.use(require('./routes/userRouter'));
+
+// Basic route
+let server = app.listen(port, function () {
   console.log(`⚡Server is running on ${host}:${port}`);
 });
 
@@ -60,10 +49,35 @@ app.get('/', function (req, res) {
   res.send(`⚡Server is running on ${host}:${port}`);
 });
 
+initMongooseConnection(() => {
+  app.emit('ready');
+});
+
 /**
- * Setup output readyState and on-event emitters
+ * Use this function to close everything.
  */
-function setUpDatabaseStateLog() {
+function stop(callback) {
+  mongoose.disconnect();
+  mongoose.connection.once('close', () => {
+    server.close(callback);
+  });
+}
+
+/**
+ * Initialize connection to mongoDB and setup on-event emitters.
+ * Callback is usually used in test for done()
+ * @param {function} callback
+ */
+function initMongooseConnection(callback) {
+  const dbURI = config.dbURI;
+
+  var options = {
+    keepAlive: 1,
+    connectTimeoutMS: 30000,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  };
+
   mongoose.connection.on('connecting', () => {
     console.log('Connecting. State: ' + mongoose.connection.readyState); // state 2
   });
@@ -76,8 +90,20 @@ function setUpDatabaseStateLog() {
   mongoose.connection.on('disconnected', () => {
     console.log('Disconnected. State: ' + mongoose.connection.readyState); // state 0
   });
+
+  // Actual connection part
+  mongoose.connect(dbURI, options);
+  var db = mongoose.connection;
+  db.on('error', (err) => {
+    console.log('Failed to connect to database');
+    console.log(err);
+    process.exit(1);
+  });
+
+  db.once('open', () => {
+    console.log('DB Name : ' + db.name);
+    callback();
+  });
 }
 
-require('./models/user');
-
-app.use(require('./routes/userRouter'));
+module.exports = { app, stop, initMongooseConnection };
