@@ -109,12 +109,13 @@ input[type=submit]:active {
 #alert .error .danger-icon {
     width: 20px;
     height: 20px;
-    margin-inline-end: 5px;
+    margin-inline-end: 10px;
 }
 
-#alert .error h3 {
+#alert .error .error-message {
     font-size: 14px;
     font-weight: 500;
+    width: 80%
 }
 
 #forgot-password-link {

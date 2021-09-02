@@ -16,14 +16,14 @@ export async function login(username, password) {
       window.location.href = '/';
     })
     .catch(function (error) {
-      console.log(error);
+      console.log(error.response.status);
 
       switch (error.response.status) {
-        case '401':
-        case '400':
-          return Promise.reject('Unauthorized');
+        case 401:
+        case 400:
+            return Promise.reject('Unauthorized');
         default:
-          return Promise.reject('Authentication failed');
+            return Promise.reject('Authentication failed');
       }
     });
 }

@@ -1,3 +1,4 @@
+import { set } from 'mongoose'
 import React, { useState } from 'react'
 import { BsFillExclamationTriangleFill, BsExclamationCircleFill } from 'react-icons/bs'
 
@@ -13,17 +14,21 @@ function Login() {
     const submitHandler = e => {
         e.preventDefault();
 
-        login(username, password).then(null, onrejected => {
-            if(onrejected === 'Unauthorized') {
-                <div className='error'>
-                    <BsFillExclamationTriangleFill className='danger-icon' />
-                    <h3>Incorrect username or password</h3>
-                </div>
+        login(username, password).then(null, reason => {
+            if(reason === 'Unauthorized') {
+                setAlert(
+                    <div className='error'>
+                        <BsFillExclamationTriangleFill className='danger-icon' />
+                        <div className='error-message'>Incorrect username or password</div>
+                    </div>
+                )
             } else {
-                <div className='error'>
-                    <BsFillExclamationTriangleFill className='danger-icon' />
-                    <h3>Authentication failed. Please retry again</h3>
-                </div>
+                setAlert(
+                    <div className='error'>
+                        <BsFillExclamationTriangleFill className='danger-icon' />
+                        <div className='error-message'>Authentication failed. Please retry again</div>
+                    </div>
+                )
             }
         })
     }
