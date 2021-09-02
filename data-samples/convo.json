@@ -1,0 +1,34 @@
+[
+  {
+    "users": [
+      "6128f7781f70352b9160407f",
+      "612b497f5eb1853ce6da5a88"
+    ],
+    "messages": [
+      "6129af6299b441a42fbbe51d",
+      "612f7a020806127d0d7db95b"
+    ]
+  },
+  {
+    "users": [
+      "6128f7431f70352b9160407d",
+      "6128f7781f70352b9160407f"
+    ],
+    "messages": []
+  },
+  {
+    "users": [
+      "6128f7431f70352b9160407d",
+      "6128f7041f70352b9160407b"
+    ],
+    "messages": [
+      "612f7a720806127d0d7db95f"
+    ]
+  },
+  {
+    "users": [],
+    "messages": [
+      "This will raise an error of missing users!!"
+    ]
+  }
+]

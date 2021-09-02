@@ -5,7 +5,7 @@ const controller = require('./general-controller');
 // Create a new convo ===========================================================
 exports.create = (req, res) => {
   // Validate requests
-  if (!req.body.users) {
+  if (!req.body.userId) {
     return res.status(400).send({
       message: 'Require users in convo!',
     });
@@ -13,8 +13,8 @@ exports.create = (req, res) => {
 
   // Create a new convo
   const conversation = new Conversation({
-    users: req.body.users,
-    messages: req.body.messages || [],
+    userId: req.body.userId,
+    messageId: req.body.messageId || [],
   });
 
   // Save this conversation to database

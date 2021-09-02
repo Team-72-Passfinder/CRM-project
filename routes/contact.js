@@ -9,6 +9,7 @@ app
   .route('/contact/:id')
   .put(controller.update)
   .delete(controller.delete)
-  .get(controller.findOne);
+  .get(controller.findOne)
+  .post(controller.addFromId);
 
 module.exports = app;
