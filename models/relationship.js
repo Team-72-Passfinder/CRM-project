@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const RelationshipSchema = new mongoose.Schema(
   {
     people: {
-      type: [String],
+      type: [String], // max 2 people
       required: true,
     },
     startedDatetime: {
