@@ -9,15 +9,24 @@ on:
 
 jobs:
   build:
-    runs-on: window-latest
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x]
+        node-version: [14.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
       - uses: actions/checkout@v2
+      - name: create env file
+      run: |
+        touch .env
+        echo DB_USER =${{ secrets.DB_USER }} >> .env
+        echo DB_PASSWORD =${{ secrets.DB_PASSWORD }} >> .env
+        echo DB_URL =${{ secrets.DB_URL }} >> .env
+        echo DB_NAME =${{ secrets.DB_NAME }} >> .env
+        echo PASSPORT_SECRET =${{ secrets.PASSPORT_SECRET }} >> .env
+        echo DB_TEST_NAME =testDatabase >> .env
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v2
         with:
