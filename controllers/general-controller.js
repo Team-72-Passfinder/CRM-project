@@ -57,7 +57,6 @@ function findAllData(controler, req, res) {
       console.log(err);
       res.status(500).send({ message: 'Error when accessing the database!' });
     });
-  console.log('All data in the current DB is loaded!');
 }
 
 // Find a single contact with the contact's id ====================================
@@ -76,7 +75,6 @@ function findOne(controler, req, res) {
       }
       // else, return the contact
       res.send(data);
-      console.log('Data found!');
     })
     // Catching the error when assessing the DB
     .catch((err) => {

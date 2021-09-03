@@ -65,8 +65,6 @@ exports.create = (req, res) => {
         message: 'Error when creating user!',
       });
     });
-
-  console.log('New user created! Yay');
 };
 
 // Update an user identified by the user's Id ==============================
