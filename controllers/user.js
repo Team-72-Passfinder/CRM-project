@@ -37,34 +37,59 @@ exports.create = (req, res) => {
 
   if (!req.body.dateOfBirth) {
     return res.status(400).send({
-      message: 'dateOfBirth!',
+      message: 'Require dateOfBirth!',
     });
   }
 
-  // Create an user
-  const user = new User({
-    //_id: Mongoose.Types.ObjectId(),
-    username: req.body.username,
-    password: req.body.password,
-    email: req.body.email,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    dateOfBirth: req.body.dateOfBirth,
-    biography: req.body.biography || '',
-  });
-
-  // Save this user to database
-  user
-    .save()
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send({
-        message: 'Error when creating user!',
+  // Check for existing username or email ==================================
+  // Check for username
+  User.findOne({ email: req.body.email }).then((existedEmail) => {
+    // If the email is found
+    if (existedEmail) {
+      return res.status(400).send({
+        message: 'This email has been registered! Try another one!',
       });
-    });
+    }
+    // continue to check for username
+    else {
+      User.findOne({ username: req.body.username }).then((existedUname) => {
+        // If the username is found
+        if (existedUname) {
+          return res.status(400).send({
+            message: 'This username has been taken! Try another one!',
+          });
+        }
+        else {
+          // Then the username and email are good to be registered
+          // Create an user if all info is valid ==================================
+          const user = new User({
+            //_id: Mongoose.Types.ObjectId(),
+            username: req.body.username,
+            password: req.body.password,
+            email: req.body.email,
+            firstName: req.body.firstName,
+            lastName: req.body.lastName,
+            dateOfBirth: req.body.dateOfBirth,
+            biography: req.body.biography || '',
+          });
+
+          // Save this user to database
+          user
+            .save()
+            .then((data) => {
+              res.send(data);
+            })
+            .catch((err) => {
+              console.log(err);
+              res.status(500).send({
+                message: 'Error when creating user!',
+              });
+            });
+          console.log('New user created! Yay');
+        }
+      });
+    }
+  });
 };
 
 // Update an user identified by the user's Id ==============================
