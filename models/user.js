@@ -16,6 +16,10 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
+// If you don't want MongoDB to automatically make plural name
+// (users), then use the following command
+//UserSchema.set('collection', 'user');
+
 UserSchema.methods.hashPassword = function (password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(10));
 };
