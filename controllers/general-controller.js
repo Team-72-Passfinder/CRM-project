@@ -9,8 +9,8 @@ function updateData(controler, req, res) {
   // Case of updated sucessfully
   controler
     .findByIdAndUpdate(id, { $set: req.body }, { new: true })
-    .then(() => {
-      res.status(200).send({ message: 'Data updated!' });
+    .then((updatedData) => {
+      res.status(200).send(updatedData);
     })
     // Case of error
     .catch((err) => {
@@ -34,7 +34,7 @@ function deleteData(controler, req, res) {
           .send({ message: 'No contact found to be deleted!' });
       }
       // Else, the contact should be deleted successfully
-      res.send({ message: 'Data is deleted successfully!' });
+      res.status(200).send({ message: 'Data is deleted successfully!' });
     })
     // Catching error when accessing the database
     .catch((err) => {

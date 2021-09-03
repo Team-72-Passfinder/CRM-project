@@ -93,8 +93,35 @@ exports.create = (req, res) => {
 };
 
 // Update an user identified by the user's Id ==============================
+// This Update function behaves differently from other controllers
+// It does not return password
 exports.update = (req, res) => {
-  controller.updateData(User, req, res);
+  //controller.updateData(User, req, res);
+  // Get the id
+  const id = req.params.id;
+
+  // Case of updated sucessfully
+  User
+    .findByIdAndUpdate(id, { $set: req.body }, { new: true })
+    .then((updatedData) => {
+      res.status(200).send(
+        {
+          username: updatedData.username,
+          email: updatedData.email,
+          firstname: updatedData.firstName,
+          lastName: updatedData.lastName,
+          dateOfBirth: updatedData.dateOfBirth,
+          biography: updatedData.biography
+        }
+      )
+    })
+    // Case of error
+    .catch((err) => {
+      console.log(err);
+      res.status(400).send({
+        message: 'Error when updating Contact!',
+      });
+    });
 };
 
 // Delete an user with the specified user's Id ==============================
