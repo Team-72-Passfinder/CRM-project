@@ -4,16 +4,20 @@
 name: Node.js CI
 
 on:
+  push:
+    branches: [test-CI]
   pull_request:
     branches: [main]
+    paths-ignore:
+      - 'docs/**'
 
 jobs:
   build:
-    runs-on: window-latest
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
-        node-version: [12.x, 14.x]
+        node-version: [14.x]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
@@ -23,6 +27,16 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
+      - name: Create env file
+        run: |
+          touch .env
+          echo DB_USER =${{ secrets.DB_USER }} >> .env
+          echo DB_PASSWORD =${{ secrets.DB_PASSWORD }} >> .env
+          echo DB_URL =${{ secrets.DB_URL }} >> .env
+          echo DB_NAME =${{ secrets.DB_NAME }} >> .env
+          echo PASSPORT_SECRET =${{ secrets.PASSPORT_SECRET }} >> .env
+          echo DB_TEST_NAME =testDatabase >> .env
+          cat .env
       # Test backend API
       - run: npm ci
       - run: npm test
