@@ -8,6 +8,8 @@ on:
     branches: [test-CI]
   pull_request:
     branches: [main]
+    paths-ignore:
+      - 'docs/**'
 
 jobs:
   build:
