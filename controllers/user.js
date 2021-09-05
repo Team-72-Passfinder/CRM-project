@@ -108,7 +108,7 @@ exports.update = (req, res) => {
         {
           username: updatedData.username,
           email: updatedData.email,
-          firstname: updatedData.firstName,
+          firstName: updatedData.firstName,
           lastName: updatedData.lastName,
           dateOfBirth: updatedData.dateOfBirth,
           biography: updatedData.biography
@@ -141,7 +141,7 @@ exports.findAll = (req, res) => {
           _id: user._id,
           username: user.username,
           email: user.email,
-          firstname: user.firstName,
+          firstName: user.firstName,
           lastName: user.lastName,
           dateOfBirth: user.dateOfBirth,
           biography: user.biography
@@ -172,9 +172,10 @@ exports.findOne = (req, res) => {
       }
       // else, return the contact
       res.status(200).send({
+        _id: data._id,
         username: data.username,
         email: data.email,
-        firstname: data.firstName,
+        firstName: data.firstName,
         lastName: data.lastName,
         dateOfBirth: data.dateOfBirth,
         biography: data.biography
