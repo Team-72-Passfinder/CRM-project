@@ -131,10 +131,57 @@ exports.delete = (req, res) => {
 
 // Retrieve and return all users from the database =========================
 exports.findAll = (req, res) => {
-  controller.findAllData(User, req, res);
+  // Return all contacts using find()
+  var userMap = {};
+  User
+    .find()
+    .then((data) => {
+      data.forEach(function (user) {
+        userMap[user._id] = {
+          username: user.username,
+          email: user.email,
+          firstname: user.firstName,
+          lastName: user.lastName,
+          dateOfBirth: user.dateOfBirth,
+          biography: user.biography
+        }
+      })
+      res.send(userMap);
+    })
+    // Catching error when accessing the database
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({ message: 'Error when accessing the database!' });
+    });
 };
 
 // Find a single user with the user's id ====================================
 exports.findOne = (req, res) => {
-  controller.findOne(User, req, res);
+  // ID
+  const id = req.params.id;
+  User
+    .findById(id)
+    .then((data) => {
+      // If contact with this id is not found
+      if (!data) {
+        // return the error messages
+        return res.status(404).send({
+          message: 'No data is found with this id!',
+        });
+      }
+      // else, return the contact
+      res.status(200).send({
+        username: data.username,
+        email: data.email,
+        firstname: data.firstName,
+        lastName: data.lastName,
+        dateOfBirth: data.dateOfBirth,
+        biography: data.biography
+      });
+    })
+    // Catching the error when assessing the DB
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({ message: 'Error when accessing the database!' });
+    });
 };
