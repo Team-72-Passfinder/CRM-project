@@ -58,3 +58,5 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   controller.findOne(Message, req, res);
 };
+
+// Perhaps there should be a search method for message???
