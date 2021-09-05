@@ -81,7 +81,7 @@ mocha.describe('Test User routes', function () {
     mocha.it('it should GET a user by the given id', (done) => {
       let user = new UserModel({
         username: 'bigbromario',
-        password: 'securepassword123',
+        //password: 'securepassword123',
         email: 'shroomboy@yahoo.com',
         firstName: 'Mario',
         lastName: 'Picasso',
