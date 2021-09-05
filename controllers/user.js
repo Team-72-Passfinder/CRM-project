@@ -132,19 +132,20 @@ exports.delete = (req, res) => {
 // Retrieve and return all users from the database =========================
 exports.findAll = (req, res) => {
   // Return all users using find()
-  var userMap = {};
+  var userMap = [];
   User
     .find()
     .then((data) => {
       data.forEach(function (user) {
-        userMap[user._id] = {
+        userMap.push({
+          _id: user._id,
           username: user.username,
           email: user.email,
           firstname: user.firstName,
           lastName: user.lastName,
           dateOfBirth: user.dateOfBirth,
           biography: user.biography
-        }
+        })
       })
       res.send(userMap);
     })
