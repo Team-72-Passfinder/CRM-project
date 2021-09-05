@@ -96,7 +96,6 @@ mocha.describe('Test User routes', function () {
             res.should.have.status(200);
             res.body.should.be.a('object');
             res.body.should.have.property('username');
-            res.body.should.have.property('password');
             res.body.should.have.property('email');
             res.body.should.have.property('firstName');
             res.body.should.have.property('lastName');
