@@ -54,6 +54,19 @@ function Navbar() {
         }
     }
 
+    function handleDrawerItemClick(text) {
+        switch (text) {
+            case 'Home':
+                window.location.pathname = '/'
+                break;
+            case 'Socials':
+                window.location.pathname = '/contact-list'
+                break;
+            default:
+                return
+        }
+    }
+
     return (
         <div>
             <AppBar position="static">
@@ -72,7 +85,7 @@ function Navbar() {
                 </div>
                 <List className={classes.list}>
                     {['Home', 'Socials', 'Profile', 'Log Out'].map((text) => (
-                        <ListItem className={classes.ListItem} button key={text}>
+                        <ListItem className={classes.ListItem} button key={text} onClick={() => handleDrawerItemClick(text)}>
                             <ListItemIcon>
                                 {getIcon(text)}
                             </ListItemIcon>

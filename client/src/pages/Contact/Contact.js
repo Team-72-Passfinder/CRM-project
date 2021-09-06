@@ -7,6 +7,7 @@ import CakeIcon from '@material-ui/icons/Cake';
 
 import { getContact } from '../../api'
 import Email from '@material-ui/icons/Email';
+import Navbar from '../../components/Navbar/Navbar';
 
 const useStyles = makeStyles((theme) => ({
     profileContainer: {
@@ -21,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
         marginBottom: '10px',
     },
     infoContainer: {
+        marginLeft: theme.spacing(2)
     },
     infoIcon: {
         marginRight: '15px',
@@ -47,7 +49,7 @@ function Contact() {
             case 'Date Of Birth':
                 return contactInfo.dateOfBirth
             default:
-                return ''
+                return null;
 
         }
     }
@@ -58,11 +60,7 @@ function Contact() {
 
     return (
         <div className={classes.root}>
-            <AppBar position='static'>
-                <Toolbar>
-
-                </Toolbar>
-            </AppBar>
+            <Navbar />
             {
                 contactInfo !== undefined &&
                 <React.Fragment>
@@ -78,25 +76,25 @@ function Contact() {
                         {['Bio', 'Email', 'Phone number', 'Date Of Birth'].map((element) => {
                             let data = getContactData(element)
 
+                            if(data === null) {
+                                return
+                            }
+
                             return (
-                                <React.Fragment>
-                                    {data !== '' &&
-                                        <ListItem>
-                                            <ListItemText
-                                                primary={
-                                                    <Typography color='textSecondary' className={classes.textPrimary}>
-                                                        {element}
-                                                    </Typography>
-                                                }
-                                                secondary={
-                                                    <Typography color="textPrimary">
-                                                        {data}
-                                                    </Typography>
-                                                }
-                                            />
-                                        </ListItem>
-                                    }
-                                </React.Fragment>
+                                <ListItem id={element} key={element}>
+                                    <ListItemText
+                                        primary={
+                                            <Typography color='textSecondary' className={classes.textPrimary}>
+                                                {element}
+                                            </Typography>
+                                        }
+                                        secondary={
+                                            <Typography color="textPrimary">
+                                                {data}
+                                            </Typography>
+                                        }
+                                    />
+                                </ListItem>
                             )
                         })}
                     </List>
