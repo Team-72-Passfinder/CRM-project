@@ -42,17 +42,7 @@ function Login() {
                     </div>
                     <form>
                         <input id='username-field' name='username' type='text' placeholder='Username' onChange={e => { setUsername(e.target.value) }} />
-                        {/* Maybe not going to use this */}
-                        {/* <div className='empty-warning' hidden>
-                            <BsExclamationCircleFill className='circle-exclamaination' />
-                            This field cannot be empty
-                        </div> */}
                         <input id='password-field' type='password' placeholder='*********' onChange={e => { setPassword(e.target.value) }} />
-                        {/* Maybe not going to use this */}
-                        {/* <div className='empty-warning' hidden>
-                            <BsExclamationCircleFill className='circle-exclamaination' />
-                            This field cannot be empty
-                        </div> */}
                         <a id='forgot-password-link' href='/forgot-password'>Forgot password?</a>
                         <input type='submit' onClick={submitHandler} />
                     </form>

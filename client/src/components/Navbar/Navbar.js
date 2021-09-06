@@ -1,13 +1,37 @@
 import React, { useState } from 'react'
 
-import { AppBar, Toolbar, IconButton, Drawer } from '@material-ui/core'
-import Menu from '@material-ui/icons/Menu'
-import ChevronLeft from '@material-ui/icons/ChevronLeft'
+import { AppBar, Toolbar, IconButton, Drawer, List, ListItem, ListItemIcon, ListItemText, makeStyles } from '@material-ui/core'
+
+import MenuIcon from '@material-ui/icons/Menu'
+import CloseIcon from '@material-ui/icons/Close'
+import HomeIcon from '@material-ui/icons/Home';
+import PeopleIcon from '@material-ui/icons/People';
+import AccountBoxIcon from '@material-ui/icons/AccountBox';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+
+const useStyles = makeStyles((theme) => ({
+    list: {
+        width: '200px',
+    },
+    closeButton: {
+        marginLeft: theme.spacing(1),
+        marginTop: theme.spacing(1),
+    },
+    ListItem: {
+        marginLeft: theme.spacing(1),
+    },
+    listIcon: {
+        width: theme.spacing(4),
+        height: theme.spacing(4),
+    }
+}))
 
 function Navbar() {
+    const classes = useStyles()
+
     const [open, setOpen] = useState(false)
 
-    function handleDrawerOpen() {
+    const handleDrawerOpen = () => {
         setOpen(true)
     }
 
@@ -15,24 +39,49 @@ function Navbar() {
         setOpen(false)
     }
 
+    function getIcon(text) {
+        switch(text) {
+            case 'Home':
+                return <HomeIcon className={classes.listIcon} />
+            case 'Socials':
+                return <PeopleIcon className={classes.listIcon} />
+            case 'Profile':
+                return <AccountBoxIcon className={classes.listIcon} />
+            case 'Log Out':
+                return <ExitToAppIcon className={classes.listIcon} />
+            default:
+                return
+        }
+    }
+
     return (
-        <React.Fragment>
+        <div>
             <AppBar position="static">
                 <Toolbar>
                     <IconButton onClick={handleDrawerOpen}>
-                        <Menu htmlColor='white' />
+                        <MenuIcon htmlColor='white' />
                     </IconButton>
                 </Toolbar>
             </AppBar>
 
-            <Drawer anchor={'right'} open={open}>
+            <Drawer anchor={'left'} open={open}>
                 <div>
-                    <IconButton>
-                        <ChevronLeft onClick={handleDrawerClose} />
+                    <IconButton className={classes.closeButton} onClick={handleDrawerClose}>
+                        <CloseIcon />
                     </IconButton>
                 </div>
+                <List className={classes.list}>
+                    {['Home', 'Socials', 'Profile', 'Log Out'].map((text) => (
+                        <ListItem className={classes.ListItem} button key={text}>
+                            <ListItemIcon>
+                                {getIcon(text)}
+                            </ListItemIcon>
+                            <ListItemText primary={text} />
+                        </ListItem>
+                    ))}
+                </List>
             </Drawer>
-        </React.Fragment>
+        </div>
     )
 }
 

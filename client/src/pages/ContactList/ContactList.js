@@ -55,12 +55,13 @@ function ContactList() {
     const classes = useStyles();
 
     const [contacts, setContacts] = useState([])
-    const [isOpen, setIsOpen] = useState(false)
 
+    // Click on individual contact to go to detailed page.
     function handleClick(id) {
         window.location.href = '/contact/' + id
     }
 
+    // Used to get contact list when the page loads.
     useEffect(() => {
         getContacts().then(res => {
             setContacts(res)

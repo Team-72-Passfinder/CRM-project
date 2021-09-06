@@ -36,6 +36,22 @@ function Contact() {
 
     const [contactInfo, setContactInfo] = useState()
 
+    function getContactData(key) {
+        switch(key) {
+            case 'Bio':
+                return contactInfo.biography
+            case 'Email':
+                return contactInfo.email
+            case 'Phone number':
+                return contactInfo.phoneNumber
+            case 'Date Of Birth':
+                return contactInfo.dateOfBirth
+            default:
+                return ''
+
+        }
+    }
+
     useEffect(() => {
         getContact(window.location.pathname.replace('/contact/', '')).then(res => setContactInfo(res))
     }, [])
@@ -59,65 +75,30 @@ function Contact() {
                         </Typography>
                     </Box>
                     <List className={classes.infoContainer} dense>
-                        <ListItem>
-                            <ListItemText
-                                primary={
-                                    <Typography color='textSecondary' className={classes.textPrimary}>
-                                        Bio
-                                    </Typography>
-                                }
-                                secondary={
-                                    <Typography color="textPrimary">
-                                        {contactInfo.biography}
-                                    </Typography>
-                                }
-                            />
-                        </ListItem>
-                        <ListItem>
-                            <ListItemText
-                                primary={
-                                    <Typography color='textSecondary' className={classes.textPrimary}>
-                                        Email
-                                    </Typography>
-                                }
-                                secondary={
-                                    <Typography color="textPrimary">
-                                        {contactInfo.email}
-                                    </Typography>
-                                }
-                            />
-                        </ListItem>
-                        <ListItem>
-                            <ListItemText
-                                primary={
-                                    <Typography color='textSecondary' className={classes.textPrimary}>
-                                        Phone Number
-                                    </Typography>
-                                }
-                                secondary={
-                                    <Typography color="textPrimary">
-                                        {contactInfo.phoneNumber}
-                                    </Typography>
-                                }
-                            />
-                        </ListItem>
-                        <ListItem>
-                            <ListItemText
-                                primary={
-                                    <Typography color='textSecondary' className={classes.textPrimary}>
-                                        Date Of Birth
-                                    </Typography>
-                                }
-                                secondary={
-                                    <Typography color="textPrimary">
-                                        {contactInfo.dateOfBirth}
-                                    </Typography>
-                                }
-                            />
-                        </ListItem>
-                        <ListItem>
+                        {['Bio', 'Email', 'Phone number', 'Date Of Birth'].map((element) => {
+                            let data = getContactData(element)
 
-                        </ListItem>
+                            return (
+                                <React.Fragment>
+                                    {data !== '' &&
+                                        <ListItem>
+                                            <ListItemText
+                                                primary={
+                                                    <Typography color='textSecondary' className={classes.textPrimary}>
+                                                        {element}
+                                                    </Typography>
+                                                }
+                                                secondary={
+                                                    <Typography color="textPrimary">
+                                                        {data}
+                                                    </Typography>
+                                                }
+                                            />
+                                        </ListItem>
+                                    }
+                                </React.Fragment>
+                            )
+                        })}
                     </List>
                 </React.Fragment>
             }
