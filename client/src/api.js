@@ -27,3 +27,15 @@ export async function login(username, password) {
       }
     });
 }
+
+export function getContacts() {
+    let endpoint = BASE_URL + '/contact';
+
+    return axios.get(endpoint).then(res => res.data);
+}
+
+export function getContact(id) {
+    let endpoint = BASE_URL + '/contact/' + id;
+
+    return axios.get(endpoint).then(res => res.data);
+}
