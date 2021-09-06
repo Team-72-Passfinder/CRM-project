@@ -5,6 +5,7 @@ const chai = require('chai');
 const server = require('../server');
 
 const UserModel = require('../models/user');
+const EventModel = require('../models/event');
 
 var assert = chai.assert;
 
@@ -24,6 +25,9 @@ mocha.describe("Make sure it's the test db", () => {
 mocha.describe('Clean the database before tests', () => {
   mocha.it('Delete user collection', function (done) {
     UserModel.deleteMany({}, done);
+  });
+  mocha.it('Delete event collection', function (done) {
+    EventModel.deleteMany({}, done);
   });
 });
 
