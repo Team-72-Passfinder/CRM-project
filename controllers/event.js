@@ -45,8 +45,6 @@ exports.create = (req, res) => {
         message: 'Error when creating event!',
       });
     });
-
-  console.log('New event created! Yay');
 };
 
 // Update event identified by the event's Id ==============================
