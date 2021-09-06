@@ -58,8 +58,7 @@ exports.create = (req, res) => {
           return res.status(400).send({
             message: 'This username has been taken! Try another one!',
           });
-        }
-        else {
+        } else {
           // Then the username and email are good to be registered
           // Create an user if all info is valid ==================================
           const user = new User({
@@ -85,7 +84,6 @@ exports.create = (req, res) => {
                 message: 'Error when creating user!',
               });
             });
-          console.log('New user created! Yay');
         }
       });
     }
@@ -100,28 +98,46 @@ exports.update = (req, res) => {
   // Get the id
   const id = req.params.id;
 
-  // Case of updated sucessfully
-  User
-    .findByIdAndUpdate(id, { $set: req.body }, { new: true })
-    .then((updatedData) => {
-      res.status(200).send(
-        {
-          username: updatedData.username,
-          email: updatedData.email,
-          firstName: updatedData.firstName,
-          lastName: updatedData.lastName,
-          dateOfBirth: updatedData.dateOfBirth,
-          biography: updatedData.biography
-        }
-      )
-    })
-    // Case of error
-    .catch((err) => {
-      console.log(err);
-      res.status(400).send({
-        message: 'Error when updating Contact!',
+  // Failed cases
+  User.findOne({ email: req.body.email }).then((existedEmail) => {
+    // If the email is found
+    if (existedEmail) {
+      return res.status(400).send({
+        message: 'This email has been registered! Try another one!',
       });
-    });
+    }
+    // continue to check for username
+    else {
+      User.findOne({ username: req.body.username }).then((existedUname) => {
+        // If the username is found
+        if (existedUname) {
+          return res.status(400).send({
+            message: 'This username has been taken! Try another one!',
+          });
+        } else {
+          // Case of updated sucessfully
+          User.findByIdAndUpdate(id, { $set: req.body }, { new: true })
+            .then((updatedData) => {
+              res.status(200).send({
+                username: updatedData.username,
+                email: updatedData.email,
+                firstName: updatedData.firstName,
+                lastName: updatedData.lastName,
+                dateOfBirth: updatedData.dateOfBirth,
+                biography: updatedData.biography,
+              });
+            })
+            // Case of error
+            .catch((err) => {
+              console.log(err);
+              res.status(400).send({
+                message: 'Error when updating Contact!',
+              });
+            });
+        }
+      });
+    }
+  });
 };
 
 // Delete an user with the specified user's Id ==============================
@@ -133,8 +149,7 @@ exports.delete = (req, res) => {
 exports.findAll = (req, res) => {
   // Return all users using find()
   var userMap = [];
-  User
-    .find()
+  User.find()
     .then((data) => {
       data.forEach(function (user) {
         userMap.push({
@@ -144,9 +159,9 @@ exports.findAll = (req, res) => {
           firstName: user.firstName,
           lastName: user.lastName,
           dateOfBirth: user.dateOfBirth,
-          biography: user.biography
-        })
-      })
+          biography: user.biography,
+        });
+      });
       res.send(userMap);
     })
     // Catching error when accessing the database
@@ -160,8 +175,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   // ID
   const id = req.params.id;
-  User
-    .findById(id)
+  User.findById(id)
     .then((data) => {
       // If user with this id is not found
       if (!data) {
@@ -178,7 +192,7 @@ exports.findOne = (req, res) => {
         firstName: data.firstName,
         lastName: data.lastName,
         dateOfBirth: data.dateOfBirth,
-        biography: data.biography
+        biography: data.biography,
       });
     })
     // Catching the error when assessing the DB
