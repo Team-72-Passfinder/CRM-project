@@ -44,7 +44,7 @@ mocha.describe('Test User routes', function () {
           .end((err, res) => {
             res.should.have.status(400);
             res.body.should.be.a('object');
-            res.body.should.have.property('message');
+            res.body.should.have.property('message').eql('Require firstName!');
             done();
           });
       }
@@ -72,6 +72,28 @@ mocha.describe('Test User routes', function () {
           res.body.should.have.property('firstName');
           res.body.should.have.property('lastName');
           res.body.should.have.property('dateOfBirth');
+          done();
+        });
+    });
+    mocha.it('it should not POST a user with existed email', function (done) {
+      let user = {
+        username: 'pikachuclone',
+        password: '5123125',
+        email: 'alo123@gmail.com',
+        firstName: 'Pokemon',
+        lastName: 'Chu',
+        dateOfBirth: '12/3/1234',
+      };
+      chai
+        .request(server)
+        .post('/user')
+        .send(user)
+        .end((err, res) => {
+          res.should.have.status(400);
+          res.body.should.be.a('object');
+          res.body.should.have
+            .property('message')
+            .eql('This email has been registered! Try another one!');
           done();
         });
     });
@@ -127,8 +149,35 @@ mocha.describe('Test User routes', function () {
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('object');
-            //res.body.should.have.property('email').eql('greencactus@yahoo.com');
-            //res.body.should.have.property('firstName').eql('Luigi22');
+            res.body.should.have.property('email').eql('greencactus@yahoo.com');
+            res.body.should.have.property('firstName').eql('Luigi22');
+            done();
+          });
+      });
+    });
+
+    mocha.it('it should not UPDATE a user with existed email', (done) => {
+      let user = new UserModel({
+        username: 'waluilipruple',
+        password: 'dragonpass',
+        email: 'purpleiscool@yahoo.com',
+        firstName: 'Waa',
+        lastName: 'Luigi',
+        dateOfBirth: '3/4/1256',
+      });
+      user.save((err, user) => {
+        chai
+          .request(server)
+          .put('/user/' + user.id)
+          .send({
+            email: 'greencactus@yahoo.com',
+          })
+          .end((err, res) => {
+            res.should.have.status(400);
+            res.body.should.be.a('object');
+            res.body.should.have
+              .property('message')
+              .eql('This email has been registered! Try another one!');
             done();
           });
       });
