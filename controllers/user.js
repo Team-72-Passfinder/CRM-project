@@ -98,25 +98,46 @@ exports.update = (req, res) => {
   // Get the id
   const id = req.params.id;
 
-  // Case of updated sucessfully
-  User.findByIdAndUpdate(id, { $set: req.body }, { new: true })
-    .then((updatedData) => {
-      res.status(200).send({
-        username: updatedData.username,
-        email: updatedData.email,
-        firstName: updatedData.firstName,
-        lastName: updatedData.lastName,
-        dateOfBirth: updatedData.dateOfBirth,
-        biography: updatedData.biography,
+  // Failed cases
+  User.findOne({ email: req.body.email }).then((existedEmail) => {
+    // If the email is found
+    if (existedEmail) {
+      return res.status(400).send({
+        message: 'This email has been registered! Try another one!',
       });
-    })
-    // Case of error
-    .catch((err) => {
-      console.log(err);
-      res.status(400).send({
-        message: 'Error when updating Contact!',
+    }
+    // continue to check for username
+    else {
+      User.findOne({ username: req.body.username }).then((existedUname) => {
+        // If the username is found
+        if (existedUname) {
+          return res.status(400).send({
+            message: 'This username has been taken! Try another one!',
+          });
+        } else {
+          // Case of updated sucessfully
+          User.findByIdAndUpdate(id, { $set: req.body }, { new: true })
+            .then((updatedData) => {
+              res.status(200).send({
+                username: updatedData.username,
+                email: updatedData.email,
+                firstName: updatedData.firstName,
+                lastName: updatedData.lastName,
+                dateOfBirth: updatedData.dateOfBirth,
+                biography: updatedData.biography,
+              });
+            })
+            // Case of error
+            .catch((err) => {
+              console.log(err);
+              res.status(400).send({
+                message: 'Error when updating Contact!',
+              });
+            });
+        }
       });
-    });
+    }
+  });
 };
 
 // Delete an user with the specified user's Id ==============================
