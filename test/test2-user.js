@@ -155,6 +155,33 @@ mocha.describe('Test User routes', function () {
           });
       });
     });
+
+    mocha.it('it should not UPDATE a user with existed email', (done) => {
+      let user = new UserModel({
+        username: 'waluilipruple',
+        password: 'dragonpass',
+        email: 'purpleiscool@yahoo.com',
+        firstName: 'Waa',
+        lastName: 'Luigi',
+        dateOfBirth: '3/4/1256',
+      });
+      user.save((err, user) => {
+        chai
+          .request(server)
+          .put('/user/' + user.id)
+          .send({
+            email: 'greencactus@yahoo.com',
+          })
+          .end((err, res) => {
+            res.should.have.status(400);
+            res.body.should.be.a('object');
+            res.body.should.have
+              .property('message')
+              .eql('This email has been registered! Try another one!');
+            done();
+          });
+      });
+    });
   });
   mocha.describe('/DELETE/:id user', () => {
     mocha.it('it should DELETE a user given the id', (done) => {
