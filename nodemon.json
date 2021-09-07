@@ -1,5 +1,4 @@
 {
   "restartable": "rs",
-  "ignore": [".git", "node_modules/", "dist/", "coverage/"],
-  "watch": ["src/"]
+  "ignore": [".git", "node_modules/", "dist/", "coverage/"]
 }

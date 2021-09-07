@@ -24,8 +24,14 @@ exports.create = (req, res) => {
   }
 
   // Create an event
+  // Enfore dateTime
+  if (req.body.dateTime) {
+    console.log(req.body.dateTime);
+    if (req.body.dateTime.charAt(req.body.dateTime.length - 1) != 'Z')
+      req.body.dateTime += 'Z';
+  }
+
   const event = new Event({
-    //_id: Mongoose.Types.ObjectId(),
     name: req.body.name,
     dateTime: req.body.dateTime,
     completed: req.body.completed,

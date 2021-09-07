@@ -17,6 +17,16 @@ exports.create = (req, res) => {
     });
   }
 
+  // Enforce UTC timezone
+  if (req.body.startedDatetime) {
+    console.log(req.body.startedDatetime);
+    if (
+      req.body.startedDatetime.charAt(req.body.startedDatetime.length - 1) !=
+      'Z'
+    )
+      req.body.startedDatetime += 'Z';
+  }
+
   // Create a new relationship
   const relationship = new Relationship({
     people: req.body.people,
