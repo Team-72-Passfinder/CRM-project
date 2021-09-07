@@ -61,6 +61,12 @@ exports.create = (req, res) => {
         } else {
           // Then the username and email are good to be registered
           // Create an user if all info is valid ==================================
+          // Enforce UTC timezone
+          if (
+            req.body.dateOfBirth.charAt(req.body.dateOfBirth.length - 1) != 'Z'
+          ) {
+            req.body.dateOfBirth += 'Z';
+          }
           const user = new User({
             //_id: Mongoose.Types.ObjectId(),
             username: req.body.username,
@@ -68,7 +74,7 @@ exports.create = (req, res) => {
             email: req.body.email,
             firstName: req.body.firstName,
             lastName: req.body.lastName,
-            dateOfBirth: req.body.dateOfBirth,
+            dateOfBirth: new Date(req.body.dateOfBirth),
             biography: req.body.biography || '',
           });
 
@@ -115,6 +121,13 @@ exports.update = (req, res) => {
             message: 'This username has been taken! Try another one!',
           });
         } else {
+          // Enforce UTC timezone
+          if (req.body.dateOfBirth) {
+            if (
+              req.body.dateOfBirth.charAt(req.body.dateTime.length - 1) != 'Z'
+            )
+              req.body.dateOfBirth += 'Z';
+          }
           // Case of updated sucessfully
           User.findByIdAndUpdate(id, { $set: req.body }, { new: true })
             .then((updatedData) => {
