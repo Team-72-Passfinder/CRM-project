@@ -63,7 +63,7 @@ exports.create = (req, res) => {
           // Create an user if all info is valid ==================================
           // Enforce UTC timezone
           if (
-            req.body.dateOfBirth.charAt(req.body.dateTime.length - 1) != 'Z'
+            req.body.dateOfBirth.charAt(req.body.dateOfBirth.length - 1) != 'Z'
           ) {
             req.body.dateOfBirth += 'Z';
           }
