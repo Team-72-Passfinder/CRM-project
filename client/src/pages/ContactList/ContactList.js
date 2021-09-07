@@ -55,7 +55,8 @@ function ContactList() {
     const classes = useStyles();
 
     const [contacts, setContacts] = useState([])
-
+    const [search, setSearch] = useState('')
+    
     // Click on individual contact to go to detailed page.
     function handleClick(id) {
         window.location.href = '/contact/' + id
@@ -73,13 +74,13 @@ function ContactList() {
             <Navbar />
             <div className={classes.bodyContent}>
                 <Paper className={classes.inputContainer} elevation={3} component='form'>
-                    <InputBase className={classes.input} placeholder='Search for contacts' inputProps={{ 'aria-label': 'Search for contacts' }} />
-                    <IconButton className={classes.iconButton} type="submit" aria-label="search">
+                    <InputBase className={classes.input} placeholder='Search for contacts' inputProps={{ 'aria-label': 'Search for contacts' }} onChange={(e) => { setSearch(e.target.value) }} />
+                    <IconButton className={classes.iconButton} aria-label="search">
                         <SearchIcon />
                     </IconButton>
                 </Paper>
                 <List className={classes.listContainer}>
-                    {contacts.map((element) => {
+                    {/* {contacts.map((element) => {
                         return (
                             <ListItem id={element._id} key={element._id} onClick={e => handleClick(element._id)}>
                                 <ListItemAvatar className={classes.avatarContainer}>
@@ -90,7 +91,31 @@ function ContactList() {
                                 </ListItemText>
                             </ListItem>
                         )
-                    })}
+                    })} */}
+                    {search === ''
+                    ?
+                        contacts.map((element) => (
+                            <ListItem id={element._id} key={element._id} onClick={e => handleClick(element._id)}>
+                                <ListItemAvatar className={classes.avatarContainer}>
+                                    <Avatar className={classes.avatar}>{element.firstName[0]}</Avatar>
+                                </ListItemAvatar>
+                                <ListItemText>
+                                    {element.firstName} {element.lastName}
+                                </ListItemText>
+                            </ListItem>
+                            ))
+                        :
+                        contacts.filter(contact => contact.firstName.toLowerCase().match(search) || contact.lastName.toLowerCase().match(search)).map((element) => (
+                            <ListItem id={element._id} key={element._id} onClick={e => handleClick(element._id)}>
+                                <ListItemAvatar className={classes.avatarContainer}>
+                                    <Avatar className={classes.avatar}>{element.firstName[0]}</Avatar>
+                                </ListItemAvatar>
+                                <ListItemText>
+                                    {element.firstName} {element.lastName}
+                                </ListItemText>
+                            </ListItem>
+                            ))
+                    }
                 </List>
             </div>
         </div>
