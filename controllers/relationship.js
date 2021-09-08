@@ -22,7 +22,7 @@ exports.create = (req, res) => {
     people: req.body.people,
     startedDatetime: req.body.startedDatetime,
     tag: req.body.tag || [],
-    description: req.body.phoneNumber || '',
+    description: req.body.description || '',
   });
 
   // Save this relationship to database
