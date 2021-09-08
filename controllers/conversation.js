@@ -10,8 +10,11 @@ exports.create = (req, res) => {
       message: 'Require at least an user in convo!',
     });
   }
-  if (req.body.messages) {
-    validateMessageContent(req, res);
+  if (!validateMessageContent(req)) {
+    console.log("hi");
+    return res.status(400).send({
+      message: 'Require message sender/content!',
+    });
   }
 
   // Create a new convo
@@ -39,7 +42,11 @@ exports.create = (req, res) => {
 // Update a convo identified by the convo's Id ===================================
 exports.update = (req, res) => {
   // Validate info: message id
-  validateMessageContent(req, res);
+  if (validateMessageContent(req)) {
+    return res.status(400).send({
+      message: 'Require message sender/content!',
+    });
+  }
   // userIds can't be changed because they're default
   // new list of messages is added to the convo
   const id = req.params.id;
@@ -74,19 +81,16 @@ exports.findOne = (req, res) => {
   controller.findOne(Conversation, req, res);
 };
 
-function validateMessageContent(req, res) {
+function validateMessageContent(req) {
   // Validate info: message id
-  const data = req.body.messages;
-  data.forEach(mes => {
+  req.body.messages.forEach(mes => {
     if (mes.sender == "") {
-      return res.status(400).send({
-        message: 'Message must have sender!',
-      });
+      console.log("yo");
+      return false;
     }
     if (mes.content == "") {
-      return res.status(400).send({
-        message: 'Message must have content!',
-      });
+      return false;
     }
   });
+  return true;
 }
