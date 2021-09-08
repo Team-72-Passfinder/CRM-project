@@ -43,6 +43,8 @@ exports.create = (req, res) => {
 
 // Update a relationship identified by the relationship's Id ==============================
 exports.update = (req, res) => {
+  // people and startedDateTime are to be fixed!
+  // Only tags and description can be updated
   controller.updateData(Relationship, req, res);
 };
 

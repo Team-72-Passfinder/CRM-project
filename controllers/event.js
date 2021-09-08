@@ -51,6 +51,22 @@ exports.create = (req, res) => {
 
 // Update event identified by the event's Id ==============================
 exports.update = (req, res) => {
+  // validate DateTime, name and completness status
+  if (req.body.name == "") {
+    return res.status(400).send({
+      message: 'Event name should not be empty!',
+    });
+  }
+  if (req.body.dateTime == "" || req.body.completed == null) {
+    return res.status(400).send({
+      message: 'DateTime should not be empty!',
+    });
+  }
+  if (req.body.completed == "" || req.body.completed == null) {
+    return res.status(400).send({
+      message: 'Complete status should be set!',
+    });
+  }
   controller.updateData(Event, req, res);
 };
 
