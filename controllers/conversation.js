@@ -10,11 +10,14 @@ exports.create = (req, res) => {
       message: 'Require at least an user in convo!',
     });
   }
+  if (req.body.messages) {
+    validateMessageContent(req, res);
+  }
 
   // Create a new convo
   const conversation = new Conversation({
     userId: req.body.userId,
-    messageId: req.body.messageId || [],
+    messages: req.body.messages || [],
   });
 
   // Save this conversation to database
@@ -36,20 +39,21 @@ exports.create = (req, res) => {
 // Update a convo identified by the convo's Id ===================================
 exports.update = (req, res) => {
   // Validate info: message id
+  validateMessageContent(req, res);
   // userIds can't be changed because they're default
   // new list of messages is added to the convo
   const id = req.params.id;
   // Case of updated sucessfully
   Conversation
-    .findByIdAndUpdate(id, { $push: { messageId: req.body.messageId } }, { new: true })
+    .findByIdAndUpdate(id, { $push: { messages: req.body.messages } }, { new: true })
     .then((updatedData) => {
       res.status(200).send(updatedData);
     })
     // Case of error
     .catch((err) => {
       console.log(err);
-      res.status(400).send({
-        message: 'Error when updating Contact!',
+      return res.status(400).send({
+        message: 'Error when updating Conversation!',
       });
     });
   //controller.updateData(Conversation, req, res);
@@ -69,3 +73,20 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   controller.findOne(Conversation, req, res);
 };
+
+function validateMessageContent(req, res) {
+  // Validate info: message id
+  const data = req.body.messages;
+  data.forEach(mes => {
+    if (mes.sender == "") {
+      return res.status(400).send({
+        message: 'Message must have sender!',
+      });
+    }
+    if (mes.content == "") {
+      return res.status(400).send({
+        message: 'Message must have content!',
+      });
+    }
+  });
+}

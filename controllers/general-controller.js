@@ -16,7 +16,7 @@ function updateData(controler, req, res) {
     .catch((err) => {
       console.log(err);
       res.status(400).send({
-        message: 'Error when updating Contact!',
+        message: 'Error when updating Data!',
       });
     });
 }

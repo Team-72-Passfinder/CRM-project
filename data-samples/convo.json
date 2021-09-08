@@ -4,9 +4,47 @@
       "6128f7781f70352b9160407f",
       "612b497f5eb1853ce6da5a88"
     ],
-    "messageId": [
-      "6129af6299b441a42fbbe51d",
-      "612f7a020806127d0d7db95b"
+    "messages": [
+      {
+        "sender": "6128f7781f70352b9160407f",
+        "content": "hello!"
+      },
+      {
+        "sender": "612b497f5eb1853ce6da5a88",
+        "content": "hello!"
+      }
+    ]
+  },
+  {
+    "userId": [
+      "6128f7781f70352b9160407f",
+      "612b497f5eb1853ce6da5a88"
+    ],
+    "messages": [
+      {
+        "sender": "",
+        "content": "hello!"
+      },
+      {
+        "sender": "612b497f5eb1853ce6da5a88",
+        "content": "hello!"
+      }
+    ]
+  },
+  {
+    "userId": [
+      "6128f7781f70352b9160407f",
+      "612b497f5eb1853ce6da5a88"
+    ],
+    "messages": [
+      {
+        "sender": "6128f7781f70352b9160407f",
+        "content": ""
+      },
+      {
+        "sender": "612b497f5eb1853ce6da5a88",
+        "content": "hello!"
+      }
     ]
   },
   {
@@ -14,16 +52,7 @@
       "6128f7431f70352b9160407d",
       "6128f7781f70352b9160407f"
     ],
-    "messageId": []
-  },
-  {
-    "userId": [
-      "6128f7431f70352b9160407d",
-      "6128f7041f70352b9160407b"
-    ],
-    "messageId": [
-      "612f7a720806127d0d7db95f"
-    ]
+    "messages": []
   },
   {
     "userId": [],
