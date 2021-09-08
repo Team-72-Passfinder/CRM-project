@@ -35,6 +35,11 @@ exports.create = (req, res) => {
 
 // Update a convo identified by the convo's Id ===================================
 exports.update = (req, res) => {
+  // Validate info: message id
+  // userIds can't be changed because they're default
+  // new list of message is added to the convo
+
+  // Do the update!
   controller.updateData(Conversation, req, res);
 };
 

@@ -96,6 +96,25 @@ exports.create = (req, res) => {
 // This Update function behaves differently from other controllers
 // It does not return password
 exports.update = (req, res) => {
+  // Validate firstname, lastname, dateOfBirth information
+  // since username and email can't be changed
+  // Password is going to be considered sepeartedly due to security matter!
+  if (req.body.firstName == "") {
+    return res.status(400).send({
+      message: 'Firstname should not be empty!',
+    });
+  }
+  if (req.body.lastName == "") {
+    return res.status(400).send({
+      message: 'Lastname should not be empty!',
+    });
+  }
+  if (req.body.dateOfBirth == "") {
+    return res.status(400).send({
+      message: 'dateOfBirth should not be empty!',
+    });
+  }
+
   //controller.updateData(User, req, res);
   // Get the id
   const id = req.params.id;
@@ -106,8 +125,6 @@ exports.update = (req, res) => {
     .then((updatedData) => {
       res.status(200).send(
         {
-          username: updatedData.username,
-          email: updatedData.email,
           firstname: updatedData.firstName,
           lastName: updatedData.lastName,
           dateOfBirth: updatedData.dateOfBirth,

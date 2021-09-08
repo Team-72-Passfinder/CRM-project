@@ -92,6 +92,19 @@ exports.addFromId = (req, res) => {
 
 // Update a contact identified by the contact's Id ==============================
 exports.update = (req, res) => {
+  // Validate data before update the BD
+  if (req.body.firstName == "") {
+    return res.status(400).send({
+      message: 'Firstname should not be empty!',
+    });
+  }
+
+  if (req.body.lastName == "") {
+    return res.status(400).send({
+      message: 'Lastname should not be empty!',
+    });
+  }
+  // Update the info
   controller.updateData(Contact, req, res);
 };
 
