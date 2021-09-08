@@ -10,7 +10,7 @@ exports.create = (req, res) => {
       message: 'Require at least an user in convo!',
     });
   }
-  if (!validateMessageContent(req)) {
+  if (validateMessageContent(req) == false) {
     console.log("hi");
     return res.status(400).send({
       message: 'Require message sender/content!',

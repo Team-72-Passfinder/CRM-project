@@ -7,7 +7,6 @@ const eventRoute = require('./routes/event');
 const contactRoute = require('./routes/contact');
 const relationshipRoute = require('./routes/relationship');
 const conversationRoute = require('./routes/conversation');
-const messageRoute = require('./routes/message');
 const app = express();
 const cors = require('cors');
 
@@ -32,7 +31,6 @@ app.use(userRoute);
 app.use(eventRoute);
 app.use(relationshipRoute);
 app.use(conversationRoute);
-app.use(messageRoute);
 app.use(contactRoute);
 
 // Authentication
