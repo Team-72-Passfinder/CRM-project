@@ -31,7 +31,7 @@ function deleteData(controler, req, res) {
         // If no id found -> return error message
         return res
           .status(404)
-          .send({ message: 'No contact found to be deleted!' });
+          .send({ message: 'No data found to be deleted!' });
       }
       // Else, the contact should be deleted successfully
       res.status(200).send({ message: 'Data is deleted successfully!' });
