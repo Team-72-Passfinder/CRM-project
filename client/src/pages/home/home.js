@@ -1,105 +1,97 @@
-import React, { useState, useEffect } from 'react'
-import { BsSearch } from 'react-icons/bs'
+import React from 'react';
+import AppBar from '@material-ui/core/AppBar';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import PermanentDrawerLeft from './permanentDrawerLeft';
+import { Link } from 'react-router-dom';
 
-import './home.css'
+let data = require('./data.json')
 
-import { getEvents } from '../../api.js';
+const useStyles = makeStyles((theme) => ({
+  icon: {
+    marginRight: theme.spacing(2),
+  },
+  heroContent: {
+    backgroundColor: theme.palette.background.paper,
+    padding: theme.spacing(2, 0, 1),
+  },
+  heroButtons: {
+    marginTop: theme.spacing(1),
+  },
+  cardGrid: {
+    paddingTop: theme.spacing(4),
+    paddingBottom: theme.spacing(4),
+  },
+  card: {
+    height: '100%',
+    display: 'flex',
+    flexDirection: 'column',
+  },
 
-const sampleEvent = {
-    date: '1/10/2021',
-    time: '14:00',
-    contact: 'Alice'
-}
+  cardContent: {
+    flexGrow: 1,
+  },
+}));
 
-// class Event extends React.Component {
-//     render() {
-//       return (
-//         <div className="event">
-//             <Grid>
-//           <ul>
-//             <li>{sampleEvent.date}</li>
-//             <li>{sampleEvent.time}</li>
-//             <li>{sampleEvent.contact}</li>
-//           </ul>
-//           </Grid>
-//         </div>
-//       );
-//     }
-//   }
 
-// class Home extends React.Component {
-//     render() {
-//       return (
-//         <div className="event">
-//           <Event/>
-//         </div>
-//       );
-//     }
-//   }
+const cards = [1, 2, 3, 4, 5, 6];
 
-// Created using function hooks
-function Home() {
-    const [events, setEvents] = useState([])
-    const [searchBar, setSearchBar] = useState('')
+export default function Home() {
+  const classes = useStyles();
 
-    useEffect(() => {
-        getEvents().then(res => {
-            console.log(res)
-            setEvents(res)
-        });
-    }, [])
+  return (
+    <React.Fragment>
 
-    return (
-        <div id='home-container'>
-            <div id='home-container-content'>
-                <div className='search-bar'>
-                    <BsSearch id='search-icon' />
-                    <input id='search-input' placeholder='Search event name' onChange={e => setSearchBar(e.target.value)} />
-                </div>
-                <div id='events'>
-                    {events.map((event) => {
-                        return (
-                            <div id={event._id} key={event._id}>
-                                {event._id}
-                                {event.name}
-                            </div>
-                        )
-                    })}
-                </div>
-            </div>
+      <PermanentDrawerLeft/>
+      <AppBar position="relative">
+
+      </AppBar>
+      <main>
+        {/* Hero unit */}
+        <div className={classes.heroContent}>
+          <Container maxWidth="sm">
+            <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
+            Welcome Back (name)
+            </Typography>
+            
+          </Container>
         </div>
-    )
+        <Container className={classes.cardGrid} maxWidth="md">
+          {/* End hero unit */}
+          <Grid container spacing={4}>
+            {cards.map((card) => (
+              <Grid item key={card} xs={12} sm={6} md={4}>
+              <Card>
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="h2">
+                {data[card].name}
+              </Typography>
+              <Typography gutterBottom variant="h5" component="h2">
+              {data[card].dateTime}
+              </Typography>
+              <Typography>
+              {data[card].description}
+              </Typography>
+            </CardContent>
+            <CardActions>
+            <Link to={"/event:"+ data[card]._id} >
+             <Button variant="warning" size="lg">
+                 View
+              </Button>
+            </Link>
+            </CardActions>
+          </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      </main>
+    </React.Fragment>
+  );
 }
-
-
-// Created using react components
-// class Home extends React.Component {
-//     constructor(props) {
-//         super(props);
-//         this.state = {events:[]}
-//     }
-
-//     componentDidMount() {
-//         getEvents().then(res => {
-//             console.log(res)
-//             this.setState({ events: res });
-//         });
-//     }
-
-//     render() {
-//         return (
-//             <div id='events'>
-//                 {this.state.events.map((event) => {
-//                     return (
-//                         <div id={event._id} key={event._id}>
-//                             {event._id}
-//                             {event.name}
-//                         </div>
-//                     )
-//                 })}
-//             </div>
-//         )
-//     }
-// }
-
-export default Home;
