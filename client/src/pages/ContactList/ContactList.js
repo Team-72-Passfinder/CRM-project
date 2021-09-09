@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react'
 
-import { IconButton,  makeStyles, Paper, InputBase, Avatar, List, ListItem, ListItemAvatar, ListItemText } from '@material-ui/core'
+import { IconButton,  makeStyles, Paper, InputBase, Avatar, List, ListItem, ListItemAvatar, ListItemText, Fab, Skeleton } from '@material-ui/core'
 
 import SearchIcon from '@material-ui/icons/Search'
+import AddIcon from '@material-ui/icons/Add'
 
 import { getContacts } from '../../api'
 import Navbar from '../../components/Navbar/Navbar'
@@ -48,6 +49,11 @@ const useStyles = makeStyles((theme) => ({
     },
     avatarContainer: {
         marginLeft: '5px'
+    },
+    fab: {
+        position: 'absolute',
+        bottom: theme.spacing(2),
+        right: theme.spacing(2),
     }
 }));
 
@@ -56,7 +62,7 @@ function ContactList() {
 
     const [contacts, setContacts] = useState([])
     const [search, setSearch] = useState('')
-    
+
     // Click on individual contact to go to detailed page.
     function handleClick(id) {
         window.location.href = '/contact/' + id
@@ -80,22 +86,9 @@ function ContactList() {
                     </IconButton>
                 </Paper>
                 <List className={classes.listContainer}>
-                    {/* {contacts.map((element) => {
-                        return (
-                            <ListItem id={element._id} key={element._id} onClick={e => handleClick(element._id)}>
-                                <ListItemAvatar className={classes.avatarContainer}>
-                                    <Avatar className={classes.avatar}>{element.firstName[0]}</Avatar>
-                                </ListItemAvatar>
-                                <ListItemText>
-                                    {element.firstName} {element.lastName}
-                                </ListItemText>
-                            </ListItem>
-                        )
-                    })} */}
-                    {search === ''
-                    ?
+                    {search === '' ?
                         contacts.map((element) => (
-                            <ListItem id={element._id} key={element._id} onClick={e => handleClick(element._id)}>
+                            <ListItem id={element._id} key={element._id} button onClick={e => handleClick(element._id)}>
                                 <ListItemAvatar className={classes.avatarContainer}>
                                     <Avatar className={classes.avatar}>{element.firstName[0]}</Avatar>
                                 </ListItemAvatar>
@@ -103,10 +96,10 @@ function ContactList() {
                                     {element.firstName} {element.lastName}
                                 </ListItemText>
                             </ListItem>
-                            ))
+                        ))
                         :
                         contacts.filter(contact => contact.firstName.toLowerCase().match(search) || contact.lastName.toLowerCase().match(search)).map((element) => (
-                            <ListItem id={element._id} key={element._id} onClick={e => handleClick(element._id)}>
+                            <ListItem id={element._id} key={element._id} button onClick={e => handleClick(element._id)}>
                                 <ListItemAvatar className={classes.avatarContainer}>
                                     <Avatar className={classes.avatar}>{element.firstName[0]}</Avatar>
                                 </ListItemAvatar>
@@ -114,9 +107,12 @@ function ContactList() {
                                     {element.firstName} {element.lastName}
                                 </ListItemText>
                             </ListItem>
-                            ))
+                        ))
                     }
                 </List>
+                <Fab className={classes.fab} color='primary' onClick={(e) => { window.location.href = '/contact/add' }} >
+                    <AddIcon />
+                </Fab>
             </div>
         </div>
     )

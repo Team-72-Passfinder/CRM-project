@@ -22,11 +22,14 @@ const App = () => {
                 <Route exact path='/login'>
                     {/* <Login /> */}
                 </Route>
-                <Route exact path='/contact-list'>
-                    <ContactList />
+                <Route path='/contact/add'>
+
                 </Route>
-                <Route path='/contact/:id'>
+                <Route exact path='/contact/:id'>
                     <Contact />
+                </Route>
+                <Route exact path='/contact'>
+                    <ContactList />
                 </Route>
             </Switch>
         </Router>

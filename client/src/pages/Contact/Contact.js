@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
 
-import { AppBar, Avatar, Toolbar, Box, makeStyles, Typography, List, ListItem, ListItemIcon, ListItemText, ListItemAvatar } from '@material-ui/core'
+import { AppBar, Avatar, Toolbar, Box, makeStyles, Typography, List, ListItem, ListItemIcon, ListItemText, ListItemAvatar, IconButton, Paper } from '@material-ui/core'
 
 import EmailIcon from '@material-ui/icons/Email';
 import CakeIcon from '@material-ui/icons/Cake';
+import EventIcon from '@material-ui/icons/Event';
 
 import { getContact } from '../../api'
 import Email from '@material-ui/icons/Email';
@@ -31,6 +32,22 @@ const useStyles = makeStyles((theme) => ({
         fontSize: '14px',
         fontWeight: '600',
     },
+    hbox: {
+        display: 'flex',
+        justifyContent: 'center',
+        flexDirection: 'row',
+    },
+    iconContainer: {
+        display: 'flex',
+        width: theme.spacing(6),
+        height: theme.spacing(6),
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    icon: {
+        width: theme.spacing(4),
+        height: theme.spacing(4)
+    },
 }));
 
 function Contact() {
@@ -47,7 +64,11 @@ function Contact() {
             case 'Phone number':
                 return contactInfo.phoneNumber
             case 'Date Of Birth':
-                return contactInfo.dateOfBirth
+                return (
+                    new Date(contactInfo.dateOfBirth).getDate() + '/'
+                    + new Date(contactInfo.dateOfBirth).getMonth() + '/'
+                    + new Date(contactInfo.dateOfBirth).getFullYear()
+                )
             default:
                 return null;
 
@@ -71,6 +92,13 @@ function Contact() {
                         <Typography variant='h6'>
                             {contactInfo.firstName} {contactInfo.lastName}
                         </Typography>
+                    </Box>
+                    <Box className={classes.hbox}>
+                        <IconButton>
+                            <Paper elevation={3} className={classes.iconContainer}>
+                                <EventIcon className={classes.icon} />
+                            </Paper>
+                        </IconButton>
                     </Box>
                     <List className={classes.infoContainer} dense>
                         {['Bio', 'Email', 'Phone number', 'Date Of Birth'].map((element) => {
