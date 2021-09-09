@@ -58,10 +58,15 @@ exports.create = (req, res) => {
           return res.status(400).send({
             message: 'This username has been taken! Try another one!',
           });
-        }
-        else {
+        } else {
           // Then the username and email are good to be registered
           // Create an user if all info is valid ==================================
+          // Enforce UTC timezone
+          if (
+            req.body.dateOfBirth.charAt(req.body.dateOfBirth.length - 1) != 'Z'
+          ) {
+            req.body.dateOfBirth += 'Z';
+          }
           const user = new User({
             //_id: Mongoose.Types.ObjectId(),
             username: req.body.username,
@@ -69,7 +74,7 @@ exports.create = (req, res) => {
             email: req.body.email,
             firstName: req.body.firstName,
             lastName: req.body.lastName,
-            dateOfBirth: req.body.dateOfBirth,
+            dateOfBirth: new Date(req.body.dateOfBirth),
             biography: req.body.biography || '',
           });
 
@@ -85,7 +90,6 @@ exports.create = (req, res) => {
                 message: 'Error when creating user!',
               });
             });
-          console.log('New user created! Yay');
         }
       });
     }
@@ -114,6 +118,12 @@ exports.update = (req, res) => {
       message: 'dateOfBirth should not be empty!',
     });
   }
+  // Enforce UTC timezone
+  else {
+    if (req.body.dateOfBirth.charAt(req.body.dateTime.length - 1) != 'Z') {
+      req.body.dateOfBirth += 'Z';
+    }
+  }
 
   //controller.updateData(User, req, res);
   // Get the id
@@ -129,15 +139,7 @@ exports.update = (req, res) => {
           lastName: updatedData.lastName,
           dateOfBirth: updatedData.dateOfBirth,
           biography: updatedData.biography
-        }
-      )
-    })
-    // Case of error
-    .catch((err) => {
-      console.log(err);
-      res.status(400).send({
-        message: 'Error when updating Contact!',
-      });
+        });
     });
 };
 
@@ -148,10 +150,85 @@ exports.delete = (req, res) => {
 
 // Retrieve and return all users from the database =========================
 exports.findAll = (req, res) => {
-  controller.findAllData(User, req, res);
+  // Return all users using find()
+  var userMap = [];
+  User.find()
+    .then((data) => {
+      data.forEach(function (user) {
+        userMap.push({
+          _id: user._id,
+          username: user.username,
+          email: user.email,
+          firstName: user.firstName,
+          lastName: user.lastName,
+          dateOfBirth: user.dateOfBirth,
+          biography: user.biography,
+        });
+      });
+      res.send(userMap);
+    })
+    // Catching error when accessing the database
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({ message: 'Error when accessing the database!' });
+    });
 };
 
 // Find a single user with the user's id ====================================
 exports.findOne = (req, res) => {
-  controller.findOne(User, req, res);
+  // ID
+  const id = req.params.id;
+  User.findById(id)
+    .then((data) => {
+      // If user with this id is not found
+      if (!data) {
+        // return the error messages
+        return res.status(404).send({
+          message: 'No data is found with this id!',
+        });
+      }
+      // else, return the contact
+      res.status(200).send({
+        _id: data._id,
+        username: data.username,
+        email: data.email,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        dateOfBirth: data.dateOfBirth,
+        biography: data.biography,
+      });
+    })
+    // Catching the error when assessing the DB
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({ message: 'Error when accessing the database!' });
+    });
 };
+
+/*
+// Searching for user with tag/firstname/lastname/username/email =============
+exports.search = (req, res) => {
+  const query = req.query.searchQuery;
+  // Return all users using find()
+  var userMap = {};
+  User
+    .find(query)
+    .then((data) => {
+      data.forEach(function (user) {
+        userMap[user._id] = {
+          username: user.username,
+          email: user.email,
+          firstname: user.firstName,
+          lastName: user.lastName,
+          dateOfBirth: user.dateOfBirth,
+          biography: user.biography
+        }
+      })
+      res.send(userMap);
+    })
+    // Catching error when accessing the database
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({ message: 'Error when accessing the database!' });
+    });
+}*/

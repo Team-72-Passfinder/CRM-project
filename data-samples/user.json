@@ -70,5 +70,23 @@
     "lastName": "Puth",
     "dateOfBirth": "",
     "biography": "This will raise an error of missing date of birth!"
+  },
+  {
+    "username": "haiha",
+    "password": "thisPassword",
+    "email": "haihs.email",
+    "firstName": "somename",
+    "lastName": "somepassword",
+    "dateOfBirth": "",
+    "biography": "This will raise an error of username's been registered!"
+  },
+  {
+    "username": "somebody",
+    "password": "thisPassword",
+    "email": "nunu.email",
+    "firstName": "somename",
+    "lastName": "somepassword",
+    "dateOfBirth": "",
+    "biography": "This will raise an error of email's been registered!"
   }
 ]

@@ -24,8 +24,14 @@ exports.create = (req, res) => {
   }
 
   // Create an event
+  // Enfore dateTime
+  if (req.body.dateTime) {
+    console.log(req.body.dateTime);
+    if (req.body.dateTime.charAt(req.body.dateTime.length - 1) != 'Z')
+      req.body.dateTime += 'Z';
+  }
+
   const event = new Event({
-    //_id: Mongoose.Types.ObjectId(),
     name: req.body.name,
     dateTime: req.body.dateTime,
     completed: req.body.completed,
@@ -45,8 +51,6 @@ exports.create = (req, res) => {
         message: 'Error when creating event!',
       });
     });
-
-  console.log('New event created! Yay');
 };
 
 // Update event identified by the event's Id ==============================
@@ -84,3 +88,26 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   controller.findOne(Event, req, res);
 };
+
+/*
+// Searching for event with tag/eventName ======================================// Should have option whether event is finished yet for not
+exports.search = (req, res) => {
+  const query = req.query.searchQuery;
+  // Return all events using find()
+  var eventMap = {};
+  User
+    .find(query // Limited by finish status of the event)
+    .then((data) => {
+      data.forEach(function (user) {
+        eventMap[user._id] = {
+          // Info to return
+        }
+      })
+      res.send(userMap);
+    })
+    // Catching error when accessing the database
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({ message: 'Error when accessing the database!' });
+    });
+}*/

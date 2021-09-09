@@ -1,5 +1,7 @@
 # CRM-project: Citrus Contact
 
+[![Node.js CI](https://github.com/Team-72-Passfinder/CRM-project/actions/workflows/nodejs.yml/badge.svg)](https://github.com/Team-72-Passfinder/CRM-project/actions/workflows/nodejs.yml)
+
 Our main, actual, real repo for the project.
 
 It's a CRM with a different C. This software is used to manage the user's contacts and their relationships, which can be either professional or personal. In addition, it's also _may_ have a instant message feature.

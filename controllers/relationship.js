@@ -17,6 +17,15 @@ exports.create = (req, res) => {
       message: 'Require 2 people in relationship!',
     });
   }
+  // Enforce UTC timezone
+  if (req.body.startedDatetime) {
+    console.log(req.body.startedDatetime);
+    if (
+      req.body.startedDatetime.charAt(req.body.startedDatetime.length - 1) !=
+      'Z'
+    )
+      req.body.startedDatetime += 'Z';
+  }
   // Check for duplicate userIds
   if (req.body.people[0] == req.body.people[1]) {
     // return the error messages
@@ -63,9 +72,7 @@ exports.create = (req, res) => {
               message: 'Error when creating relationship!',
             });
           });
-
-        console.log('New relationship created! Yay');
-      })
+      });
     });
   });
 };
