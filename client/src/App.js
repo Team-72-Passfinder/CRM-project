@@ -15,7 +15,7 @@ const App = () => {
         <Router>
             <Switch>
                 <Route exact path='/'>
-                    <Home />
+
                 </Route>
                 <Route exact path='/login'>
                     <Login />
