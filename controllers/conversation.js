@@ -5,15 +5,17 @@ const controller = require('./general-controller');
 // Create a new convo ===========================================================
 exports.create = (req, res) => {
   // Validate requests
+  // Since a convo can be created without any message,
+  // we validate users' ids only
   if (!req.body.userId) {
     return res.status(400).send({
       message: 'Require at least an user in convo!',
     });
   }
-  if (validateMessageContent(req) == false) {
-    console.log("hi");
+  // But if there exists messages, we check for content and userId
+  if (!validateMessageContent('create', req, req.body.userId)) {
     return res.status(400).send({
-      message: 'Require message sender/content!',
+      message: "Missing message sender or content or sender's id does not match",
     });
   }
 
@@ -41,29 +43,29 @@ exports.create = (req, res) => {
 
 // Update a convo identified by the convo's Id ===================================
 exports.update = (req, res) => {
-  // Validate info: message id
-  if (validateMessageContent(req)) {
-    return res.status(400).send({
-      message: 'Require message sender/content!',
-    });
-  }
   // userIds can't be changed because they're default
   // new list of messages is added to the convo
   const id = req.params.id;
-  // Case of updated sucessfully
-  Conversation
-    .findByIdAndUpdate(id, { $push: { messages: req.body.messages } }, { new: true })
-    .then((updatedData) => {
-      res.status(200).send(updatedData);
-    })
-    // Case of error
+
+  // Get list of userId by this id to validate sender of updating messages
+  Conversation.findById(id).then((data) => {
+    const userList = data.userId;
+    //console.log(userList);
+    // Validate info: message id
+    if (!validateMessageContent('update', req, userList)) {
+      return res.status(400).send({
+        message: "Missing message sender or content or sender's id does not match",
+      });
+    }
+    Conversation.updateOne(data, { $push: { messages: req.body.messages } }, { new: true })
+      .then((updatedData) => {
+        res.status(200).send(updatedData);
+      });
+  })
     .catch((err) => {
       console.log(err);
-      return res.status(400).send({
-        message: 'Error when updating Conversation!',
-      });
+      res.status(500).send({ message: 'Error when accessing the database!' });
     });
-  //controller.updateData(Conversation, req, res);
 };
 
 // Delete a convo with the specified convo's Id ==================================
@@ -81,16 +83,32 @@ exports.findOne = (req, res) => {
   controller.findOne(Conversation, req, res);
 };
 
-function validateMessageContent(req) {
+// Delete a particular message in convo
+// new function: this should be considered after all other
+// essential features are implemented
+
+// Function to validate messages in convo
+function validateMessageContent(method, req, userList) {
+  // Case of new conversation --> we check for valid Ids
+  if (method == 'create') {
+    // Check for valid userId
+
+    // check for existed convo with these users
+  }
+
   // Validate info: message id
-  req.body.messages.forEach(mes => {
-    if (mes.sender == "") {
-      console.log("yo");
+  // Checking for userId in sender should match the users in the convo
+  for (const ind in req.body.messages) {
+    const mes = req.body.messages[ind];
+    // Check if sender is missing
+    // Also check for matching sender and the userIds
+    if (mes.sender == "" || !userList.includes(mes.sender)) {
       return false;
     }
+    // Check if content is missing
     if (mes.content == "") {
       return false;
     }
-  });
+  }
   return true;
 }

@@ -43,7 +43,7 @@
       },
       {
         "sender": "612b497f5eb1853ce6da5a88",
-        "content": "hello!"
+        "content": "This will raise an error of missing content!"
       }
     ]
   },
@@ -56,8 +56,11 @@
   },
   {
     "userId": [],
-    "messageId": [
-      "This will raise an error of missing users!!"
+    "messages": [
+      {
+        "sender": "This will raise an error of missing users!",
+        "content": "This will raise an error of missing users!"
+      }
     ]
   }
 ]
