@@ -1,5 +1,4 @@
 import React from 'react';
-import AppBar from '@material-ui/core/AppBar';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
@@ -49,9 +48,6 @@ export default function Home() {
     <React.Fragment>
 
       <PermanentDrawerLeft/>
-      <AppBar position="relative">
-
-      </AppBar>
       <main>
         {/* Hero unit */}
         <div className={classes.heroContent}>
