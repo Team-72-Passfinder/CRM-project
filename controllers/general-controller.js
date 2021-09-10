@@ -1,5 +1,6 @@
 // CRUD GENERATOR!!!
 // Controller to perform CRUD
+const validateDate = require("validate-date");
 
 // Update a contacts identified by the contact's Id ==============================
 function updateData(controler, req, res) {
@@ -82,4 +83,20 @@ function findOne(controler, req, res) {
       res.status(500).send({ message: 'Error when accessing the database!' });
     });
 }
-module.exports = { updateData, deleteData, findAllData, findOne };
+
+// Checks for valid character in fields such as names
+function checkInvalid(string) {
+  var format = /[!@#$%^&*()_+\-=\\[\]{};':"\\|,.<>\\/?]+/;
+
+  if (format.test(string)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+// Checks for valid dateTime 
+function checkValidDate(date) {
+  return validateDate(date);
+}
+module.exports = { updateData, deleteData, findAllData, findOne, checkInvalid, checkValidDate };

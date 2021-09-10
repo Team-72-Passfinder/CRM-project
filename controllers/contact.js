@@ -8,22 +8,28 @@ const User = require('../models/user');
 exports.create = (req, res) => {
   //console.log(req);
   // Validate requests
-  if (!req.body.firstName) {
+  if (!req.body.firstName || controller.checkInvalid(req.body.firstName)) {
     return res.status(400).send({
-      message: 'Require first name!',
+      message: 'Missing or invalid firstname!',
     });
   }
 
-  if (!req.body.lastName) {
+  if (!req.body.lastName || controller.checkInvalid(req.body.lastName)) {
     return res.status(400).send({
-      message: 'Require last name!',
+      message: 'Missing or invalid lastName!',
     });
   }
   // Enforce UTC timezone
   if (req.body.dateOfBirth) {
     console.log(req.body.dateOfBirth);
-    if (req.body.dateOfBirth.charAt(req.body.dateOfBirth.length - 1) != 'Z')
+    if (controller.checkValidDate(req.body.dateOfBirth) == "Invalid Date") {
+      return res.status(400).send({
+        message: 'Invalid dateOfBirth!',
+      });
+    }
+    if (req.body.dateOfBirth.charAt(req.body.dateOfBirth.length - 1) != 'Z') {
       req.body.dateOfBirth += 'Z';
+    }
   }
 
   // Create a new contact using these information
@@ -101,19 +107,28 @@ exports.addFromId = (req, res) => {
 exports.update = (req, res) => {
   // Validate data before update the BD
   if (req.body.firstName) {
-    // If exist firstName, validate if they contain
-    // non-allowed character
-    // Code here...
+    if (controller.checkInvalid(req.body.firstName)) {
+      return res.status(400).send({
+        message: 'invalid firstname!',
+      });
+    }
   }
 
   if (req.body.lastName) {
-    // If exist lastName, validate if they contain
-    // non-allowed character
-    // Code here...
+    if (controller.checkInvalid(req.body.lastName)) {
+      return res.status(400).send({
+        message: 'invalid lastname!',
+      });
+    }
   }
   // Enforce UTC timezone
   if (req.body.dateOfBirth) {
     console.log(req.body.dateOfBirth);
+    if (controller.checkValidDate(req.body.dateOfBirth) == "Invalid Date") {
+      return res.status(400).send({
+        message: 'Invalid dateOfBirth!',
+      });
+    }
     if (req.body.dateOfBirth.charAt(req.body.dateOfBirth.length - 1) != 'Z')
       req.body.dateOfBirth += 'Z';
   }

@@ -47,7 +47,7 @@ exports.update = (req, res) => {
   // Check if userId is included in the sent data
   if (req.body.userId) {
     return res.status(400).send({
-      message: 'Users of this conversation is unchangaeble!',
+      message: 'Users of this conversation is unchangeable!',
     });
   }
   // new list of messages is added to the convo

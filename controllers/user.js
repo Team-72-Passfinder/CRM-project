@@ -23,21 +23,21 @@ exports.create = (req, res) => {
     });
   }
 
-  if (!req.body.firstName) {
+  if (!req.body.firstName || controller.checkInvalid(req.body.firstName)) {
     return res.status(400).send({
-      message: 'Require firstName!',
+      message: 'Missing firstName or firstName contains invalid characters!',
     });
   }
 
-  if (!req.body.lastName) {
+  if (!req.body.lastName || controller.checkInvalid(req.body.lastName)) {
     return res.status(400).send({
-      message: 'Require lastName!',
+      message: 'Require lastName or lastName contains invalid characters!',
     });
   }
 
-  if (!req.body.dateOfBirth) {
+  if (!req.body.dateOfBirth || controller.checkValidDate(req.body.dateOfBirth) == "Invalid Date") {
     return res.status(400).send({
-      message: 'Require dateOfBirth!',
+      message: 'Missing or invalid dateOfBirth!',
     });
   }
 
@@ -103,26 +103,24 @@ exports.update = (req, res) => {
   // Validate firstname, lastname, dateOfBirth information
   // since username and email can't be changed
   // Password is going to be considered sepeartedly due to security matter!
-  if (req.body.firstName) {
-    // If exist firstName, validate if they contain
-    // non-allowed character
-    // Code here...
+  if (controller.checkInvalid(req.body.firstName)) {
+    return res.status(400).send({
+      message: 'Firstname contains invalid characters!',
+    });
   }
-  if (req.body.lastName) {
-    // If exist lastName, validate if they contain
-    // non-allowed character
-    // Code here...
+  if (controller.checkInvalid(req.body.lastName)) {
+    return res.status(400).send({
+      message: 'Lastname contains invalid characters!',
+    });
   }
-  if (req.body.dateOfBirth) {
-    // If exist dateOfBirth, validate if they contain
-    // non-allowed character
-    // Code here...
+  if (controller.checkValidDate(req.body.dateOfBirth) == "Invalid Date") {
+    return res.status(400).send({
+      message: 'Invalid dateOfBirth!',
+    });
   }
   // Enforce UTC timezone
-  if (req.body.dateTime) {
-    if (req.body.dateOfBirth.charAt(req.body.dateTime.length - 1) != 'Z') {
-      req.body.dateOfBirth += 'Z';
-    }
+  if (req.body.dateOfBirth.charAt(req.body.dateOfBirth.length - 1) != 'Z') {
+    req.body.dateOfBirth += 'Z';
   }
 
   // Check for un-changaeble field -- in case of hacking on the way the info is sent to

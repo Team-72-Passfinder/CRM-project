@@ -20,11 +20,14 @@ exports.create = (req, res) => {
   // Enforce UTC timezone
   if (req.body.startedDatetime) {
     console.log(req.body.startedDatetime);
-    if (
-      req.body.startedDatetime.charAt(req.body.startedDatetime.length - 1) !=
-      'Z'
-    )
+    if (controller.checkValidDate(req.body.startedDatetime) == "Invalid Date") {
+      return res.status(400).send({
+        message: 'Invalid startedDatetime!',
+      });
+    }
+    if (req.body.startedDatetime.charAt(req.body.startedDatetime.length - 1) != 'Z') {
       req.body.startedDatetime += 'Z';
+    }
   }
   // Check for duplicate userIds
   if (req.body.people[0] == req.body.people[1]) {
