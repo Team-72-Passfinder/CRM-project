@@ -60,12 +60,12 @@ exports.update = (req, res) => {
     // non-allowed character
     // Code here...
   }
-  if (req.body.dateTime == '' || req.body.completed == null) {
+  if (req.body.dateTime) {
     // If exist dateTime, validate if they contain
     // non-allowed character
     // Code here...
   }
-  if (req.body.completed == '' || req.body.completed == null) {
+  if (req.body.completed) {
     // If exist completed, validate if they contain
     // non-allowed character
     // Code here...
