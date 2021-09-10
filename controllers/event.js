@@ -64,7 +64,7 @@ exports.update = (req, res) => {
       message: "Invalid Date",
     });
   }
-  if (req.body.completed == null) {
+  if (req.body.completed && req.body.completed == null) {
     return res.status(400).send({
       message: "Event complete status should not be empty!",
     });
