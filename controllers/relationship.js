@@ -80,6 +80,17 @@ exports.create = (req, res) => {
 // Update a relationship identified by the relationship's Id ==============================
 exports.update = (req, res) => {
   // people and startedDateTime are to be fixed!
+  // check if the request includes these fields
+  if (req.body.people) {
+    return res.status(400).send({
+      message: 'People in this relationship is unchangaeble!',
+    });
+  }
+  if (req.body.startedDatetime) {
+    return res.status(400).send({
+      message: 'StartedDatetime in this relationship is unchangaeble!',
+    });
+  }
   // Only tags and description can be updated
   controller.updateData(Relationship, req, res);
 };
