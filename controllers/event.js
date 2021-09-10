@@ -26,7 +26,6 @@ exports.create = (req, res) => {
   // Create an event
   // Enfore dateTime
   if (req.body.dateTime) {
-    console.log(req.body.dateTime);
     if (req.body.dateTime.charAt(req.body.dateTime.length - 1) != 'Z')
       req.body.dateTime += 'Z';
   }
@@ -56,20 +55,20 @@ exports.create = (req, res) => {
 // Update event identified by the event's Id ==============================
 exports.update = (req, res) => {
   // validate DateTime, name and completness status
-  if (req.body.name == "") {
-    return res.status(400).send({
-      message: 'Event name should not be empty!',
-    });
+  if (req.body.name) {
+    // If exist name, validate if they contain
+    // non-allowed character
+    // Code here...
   }
-  if (req.body.dateTime == "" || req.body.completed == null) {
-    return res.status(400).send({
-      message: 'DateTime should not be empty!',
-    });
+  if (req.body.dateTime == '' || req.body.completed == null) {
+    // If exist dateTime, validate if they contain
+    // non-allowed character
+    // Code here...
   }
-  if (req.body.completed == "" || req.body.completed == null) {
-    return res.status(400).send({
-      message: 'Complete status should be set!',
-    });
+  if (req.body.completed == '' || req.body.completed == null) {
+    // If exist completed, validate if they contain
+    // non-allowed character
+    // Code here...
   }
   controller.updateData(Event, req, res);
 };

@@ -103,23 +103,23 @@ exports.update = (req, res) => {
   // Validate firstname, lastname, dateOfBirth information
   // since username and email can't be changed
   // Password is going to be considered sepeartedly due to security matter!
-  if (req.body.firstName == "") {
-    return res.status(400).send({
-      message: 'Firstname should not be empty!',
-    });
+  if (req.body.firstName) {
+    // If exist firstName, validate if they contain
+    // non-allowed character
+    // Code here...
   }
-  if (req.body.lastName == "") {
-    return res.status(400).send({
-      message: 'Lastname should not be empty!',
-    });
+  if (req.body.lastName) {
+    // If exist firstName, validate if they contain
+    // non-allowed character
+    // Code here...
   }
-  if (req.body.dateOfBirth == "") {
-    return res.status(400).send({
-      message: 'dateOfBirth should not be empty!',
-    });
+  if (req.body.dateOfBirth) {
+    // If exist firstName, validate if they contain
+    // non-allowed character
+    // Code here...
   }
   // Enforce UTC timezone
-  else {
+  if (req.body.dateTime) {
     if (req.body.dateOfBirth.charAt(req.body.dateTime.length - 1) != 'Z') {
       req.body.dateOfBirth += 'Z';
     }
@@ -130,17 +130,16 @@ exports.update = (req, res) => {
   const id = req.params.id;
 
   // Case of updated sucessfully
-  User
-    .findByIdAndUpdate(id, { $set: req.body }, { new: true })
-    .then((updatedData) => {
-      res.status(200).send(
-        {
-          firstname: updatedData.firstName,
-          lastName: updatedData.lastName,
-          dateOfBirth: updatedData.dateOfBirth,
-          biography: updatedData.biography
-        });
-    });
+  User.findByIdAndUpdate(id, { $set: req.body }, { new: true }).then(
+    (updatedData) => {
+      res.status(200).send({
+        firstname: updatedData.firstName,
+        lastName: updatedData.lastName,
+        dateOfBirth: updatedData.dateOfBirth,
+        biography: updatedData.biography,
+      });
+    }
+  );
 };
 
 // Delete an user with the specified user's Id ==============================
