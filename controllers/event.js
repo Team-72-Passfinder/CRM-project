@@ -25,10 +25,8 @@ exports.create = (req, res) => {
 
   // Create an event
   // Enfore dateTime
-  if (req.body.dateTime) {
-    console.log(req.body.dateTime);
-    if (req.body.dateTime.charAt(req.body.dateTime.length - 1) != 'Z')
-      req.body.dateTime += 'Z';
+  if (req.body.dateTime.charAt(req.body.dateTime.length - 1) != 'Z') {
+    req.body.dateTime += 'Z';
   }
 
   const event = new Event({

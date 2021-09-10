@@ -19,6 +19,15 @@ exports.create = (req, res) => {
       message: 'Require last name!',
     });
   }
+  // Enforce UTC timezone
+  if (req.body.dateOfBirth) {
+    console.log(req.body.dateOfBirth);
+    if (
+      req.body.dateOfBirth.charAt(req.body.dateOfBirth.length - 1) !=
+      'Z'
+    )
+      req.body.dateOfBirth += 'Z';
+  }
 
   // Create a new contact using these information
   const contact = new Contact({
@@ -103,6 +112,15 @@ exports.update = (req, res) => {
     return res.status(400).send({
       message: 'Lastname should not be empty!',
     });
+  }
+  // Enforce UTC timezone
+  if (req.body.dateOfBirth) {
+    console.log(req.body.dateOfBirth);
+    if (
+      req.body.dateOfBirth.charAt(req.body.dateOfBirth.length - 1) !=
+      'Z'
+    )
+      req.body.dateOfBirth += 'Z';
   }
   // Update the info
   controller.updateData(Contact, req, res);
