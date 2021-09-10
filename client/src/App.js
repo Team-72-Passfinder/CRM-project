@@ -20,6 +20,9 @@ const App = () => {
                 <Route exact path='/login'>
                     <Login />
                 </Route>
+                <Route exact path='/home'>
+                    <Home />
+                </Route>
             </Switch>
         </Router>
     );
