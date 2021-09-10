@@ -22,10 +22,7 @@ exports.create = (req, res) => {
   // Enforce UTC timezone
   if (req.body.dateOfBirth) {
     console.log(req.body.dateOfBirth);
-    if (
-      req.body.dateOfBirth.charAt(req.body.dateOfBirth.length - 1) !=
-      'Z'
-    )
+    if (req.body.dateOfBirth.charAt(req.body.dateOfBirth.length - 1) != 'Z')
       req.body.dateOfBirth += 'Z';
   }
 
@@ -38,7 +35,6 @@ exports.create = (req, res) => {
     dateOfBirth: req.body.dateOfBirth || null,
     biography: req.body.biography || '',
   });
-
 
   // Save this contact to database
   contact
@@ -56,70 +52,69 @@ exports.create = (req, res) => {
   console.log('New contact created! Yay');
 };
 
-
 // If contact is to be added from an existed userId
 exports.addFromId = (req, res) => {
   // Create a new contact by accessing the user's database
-  User.findById(req.params.id).then((userData) => {
-    // If contact with this id is not found
-    if (!userData) {
-      // return the error messages
-      return res.status(404).send({
-        message: 'No user is found with this id!',
-      });
-    }
-    const contact = new Contact({
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      email: userData.email,
-      phoneNumber: '',
-      dateOfBirth: userData.dateOfBirth,
-      biography: userData.biography || '',
-    });
-
-    // Save this contact to database
-    contact
-      .save()
-      .then((data) => {
-        res.send(data);
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).send({
-          message: 'Error when creating contact!',
+  User.findById(req.params.id)
+    .then((userData) => {
+      // If contact with this id is not found
+      if (!userData) {
+        // return the error messages
+        return res.status(404).send({
+          message: 'No user is found with this id!',
         });
+      }
+      const contact = new Contact({
+        firstName: userData.firstName,
+        lastName: userData.lastName,
+        email: userData.email,
+        phoneNumber: '',
+        dateOfBirth: userData.dateOfBirth,
+        biography: userData.biography || '',
       });
-  })
+
+      // Save this contact to database
+      contact
+        .save()
+        .then((data) => {
+          res.send(data);
+        })
+        .catch((err) => {
+          console.log(err);
+          res.status(500).send({
+            message: 'Error when creating contact!',
+          });
+        });
+    })
     // Catching the error when assessing the DB
     .catch((err) => {
       console.log(err);
-      res.status(500).send({ message: 'Error when accessing the user database!' });
+      res
+        .status(500)
+        .send({ message: 'Error when accessing the user database!' });
     });
 
   console.log('New contact created from existed user! Yay');
-}
+};
 
 // Update a contact identified by the contact's Id ==============================
 exports.update = (req, res) => {
   // Validate data before update the BD
-  if (req.body.firstName == "") {
-    return res.status(400).send({
-      message: 'Firstname should not be empty!',
-    });
+  if (req.body.firstName) {
+    // If exist firstName, validate if they contain
+    // non-allowed character
+    // Code here...
   }
 
-  if (req.body.lastName == "") {
-    return res.status(400).send({
-      message: 'Lastname should not be empty!',
-    });
+  if (req.body.lastName) {
+    // If exist lastName, validate if they contain
+    // non-allowed character
+    // Code here...
   }
   // Enforce UTC timezone
   if (req.body.dateOfBirth) {
     console.log(req.body.dateOfBirth);
-    if (
-      req.body.dateOfBirth.charAt(req.body.dateOfBirth.length - 1) !=
-      'Z'
-    )
+    if (req.body.dateOfBirth.charAt(req.body.dateOfBirth.length - 1) != 'Z')
       req.body.dateOfBirth += 'Z';
   }
   // Update the info
