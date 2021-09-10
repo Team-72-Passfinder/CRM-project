@@ -44,6 +44,12 @@ exports.create = (req, res) => {
 // Update a convo identified by the convo's Id ===================================
 exports.update = (req, res) => {
   // userIds can't be changed because they're default
+  // Check if userId is included in the sent data
+  if (req.body.userId) {
+    return res.status(400).send({
+      message: 'Users of this conversation cannot be changed!',
+    });
+  }
   // new list of messages is added to the convo
   const id = req.params.id;
 
@@ -112,3 +118,5 @@ function validateMessageContent(method, req, userList) {
   }
   return true;
 }
+
+// Function to search for conversation given list of userIds

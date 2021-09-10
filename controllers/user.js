@@ -125,7 +125,26 @@ exports.update = (req, res) => {
     }
   }
 
-  //controller.updateData(User, req, res);
+  // Check for un-changaeble field -- in case of hacking on the way the info is sent to
+  // username
+  if (req.body.username) {
+    return res.status(400).send({
+      message: 'username is unchangaeble!',
+    });
+  }
+  // password
+  if (req.body.password) {
+    return res.status(400).send({
+      message: 'password must be changed under protection!',
+    });
+  }
+  // email
+  if (req.body.email) {
+    return res.status(400).send({
+      message: 'email must be changed under protection!',
+    });
+  }
+
   // Get the id
   const id = req.params.id;
 
@@ -135,6 +154,7 @@ exports.update = (req, res) => {
     .then((updatedData) => {
       res.status(200).send(
         {
+          _id: updatedData._id,
           firstname: updatedData.firstName,
           lastName: updatedData.lastName,
           dateOfBirth: updatedData.dateOfBirth,
