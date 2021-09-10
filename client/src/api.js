@@ -39,3 +39,9 @@ export function getContact(id) {
 
     return axios.get(endpoint).then(res => res.data);
 }
+
+export function addContact(contact) {
+    let endpoint = BASE_URL + '/contact';
+
+    return axios.post(endpoint, contact).then(res => res.data)
+}

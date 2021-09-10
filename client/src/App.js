@@ -10,6 +10,7 @@ import {
 // import Login from './pages/login/login'
 import ContactList from './pages/ContactList/ContactList'
 import Contact from './pages/Contact/Contact'
+import CreateContact from './pages/CreateContact/CreateContact'
 // import SignIn from './pages/Contact/contact'
 
 const App = () => {
@@ -23,7 +24,7 @@ const App = () => {
                     {/* <Login /> */}
                 </Route>
                 <Route path='/contact/add'>
-
+                    <CreateContact />
                 </Route>
                 <Route exact path='/contact/:id'>
                     <Contact />

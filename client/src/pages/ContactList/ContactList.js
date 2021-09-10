@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { IconButton,  makeStyles, Paper, InputBase, Avatar, List, ListItem, ListItemAvatar, ListItemText, Fab, Skeleton } from '@material-ui/core'
+import { IconButton,  makeStyles, Paper, InputBase, Avatar, List, ListItem, ListItemAvatar, ListItemText, Fab } from '@material-ui/core'
 
 import SearchIcon from '@material-ui/icons/Search'
 import AddIcon from '@material-ui/icons/Add'
