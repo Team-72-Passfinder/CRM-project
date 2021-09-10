@@ -44,7 +44,7 @@ mocha.describe('Test User routes', function () {
           .end((err, res) => {
             res.should.have.status(400);
             res.body.should.be.a('object');
-            res.body.should.have.property('message').eql('Require firstName!');
+            res.body.should.have.property('message').eql('Missing firstName or firstName contains invalid characters!');
             done();
           });
       }

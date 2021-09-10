@@ -39,7 +39,7 @@ mocha.describe('Test Event routes', function () {
         .end((err, res) => {
           res.should.have.status(400);
           res.body.should.be.a('object');
-          res.body.should.have.property('message').eql('Require event name!');
+          res.body.should.have.property('message').eql('Missing event name or event name contains invalid characters!');
           done();
         });
     });

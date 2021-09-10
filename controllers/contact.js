@@ -106,21 +106,17 @@ exports.addFromId = (req, res) => {
 // Update a contact identified by the contact's Id ==============================
 exports.update = (req, res) => {
   // Validate data before update the BD
-  if (req.body.firstName) {
-    if (controller.checkInvalid(req.body.firstName)) {
-      return res.status(400).send({
-        message: 'invalid firstname!',
-      });
-    }
+  if (req.body.firstName && controller.checkInvalid(req.body.firstName)) {
+    return res.status(400).send({
+      message: 'invalid firstname!',
+    });
+  }
+  if (req.body.lastName && controller.checkInvalid(req.body.lastName)) {
+    return res.status(400).send({
+      message: 'invalid lastname!',
+    });
   }
 
-  if (req.body.lastName) {
-    if (controller.checkInvalid(req.body.lastName)) {
-      return res.status(400).send({
-        message: 'invalid lastname!',
-      });
-    }
-  }
   // Enforce UTC timezone
   if (req.body.dateOfBirth) {
     console.log(req.body.dateOfBirth);

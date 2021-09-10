@@ -54,12 +54,12 @@ exports.create = (req, res) => {
 // Update event identified by the event's Id ==============================
 exports.update = (req, res) => {
   // validate DateTime, name and completness status
-  if (controller.checkInvalid(req.body.name)) {
+  if (req.body.name && controller.checkInvalid(req.body.name)) {
     return res.status(400).send({
       message: "Event name should not contain invalid characters!",
     });
   }
-  if (controller.checkValidDate(req.body.dateTime) == "Invalid Date") {
+  if (req.body.dateTime && controller.checkValidDate(req.body.dateTime) == "Invalid Date") {
     return res.status(400).send({
       message: "Invalid Date",
     });

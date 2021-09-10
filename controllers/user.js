@@ -119,9 +119,10 @@ exports.update = (req, res) => {
     });
   }
   // Enforce UTC timezone
-  if (req.body.dateOfBirth.charAt(req.body.dateOfBirth.length - 1) != 'Z') {
+  if (req.body.dateOfBirth && req.body.dateOfBirth.charAt(req.body.dateOfBirth.length - 1) != 'Z') {
     req.body.dateOfBirth += 'Z';
   }
+
 
   // Check for un-changaeble field -- in case of hacking on the way the info is sent to
   // username
