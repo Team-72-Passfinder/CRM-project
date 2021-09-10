@@ -153,7 +153,7 @@ exports.update = (req, res) => {
     (updatedData) => {
       res.status(200).send({
         _id: updatedData._id,
-        firstname: updatedData.firstName,
+        firstName: updatedData.firstName,
         lastName: updatedData.lastName,
         dateOfBirth: updatedData.dateOfBirth,
         biography: updatedData.biography,
