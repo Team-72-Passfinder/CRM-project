@@ -109,12 +109,12 @@ exports.update = (req, res) => {
     // Code here...
   }
   if (req.body.lastName) {
-    // If exist firstName, validate if they contain
+    // If exist lastName, validate if they contain
     // non-allowed character
     // Code here...
   }
   if (req.body.dateOfBirth) {
-    // If exist firstName, validate if they contain
+    // If exist dateOfBirth, validate if they contain
     // non-allowed character
     // Code here...
   }
