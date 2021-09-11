@@ -5,15 +5,15 @@ const controller = require('./general-controller');
 // Create a new event ===================================================
 exports.create = (req, res) => {
   // Validate requests
-  if (!req.body.name) {
+  if (!req.body.name || controller.checkInvalid(req.body.name)) {
     return res.status(400).send({
-      message: 'Require event name!',
+      message: 'Missing event name or event name contains invalid characters!',
     });
   }
 
-  if (!req.body.dateTime) {
+  if (!req.body.dateTime || controller.checkValidDate(req.body.dateTime) == "Invalid Date") {
     return res.status(400).send({
-      message: 'Require datetime!',
+      message: 'Missing or invalid datetime!',
     });
   }
 
@@ -25,10 +25,8 @@ exports.create = (req, res) => {
 
   // Create an event
   // Enfore dateTime
-  if (req.body.dateTime) {
-    console.log(req.body.dateTime);
-    if (req.body.dateTime.charAt(req.body.dateTime.length - 1) != 'Z')
-      req.body.dateTime += 'Z';
+  if (req.body.dateTime.charAt(req.body.dateTime.length - 1) != 'Z') {
+    req.body.dateTime += 'Z';
   }
 
   const event = new Event({
@@ -55,6 +53,22 @@ exports.create = (req, res) => {
 
 // Update event identified by the event's Id ==============================
 exports.update = (req, res) => {
+  // validate DateTime, name and completness status
+  if (req.body.name && controller.checkInvalid(req.body.name)) {
+    return res.status(400).send({
+      message: "Event name should not contain invalid characters!",
+    });
+  }
+  if (req.body.dateTime && controller.checkValidDate(req.body.dateTime) == "Invalid Date") {
+    return res.status(400).send({
+      message: "Invalid Date",
+    });
+  }
+  if (req.body.completed && req.body.completed == null) {
+    return res.status(400).send({
+      message: "Event complete status should not be empty!",
+    });
+  }
   controller.updateData(Event, req, res);
 };
 

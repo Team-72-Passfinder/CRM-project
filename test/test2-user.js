@@ -44,7 +44,7 @@ mocha.describe('Test User routes', function () {
           .end((err, res) => {
             res.should.have.status(400);
             res.body.should.be.a('object');
-            res.body.should.have.property('message').eql('Require firstName!');
+            res.body.should.have.property('message').eql('Missing firstName or firstName contains invalid characters!');
             done();
           });
       }
@@ -129,7 +129,7 @@ mocha.describe('Test User routes', function () {
     });
   });
   mocha.describe('/PUT/:id user', () => {
-    mocha.it('it should UPDATE a user given the id', (done) => {
+    mocha.it('it should UPDATE general info of user given the id', (done) => {
       let user = new UserModel({
         username: 'lilbroluigi',
         password: 'securepassword123',
@@ -143,41 +143,14 @@ mocha.describe('Test User routes', function () {
           .request(server)
           .put('/user/' + user.id)
           .send({
-            email: 'greencactus@yahoo.com',
-            firstName: 'Luigi22',
+            firstName: 'Lil Luigi',
+            lastName: 'Shroomer',
           })
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('object');
-            res.body.should.have.property('email').eql('greencactus@yahoo.com');
-            res.body.should.have.property('firstName').eql('Luigi22');
-            done();
-          });
-      });
-    });
-
-    mocha.it('it should not UPDATE a user with existed email', (done) => {
-      let user = new UserModel({
-        username: 'waluilipruple',
-        password: 'dragonpass',
-        email: 'purpleiscool@yahoo.com',
-        firstName: 'Waa',
-        lastName: 'Luigi',
-        dateOfBirth: '3/4/1256',
-      });
-      user.save((err, user) => {
-        chai
-          .request(server)
-          .put('/user/' + user.id)
-          .send({
-            email: 'greencactus@yahoo.com',
-          })
-          .end((err, res) => {
-            res.should.have.status(400);
-            res.body.should.be.a('object');
-            res.body.should.have
-              .property('message')
-              .eql('This email has been registered! Try another one!');
+            res.body.should.have.property('firstName').eql('Lil Luigi');
+            res.body.should.have.property('lastName').eql('Shroomer');
             done();
           });
       });

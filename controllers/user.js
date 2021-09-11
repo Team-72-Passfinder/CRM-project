@@ -23,21 +23,21 @@ exports.create = (req, res) => {
     });
   }
 
-  if (!req.body.firstName) {
+  if (!req.body.firstName || controller.checkInvalid(req.body.firstName)) {
     return res.status(400).send({
-      message: 'Require firstName!',
+      message: 'Missing firstName or firstName contains invalid characters!',
     });
   }
 
-  if (!req.body.lastName) {
+  if (!req.body.lastName || controller.checkInvalid(req.body.lastName)) {
     return res.status(400).send({
-      message: 'Require lastName!',
+      message: 'Require lastName or lastName contains invalid characters!',
     });
   }
 
-  if (!req.body.dateOfBirth) {
+  if (!req.body.dateOfBirth || controller.checkValidDate(req.body.dateOfBirth) == "Invalid Date") {
     return res.status(400).send({
-      message: 'Require dateOfBirth!',
+      message: 'Missing or invalid dateOfBirth!',
     });
   }
 
@@ -100,57 +100,65 @@ exports.create = (req, res) => {
 // This Update function behaves differently from other controllers
 // It does not return password
 exports.update = (req, res) => {
-  //controller.updateData(User, req, res);
+  // Validate firstname, lastname, dateOfBirth information
+  // since username and email can't be changed
+  // Password is going to be considered sepeartedly due to security matter!
+  if (controller.checkInvalid(req.body.firstName)) {
+    return res.status(400).send({
+      message: 'Firstname contains invalid characters!',
+    });
+  }
+  if (controller.checkInvalid(req.body.lastName)) {
+    return res.status(400).send({
+      message: 'Lastname contains invalid characters!',
+    });
+  }
+  if (controller.checkValidDate(req.body.dateOfBirth) == "Invalid Date") {
+    return res.status(400).send({
+      message: 'Invalid dateOfBirth!',
+    });
+  }
+  // Enforce UTC timezone
+  if (req.body.dateOfBirth && req.body.dateOfBirth.charAt(req.body.dateOfBirth.length - 1) != 'Z') {
+    req.body.dateOfBirth += 'Z';
+  }
+
+
+  // Check for un-changaeble field -- in case of hacking on the way the info is sent to
+  // username
+  if (req.body.username) {
+    return res.status(400).send({
+      message: 'username is unchangaeble!',
+    });
+  }
+  // password
+  if (req.body.password) {
+    return res.status(400).send({
+      message: 'password must be changed under protection!',
+    });
+  }
+  // email
+  if (req.body.email) {
+    return res.status(400).send({
+      message: 'email must be changed under protection!',
+    });
+  }
+
   // Get the id
   const id = req.params.id;
 
-  // Failed cases
-  User.findOne({ email: req.body.email }).then((existedEmail) => {
-    // If the email is found
-    if (existedEmail) {
-      return res.status(400).send({
-        message: 'This email has been registered! Try another one!',
+  // Case of updated sucessfully
+  User.findByIdAndUpdate(id, { $set: req.body }, { new: true }).then(
+    (updatedData) => {
+      res.status(200).send({
+        _id: updatedData._id,
+        firstName: updatedData.firstName,
+        lastName: updatedData.lastName,
+        dateOfBirth: updatedData.dateOfBirth,
+        biography: updatedData.biography,
       });
     }
-    // continue to check for username
-    else {
-      User.findOne({ username: req.body.username }).then((existedUname) => {
-        // If the username is found
-        if (existedUname) {
-          return res.status(400).send({
-            message: 'This username has been taken! Try another one!',
-          });
-        } else {
-          // Enforce UTC timezone
-          if (req.body.dateOfBirth) {
-            if (
-              req.body.dateOfBirth.charAt(req.body.dateTime.length - 1) != 'Z'
-            )
-              req.body.dateOfBirth += 'Z';
-          }
-          // Case of updated sucessfully
-          User.findByIdAndUpdate(id, { $set: req.body }, { new: true })
-            .then((updatedData) => {
-              res.status(200).send({
-                username: updatedData.username,
-                email: updatedData.email,
-                firstName: updatedData.firstName,
-                lastName: updatedData.lastName,
-                dateOfBirth: updatedData.dateOfBirth,
-                biography: updatedData.biography,
-              });
-            })
-            // Case of error
-            .catch((err) => {
-              console.log(err);
-              res.status(400).send({
-                message: 'Error when updating Contact!',
-              });
-            });
-        }
-      });
-    }
-  });
+  );
 };
 
 // Delete an user with the specified user's Id ==============================

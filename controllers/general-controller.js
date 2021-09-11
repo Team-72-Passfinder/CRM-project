@@ -1,5 +1,6 @@
 // CRUD GENERATOR!!!
 // Controller to perform CRUD
+const validateDate = require("validate-date");
 
 // Update a contacts identified by the contact's Id ==============================
 function updateData(controler, req, res) {
@@ -16,7 +17,7 @@ function updateData(controler, req, res) {
     .catch((err) => {
       console.log(err);
       res.status(400).send({
-        message: 'Error when updating Contact!',
+        message: 'Error when updating Data!',
       });
     });
 }
@@ -31,7 +32,7 @@ function deleteData(controler, req, res) {
         // If no id found -> return error message
         return res
           .status(404)
-          .send({ message: 'No contact found to be deleted!' });
+          .send({ message: 'No data found to be deleted!' });
       }
       // Else, the contact should be deleted successfully
       res.status(200).send({ message: 'Data is deleted successfully!' });
@@ -82,4 +83,20 @@ function findOne(controler, req, res) {
       res.status(500).send({ message: 'Error when accessing the database!' });
     });
 }
-module.exports = { updateData, deleteData, findAllData, findOne };
+
+// Checks for valid character in fields such as names
+function checkInvalid(string) {
+  var format = /[!@#$%^&*()_+\-=\\[\]{};':"\\|,.<>\\/?]+/;
+
+  if (format.test(string)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+// Checks for valid dateTime 
+function checkValidDate(date) {
+  return validateDate(date);
+}
+module.exports = { updateData, deleteData, findAllData, findOne, checkInvalid, checkValidDate };
