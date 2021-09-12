@@ -41,7 +41,7 @@ function Home() {
 
   const getDate = (date) => {
     var jsDate = new Date(date);
-    return jsDate.toLocaleString();
+    return jsDate.toLocaleString('en-GB', {timeZone: 'UTC'});
   };
 
   if (events.length > 0) {
