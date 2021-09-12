@@ -1,0 +1,92 @@
+[
+  {
+    "username": "ed",
+    "password": "edpassw",
+    "email": "edSheer.email",
+    "firstName": "Ed",
+    "lastName": "Sheeran",
+    "dateOfBirth": "1991-02-17",
+    "biography": ""
+  },
+  {
+    "username": "someone",
+    "password": "somepassword",
+    "email": "something.email",
+    "firstName": "Sam",
+    "lastName": "Smith",
+    "dateOfBirth": "1992-05-19",
+    "biography": "English singer-songwriter"
+  },
+  {
+    "username": "",
+    "password": "justsomething",
+    "email": "hello.email",
+    "firstName": "Koma",
+    "lastName": "Ng",
+    "dateOfBirth": "2000-02-29",
+    "biography": "This will raise an error of missing username!"
+  },
+  {
+    "username": "arianaaa",
+    "password": "",
+    "email": "arinn.email",
+    "firstName": "Ariana",
+    "lastName": "Grande",
+    "dateOfBirth": "1993-06-26",
+    "biography": "This will raise an error of missing password!"
+  },
+  {
+    "username": "billl",
+    "password": "billspassword",
+    "email": "",
+    "firstName": "Billie",
+    "lastName": "Eilish",
+    "dateOfBirth": "2001-12-18",
+    "biography": "This will raise an error of missing email address!"
+  },
+  {
+    "username": "brunoo",
+    "password": "brunomars",
+    "email": "bruno.email",
+    "firstName": "",
+    "lastName": "Mars",
+    "dateOfBirth": "1985-10-08",
+    "biography": "This will raise an error of missing first name!"
+  },
+  {
+    "username": "beyoncee",
+    "password": "beyonce",
+    "email": "bey.email",
+    "firstName": "Beyonce",
+    "lastName": "",
+    "dateOfBirth": "1981-09-04",
+    "biography": "This will raise an error of missing last name!"
+  },
+  {
+    "username": "charlie",
+    "password": "charlie",
+    "email": "charlie.email",
+    "firstName": "Charlie",
+    "lastName": "Puth",
+    "dateOfBirth": "",
+    "biography": "This will raise an error of missing date of birth!"
+  },
+  {
+    "username": "haiha",
+    "password": "thisPassword",
+    "email": "haihs.email",
+    "firstName": "somename",
+    "lastName": "somepassword",
+    "dateOfBirth": "",
+    "biography": "This will raise an error of username's been registered!"
+  },
+  {
+    "username": "somebody",
+    "password": "thisPassword",
+    "email": "nunu.email",
+    "firstName": "somename",
+    "lastName": "somepassword",
+    "dateOfBirth": "",
+    "biography": "This will raise an error of email's been registered!"
+  }
+]

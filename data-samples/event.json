@@ -1,0 +1,60 @@
+[
+  {
+    "name": "team's meeting",
+    "dateTime": "2021-08-31",
+    "completed": true,
+    "participants": [
+      "user1",
+      "user2",
+      "user3",
+      "user4",
+      "user5"
+    ],
+    "description": "Priotise what needs to be done this week!"
+  },
+  {
+    "name": "meeting with client",
+    "dateTime": "2021-09-02",
+    "completed": false,
+    "participants": [
+      "user1",
+      "user2",
+      "user3",
+      "user4",
+      "user5",
+      "client"
+    ],
+    "description": ""
+  },
+  {
+    "name": "",
+    "dateTime": "2021-10-10",
+    "completed": false,
+    "participants": [
+      "user1"
+    ],
+    "description": "This will raise an error of missing event's name!"
+  },
+  {
+    "name": "Billie's show",
+    "dateTime": "",
+    "completed": false,
+    "participants": [
+      "fan1",
+      "fan2",
+      "fan3"
+    ],
+    "description": "This will raise an error of missing event's datetime!"
+  },
+  {
+    "name": "Standup",
+    "dateTime": "2021-08-31",
+    "completed": null,
+    "participants": [
+      "team member 1",
+      "team member 2",
+      "team member 3"
+    ],
+    "description": "This will raise an error of missing event's completeness!"
+  }
+]

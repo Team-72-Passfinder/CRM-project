@@ -1,0 +1,34 @@
+[
+  {
+    "firstName": "Charlie",
+    "lastName": "Puth",
+    "email": "charlie.email",
+    "phoneNumber": "193746xxxx",
+    "dateOfBirth": "1991-02-12",
+    "biography": "American singer-songwriter"
+  },
+  {
+    "firstName": "",
+    "lastName": "Mars",
+    "email": "bruno.email",
+    "phoneNumber": "6381xxxxxx",
+    "dateOfBirth": "1985-10-08",
+    "biography": "This will raise an error of missing first name!"
+  },
+  {
+    "firstName": "Beyonce",
+    "lastName": "",
+    "email": "bey.email",
+    "phoneNumber": "123456xxxx",
+    "dateOfBirth": "1981-09-04",
+    "biography": "This will raise an error of missing last name!"
+  },
+  {
+    "firstName": "Billie",
+    "lastName": "Eilish",
+    "email": "",
+    "phoneNumber": "373849xxxx",
+    "dateOfBirth": "2001-12-18",
+    "biography": "This should raise no error!"
+  }
+]
