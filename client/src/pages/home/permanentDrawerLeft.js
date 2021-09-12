@@ -3,11 +3,9 @@ import { makeStyles } from '@material-ui/core/styles';
 import Drawer from '@material-ui/core/Drawer';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Button from '@material-ui/core/Button';
-import { Route, Switch } from "react-router";
-import Home from './home'
 import { Link } from 'react-router-dom';
-const drawerWidth = 180;
 
+const drawerWidth = 180;
 
 const useStyles = makeStyles((theme) => ({
   root: {

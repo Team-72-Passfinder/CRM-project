@@ -8,10 +8,8 @@ export function getEvents() {
 }
 
 export async function login(username, password) {
-  let endpoint = BASE_URL + '/login';
-
   await axios
-    .post('http://localhost:5000/login', {
+    .post(BASE_URL + '/login', {
       username: username,
       password: password,
     })
