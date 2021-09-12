@@ -28,4 +28,7 @@ const EventSchema = new mongoose.Schema(
   }
 );
 
+// Create index for searching
+EventSchema.index({ name: 'text', description: 'text' });
+
 module.exports = mongoose.model('Event', EventSchema);

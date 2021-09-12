@@ -16,6 +16,9 @@ const UserSchema = new mongoose.Schema(
   }
 );
 
+// Create index for searching
+UserSchema.index({ username: 'text', email: 'text', firstName: 'text', lastName: 'text' });
+
 // If you don't want MongoDB to automatically make plural name
 // (users), then use the following command
 //UserSchema.set('collection', 'user');

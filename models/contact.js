@@ -32,4 +32,7 @@ const ContactSchema = new mongoose.Schema(
   }
 );
 
+// Create index for searching
+ContactSchema.index({ firstName: 'text', lastName: 'text' });
+
 module.exports = mongoose.model('Contact', ContactSchema);

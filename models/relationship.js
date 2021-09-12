@@ -24,4 +24,7 @@ const RelationshipSchema = new mongoose.Schema(
   }
 );
 
+// Create index for searching
+//RelationshipSchema.index({ username: 'text', email: 'text', firstName: 'text', lastName: 'text' });
+
 module.exports = mongoose.model('Relationship', RelationshipSchema);
