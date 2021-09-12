@@ -9,7 +9,6 @@ const contactRoute = require('./routes/contact');
 const relationshipRoute = require('./routes/relationship');
 const conversationRoute = require('./routes/conversation');
 const app = express();
-const cors = require('cors');
 
 // parse application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: false }));
