@@ -9,8 +9,7 @@ const contactRoute = require('./routes/contact');
 const relationshipRoute = require('./routes/relationship');
 const conversationRoute = require('./routes/conversation');
 const app = express();
-
-app.use(cors());
+const cors = require('cors');
 
 // parse application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: false }));
@@ -18,12 +17,12 @@ app.use(express.urlencoded({ extended: false }));
 // parse application/json
 app.use(express.json());
 
-// app.use(
-//   cors({
-//     credentials: true,
-//     origin: 'http://localhost:3000',
-//   })
-// );
+app.use(
+  cors({
+    credentials: true,
+    origin: 'http://localhost:3000',
+  })
+);
 
 const port = process.env.port ?? 5000;
 const host = process.env.host ?? 'localhost';
