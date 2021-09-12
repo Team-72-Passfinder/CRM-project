@@ -41,7 +41,7 @@ function Home() {
 
   const getDate = (date) => {
     var jsDate = new Date(date);
-    return jsDate.toLocaleString('en-US');
+    return jsDate.toLocaleString();
   };
 
   if (events.length > 0) {
