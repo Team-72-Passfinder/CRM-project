@@ -22,7 +22,7 @@ function basicSearch(controler, req, res) {
 }
 
 // Search function for User only
-// since some info are protected and not to be returned directly
+// since some info is protected and not to be returned directly
 // returns an array of users 
 function userSearch(controler, req, res) {
   var userMap = [];
@@ -45,8 +45,20 @@ function userSearch(controler, req, res) {
     // Catching error when accessing the database
     .catch((err) => {
       console.log(err);
-      res.status(500).send({ message: 'Error when accessing the database!' });
+      res.status(500).send({
+        message: 'Error when accessing the database!',
+      });
     });
 }
+
+// searching with filter - use specificly for event
+// a query may look like the following:
+/*{
+  "query": string,
+  "completed": true // indicates that only looking for finished events
+}*/
+//function searchWithFilter(controler, req, res) {
+
+//}
 
 module.exports = { basicSearch, userSearch };
