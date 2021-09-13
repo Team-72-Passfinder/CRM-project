@@ -4,10 +4,10 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
-    Link
 } from 'react-router-dom'
 
 import Login from './pages/login/login'
+import Home from './pages/home/home'
 
 const App = () => {
     return (
@@ -18,6 +18,9 @@ const App = () => {
                 </Route>
                 <Route exact path='/login'>
                     <Login />
+                </Route>
+                <Route exact path='/home'>
+                    <Home />
                 </Route>
             </Switch>
         </Router>

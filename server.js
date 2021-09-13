@@ -2,13 +2,13 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const config = require('./config/config');
+const cors = require('cors');
 const userRoute = require('./routes/user');
 const eventRoute = require('./routes/event');
 const contactRoute = require('./routes/contact');
 const relationshipRoute = require('./routes/relationship');
 const conversationRoute = require('./routes/conversation');
 const app = express();
-const cors = require('cors');
 
 // parse application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: false }));
