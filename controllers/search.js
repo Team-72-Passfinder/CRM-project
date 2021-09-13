@@ -57,8 +57,26 @@ function userSearch(controler, req, res) {
   "query": string,
   "completed": true // indicates that only looking for finished events
 }*/
-//function searchWithFilter(controler, req, res) {
+function eventSearch(controler, req, res) {
+  var eventMap = [];
+  // Case of updated sucessfully
+  controler
+    .find({ $text: { $search: req.body.query } })
+    .then((data) => {
+      data.forEach(function (event) {
+        if (event.completed == req.body.completed) {
+          eventMap.push(event);
+        }
+      });
+      res.status(200).send(eventMap);
+    })
+    // Case of error
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({
+        message: 'Error when accessing the database!',
+      });
+    });
+}
 
-//}
-
-module.exports = { basicSearch, userSearch };
+module.exports = { basicSearch, userSearch, eventSearch };
