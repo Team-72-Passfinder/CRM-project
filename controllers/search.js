@@ -1,7 +1,6 @@
-//app.route('/user').post(controller.create).get(controller.findAll).get('/search', controller.search);
 
 // Basic search function
-// The search query request looks like this:
+// The basic search query request looks like this:
 /*{
     "query": string
 }*/
@@ -88,19 +87,6 @@ function eventSearch(controler, req, res) {
   }
 }
 
-// Function to search for conversation given usernames or userIds
-// Usally used in searching for relationship and conversation
-// search json file looks like this:
-/*{
-  "ids" : [id string],
-  "query": string
-}*/
-/*
-function relationshipSearch(controler, req, res) {
-  // Find data that contains those ids
-  
-}
-
 // Function to search for messages given conversation's id
 // app.route('/conversation/search/:id')
 // search json file looks like this:
@@ -128,5 +114,18 @@ function convoSearch(controler, req, res) {
       res.status(500).send({ message: 'Error when accessing the database!' });
     });
 }
+
+// Function to search a relationship
+// An id of a user must be given and the query should be a name of user
+// search json file looks like this:
+/*{
+  "id" : string, // id of client
+  "query": string
+}*/
+/*
+function relationshipSearch(controler, req, res) {
+  // Find data that contains those ids
+  
+}*/
 
 module.exports = { basicSearch, userSearch, eventSearch, convoSearch };
