@@ -42,15 +42,11 @@ app.use(require('./routes/userRouter'));
 let server = app.listen(port, function () {
   console.log(`⚡Server is running on ${host}:${port}`);
 });
-
-app.get('/', function (req, res) {
-  res.send('Hellooo Worlddd!');
-  res.send(`⚡Server is running on ${host}:${port}`);
-});
-
-initMongooseConnection(() => {
-  app.emit('ready');
-});
+if (process.env.NODE_ENV === 'dev') {
+  app.get('/', function (req, res) {
+    res.send(`⚡Server is running on ${host}:${port}`);
+  });
+}
 
 if (process.env.NODE_ENV === 'production') {
   // Serve any static files
@@ -61,6 +57,10 @@ if (process.env.NODE_ENV === 'production') {
     res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
   });
 }
+
+initMongooseConnection(() => {
+  app.emit('ready');
+});
 
 /**
  * Use this function to close everything.
