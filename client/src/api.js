@@ -2,11 +2,13 @@ const axios = require('axios');
 
 const BASE_URL = 'http://localhost:5000';
 
-export async function login(username, password) {
-  let endpoint = BASE_URL + '/login';
+export function getEvents() {
+  return axios.get('/event').then((response) => response.data);
+}
 
+export async function login(username, password) {
   await axios
-    .post('http://localhost:5000/login', {
+    .post(BASE_URL + '/login', {
       username: username,
       password: password,
     })

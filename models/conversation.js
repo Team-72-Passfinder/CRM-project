@@ -6,10 +6,16 @@ const ConversationSchema = new mongoose.Schema(
       type: [String],
       required: true,
     },
-    messageId: {
-      type: [String],
-      required: false,
-    },
+    messages: [{
+      sender: {
+        type: String, // this is user's id
+        required: false,
+      },
+      content: {
+        type: String,
+        required: false,
+      },
+    }],
   },
   {
     timestamps: true,

@@ -1,5 +1,6 @@
 // CRUD GENERATOR!!!
 // Controller to perform CRUD
+const validateDate = require("validate-date");
 
 // Update a contacts identified by the contact's Id ==============================
 function updateData(controler, req, res) {
@@ -9,14 +10,14 @@ function updateData(controler, req, res) {
   // Case of updated sucessfully
   controler
     .findByIdAndUpdate(id, { $set: req.body }, { new: true })
-    .then(() => {
-      res.status(200).send({ message: 'Data updated!' });
+    .then((updatedData) => {
+      res.status(200).send(updatedData);
     })
     // Case of error
     .catch((err) => {
       console.log(err);
       res.status(400).send({
-        message: 'Error when updating Contact!',
+        message: 'Error when updating Data!',
       });
     });
 }
@@ -31,10 +32,10 @@ function deleteData(controler, req, res) {
         // If no id found -> return error message
         return res
           .status(404)
-          .send({ message: 'No contact found to be deleted!' });
+          .send({ message: 'No data found to be deleted!' });
       }
       // Else, the contact should be deleted successfully
-      res.send({ message: 'Data is deleted successfully!' });
+      res.status(200).send({ message: 'Data is deleted successfully!' });
     })
     // Catching error when accessing the database
     .catch((err) => {
@@ -57,7 +58,6 @@ function findAllData(controler, req, res) {
       console.log(err);
       res.status(500).send({ message: 'Error when accessing the database!' });
     });
-  console.log('All data in the current DB is loaded!');
 }
 
 // Find a single contact with the contact's id ====================================
@@ -76,7 +76,6 @@ function findOne(controler, req, res) {
       }
       // else, return the contact
       res.send(data);
-      console.log('Data found!');
     })
     // Catching the error when assessing the DB
     .catch((err) => {
@@ -84,4 +83,20 @@ function findOne(controler, req, res) {
       res.status(500).send({ message: 'Error when accessing the database!' });
     });
 }
-module.exports = { updateData, deleteData, findAllData, findOne };
+
+// Checks for valid character in fields such as names
+function checkInvalid(string) {
+  var format = /[!@#$%^&*()_+\-=\\[\]{};':"\\|,.<>\\/?]+/;
+
+  if (format.test(string)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+// Checks for valid dateTime 
+function checkValidDate(date) {
+  return validateDate(date);
+}
+module.exports = { updateData, deleteData, findAllData, findOne, checkInvalid, checkValidDate };

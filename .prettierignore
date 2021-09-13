@@ -1,2 +1,3 @@
 # Folder that will be ignored by Prettier, no auto-reformat
+client
 frontend
