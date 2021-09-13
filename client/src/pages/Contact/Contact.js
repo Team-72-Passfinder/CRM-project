@@ -93,13 +93,13 @@ function Contact() {
                             {contactInfo.firstName} {contactInfo.lastName}
                         </Typography>
                     </Box>
-                    <Box className={classes.hbox}>
+                    {/* <Box className={classes.hbox}>
                         <IconButton>
                             <Paper elevation={3} className={classes.iconContainer}>
                                 <EventIcon className={classes.icon} />
                             </Paper>
                         </IconButton>
-                    </Box>
+                    </Box> */}
                     <List className={classes.infoContainer} dense>
                         {['Bio', 'Email', 'Phone number', 'Date Of Birth'].map((element) => {
                             let data = getContactData(element)
