@@ -58,25 +58,37 @@ function userSearch(controler, req, res) {
   "completed": true // indicates that only looking for finished events
 }*/
 function eventSearch(controler, req, res) {
-  var eventMap = [];
-  // Case of updated sucessfully
-  controler
-    .find({ $text: { $search: req.body.query } })
-    .then((data) => {
-      data.forEach(function (event) {
-        if (event.completed == req.body.completed) {
-          eventMap.push(event);
-        }
+  // Check if there's filter
+  // If not, perform the basic search
+  if (Object.keys(req.body).length == 1) {
+    basicSearch(controler, req, res);
+  }
+  else {
+    // Else, filter out the completed status
+    var eventMap = [];
+    // Case of updated sucessfully
+    controler
+      .find({ $text: { $search: req.body.query } })
+      .then((data) => {
+        data.forEach(function (event) {
+          if (event.completed === req.body.completed) {
+            //console.log(event.completed);
+            eventMap.push(event);
+          }
+        });
+        res.status(200).send(eventMap);
+      })
+      // Case of error
+      .catch((err) => {
+        console.log(err);
+        res.status(500).send({
+          message: 'Error when accessing the database!',
+        });
       });
-      res.status(200).send(eventMap);
-    })
-    // Case of error
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send({
-        message: 'Error when accessing the database!',
-      });
-    });
+  }
 }
+
+// Function to search for conversation given usernames or userIds
+// Usally used in searching for relationship and conversation
 
 module.exports = { basicSearch, userSearch, eventSearch };

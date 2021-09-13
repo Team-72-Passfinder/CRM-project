@@ -1,6 +1,7 @@
 // Controller to perform CRUD on user parameter
 const User = require('../models/user');
 const controller = require('./general-controller');
+const Search = require('./search');
 
 // Create a new user ===================================================
 exports.create = (req, res) => {
@@ -221,4 +222,9 @@ exports.findOne = (req, res) => {
       console.log(err);
       res.status(500).send({ message: 'Error when accessing the database!' });
     });
+};
+
+// Search for users that match with username, first&lastname and email
+exports.search = (req, res) => {
+  Search.userSearch(User, req, res);
 };

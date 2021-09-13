@@ -23,6 +23,6 @@ const ConversationSchema = new mongoose.Schema(
 );
 
 // Create index for searching: field: messages
-ConversationSchema.index({ context: 'text' });
+ConversationSchema.index({ content: 'text' });
 
 module.exports = mongoose.model('Conversation', ConversationSchema);

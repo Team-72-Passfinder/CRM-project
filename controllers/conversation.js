@@ -1,6 +1,7 @@
 // Controller to perform CRUD on Convo parameter
 const Conversation = require('../models/conversation');
 const controller = require('./general-controller');
+//const Search = require('./search');
 
 // Create a new convo ===========================================================
 exports.create = (req, res) => {
@@ -119,4 +120,9 @@ function validateMessageContent(method, req, userList) {
   return true;
 }
 
-// Function to search for conversation given list of userIds
+/*
+// Search for messanges in a convo
+exports.search = (req, res) => {
+  Search.basicSearch(Conversation, req, res);
+};
+*/
