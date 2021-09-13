@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 // import { BsFillExclamationTriangleFill, BsExclamationCircleFill } from 'react-icons/bs'
 
-import { Typography, Box, TextField, Button, makeStyles} from '@material-ui/core'
+import { Typography, Box, TextField, Button, makeStyles, Link } from '@material-ui/core'
 import { Alert } from '@material-ui/lab'
 
 import { login } from '../../api'
@@ -33,6 +33,9 @@ const useStyles = makeStyles((theme) => ({
     input: {
         marginTop: theme.spacing(1),
         marginBottom: theme.spacing(1),
+    },
+    link: {
+        
     },
     button: {
         marginTop: theme.spacing(1),
@@ -68,41 +71,37 @@ function Login() {
     }
 
     return (
-        // <div className='flex-container'>
-        //     <div id='loginContent'>
-        //         <div id='content-container'>
-        //             <h1>Login</h1>
-        //             <div id='alert'>
-        //                 {alert}
-        //             </div>
-        //             <form>
-        //                 <input id='username-field' name='username' type='text' placeholder='Username' onChange={e => { setUsername(e.target.value) }} />
-        //                 {/* Maybe not going to use this */}
-        //                 {/* <div className='empty-warning' hidden>
-        //                     <BsExclamationCircleFill className='circle-exclamaination' />
-        //                     This field cannot be empty
-        //                 </div> */}
-        //                 <input id='password-field' type='password' placeholder='*********' onChange={e => { setPassword(e.target.value) }} />
-        //                 {/* Maybe not going to use this */}
-        //                 {/* <div className='empty-warning' hidden>
-        //                     <BsExclamationCircleFill className='circle-exclamaination' />
-        //                     This field cannot be empty
-        //                 </div> */}
-        //                 <a id='forgot-password-link' href='/forgot-password'>Forgot password?</a>
-        //                 <input type='submit' onClick={submitHandler} />
-        //             </form>
-        //         </div>
-        //     </div>
-        // </div>
         <div className={classes.root}>
             <Typography className={classes.title}>
                 Login
             </Typography>
             {alert}
             <form className={classes.form}>
-                <TextField className={classes.input} variant='outlined' size='small' fullWidth label='username' onChange={e => setUsername(e.target.value)} />
-                <TextField className={classes.input} variant='outlined' type='password' size='small' fullWidth label='password' onChange={e => setPassword(e.target.value)} />
-                <Button className={classes.button} variant='contained' color='primary' fullWidth onClick={submitHandler}>
+                <TextField
+                    className={classes.input}
+                    variant='outlined'
+                    size='small'
+                    fullWidth
+                    label='username'
+                    onChange={e => setUsername(e.target.value)} />
+                <TextField
+                    className={classes.input}
+                    variant='outlined'
+                    type='password'
+                    size='small'
+                    fullWidth
+                    label='password'
+                    onChange={e => setPassword(e.target.value)} />
+                <Link className={classes.link} href='/forgot-password'>
+                    Forgot password?
+                </Link>
+                <Button
+                    className={classes.button}
+                    variant='contained'
+                    color='primary'
+                    fullWidth
+                    onClick={submitHandler}
+                >
                     Login
                 </Button>
             </form>
