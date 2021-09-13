@@ -90,5 +90,41 @@ function eventSearch(controler, req, res) {
 
 // Function to search for conversation given usernames or userIds
 // Usally used in searching for relationship and conversation
+// search json file looks like this:
+/*{
+  "ids" : [id string],
+  "query": string
+}*/
+/*
+function relationshipSearch(controler, req, res) {
+  // Find data that contains those ids
 
-module.exports = { basicSearch, userSearch, eventSearch };
+}
+
+// Function to search for messages given conversation's id
+// app.route('/conversation/search/:id')
+// search json file looks like this:
+/*{
+  "query": string
+}*/
+function convoSearch(controler, req, res) {
+  // Id of the convo
+  const id = req.params.id;
+  // import data that contains those ids
+  var foundMessages = [];
+  // Find from database
+  controler.findById(id).then((data) => {
+    // found the conversation --> look for messages content
+    data.find({ $text: { $search: req.body.query } })
+      .then((mes) => {
+        foundMessages.push(mes);
+        res.status(200).send(foundMessages);
+      })
+  })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({ message: 'Error when accessing the database!' });
+    });
+}
+
+module.exports = { basicSearch, userSearch, eventSearch, convoSearch };

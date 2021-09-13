@@ -5,6 +5,8 @@ const controller = require('../controllers/relationship');
 
 app.route('/relationship').post(controller.create).get(controller.findAll);
 
+//app.route('/relationship/search').get(controller.search);
+
 app
   .route('/relationship/:id')
   .put(controller.update)

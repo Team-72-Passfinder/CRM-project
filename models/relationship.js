@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const RelationshipSchema = new mongoose.Schema(
   {
-    people: {
+    userId: {
       type: [String], // max 2 people
       required: true,
     },
