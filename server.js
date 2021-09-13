@@ -9,6 +9,7 @@ const contactRoute = require('./routes/contact');
 const relationshipRoute = require('./routes/relationship');
 const conversationRoute = require('./routes/conversation');
 const app = express();
+const path = require('path');
 
 // parse application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: false }));
@@ -50,6 +51,16 @@ app.get('/', function (req, res) {
 initMongooseConnection(() => {
   app.emit('ready');
 });
+
+if (process.env.NODE_ENV === 'production') {
+  // Serve any static files
+  app.use(express.static(path.join(__dirname, 'client/build')));
+
+  // Handle React routing, return all requests to React app
+  app.get('*', function (req, res) {
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  });
+}
 
 /**
  * Use this function to close everything.
