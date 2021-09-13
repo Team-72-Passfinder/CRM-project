@@ -20,6 +20,9 @@ const App = () => {
                 <Route exact path='/'>
                     <Frontpage />
                 </Route>
+                <Route exact path='/login'>
+                    <Login />
+                </Route>
                 <Route path='/contact/add'>
                     <CreateContact />
                 </Route>
