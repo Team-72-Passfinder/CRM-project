@@ -8,9 +8,14 @@ let test = {
   dbURI: `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_URL}/${process.env.DB_TEST_NAME}?retryWrites=true&w=majority`,
 };
 
+let production = {
+  dbURI: `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_URL}/${process.env.DB_NAME}?retryWrites=true&w=majority`,
+};
+
 let config = {
   dev,
   test,
+  production,
 };
 
 module.exports = config[env];
