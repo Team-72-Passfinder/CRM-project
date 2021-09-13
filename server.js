@@ -24,8 +24,8 @@ app.use(
   })
 );
 
-const port = process.env.port ?? 5000;
-const host = process.env.host ?? 'localhost';
+const port = process.env.PORT || 5000;
+const host = process.env.HOST || 'localhost';
 
 // Get all routes
 app.use(userRoute);
