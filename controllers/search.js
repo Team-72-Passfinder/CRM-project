@@ -4,9 +4,9 @@
 /*{
     "query": string
 }*/
-function basicSearch(controler, req, res) {
+function basicSearch(controller, req, res) {
   // Case of updated sucessfully
-  controler
+  controller
     .find({ $text: { $search: req.body.query } })
     .then((data) => {
       res.status(200).send(data);
@@ -23,9 +23,9 @@ function basicSearch(controler, req, res) {
 // Search function for User only
 // since some info is protected and not to be returned directly
 // returns an array of users 
-function userSearch(controler, req, res) {
+function userSearch(controller, req, res) {
   var userMap = [];
-  controler
+  controller
     .find({ $text: { $search: req.body.query } })
     .then((data) => {
       data.forEach(function (user) {
@@ -56,17 +56,17 @@ function userSearch(controler, req, res) {
   "query": string,
   "completed": true // indicates that only looking for finished events
 }*/
-function eventSearch(controler, req, res) {
+function eventSearch(controller, req, res) {
   // Check if there's filter
   // If not, perform the basic search
   if (Object.keys(req.body).length == 1) {
-    basicSearch(controler, req, res);
+    basicSearch(controller, req, res);
   }
   else {
     // Else, filter out the completed status
     var eventMap = [];
     // Case of updated sucessfully
-    controler
+    controller
       .find({ $text: { $search: req.body.query } })
       .then((data) => {
         data.forEach(function (event) {
@@ -93,13 +93,13 @@ function eventSearch(controler, req, res) {
 /*{
   "query": string
 }*/
-function convoSearch(controler, req, res) {
+function convoSearch(controller, req, res) {
   // Id of the convo
   const id = req.params.id;
   // import data that contains those ids
   var data = [];
   // Find from database
-  controler.findById(id).then((found) => {
+  controller.findById(id).then((found) => {
     //console.log(data);
     found.messages.forEach((mes) => {
       if (mes.content.includes(req.body.query)) {
@@ -123,7 +123,7 @@ function convoSearch(controler, req, res) {
   "query": string
 }*/
 /*
-function relationshipSearch(controler, req, res) {
+function relationshipSearch(controller, req, res) {
   // Find data that contains those ids
   
 }*/

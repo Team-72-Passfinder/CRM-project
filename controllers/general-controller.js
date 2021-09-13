@@ -3,12 +3,12 @@
 const validateDate = require("validate-date");
 
 // Update a contacts identified by the contact's Id ==============================
-function updateData(controler, req, res) {
+function updateData(controller, req, res) {
   // Get the id
   const id = req.params.id;
 
   // Case of updated sucessfully
-  controler
+  controller
     .findByIdAndUpdate(id, { $set: req.body }, { new: true })
     .then((updatedData) => {
       res.status(200).send(updatedData);
@@ -23,9 +23,9 @@ function updateData(controler, req, res) {
 }
 
 // Delete a contact with the specified contact's Id ==============================
-function deleteData(controler, req, res) {
+function deleteData(controller, req, res) {
   const id = req.params.id;
-  controler
+  controller
     .findByIdAndRemove(id)
     .then((data) => {
       if (!data) {
@@ -46,9 +46,9 @@ function deleteData(controler, req, res) {
 
 // These folowings relate to Search engine??
 // Retrieve and return all contacts from the database =========================
-function findAllData(controler, req, res) {
+function findAllData(controller, req, res) {
   // Return all contacts using find()
-  controler
+  controller
     .find()
     .then((data) => {
       res.send(data);
@@ -61,10 +61,10 @@ function findAllData(controler, req, res) {
 }
 
 // Find a single contact with the contact's id ====================================
-function findOne(controler, req, res) {
+function findOne(controller, req, res) {
   // ID
   const id = req.params.id;
-  controler
+  controller
     .findById(id)
     .then((data) => {
       // If contact with this id is not found
@@ -99,4 +99,22 @@ function checkInvalid(string) {
 function checkValidDate(date) {
   return validateDate(date);
 }
+
+/*
+// Function to turns array of ids into names for displaying 
+function getNames(controller, ids, res) {
+  var map = [];
+  // accessing the BD through controller
+  ids.forEach(id => {
+    controller.findById(id).then((data) => {
+      map.push(data);
+    })
+      // Catching the error when assessing the DB
+      .catch((err) => {
+        console.log(err);
+        res.status(500).send({ message: 'Error when accessing the database!' });
+      });
+  });
+}*/
+
 module.exports = { updateData, deleteData, findAllData, findOne, checkInvalid, checkValidDate };
