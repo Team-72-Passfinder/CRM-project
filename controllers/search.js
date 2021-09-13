@@ -98,7 +98,7 @@ function eventSearch(controler, req, res) {
 /*
 function relationshipSearch(controler, req, res) {
   // Find data that contains those ids
-
+  
 }
 
 // Function to search for messages given conversation's id
@@ -111,15 +111,17 @@ function convoSearch(controler, req, res) {
   // Id of the convo
   const id = req.params.id;
   // import data that contains those ids
-  var foundMessages = [];
+  var data = [];
   // Find from database
-  controler.findById(id).then((data) => {
+  controler.findById(id).then((found) => {
+    //console.log(data);
+    found.messages.forEach((mes) => {
+      if (mes.content.includes(req.body.query)) {
+        data.push(mes);
+      }
+    });
     // found the conversation --> look for messages content
-    data.find({ $text: { $search: req.body.query } })
-      .then((mes) => {
-        foundMessages.push(mes);
-        res.status(200).send(foundMessages);
-      })
+    res.status(200).send(data);
   })
     .catch((err) => {
       console.log(err);

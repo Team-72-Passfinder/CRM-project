@@ -30,6 +30,6 @@ const EventSchema = new mongoose.Schema(
 
 // Create index for searching
 // Event searching usually comes with completed status
-EventSchema.index({ name: 'text', description: 'text' });
+EventSchema.index({ name: 1, description: -1 });
 
 module.exports = mongoose.model('Event', EventSchema);
