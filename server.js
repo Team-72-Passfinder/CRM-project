@@ -9,6 +9,7 @@ const contactRoute = require('./routes/contact');
 const relationshipRoute = require('./routes/relationship');
 const conversationRoute = require('./routes/conversation');
 const app = express();
+const path = require('path');
 
 // parse application/x-www-form-urlencoded
 app.use(express.urlencoded({ extended: false }));
@@ -23,8 +24,8 @@ app.use(
   })
 );
 
-const port = process.env.port ?? 5000;
-const host = process.env.host ?? 'localhost';
+const port = process.env.PORT || 5000;
+const host = process.env.HOST || 'localhost';
 
 // Get all routes
 app.use(userRoute);
@@ -41,11 +42,21 @@ app.use(require('./routes/userRouter'));
 let server = app.listen(port, function () {
   console.log(`⚡Server is running on ${host}:${port}`);
 });
+if (process.env.NODE_ENV === 'dev') {
+  app.get('/', function (req, res) {
+    res.send(`⚡Server is running on ${host}:${port}`);
+  });
+}
 
-app.get('/', function (req, res) {
-  res.send('Hellooo Worlddd!');
-  res.send(`⚡Server is running on ${host}:${port}`);
-});
+if (process.env.NODE_ENV === 'production') {
+  // Serve any static files
+  app.use(express.static(path.join(__dirname, 'client/build')));
+
+  // Handle React routing, return all requests to React app
+  app.get('*', function (req, res) {
+    res.sendFile(path.join(__dirname, 'client/build', 'index.html'));
+  });
+}
 
 initMongooseConnection(() => {
   app.emit('ready');

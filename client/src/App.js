@@ -8,13 +8,14 @@ import {
 
 import Login from './pages/login/login'
 import Home from './pages/home/home'
+import Frontpage from './pages/frontpage/frontpage'
 
 const App = () => {
     return (
         <Router>
             <Switch>
                 <Route exact path='/'>
-
+                    <Frontpage />
                 </Route>
                 <Route exact path='/login'>
                     <Login />
