@@ -104,7 +104,7 @@ function Contact() {
                         {['Bio', 'Email', 'Phone number', 'Date Of Birth'].map((element) => {
                             let data = getContactData(element)
 
-                            if(data === null) {
+                            if(data === "") {
                                 return
                             }
 

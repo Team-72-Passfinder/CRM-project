@@ -18,7 +18,8 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         width: '90vw',
         marginBlockStart: '20px',
-        marginBlockEnd: '20px'
+        marginBlockEnd: '20px',
+        background: 'rgba(0, 0, 0, 0.12)'
     },
     input: {
         marginLeft: theme.spacing(1),

@@ -60,7 +60,7 @@ function Navbar() {
                 window.location.pathname = '/'
                 break;
             case 'Socials':
-                window.location.pathname = '/contact-list'
+                window.location.pathname = '/contact'
                 break;
             default:
                 return
