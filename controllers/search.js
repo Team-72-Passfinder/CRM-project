@@ -1,5 +1,5 @@
 
-// Basic search function
+// Basic search function ====================================================
 // The basic search query request looks like this:
 /*{
     "query": string
@@ -20,7 +20,7 @@ function basicSearch(controller, req, res) {
     });
 }
 
-// Search function for User only
+// Search function for User only =============================================
 // since some info is protected and not to be returned directly
 // returns an array of users 
 function userSearch(controller, req, res) {
@@ -50,7 +50,7 @@ function userSearch(controller, req, res) {
     });
 }
 
-// searching with filter - use specificly for event
+// searching with filter - use specificly for event ===========================
 // a query may look like the following:
 /*{
   "query": string,
@@ -87,7 +87,7 @@ function eventSearch(controller, req, res) {
   }
 }
 
-// Function to search for messages given conversation's id
+// Function to search for messages given conversation's id =======================
 // app.route('/conversation/search/:id')
 // search json file looks like this:
 /*{

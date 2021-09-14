@@ -30,11 +30,8 @@ exports.create = async (req, res) => {
     }
   }
 
-  // Check for existing relationship
+  // Check for existing relationship and for valid userIds
   let check = await controller.validConvoOrRelationship(User, Relationship, req);
-  //controller.validConvoOrRelationship(User, Relationship, req).then((check) => {
-  //console.log('check:');
-  //console.log(check);
   if (!check) {
     return res.status(400).send({
       message: 'Invalid userId or this relationship has existed!'
@@ -85,7 +82,7 @@ exports.delete = (req, res) => {
   controller.deleteData(Relationship, req, res);
 };
 
-// Retrieve and return all relationships from the database =========================
+// Retrieve and return all relationships from the database =================================
 exports.findAll = (req, res) => {
   controller.findAllData(Relationship, req, res);
 };

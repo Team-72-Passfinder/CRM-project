@@ -84,7 +84,7 @@ function findOne(controller, req, res) {
     });
 }
 
-// Checks for valid character in fields such as names
+// Checks for valid character in fields such as names ==============================
 function checkInvalid(string) {
   var format = /[!@#$%^&*()_+\-=\\[\]{};':"\\|,.<>\\/?]+/;
 
@@ -95,7 +95,7 @@ function checkInvalid(string) {
   }
 }
 
-// Checks for valid dateTime 
+// Checks for valid dateTime =======================================================
 function checkValidDate(date) {
   return validateDate(date);
 }
@@ -106,37 +106,30 @@ async function checkValidId(controller, id) {
   var check = true;
   await controller.findById(id).then((foundId) => {
     if (!foundId) {
-      //console.log('1');
       check = false;
     }
   });
-  //console.log(check);
-  //console.log('valid user test passed');
   return check;
 }
 
-// FUnction to check for existence of data block
+// FUnction to check for existence of data block =====================================
 // Used mostly for convo and relationship
 async function checkExist(controller, ids) {
   var check = false;
   await controller.findOne({ userId: ids }).then((found) => {
     if (found) {
-      //console.log('2');
       check = true;
     }
   });
-  //console.log(check);
-  //console.log('existed test passed');
   return check;
 }
 
-// Check for self-existence in the database
+// Check for self-existence in the database ==========================================
 // Basic checking: used for conversation and relationship
 async function validConvoOrRelationship(controller1, controller2, req) {
   const sortedIds = req.body.userId.sort();
   // Check for duplicate userIds
   if (req.body.userId[0] == req.body.userId[1]) {
-    //console.log('0');
     return false;
   }
 
@@ -150,22 +143,5 @@ async function validConvoOrRelationship(controller1, controller2, req) {
   }
   return false;
 }
-
-/*
-// Function to turns array of ids into names for displaying 
-function getNames(controller, ids, res) {
-  var map = [];
-  // accessing the BD through controller
-  ids.forEach(id => {
-    controller.findById(id).then((data) => {
-      map.push(data);
-    })
-      // Catching the error when assessing the DB
-      .catch((err) => {
-        console.log(err);
-        res.status(500).send({ message: 'Error when accessing the database!' });
-      });
-  });
-}*/
 
 module.exports = { updateData, deleteData, findAllData, findOne, checkInvalid, checkValidDate, validConvoOrRelationship };

@@ -88,7 +88,7 @@ exports.findOne = (req, res) => {
   controller.findOne(Event, req, res);
 };
 
-// Search for events
+// Search for events ==========================================================
 exports.search = (req, res) => {
   Search.eventSearch(Event, req, res);
 };

@@ -124,7 +124,6 @@ exports.update = (req, res) => {
     req.body.dateOfBirth += 'Z';
   }
 
-
   // Check for un-changaeble field -- in case of hacking on the way the info is sent to
   // username
   if (req.body.username) {
@@ -147,7 +146,6 @@ exports.update = (req, res) => {
 
   // Get the id
   const id = req.params.id;
-
   // Case of updated sucessfully
   User.findByIdAndUpdate(id, { $set: req.body }, { new: true }).then(
     (updatedData) => {
@@ -224,7 +222,7 @@ exports.findOne = (req, res) => {
     });
 };
 
-// Search for users that match with username, first&lastname and email
+// Search for users that match with username, first&lastname and email ========
 exports.search = (req, res) => {
   Search.userSearch(User, req, res);
 };
