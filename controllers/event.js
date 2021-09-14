@@ -1,6 +1,6 @@
 // Controller to perform CRUD on event parameter
 const Event = require('../models/event');
-const controller = require('./general-controller');
+const controller = require('./controller-support');
 const Search = require('./search')
 
 // Create a new event ===================================================

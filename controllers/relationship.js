@@ -1,10 +1,10 @@
 // Controller to perform CRUD on relationship parameter
 const Relationship = require('../models/relationship');
-const controller = require('./general-controller');
+const controller = require('./controller-support');
 const User = require('../models/user');
 
 // Create a new relationship ===================================================
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
   // Check for valid datetime
   if (!req.body.startedDatetime) {
     return res.status(400).send({
@@ -29,57 +29,37 @@ exports.create = (req, res) => {
       req.body.startedDatetime += 'Z';
     }
   }
-  // Check for duplicate userIds
-  if (req.body.userId[0] == req.body.userId[1]) {
-    // return the error messages
-    return res.status(400).send({ message: 'Duplicated userId!' });
+
+  // Check for existing relationship
+  let check = await controller.validConvoOrRelationship(User, Relationship, req);
+  //controller.validConvoOrRelationship(User, Relationship, req).then((check) => {
+  //console.log('check:');
+  //console.log(check);
+  if (!check) {
+    return res.status(400).send({
+      message: 'Invalid userId or this relationship has existed!'
+    });
   }
-
-  // Check for existing userId, by accessing the User DB
-  const sortedIds = req.body.userId.sort();
-  User.findOne({ _id: req.body.userId[0] }).then((validUser1) => {
-    if (!validUser1) {
-      return res.status(400).send({
-        message: 'Invalid userId!',
-      });
-    }
-    User.findOne({ _id: req.body.userId[1] }).then((validUser2) => {
-      if (!validUser2) {
-        return res.status(400).send({
-          message: 'Invalid userId!',
-        });
-      }
-      // Reach this point, we check for existing relationship
-      // of these two users
-      Relationship.findOne({ userId: sortedIds }).then((found) => {
-        if (found) {
-          return res.status(400).send({
-            message: 'This relationship has existed, please update instead!',
-          });
-        }
-        // Else, create new relationship
-        const relationship = new Relationship({
-          userId: req.body.userId.sort(),
-          startedDatetime: req.body.startedDatetime,
-          tag: req.body.tag || [],
-          description: req.body.description || '',
-        });
-
-        // Save this relationship to database
-        relationship
-          .save()
-          .then((data) => {
-            res.send(data);
-          })
-          .catch((err) => {
-            console.log(err);
-            res.status(500).send({
-              message: 'Error when creating relationship!',
-            });
-          });
+  //else
+  const relationship = new Relationship({
+    userId: req.body.userId.sort(),
+    startedDatetime: req.body.startedDatetime,
+    tag: req.body.tag || [],
+    description: req.body.description || '',
+  });
+  console.log("new rela created!");
+  // Save this relationship to database
+  relationship
+    .save()
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({
+        message: 'Error when creating relationship!',
       });
     });
-  });
 };
 
 // Update a relationship identified by the relationship's Id ==============================

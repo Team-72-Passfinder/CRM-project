@@ -1,6 +1,6 @@
 // Controller to perform CRUD on Contact parameter
 const Contact = require('../models/contact');
-const controller = require('./general-controller');
+const controller = require('./controller-support');
 const Search = require('./search');
 // Controller to perform CRUD on user parameter
 const User = require('../models/user');

@@ -28,7 +28,7 @@ function userSearch(controller, req, res) {
   controller
     .find({ $text: { $search: req.body.query } })
     .then((data) => {
-      data.forEach(function (user) {
+      data.forEach((user) => {
         userMap.push({
           _id: user._id,
           username: user.username,
@@ -69,7 +69,7 @@ function eventSearch(controller, req, res) {
     controller
       .find({ $text: { $search: req.body.query } })
       .then((data) => {
-        data.forEach(function (event) {
+        data.forEach((event) => {
           if (event.completed === req.body.completed) {
             //console.log(event.completed);
             eventMap.push(event);

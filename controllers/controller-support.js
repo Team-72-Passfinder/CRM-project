@@ -100,6 +100,57 @@ function checkValidDate(date) {
   return validateDate(date);
 }
 
+// FUnction to check for valid Ids 
+// Used mostly for user and contact
+async function checkValidId(controller, id) {
+  var check = true;
+  await controller.findById(id).then((foundId) => {
+    if (!foundId) {
+      //console.log('1');
+      check = false;
+    }
+  });
+  //console.log(check);
+  //console.log('valid user test passed');
+  return check;
+}
+
+// FUnction to check for existence of data block
+// Used mostly for convo and relationship
+async function checkExist(controller, ids) {
+  var check = false;
+  await controller.findOne({ userId: ids }).then((found) => {
+    if (found) {
+      //console.log('2');
+      check = true;
+    }
+  });
+  //console.log(check);
+  //console.log('existed test passed');
+  return check;
+}
+
+// Check for self-existence in the database
+// Basic checking: used for conversation and relationship
+async function validConvoOrRelationship(controller1, controller2, req) {
+  const sortedIds = req.body.userId.sort();
+  // Check for duplicate userIds
+  if (req.body.userId[0] == req.body.userId[1]) {
+    //console.log('0');
+    return false;
+  }
+
+  // Then check for valid Ids
+  const firstValid = await checkValidId(controller1, sortedIds[0]);
+  const secValid = await checkValidId(controller1, sortedIds[1]);
+  // Check for existence
+  const existed = await checkExist(controller2, sortedIds);
+  if (firstValid && secValid && !existed) {
+    return true;
+  }
+  return false;
+}
+
 /*
 // Function to turns array of ids into names for displaying 
 function getNames(controller, ids, res) {
@@ -117,4 +168,4 @@ function getNames(controller, ids, res) {
   });
 }*/
 
-module.exports = { updateData, deleteData, findAllData, findOne, checkInvalid, checkValidDate };
+module.exports = { updateData, deleteData, findAllData, findOne, checkInvalid, checkValidDate, validConvoOrRelationship };
