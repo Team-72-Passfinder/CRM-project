@@ -25,9 +25,16 @@ function basicSearch(controller, req, res) {
 // returns an array of users 
 function userSearch(controller, req, res) {
   var userMap = [];
+  const text = req.body.query;
   controller
-    .find({ $text: { $search: req.body.query } })
-    .then((data) => {
+    //.find({ $text: { $search: req.body.query } }) // full-text search
+    // partial-text-search:
+    .find({
+      $or: [{ username: { $regex: text, $options: 'i' } },
+      { firstName: { $regex: text, $options: 'i' } },
+      { lastName: { $regex: text, $options: 'i' } },
+      { email: { $regex: text, $options: 'i' } }]
+    }).then((data) => {
       data.forEach((user) => {
         userMap.push({
           _id: user._id,
@@ -36,7 +43,7 @@ function userSearch(controller, req, res) {
           firstname: user.firstName,
           lastName: user.lastName,
           dateOfBirth: user.dateOfBirth,
-          biography: user.biography
+          biography: user.biography || "",
         })
       })
       res.send(userMap);
