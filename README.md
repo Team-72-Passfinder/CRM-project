@@ -123,3 +123,4 @@ For frontend, follow the `README.md` in folder `client`.
 ## Reading resources
 
 <https://www.toptal.com/software/trunk-based-development-git-flow>
+<https://www.youtube.com/watch?v=2AIL1c-cJM0&ab_channel=TheFullStackJunkie>
