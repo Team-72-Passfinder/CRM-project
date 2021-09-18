@@ -4,10 +4,15 @@
 /*{
     "query": string
 }*/
-function basicSearch(controller, req, res) {
-  // Case of updated sucessfully
+function contactSearch(controller, req, res) {
+
+  const text = req.body.query;
   controller
-    .find({ $text: { $search: req.body.query } })
+    .find({
+      $or: [{ firstName: { $regex: text, $options: 'i' } },
+      { lastName: { $regex: text, $options: 'i' } },
+      { email: { $regex: text, $options: 'i' } }]
+    })
     .then((data) => {
       res.status(200).send(data);
     })
@@ -19,6 +24,7 @@ function basicSearch(controller, req, res) {
       });
     });
 }
+
 
 // Search function for User only =============================================
 // since some info is protected and not to be returned directly
@@ -46,7 +52,7 @@ function userSearch(controller, req, res) {
           biography: user.biography || "",
         })
       })
-      res.send(userMap);
+      res.status(200).send(userMap);
     })
     // Catching error when accessing the database
     .catch((err) => {
@@ -64,34 +70,37 @@ function userSearch(controller, req, res) {
   "completed": true // indicates that only looking for finished events
 }*/
 function eventSearch(controller, req, res) {
-  // Check if there's filter
-  // If not, perform the basic search
-  if (Object.keys(req.body).length == 1) {
-    basicSearch(controller, req, res);
-  }
-  else {
-    // Else, filter out the completed status
-    var eventMap = [];
-    // Case of updated sucessfully
-    controller
-      .find({ $text: { $search: req.body.query } })
-      .then((data) => {
+
+  const text = req.body.query;
+  // Else, filter out the completed status
+  var eventMap = [];
+  // Case of updated sucessfully
+  controller
+    .find({
+      $or: [{ name: { $regex: text, $options: 'i' } },
+      { description: { $regex: text, $options: 'i' } }]
+    })
+    .then((data) => {
+      if (req.body.completed) {
         data.forEach((event) => {
           if (event.completed === req.body.completed) {
             //console.log(event.completed);
             eventMap.push(event);
           }
         });
-        res.status(200).send(eventMap);
-      })
-      // Case of error
-      .catch((err) => {
-        console.log(err);
-        res.status(500).send({
-          message: 'Error when accessing the database!',
-        });
+      }
+      else {
+        eventMap.push(data);
+      }
+      res.status(200).send(eventMap);
+    })
+    // Case of error
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({
+        message: 'Error when accessing the database!',
       });
-  }
+    });
 }
 
 // Function to search for messages given conversation's id =======================
@@ -123,10 +132,9 @@ function convoSearch(controller, req, res) {
 }
 
 // Function to search a relationship
-// An id of a user must be given and the query should be a name of user
+// Searching by tags perhaps?
 // search json file looks like this:
 /*{
-  "id" : string, // id of client
   "query": string
 }*/
 /*
@@ -135,4 +143,4 @@ function relationshipSearch(controller, req, res) {
   
 }*/
 
-module.exports = { basicSearch, userSearch, eventSearch, convoSearch };
+module.exports = { contactSearch, userSearch, eventSearch, convoSearch };
