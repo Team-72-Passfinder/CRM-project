@@ -6,23 +6,16 @@ import {
   Typography,
   Box,
   Container,
+  AppBar,
+  Toolbar,
 } from '@material-ui/core';
 
 import './frontpage.css';
 
-const useStyles = makeStyles({
-  root: {
-    alignContent: 'center',
-    background: '#fff1e1',
-  },
-  topbar: {
-    alignSelf: 'stretch',
-    alignItems: 'left',
-    height: 52,
-    flexDirection: 'row',
-    background: '#d2601a',
-  },
+const useStyles = makeStyles((theme) => ({
+  root: {},
   logo: {
+    alignSelf: 'center',
     margin: 10,
     width: 180,
     height: 180,
@@ -30,11 +23,7 @@ const useStyles = makeStyles({
   button: {
     margin: 10,
   },
-  title: {
-    fontSize: '28px',
-    fontWeight: '600',
-  },
-});
+}));
 
 function Frontpage() {
   const goToLogin = () => {
@@ -49,33 +38,66 @@ function Frontpage() {
 
   return (
     <div className={classes.root}>
-      <Box className={classes.topbar}>
-        <Typography>About us</Typography>
-      </Box>
+      <AppBar position="relative">
+        <Toolbar>
+          <Typography variant="h6" noWrap>
+            Front page
+          </Typography>
+        </Toolbar>
+      </AppBar>
 
-      <Container>
-        <h1>Welcome to Citrus Contact!</h1>
-        <img className={classes.logo} src={logo} alt="Logo" />
-      </Container>
-      <Box>
-        <Button
-          className={classes.button}
-          color="primary"
-          variant="outlined"
-          onClick={goToLogin}
-        >
-          Go to Login page
-        </Button>
+      <main>
+        {/* Hero unit */}
+        <Box>
+          <Container maxWidth="md">
+            <img className="Logo" src={logo} alt="Logo" />
+            <Typography
+              variant="h3"
+              align="center"
+              color="text.primary"
+              gutterBottom
+            >
+              Welcome to Citrus Contact!
+            </Typography>
+            <Typography
+              variant="body1"
+              align="center"
+              color="text.secondary"
+              paragraph
+            >
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent
+              vestibulum nibh quis sagittis placerat. Ut nisi quam, pharetra at
+              risus a, scelerisque tristique magna. Pellentesque justo nulla,
+              venenatis eget urna ac, luctus suscipit tortor. Pellentesque vitae
+              sagittis risus. Duis non libero quis ipsum hendrerit commodo
+            </Typography>
+            <Container
+              sx={{ pt: 4 }}
+              direction="row"
+              spacing={2}
+              justifyContent="center"
+            >
+              <Button
+                className={classes.button}
+                color="primary"
+                variant="outlined"
+                onClick={goToLogin}
+              >
+                Go to Login page
+              </Button>
 
-        <Button
-          className={classes.button}
-          color="primary"
-          variant="contained"
-          onClick={goToRegister}
-        >
-          Register (not implemented)
-        </Button>
-      </Box>
+              <Button
+                className={classes.button}
+                color="primary"
+                variant="contained"
+                onClick={goToRegister}
+              >
+                Register (not implemented)
+              </Button>
+            </Container>
+          </Container>
+        </Box>
+      </main>
     </div>
   );
 }
