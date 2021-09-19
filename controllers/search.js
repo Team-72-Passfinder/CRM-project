@@ -139,7 +139,9 @@ function convoSearch(controller, req, res) {
 }*/
 
 function relationshipSearch(controller, req, res) {
-  controller.find({ $text: { $search: req.body.query } })
+  controller
+    .find({ tag: { $regex: req.body.query, $options: 'i' } })
+    //.find({ $text: { $search: req.body.query } })
     .then((data) => {
       res.status(200).send(data);
     }).catch((err) => {
