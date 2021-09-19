@@ -67,7 +67,7 @@ function userSearch(controller, req, res) {
 // a query may look like the following:
 /*{
   "query": string,
-  "completed": true // indicates that only looking for finished events
+  "completed": boolean // indicates that only looking for finished/unfinished events
 }*/
 function eventSearch(controller, req, res) {
 
@@ -81,7 +81,7 @@ function eventSearch(controller, req, res) {
       { description: { $regex: text, $options: 'i' } }]
     })
     .then((data) => {
-      if (req.body.completed) {
+      if (Object.keys(req.body).length > 1) {
         data.forEach((event) => {
           if (event.completed === req.body.completed) {
             //console.log(event.completed);
@@ -90,7 +90,7 @@ function eventSearch(controller, req, res) {
         });
       }
       else {
-        eventMap.push(data);
+        eventMap = data;
       }
       res.status(200).send(eventMap);
     })
