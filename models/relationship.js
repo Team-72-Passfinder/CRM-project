@@ -25,6 +25,6 @@ const RelationshipSchema = new mongoose.Schema(
 );
 
 // Create index for searching
-//RelationshipSchema.index({ tag: 'text', description: 'text' });
+RelationshipSchema.index({ tag: 'text' });
 
 module.exports = mongoose.model('Relationship', RelationshipSchema);

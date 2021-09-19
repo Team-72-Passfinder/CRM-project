@@ -1,7 +1,8 @@
 // Controller to perform CRUD on relationship parameter
 const Relationship = require('../models/relationship');
 const controller = require('./controller-support');
-const User = require('../models/user');
+const Contact = require('../models/contact');
+const Search = require('./search');
 
 // Create a new relationship ===================================================
 exports.create = async (req, res) => {
@@ -31,7 +32,7 @@ exports.create = async (req, res) => {
   }
 
   // Check for existing relationship and for valid userIds
-  let check = await controller.validConvoOrRelationship(User, Relationship, req);
+  let check = await controller.validConvoOrRelationship(Contact, Relationship, req);
   if (!check) {
     return res.status(400).send({
       message: 'Invalid userId or this relationship has existed!'
@@ -90,4 +91,9 @@ exports.findAll = (req, res) => {
 // Find a single relationship with the relationship's id ====================================
 exports.findOne = (req, res) => {
   controller.findOne(Relationship, req, res);
+};
+
+// Searching for relationship given tags
+exports.search = (req, res) => {
+  Search.relationshipSearch(Relationship, req, res);
 };

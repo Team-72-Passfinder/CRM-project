@@ -132,15 +132,21 @@ function convoSearch(controller, req, res) {
 }
 
 // Function to search a relationship
-// Searching by tags perhaps?
+// Searching by tags
 // search json file looks like this:
 /*{
   "query": string
 }*/
-/*
-function relationshipSearch(controller, req, res) {
-  // Find data that contains those ids
-  
-}*/
 
-module.exports = { contactSearch, userSearch, eventSearch, convoSearch };
+function relationshipSearch(controller, req, res) {
+  controller.find({ $text: { $search: req.body.query } })
+    .then((data) => {
+      res.status(200).send(data);
+    }).catch((err) => {
+      console.log(err);
+      res.status(500).send({ message: 'Error when accessing the database!' });
+    });
+
+}
+
+module.exports = { contactSearch, userSearch, eventSearch, convoSearch, relationshipSearch };
