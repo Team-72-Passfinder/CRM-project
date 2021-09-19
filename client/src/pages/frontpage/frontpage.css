@@ -6,14 +6,22 @@ div {
   text-align: center;
 }
 
+.Footer {
+  margin: 0px;
+  color: aliceblue;
+  background: #1d3c45;
+}
+
 .Logo {
   margin: 10px;
   width: 180px;
   height: 180px;
+  align-self: center;
 }
 
-.Button-style {
+.Button {
   margin: 10px;
+  padding: 10px;
 }
 
 .Top-bar {
