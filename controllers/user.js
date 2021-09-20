@@ -1,6 +1,7 @@
 // Controller to perform CRUD on user parameter
 const User = require('../models/user');
-const controller = require('./general-controller');
+const controller = require('./controller-support');
+const Search = require('./search');
 
 // Create a new user ===================================================
 exports.create = (req, res) => {
@@ -123,7 +124,6 @@ exports.update = (req, res) => {
     req.body.dateOfBirth += 'Z';
   }
 
-
   // Check for un-changaeble field -- in case of hacking on the way the info is sent to
   // username
   if (req.body.username) {
@@ -146,7 +146,6 @@ exports.update = (req, res) => {
 
   // Get the id
   const id = req.params.id;
-
   // Case of updated sucessfully
   User.findByIdAndUpdate(id, { $set: req.body }, { new: true }).then(
     (updatedData) => {
@@ -223,30 +222,7 @@ exports.findOne = (req, res) => {
     });
 };
 
-/*
-// Searching for user with tag/firstname/lastname/username/email =============
+// Search for users that match with username, first&lastname and email ========
 exports.search = (req, res) => {
-  const query = req.query.searchQuery;
-  // Return all users using find()
-  var userMap = {};
-  User
-    .find(query)
-    .then((data) => {
-      data.forEach(function (user) {
-        userMap[user._id] = {
-          username: user.username,
-          email: user.email,
-          firstname: user.firstName,
-          lastName: user.lastName,
-          dateOfBirth: user.dateOfBirth,
-          biography: user.biography
-        }
-      })
-      res.send(userMap);
-    })
-    // Catching error when accessing the database
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send({ message: 'Error when accessing the database!' });
-    });
-}*/
+  Search.userSearch(User, req, res);
+};

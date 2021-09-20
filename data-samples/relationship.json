@@ -1,6 +1,6 @@
 [
   {
-    "people": [
+    "userId": [
       "612b497f5eb1853ce6da5a88",
       "6128f7781f70352b9160407f"
     ],
@@ -12,7 +12,7 @@
     "description": "some description"
   },
   {
-    "people": [
+    "userId": [
       "6128f7781f70352b9160407f",
       "6128f7431f70352b9160407d"
     ],
@@ -24,7 +24,7 @@
     "description": "this will raise an error of missing datetime!"
   },
   {
-    "people": [],
+    "userId": [],
     "startedDatetime": "2018-01-01",
     "tag": [],
     "description": "this will raise an error of missing people's id!"

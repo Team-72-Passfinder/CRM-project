@@ -1,14 +1,15 @@
 // CRUD GENERATOR!!!
 // Controller to perform CRUD
 const validateDate = require("validate-date");
+const { isValidObjectId } = require("mongoose");
 
 // Update a contacts identified by the contact's Id ==============================
-function updateData(controler, req, res) {
+function updateData(controller, req, res) {
   // Get the id
   const id = req.params.id;
 
   // Case of updated sucessfully
-  controler
+  controller
     .findByIdAndUpdate(id, { $set: req.body }, { new: true })
     .then((updatedData) => {
       res.status(200).send(updatedData);
@@ -16,16 +17,16 @@ function updateData(controler, req, res) {
     // Case of error
     .catch((err) => {
       console.log(err);
-      res.status(400).send({
+      res.status(500).send({
         message: 'Error when updating Data!',
       });
     });
 }
 
 // Delete a contact with the specified contact's Id ==============================
-function deleteData(controler, req, res) {
+function deleteData(controller, req, res) {
   const id = req.params.id;
-  controler
+  controller
     .findByIdAndRemove(id)
     .then((data) => {
       if (!data) {
@@ -46,9 +47,9 @@ function deleteData(controler, req, res) {
 
 // These folowings relate to Search engine??
 // Retrieve and return all contacts from the database =========================
-function findAllData(controler, req, res) {
+function findAllData(controller, req, res) {
   // Return all contacts using find()
-  controler
+  controller
     .find()
     .then((data) => {
       res.send(data);
@@ -61,10 +62,10 @@ function findAllData(controler, req, res) {
 }
 
 // Find a single contact with the contact's id ====================================
-function findOne(controler, req, res) {
+function findOne(controller, req, res) {
   // ID
   const id = req.params.id;
-  controler
+  controller
     .findById(id)
     .then((data) => {
       // If contact with this id is not found
@@ -84,7 +85,7 @@ function findOne(controler, req, res) {
     });
 }
 
-// Checks for valid character in fields such as names
+// Checks for valid character in fields such as names ==============================
 function checkInvalid(string) {
   var format = /[!@#$%^&*()_+\-=\\[\]{};':"\\|,.<>\\/?]+/;
 
@@ -95,8 +96,55 @@ function checkInvalid(string) {
   }
 }
 
-// Checks for valid dateTime 
+// Checks for valid dateTime =======================================================
 function checkValidDate(date) {
   return validateDate(date);
 }
-module.exports = { updateData, deleteData, findAllData, findOne, checkInvalid, checkValidDate };
+
+// FUnction to check for valid Ids 
+// Used mostly for user and contact
+async function checkValidId(controller, id) {
+  var check = true;
+  if (!id || !isValidObjectId(id)) { check = false; }
+
+  await controller.findById(id).then((foundId) => {
+    if (!foundId) {
+      check = false;
+    }
+  });
+  return check;
+}
+
+// FUnction to check for existence of data block =====================================
+// Used mostly for convo and relationship
+async function checkExist(controller, ids) {
+  var check = false;
+  await controller.findOne({ userId: ids }).then((found) => {
+    if (found) {
+      check = true;
+    }
+  });
+  return check;
+}
+
+// Check for self-existence in the database ==========================================
+// Basic checking: used for conversation and relationship
+async function validConvoOrRelationship(controller1, controller2, req) {
+  const sortedIds = req.body.userId.sort();
+  // Check for duplicate userIds
+  if (req.body.userId[0] == req.body.userId[1]) {
+    return false;
+  }
+
+  // Then check for valid Ids
+  const firstValid = await checkValidId(controller1, sortedIds[0]);
+  const secValid = await checkValidId(controller1, sortedIds[1]);
+  // Check for existence
+  const existed = await checkExist(controller2, sortedIds);
+  if (firstValid && secValid && !existed) {
+    return true;
+  }
+  return false;
+}
+
+module.exports = { updateData, deleteData, findAllData, findOne, checkInvalid, checkValidDate, validConvoOrRelationship };

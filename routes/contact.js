@@ -5,6 +5,8 @@ const controller = require('../controllers/contact');
 
 app.route('/contact').post(controller.create).get(controller.findAll);
 
+app.route('/contact/search').get(controller.search);
+
 app
   .route('/contact/:id')
   .put(controller.update)

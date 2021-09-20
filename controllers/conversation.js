@@ -1,9 +1,11 @@
 // Controller to perform CRUD on Convo parameter
 const Conversation = require('../models/conversation');
-const controller = require('./general-controller');
+const controller = require('./controller-support');
+const Search = require('./search');
+const User = require('../models/user');
 
 // Create a new convo ===========================================================
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
   // Validate requests
   // Since a convo can be created without any message,
   // we validate users' ids only
@@ -12,8 +14,16 @@ exports.create = (req, res) => {
       message: 'Require at least an user in convo!',
     });
   }
+  // Check for existing conversation and valid userIds
+  let check = await controller.validConvoOrRelationship(User, Conversation, req);
+  if (!check) {
+    return res.status(400).send({
+      message: 'Invalid userId or this conversation has existed!'
+    });
+  }
+  // check for existed convo with these users
   // But if there exists messages, we check for content and userId
-  if (!validateMessageContent('create', req, req.body.userId)) {
+  if (!validateMessageContent(req, req.body.userId)) {
     return res.status(400).send({
       message: "Missing message sender or content or sender's id does not match",
     });
@@ -21,7 +31,7 @@ exports.create = (req, res) => {
 
   // Create a new convo
   const conversation = new Conversation({
-    userId: req.body.userId,
+    userId: req.body.userId.sort(),
     messages: req.body.messages || [],
   });
 
@@ -58,7 +68,7 @@ exports.update = (req, res) => {
     const userList = data.userId;
     //console.log(userList);
     // Validate info: message id
-    if (!validateMessageContent('update', req, userList)) {
+    if (!validateMessageContent(req, userList)) {
       return res.status(400).send({
         message: "Missing message sender or content or sender's id does not match",
       });
@@ -94,14 +104,7 @@ exports.findOne = (req, res) => {
 // essential features are implemented
 
 // Function to validate messages in convo
-function validateMessageContent(method, req, userList) {
-  // Case of new conversation --> we check for valid Ids
-  if (method == 'create') {
-    // Check for valid userId
-
-    // check for existed convo with these users
-  }
-
+function validateMessageContent(req, userList) {
   // Validate info: message id
   // Checking for userId in sender should match the users in the convo
   for (const ind in req.body.messages) {
@@ -119,4 +122,9 @@ function validateMessageContent(method, req, userList) {
   return true;
 }
 
-// Function to search for conversation given list of userIds
+
+// Search for messanges in a convo
+exports.search = (req, res) => {
+  Search.convoSearch(Conversation, req, res);
+};
+
