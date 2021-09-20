@@ -5,6 +5,10 @@
     "query": string
 }*/
 function contactSearch(controller, req, res) {
+  // check query's body
+  if (!checkValidQuery(req)) {
+    return res.status(500).send({ message: 'Missing query!' });
+  }
 
   const text = req.body.query;
   controller
@@ -30,6 +34,10 @@ function contactSearch(controller, req, res) {
 // since some info is protected and not to be returned directly
 // returns an array of users 
 function userSearch(controller, req, res) {
+  // check query's body
+  if (!checkValidQuery(req)) {
+    return res.status(500).send({ message: 'Missing query!' });
+  }
   var userMap = [];
   const text = req.body.query;
   controller
@@ -67,9 +75,14 @@ function userSearch(controller, req, res) {
 // a query may look like the following:
 /*{
   "query": string,
-  "completed": boolean // indicates that only looking for finished/unfinished events
+  "completed": boolean, // indicates that only looking for finished/unfinished events
+  "dateTime": date      // looks for particular event on particular date
 }*/
 function eventSearch(controller, req, res) {
+  // check query's body
+  if (!checkValidQuery(req)) {
+    return res.status(500).send({ message: 'Missing query!' });
+  }
 
   const text = req.body.query;
   // Else, filter out the completed status
@@ -110,6 +123,10 @@ function eventSearch(controller, req, res) {
   "query": string
 }*/
 function convoSearch(controller, req, res) {
+  // check query's body
+  if (!checkValidQuery(req)) {
+    return res.status(500).send({ message: 'Missing query!' });
+  }
   // Id of the convo
   const id = req.params.id;
   // import data that contains those ids
@@ -139,6 +156,11 @@ function convoSearch(controller, req, res) {
 }*/
 
 function relationshipSearch(controller, req, res) {
+  // check query's body
+  if (!checkValidQuery(req)) {
+    return res.status(500).send({ message: 'Missing query!' });
+  }
+
   controller
     .find({ tag: { $regex: req.body.query, $options: 'i' } })
     //.find({ $text: { $search: req.body.query } })
@@ -149,6 +171,16 @@ function relationshipSearch(controller, req, res) {
       res.status(500).send({ message: 'Error when accessing the database!' });
     });
 
+}
+
+function checkValidQuery(req) {
+
+  const keys = Object.keys(req.body);
+
+  if (keys.indexOf('query') == -1) {
+    return false;
+  }
+  return true;
 }
 
 module.exports = { contactSearch, userSearch, eventSearch, convoSearch, relationshipSearch };

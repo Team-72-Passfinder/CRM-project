@@ -1,6 +1,7 @@
 // CRUD GENERATOR!!!
 // Controller to perform CRUD
 const validateDate = require("validate-date");
+const { isValidObjectId } = require("mongoose");
 
 // Update a contacts identified by the contact's Id ==============================
 function updateData(controller, req, res) {
@@ -104,6 +105,8 @@ function checkValidDate(date) {
 // Used mostly for user and contact
 async function checkValidId(controller, id) {
   var check = true;
+  if (!id || !isValidObjectId(id)) { check = false; }
+
   await controller.findById(id).then((foundId) => {
     if (!foundId) {
       check = false;
