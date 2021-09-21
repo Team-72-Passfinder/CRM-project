@@ -177,7 +177,7 @@ exports.search = (req, res) => {
   Search.contactSearch(Contact, req, res);
 };
 
-// Search for contacts that match with first&lastname ============================
+// Get all contacts that belong to a specific user ============================
 exports.getall = (req, res) => {
   controller.getAllByUserId(Contact, req, res);
 };

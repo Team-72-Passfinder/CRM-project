@@ -39,7 +39,7 @@ exports.create = async (req, res) => {
   }
 
   // Check for existing relationship and for valid people
-  let check = await controller.validConvoOrRelationship(Contact, Relationship, req);
+  let check = await controller.validRelationship(Contact, Relationship, req);
   if (!check) {
     return res.status(400).send({
       message: 'Invalid contact Ids or this relationship has existed!'
@@ -109,4 +109,9 @@ exports.findOne = (req, res) => {
 // Searching for relationship given tags
 exports.search = (req, res) => {
   Search.relationshipSearch(Relationship, req, res);
+};
+
+// Get all relationship that belong to a specific user ============================
+exports.getall = (req, res) => {
+  controller.getAllByUserId(Relationship, req, res);
 };

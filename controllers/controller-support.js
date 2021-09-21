@@ -101,7 +101,7 @@ function checkValidDate(date) {
   return validateDate(date);
 }
 
-// FUnction to check for valid Ids 
+// Function to check for valid Ids 
 // Used mostly for user and contact
 async function checkValidId(controller, id) {
   var check = true;
@@ -119,7 +119,7 @@ async function checkValidId(controller, id) {
 // Used mostly for convo and relationship
 async function checkExist(controller, ids) {
   var check = false;
-  await controller.findOne({ userId: ids }).then((found) => {
+  await controller.findOne({ people: ids }).then((found) => {
     if (found) {
       check = true;
     }
@@ -127,18 +127,32 @@ async function checkExist(controller, ids) {
   return check;
 }
 
+// FUnction to check for valid contactIds with given belongsTo
+// Used mostly for user and contact
+async function checkValidIdWithBelongsTo(controller, id, belongsTo) {
+  var check = true;
+  if (!id || !isValidObjectId(id)) { check = false; }
+
+  await controller.findById(id).then((foundId) => {
+    if (!foundId || foundId.belongsTo != belongsTo) {
+      check = false;
+    }
+  });
+  return check;
+}
+
 // Check for self-existence in the database ==========================================
 // Basic checking: used for conversation and relationship
-async function validConvoOrRelationship(controller1, controller2, req) {
-  const sortedIds = req.body.userId.sort();
+async function validRelationship(controller1, controller2, req) {
+  const sortedIds = req.body.people.sort();
   // Check for duplicate userIds
-  if (req.body.userId[0] == req.body.userId[1]) {
+  if (req.body.people[0] == req.body.people[1]) {
     return false;
   }
 
   // Then check for valid Ids
-  const firstValid = await checkValidId(controller1, sortedIds[0]);
-  const secValid = await checkValidId(controller1, sortedIds[1]);
+  const firstValid = await checkValidIdWithBelongsTo(controller1, sortedIds[0], req.body.belongsTo);
+  const secValid = await checkValidIdWithBelongsTo(controller1, sortedIds[1], req.body.belongsTo);
   // Check for existence
   const existed = await checkExist(controller2, sortedIds);
   if (firstValid && secValid && !existed) {
@@ -160,4 +174,4 @@ function getAllByUserId(controller, req, res) {
     });
 }
 
-module.exports = { updateData, deleteData, findAllData, findOne, checkInvalid, checkValidDate, validConvoOrRelationship, checkValidId, getAllByUserId };
+module.exports = { updateData, deleteData, findAllData, findOne, checkInvalid, checkValidDate, validRelationship, checkValidId, getAllByUserId };

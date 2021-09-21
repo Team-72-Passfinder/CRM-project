@@ -2,7 +2,7 @@
 const Conversation = require('../models/conversation');
 const controller = require('./controller-support');
 const Search = require('./search');
-const User = require('../models/user');
+//const User = require('../models/user');
 
 // Create a new convo ===========================================================
 exports.create = async (req, res) => {
@@ -15,12 +15,13 @@ exports.create = async (req, res) => {
     });
   }
   // Check for existing conversation and valid userIds
-  let check = await controller.validConvoOrRelationship(User, Conversation, req);
+  /*
+  let check = await controller.validConvo(User, Conversation, req);
   if (!check) {
     return res.status(400).send({
       message: 'Invalid userId or this conversation has existed!'
     });
-  }
+  }*/
   // check for existed convo with these users
   // But if there exists messages, we check for content and userId
   if (!validateMessageContent(req, req.body.userId)) {
