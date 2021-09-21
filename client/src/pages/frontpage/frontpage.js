@@ -36,11 +36,14 @@ const useStyles = makeStyles((theme) => ({
     width: 180,
     height: 180,
   },
-  appBar: {
-    position: 'static',
+  toolbar: {
+    minHeight: 48,
     background: '#d2601a',
   },
-  appbarItem: {
+  toolbarButton: {
+    marginRight: 12,
+  },
+  button: {
     margin: 10,
   },
   featureBox: {
@@ -75,21 +78,25 @@ function Frontpage() {
 
   return (
     <div className={classes.root}>
-      <AppBar className={classes.appBar}>
-        <Toolbar>
+      <AppBar position="static">
+        <Toolbar className={classes.toolbar}>
           <Box display="flex" flexGrow={1}>
-            <Typography variant="h6" className={classes.appbarItem}>
-              Passfinders
-            </Typography>
-            <Typography variant="h6" className={classes.appbarItem}>
-              About us
-            </Typography>
-            <Typography variant="h6" className={classes.appbarItem}>
-              Contact
-            </Typography>
+            <Typography variant="h6">Passfinders</Typography>
           </Box>
-
-          <Button color="inherit">Login</Button>
+          <Button color="inherit" className={classes.toolbarButton}>
+            About us
+          </Button>
+          <Button color="inherit" className={classes.toolbarButton}>
+            Contact
+          </Button>
+          <Button
+            color="inherit"
+            className={classes.toolbarButton}
+            variant="outlined"
+            onClick={goToLogin}
+          >
+            Login
+          </Button>
         </Toolbar>
       </AppBar>
 
