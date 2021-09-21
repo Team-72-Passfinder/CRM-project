@@ -3,6 +3,7 @@
 const validateDate = require("validate-date");
 const { isValidObjectId } = require("mongoose");
 const User = require('../models/user');
+const Contact = require('../models/contact');
 
 // Update a contacts identified by the contact's Id ==============================
 function updateData(controller, req, res) {
@@ -143,17 +144,25 @@ async function checkValidIdWithBelongsTo(controller, id, belongsTo) {
 }
 
 // Check for self-existence in the database ==========================================
-// Basic checking: used for conversation and relationship
-async function validRelationship(controller1, controller2, req) {
+// Basic checking: used for relationship and convo
+async function validRelationshipOrConvo(controller2, req, type) {
   const sortedIds = req.body.people.sort();
   // Check for duplicate userIds
-  if (req.body.people[0] == req.body.people[1]) {
+  if (sortedIds[0] == sortedIds[1]) {
     return false;
   }
 
+  var firstValid, secValid;
+
   // Then check for valid Ids
-  const firstValid = await checkValidIdWithBelongsTo(controller1, sortedIds[0], req.body.belongsTo);
-  const secValid = await checkValidIdWithBelongsTo(controller1, sortedIds[1], req.body.belongsTo);
+  if (type == 'relationship') {
+    firstValid = await checkValidIdWithBelongsTo(Contact, sortedIds[0], req.body.belongsTo);
+    secValid = await checkValidIdWithBelongsTo(Contact, sortedIds[1], req.body.belongsTo);
+  }
+  else {
+    firstValid = await checkValidId(User, sortedIds[0]);
+    secValid = await checkValidId(User, sortedIds[1]);
+  }
   // Check for existence
   const existed = await checkExist(controller2, sortedIds);
   if (firstValid && secValid && !existed) {
@@ -162,6 +171,7 @@ async function validRelationship(controller1, controller2, req) {
   return false;
 }
 
+// Get all contact/relationships that belong to a specific user ======================
 async function getAllByUserId(controller, req, res) {
   const ownerId = req.params.id;
   // Validate the given UserId first
@@ -181,4 +191,8 @@ async function getAllByUserId(controller, req, res) {
   });
 }
 
-module.exports = { updateData, deleteData, findAllData, findOne, checkInvalid, checkValidDate, validRelationship, checkValidId, getAllByUserId };
+module.exports = {
+  updateData, deleteData, findAllData, findOne,
+  checkInvalid, checkValidDate, validRelationshipOrConvo,
+  checkValidId, getAllByUserId,
+};
