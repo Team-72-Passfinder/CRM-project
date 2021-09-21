@@ -1,5 +1,6 @@
 import React from 'react';
 import logo from '../frontpage/citrus-contact-logo.png';
+import heroImage from '../frontpage/hero-image.jpg';
 import {
   Button,
   makeStyles,
@@ -16,9 +17,23 @@ import './frontpage.css';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
-  heroContainer: {
+  hero: {
     paddingTop: 10,
     paddingBottom: 50,
+    backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${heroImage})`,
+    height: '500px',
+    backgroundPosition: 'center',
+    backgroundRepeat: 'no-repeat',
+    backgroundSize: 'cover',
+    position: 'relative',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: '#ffffff',
+  },
+  logo: {
+    width: 180,
+    height: 180,
   },
   faqGrid: {
     padding: 10,
@@ -50,18 +65,20 @@ function Frontpage() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="relative">
+      <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" noWrap>
-            Front page
-          </Typography>
+          <Typography variant="h6">Passfinders</Typography>
+          <Typography variant="h6">About us</Typography>
+          <Typography variant="h6">Login</Typography>
         </Toolbar>
       </AppBar>
 
-      <main>
-        {/* Hero unit */}
-        <Container className={classes.heroContainer} maxWidth="md">
-          <img className="Logo" src={logo} alt="Logo" />
+      {/* Hero unit */}
+      <Box className={classes.hero}>
+        <Container>
+          <Box display="flex" justifyContent="center">
+            <img className={classes.logo} src={logo} alt="Logo" />
+          </Box>
           <Typography
             variant="h3"
             align="center"
@@ -77,62 +94,47 @@ function Frontpage() {
             venenatis eget urna ac, luctus suscipit tortor. Pellentesque vitae
             sagittis risus. Duis non libero quis ipsum hendrerit commodo
           </Typography>
-          <Container>
-            <Button
-              className={classes.button}
-              color="primary"
-              variant="outlined"
-              onClick={goToLogin}
-            >
-              Login
-            </Button>
-
+          <Box display="flex" justifyContent="center">
             <Button
               className={classes.button}
               color="primary"
               variant="contained"
               onClick={goToRegister}
             >
-              Register
+              Get started
             </Button>
-          </Container>
+          </Box>
         </Container>
-        {/* End Hero unit */}
-        {/* FAQ Section */}
-        <Box>
-          <Grid container spacing={2}>
-            <Grid item xs>
-              <Paper elevation={3} className={classes.faqGrid}>
-                Feature number one. Lorem ipsum dolor sit amet, consectetur
-                adipiscing elit. Praesent vestibulum nibh quis sagittis
-                placerat. Ut nisi quam, pharetra at risus a, scelerisque
-                tristique magna
-              </Paper>
-            </Grid>
-            <Grid item xs>
-              <Paper elevation={3} className={classes.faqGrid}>
-                Feature number two.
-              </Paper>
-            </Grid>
-            <Grid item xs>
-              <Paper elevation={3} className={classes.faqGrid}>
-                Feature number three.
-              </Paper>
-            </Grid>
-            <Grid item xs>
-              <Paper elevation={3} className={classes.faqGrid}>
-                Feature number four.
-              </Paper>
-            </Grid>
+      </Box>
+      {/* End Hero unit */}
+      {/* FAQ Section */}
+      <Box>
+        <Grid container spacing={2}>
+          <Grid item xs>
+            <Paper elevation={3} className={classes.faqGrid}>
+              Feature number one. Lorem ipsum dolor sit amet, consectetur
+              adipiscing elit. Praesent vestibulum nibh quis sagittis placerat.
+              Ut nisi quam, pharetra at risus a, scelerisque tristique magna
+            </Paper>
           </Grid>
-        </Box>
-        {/* End FAQ Section */}
-      </main>
-      {/* Footer */}
-      <div>
-        <p className="Footer">Made by Passfinders, 2021</p>
-      </div>
-      {/* End footer */}
+          <Grid item xs>
+            <Paper elevation={3} className={classes.faqGrid}>
+              Feature number two.
+            </Paper>
+          </Grid>
+          <Grid item xs>
+            <Paper elevation={3} className={classes.faqGrid}>
+              Feature number three.
+            </Paper>
+          </Grid>
+          <Grid item xs>
+            <Paper elevation={3} className={classes.faqGrid}>
+              Feature number four.
+            </Paper>
+          </Grid>
+        </Grid>
+      </Box>
+      {/* End FAQ Section */}
     </div>
   );
 }
