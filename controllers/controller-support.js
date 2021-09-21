@@ -2,6 +2,7 @@
 // Controller to perform CRUD
 const validateDate = require("validate-date");
 const { isValidObjectId } = require("mongoose");
+const User = require('../models/user');
 
 // Update a contacts identified by the contact's Id ==============================
 function updateData(controller, req, res) {
@@ -161,17 +162,23 @@ async function validRelationship(controller1, controller2, req) {
   return false;
 }
 
-function getAllByUserId(controller, req, res) {
+async function getAllByUserId(controller, req, res) {
   const ownerId = req.params.id;
-  //
-  controller.find({ belongsTo: ownerId }).then((data) => {
-    res.status(200).send(data);
-  })
-    // Catching the error when assessing the DB
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send({ message: 'Error when accessing the database!' });
-    });
+  // Validate the given UserId first
+  await User.findById(req.params.id).then((user) => {
+    if (!user) {
+      res.status(400).send({ message: 'Invalid userId!' });
+    }
+    else {
+      // Then move on to get-all
+      controller.find({ belongsTo: ownerId }).then((data) => {
+        res.status(200).send(data);
+      })
+    }
+  }).catch((err) => {
+    console.log(err);
+    res.status(500).send({ message: 'Error when accessing the database!' });
+  });
 }
 
 module.exports = { updateData, deleteData, findAllData, findOne, checkInvalid, checkValidDate, validRelationship, checkValidId, getAllByUserId };
