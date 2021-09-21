@@ -7,7 +7,7 @@ app.route('/contact').post(controller.create).get(controller.findAll);
 
 app.route('/contact/getall/:id').get(controller.getall);
 
-app.route('/contact/search').get(controller.search);
+app.route('/contact/search/:id').get(controller.search);
 
 app
   .route('/contact/:id')

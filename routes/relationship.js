@@ -7,7 +7,7 @@ app.route('/relationship').post(controller.create).get(controller.findAll);
 
 app.route('/relationship/getall/:id').get(controller.getall);
 
-app.route('/relationship/search').get(controller.search);
+app.route('/relationship/search/:id').get(controller.search);
 
 app
   .route('/relationship/:id')
