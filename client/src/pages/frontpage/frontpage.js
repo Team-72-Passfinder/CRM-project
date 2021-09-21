@@ -11,6 +11,7 @@ import {
   Toolbar,
   Grid,
   Paper,
+  IconButton,
 } from '@material-ui/core';
 
 import './frontpage.css';
@@ -35,14 +36,23 @@ const useStyles = makeStyles((theme) => ({
     width: 180,
     height: 180,
   },
+  appBar: {
+    position: 'static',
+    background: '#d2601a',
+  },
+  appbarItem: {
+    margin: 10,
+  },
+  featureBox: {
+    paddingTop: 30,
+    paddingBottom: 50,
+  },
   faqGrid: {
     padding: 10,
     margin: 20,
     background: 'pink',
   },
-  button: {
-    margin: 10,
-  },
+
   footer: {
     color: 'white',
     background: 'navy',
@@ -65,11 +75,21 @@ function Frontpage() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
+      <AppBar className={classes.appBar}>
         <Toolbar>
-          <Typography variant="h6">Passfinders</Typography>
-          <Typography variant="h6">About us</Typography>
-          <Typography variant="h6">Login</Typography>
+          <Box display="flex" flexGrow={1}>
+            <Typography variant="h6" className={classes.appbarItem}>
+              Passfinders
+            </Typography>
+            <Typography variant="h6" className={classes.appbarItem}>
+              About us
+            </Typography>
+            <Typography variant="h6" className={classes.appbarItem}>
+              Contact
+            </Typography>
+          </Box>
+
+          <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
 
@@ -107,8 +127,17 @@ function Frontpage() {
         </Container>
       </Box>
       {/* End Hero unit */}
+
       {/* FAQ Section */}
-      <Box>
+      <Box className={classes.featureBox}>
+        <Typography
+          variant="h4"
+          align="center"
+          color="text.primary"
+          gutterBottom
+        >
+          Feature
+        </Typography>
         <Grid container spacing={2}>
           <Grid item xs>
             <Paper elevation={3} className={classes.faqGrid}>

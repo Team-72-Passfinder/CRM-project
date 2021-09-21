@@ -1,20 +1,3 @@
 body {
   background: #fff1e1;
 }
-
-.Footer {
-  margin: 0px;
-  color: aliceblue;
-  background: #1d3c45;
-}
-
-.Top-bar {
-  position: relative;
-  left: 0%;
-  right: 0%;
-  top: 0%;
-  bottom: 95%;
-
-  background: #d2601a;
-  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-}
