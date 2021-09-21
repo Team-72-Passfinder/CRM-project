@@ -2,12 +2,17 @@
 const Contact = require('../models/contact');
 const controller = require('./controller-support');
 const Search = require('./search');
-// Controller to perform CRUD on user parameter
 const User = require('../models/user');
 
 // Create a new Contact ===================================================
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
   // Validate requests
+  if (!req.body.belongsTo || !(await controller.checkValidId(User, req.body.belongsTo))) {
+    return res.status(400).send({
+      message: 'Missing or invalid userId that this contact belongs to!',
+    });
+  }
+
   if (!req.body.firstName || controller.checkInvalid(req.body.firstName)) {
     return res.status(400).send({
       message: 'Missing or invalid firstname!',
@@ -34,6 +39,7 @@ exports.create = (req, res) => {
 
   // Create a new contact using these information
   const contact = new Contact({
+    belongsTo: req.body.belongsTo,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email || '',
@@ -59,9 +65,22 @@ exports.create = (req, res) => {
 };
 
 // If contact is to be added from an existed userId ===============================
-exports.addFromId = (req, res) => {
+exports.addFromId = async (req, res) => {
+  // Validate userId input
+  if (!req.body.userId || !(await controller.checkValidId(User, req.body.userId))) {
+    return res.status(400).send({
+      message: 'Missing or invalid userId!',
+    });
+  }
+  // Validate belongsTo input
+  if (!(await controller.checkValidId(User, req.params.id))) {
+    return res.status(400).send({
+      message: 'Missing or invalid userId that this contact belongs to!',
+    });
+  }
+
   // Create a new contact by accessing the user's database
-  User.findById(req.params.id)
+  User.findById(req.body.userId)
     .then((userData) => {
       // If contact with this id is not found
       if (!userData) {
@@ -71,6 +90,7 @@ exports.addFromId = (req, res) => {
         });
       }
       const contact = new Contact({
+        belongsTo: req.params.id,
         firstName: userData.firstName,
         lastName: userData.lastName,
         email: userData.email,
@@ -106,6 +126,11 @@ exports.addFromId = (req, res) => {
 // Update a contact identified by the contact's Id ==============================
 exports.update = (req, res) => {
   // Validate data before update the BD
+  if (req.body.belongsTo) {
+    return res.status(400).send({
+      message: "Owner of the contact are unchangaeble!",
+    });
+  }
   if (req.body.firstName && controller.checkInvalid(req.body.firstName)) {
     return res.status(400).send({
       message: 'invalid firstname!',
@@ -150,4 +175,9 @@ exports.findOne = (req, res) => {
 // Search for contacts that match with first&lastname ============================
 exports.search = (req, res) => {
   Search.contactSearch(Contact, req, res);
+};
+
+// Search for contacts that match with first&lastname ============================
+exports.getall = (req, res) => {
+  controller.getAllByUserId(Contact, req, res);
 };

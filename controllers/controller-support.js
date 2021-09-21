@@ -147,4 +147,17 @@ async function validConvoOrRelationship(controller1, controller2, req) {
   return false;
 }
 
-module.exports = { updateData, deleteData, findAllData, findOne, checkInvalid, checkValidDate, validConvoOrRelationship };
+function getAllByUserId(controller, req, res) {
+  const ownerId = req.params.id;
+  //
+  controller.find({ belongsTo: ownerId }).then((data) => {
+    res.status(200).send(data);
+  })
+    // Catching the error when assessing the DB
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({ message: 'Error when accessing the database!' });
+    });
+}
+
+module.exports = { updateData, deleteData, findAllData, findOne, checkInvalid, checkValidDate, validConvoOrRelationship, checkValidId, getAllByUserId };

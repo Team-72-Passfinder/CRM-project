@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 
 const ContactSchema = new mongoose.Schema(
   {
+    belongsTo: {
+      type: String,
+      required: true,
+    },
     firstName: {
       type: String,
       required: true,
