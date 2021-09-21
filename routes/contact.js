@@ -5,9 +5,9 @@ const controller = require('../controllers/contact');
 
 app.route('/contact').post(controller.create).get(controller.findAll);
 
-app.route('/contact/getall/:id').get(controller.getall);
+app.route('/contact/getall/:belongsToId').get(controller.getall);
 
-app.route('/contact/search/:id').get(controller.search);
+app.route('/contact/search/:belongsToId').get(controller.search);
 
 app
   .route('/contact/:id')

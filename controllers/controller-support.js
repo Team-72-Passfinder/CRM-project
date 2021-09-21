@@ -173,9 +173,9 @@ async function validRelationshipOrConvo(controller2, req, type) {
 
 // Get all contact/relationships that belong to a specific user ======================
 async function getAllByUserId(controller, req, res) {
-  const ownerId = req.params.id;
+  const ownerId = req.params.belongsToId;
   // Validate the given UserId first
-  await User.findById(req.params.id).then((user) => {
+  await User.findById(ownerId).then((user) => {
     if (!user) {
       res.status(400).send({ message: 'Invalid userId!' });
     }
