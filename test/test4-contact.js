@@ -14,12 +14,12 @@ let should = chai.should();
 
 // Declaring a user to be used for testing
 let user = new UserModel({
-  username: 'lilbroluigi',
-  password: 'securepassword123',
-  email: 'shroomcactus@yahoo.com',
-  firstName: 'Luigi',
-  lastName: 'Picasso',
-  dateOfBirth: '2/2/1235',
+  username: 'nunu',
+  password: 'somepassword',
+  email: 'nunu5i@yahoo.com',
+  firstName: 'Nunu',
+  lastName: 'Li',
+  dateOfBirth: '2/2/2020',
 });
 user.save((err, user) => {
 
