@@ -70,7 +70,7 @@ exports.create = async (req, res) => {
 // If contact is to be added from an existed userId ===============================
 exports.addFromId = async (req, res) => {
   let contactUserId = req.body.userId;
-  let OwnerUserId = req.params.id;
+  let ownerUserId = req.params.id;
 
   // Validate userId input
   if (!contactUserId || !(await controller.checkValidId(User, contactUserId))) {
