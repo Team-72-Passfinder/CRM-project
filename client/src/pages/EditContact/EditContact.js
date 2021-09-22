@@ -1,137 +1,209 @@
 import React, { useEffect, useState } from 'react'
 
-import {
-    Box,
-    Avatar,
-    Typography,
-    Fab,
-    makeStyles,
-    Input,
-    InputLabel,
-    InputBase,
-    IconButton,
-    Button,
-    TextField,
-} from '@material-ui/core'
+import { Stack, Avatar, TextField, Box, Button } from '@mui/material';
 
-import AddAPhotoIcon from '@material-ui/icons/AddAPhoto';
+import LocalizationProvider from '@mui/lab/LocalizationProvider'
+import DateAdapter from '@mui/lab/AdapterDayjs'
+import DatePicker from '@mui/lab/DatePicker'
 
-import Navbar from '../../components/Navbar/Navbar';
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
+
 import { getContact, save } from '../../api';
 
-const useStyles = makeStyles((theme) => ({
-    photo: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'column',
-        // width: '100vw'
+const formList = [
+    {
+        label: 'First Name',
+        type: 'text',
+        required: true,
     },
-    avatar: {
-        width: theme.spacing(8),
-        height: theme.spacing(8),
+    {
+        label: 'Last Name',
+        type: 'text',
+        required: true,
+    },
+    {
+        label: 'Date of Birth',
+        type: 'date',
+    },
+    {
+        label: 'Email',
+        type: 'email',
+    },
+    {
+        label: 'Phone number',
+        type: 'tel',
     }
-}))
+]
 
 function EditContact() {
-    const classes = useStyles()
+    // const classes = useStyles()
 
-    const [contact, setContact] = useState({ firstName: 'none', lastName: 'none', email: 'none', phoneNumber: 'none' })
-    const [update, setUpdate] = useState();
+    const [contact, setContact] = useState()
 
     const emptyFieldErrorMessage = 'This field is required'
+    const invalidEmailErrorMessage = 'invalid email'
+    const invalidTelErrorMessage = 'Must only contain numbers'
 
     useEffect(() => {
-        // console.log(window.location.pathname.split('/')[3])
         getContact(window.location.pathname.split('/')[3]).then(res => setContact(res))
-    })
+    }, [])
 
     function callSave() {
-        console.log(update);
-        save(update, contact._id)
+        save(contact)
+    }
+
+    function getContactData(key) {
+        switch (key) {
+            case 'First Name':
+                return contact.firstName
+            case 'Last Name':
+                return contact.lastName
+            case 'Bio':
+                return contact.biography
+            case 'Email':
+                return contact.email
+            case 'Phone number':
+                return contact.phoneNumber
+            case "Date of Birth":
+                return new Date(contact.dateOfBirth)
+            default:
+                return null;
+
+        }
+    }
+
+    function setContactData(key, value) {
+        switch(key) {
+            case 'First Name':
+                setContact(prev => ({ ...prev, firstName: value }))
+                break;
+            case 'Email':
+                setContact(prev => ({ ...prev, email: value }))
+                break;
+            case 'Date of Birth':
+                setContact(prev => ({ ...prev, dateOfBirth: value }))
+                break;
+            case 'Phone number':
+                setContact(prev => ({ ...prev, phoneNumber: value }))
+                break
+            default:
+                break;
+        }
+    }
+
+    function generateHelperText(element) {
+        if(element.required) {
+            return (getContactData(element.label) === '' && emptyFieldErrorMessage)
+        }
+
+        if (getContactData(element.label) !== '') {
+            switch (element.type) {
+                case 'email':
+                    return !/\S+@\S+\.\S+/.test(contact.email) && invalidEmailErrorMessage
+                case 'tel':
+                    return isNaN(contact.phoneNumber) && invalidTelErrorMessage
+                default:
+            }
+        }
+    }
+
+    function isError(element) {
+        if (element.required) {
+            return getContactData(element.label) === ''
+        }
+
+        if (getContactData(element.label) !== '') {
+            switch (element.type) {
+                case 'email':
+                    return !/\S+@\S+\.\S+/.test(contact.email)
+                case 'tel':
+                    return isNaN(contact.phoneNumber) && invalidTelErrorMessage
+                default:
+
+            }
+        }
     }
 
     return (
-        <div>
-            <Navbar />
-            <Box className={classes.photo} mt={5}>
-                <input
-                    id='img'
-                    accept="image/*"
-                    type='file'
-                    style={{display:'none'}}
-                    // onChange={e => {
-                    //     setUpdate({ avatar: e.target.files[0]})
-                    //     // console.log(contact)
-                    // }}
-                />
-                <label htmlFor='img'>
-                    {contact !== null || contact.avatar === ""?
-                        (
-                            <Avatar className={classes.avatar}>
-                                <AddAPhotoIcon />
-                            </Avatar>
-                        )
-                        :
-                        (
-                            <Avatar className={classes.avatar} src={contact.avatar} />
-                        )
+        <LocalizationProvider dateAdapter={DateAdapter}>
+            <div>
+                <Stack
+                    alignItems='center'
+                    spacing={2}
+                    // sx={{ background: 'red' }}
+                >
+                <div key='avatar'>
+                    <input id='uploadImage' accept='image/*' type='file' style={{display: 'none'}} />
+                    <label htmlFor='uploadImage'>
+                        {contact !== null || contact.avatar === ''?
+                            (
+                                <Avatar
+                                key='avatar'
+                                    sx={{
+                                        width: 70, height: 70
+                                    }}
+                                >
+                                    <AddAPhotoIcon />
+                                </Avatar>
+                            )
+                            :
+                            (
+                                <Avatar>
+
+                                </Avatar>
+                            )
+                        }
+                    </label>
+                </div>
+                    {
+                        contact &&
+                        <React.Fragment>
+                            {
+                                contact !== undefined &&
+                                formList.map((element) => {
+                                    switch(element.type) {
+                                        case 'date':
+                                            return(
+                                                <React.Fragment key={element.label}>
+                                                    <DatePicker
+                                                        disableFuture
+                                                        label={element.label}
+                                                        value={getContactData(element.label)}
+                                                        onChange={(newValue) => {
+                                                            setContactData(element.label, newValue)
+                                                        }}
+                                                        renderInput={(params) => <TextField {...params} sx={{ width: '300px', maxWidth: '80vw' }} size='small' />}
+                                                    />
+                                                </React.Fragment>
+                                            )
+                                        default:
+                                            return (
+                                                <TextField
+                                                    key={element.label}
+                                                    sx={{
+                                                        width: '300px',
+                                                        maxWidth: '80vw',
+                                                    }}
+                                                    label={element.label}
+                                                    type={element.type}
+                                                    size="small"
+                                                    error={isError(element)}
+                                                    onChange={e => setContactData(element.label, e.target.value)}
+                                                    defaultValue={getContactData(element.label)}
+                                                    helperText={generateHelperText(element)}
+                                                />
+                                            )
+                                    }
+                                })
+                            }
+                        </React.Fragment>
                     }
-                </label>
-            </Box>
-            <form className={classes.form}>
-                    <TextField
-                        className={classes.TextField}
-                        label="First Name"
-                        size='small'
-                        fullWidth
-                        error={contact.firstName === ''}
-                        onClick={e => contact.firstName === 'none' && setContact(prev => ({ ...prev, firstName: '' }))}
-                        onChange={e => setContact(prev => ({ ...prev, firstName: e.target.value })) }
-                        helperText={contact.firstName === '' && emptyFieldErrorMessage}
-                        required
-                    />
-                    <TextField
-                        className={classes.TextField}
-                        label="Last Name"
-                        size='small'
-                        fullWidth
-                        error={contact.lastName === ''}
-                        onClick={e => contact.lastName === 'none' && setContact(prev => ({ ...prev, lastName: '' }))}
-                        onChange={e => setContact(prev => ({...prev, lastName: e.target.value })) }
-                        helperText={contact.lastName === '' && emptyFieldErrorMessage}
-                        required
-                    />
-                    <TextField
-                        className={classes.TextField}
-                        label="Email"
-                        size='small'
-                        type='email'
-                        fullWidth
-                        error={((contact.email !== '' && contact.email !== 'none')&& !/\S+@\S+\.\S+/.test(contact.email))}
-                        onClick={e => contact.email === 'none' && setContact(prev => ({ ...prev, email: '' }))}
-                        onChange={e => setContact(prev => ({ ...prev, email: e.target.value })) }
-                        helperText={(((contact.email !== '' && contact.email !== 'none') && !/\S+@\S+\.\S+/.test(contact.email)) && 'Invalid email') }
-                    />
-                    <TextField
-                        className={classes.TextField}
-                        label="Phone Number"
-                        size='small'
-                        type='tel'
-                        fullWidth
-                        // error={contact.phoneNumber === ''}
-                        onClick={e => contact.phoneNumber === 'none' && setContact(prev => ({ ...prev, phoneNumber: '' }))}
-                        onChange={e => setContact(prev => ({ ...prev, phoneNumber: e.target.value })) }
-                        // helperText={(contact.phoneNumber === '' && emptyFieldErrorMessage)}
-                    />
-                    {/* <Button className={classes.submitButton} variant="contained" color="primary" fullWidth onClick={saveContact} disabled={submitDisabled}>
+                    <Button sx={{ width: '300px', maxWidth: '80vw' }} variant="contained" onClick={callSave}>
                         Save
-                    </Button> */}
-            </form>
-            {/* <Button onClick={callSave}>
-                Save
-            </Button> */}
-        </div>
+                    </Button>
+                </Stack>
+            </div>
+        </LocalizationProvider>
     )
 }
 

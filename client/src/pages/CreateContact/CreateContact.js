@@ -105,7 +105,7 @@ function CreateContact() {
                         size='small'
                         type='email'
                         fullWidth
-                        error={((contact.email !== '' && contact.email !== 'none')&& !/\S+@\S+\.\S+/.test(contact.email))}
+                        error={((contact.email !== '' && contact.email !== 'none') && !/\S+@\S+\.\S+/.test(contact.email))}
                         onClick={e => contact.email === 'none' && setContact(prev => ({ ...prev, email: '' }))}
                         onChange={e => setContact(prev => ({ ...prev, email: e.target.value })) }
                         helperText={(((contact.email !== '' && contact.email !== 'none') && !/\S+@\S+\.\S+/.test(contact.email)) && 'Invalid email') }
