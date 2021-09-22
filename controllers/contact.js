@@ -7,7 +7,10 @@ const User = require('../models/user');
 // Create a new Contact ===================================================
 exports.create = async (req, res) => {
   // Validate requests
-  if (!req.body.belongsTo || !(await controller.checkValidId(User, req.body.belongsTo))) {
+  if (
+    !req.body.belongsTo ||
+    !(await controller.checkValidId(User, req.body.belongsTo))
+  ) {
     return res.status(400).send({
       message: 'Missing or invalid userId that this contact belongs to!',
     });
@@ -27,7 +30,7 @@ exports.create = async (req, res) => {
   // Enforce UTC timezone
   if (req.body.dateOfBirth) {
     console.log(req.body.dateOfBirth);
-    if (controller.checkValidDate(req.body.dateOfBirth) == "Invalid Date") {
+    if (controller.checkValidDate(req.body.dateOfBirth) == 'Invalid Date') {
       return res.status(400).send({
         message: 'Invalid dateOfBirth!',
       });
@@ -61,26 +64,29 @@ exports.create = async (req, res) => {
       });
     });
 
-  console.log('New contact created! Yay');
+  console.log('New fresh contact created! Yay');
 };
 
 // If contact is to be added from an existed userId ===============================
 exports.addFromId = async (req, res) => {
+  let contactUserId = req.body.userId;
+  let OwnerUserId = req.params.id;
+
   // Validate userId input
-  if (!req.body.userId || !(await controller.checkValidId(User, req.body.userId))) {
+  if (!contactUserId || !(await controller.checkValidId(User, contactUserId))) {
     return res.status(400).send({
       message: 'Missing or invalid userId!',
     });
   }
   // Validate belongsTo input
-  if (!(await controller.checkValidId(User, req.params.id))) {
+  if (!(await controller.checkValidId(User, OwnerUserId))) {
     return res.status(400).send({
       message: 'Missing or invalid userId that this contact belongs to!',
     });
   }
 
   // Create a new contact by accessing the user's database
-  User.findById(req.body.userId)
+  User.findById(contactUserId)
     .then((userData) => {
       // If contact with this id is not found
       if (!userData) {
@@ -90,13 +96,14 @@ exports.addFromId = async (req, res) => {
         });
       }
       const contact = new Contact({
-        belongsTo: req.params.id,
+        belongsTo: OwnerUserId, // not the
         firstName: userData.firstName,
         lastName: userData.lastName,
         email: userData.email,
         phoneNumber: '',
         dateOfBirth: userData.dateOfBirth,
         biography: userData.biography || '',
+        optionalUserId: contactUserId,
       });
 
       // Save this contact to database
@@ -128,7 +135,7 @@ exports.update = (req, res) => {
   // Validate data before update the BD
   if (req.body.belongsTo) {
     return res.status(400).send({
-      message: "Owner of the contact are unchangaeble!",
+      message: 'Owner of the contact are unchangaeble!',
     });
   }
   if (req.body.firstName && controller.checkInvalid(req.body.firstName)) {
@@ -141,11 +148,17 @@ exports.update = (req, res) => {
       message: 'invalid lastname!',
     });
   }
+  // Prevent update optionalUserId so it less messy
+  if (req.body.optionalUserId) {
+    return res.status(400).send({
+      message: 'Cannot change optionalUserId!',
+    });
+  }
 
   // Enforce UTC timezone
   if (req.body.dateOfBirth) {
     console.log(req.body.dateOfBirth);
-    if (controller.checkValidDate(req.body.dateOfBirth) == "Invalid Date") {
+    if (controller.checkValidDate(req.body.dateOfBirth) == 'Invalid Date') {
       return res.status(400).send({
         message: 'Invalid dateOfBirth!',
       });

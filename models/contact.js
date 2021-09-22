@@ -30,6 +30,10 @@ const ContactSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    optionalUserId: {
+      type: String,
+      required: false,
+    },
   },
   {
     timestamps: true,
