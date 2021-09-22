@@ -1,6 +1,6 @@
 import React from 'react';
 import logo from '../frontpage/citrus-contact-logo.png';
-import heroImage from '../frontpage/hero-image.jpg';
+import heroImage from '../frontpage/hero-image2.jpg';
 import {
   Button,
   makeStyles,
@@ -11,7 +11,6 @@ import {
   Toolbar,
   Grid,
   Paper,
-  IconButton,
 } from '@material-ui/core';
 
 import './frontpage.css';
@@ -19,10 +18,9 @@ import './frontpage.css';
 const useStyles = makeStyles((theme) => ({
   root: {},
   hero: {
-    paddingTop: 10,
-    paddingBottom: 50,
+    marginBottom: 10,
     backgroundImage: `linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), url(${heroImage})`,
-    height: '500px',
+    height: '100vh',
     backgroundPosition: 'center',
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
@@ -44,21 +42,18 @@ const useStyles = makeStyles((theme) => ({
     marginRight: 12,
   },
   button: {
-    margin: 10,
+    margin: 16,
   },
   featureBox: {
     paddingTop: 30,
-    paddingBottom: 50,
+    paddingBottom: 30,
   },
   faqGrid: {
     padding: 10,
-    margin: 20,
-    background: 'pink',
-  },
-
-  footer: {
-    color: 'white',
-    background: 'navy',
+    marginTop: 20,
+    marginLeft: 40,
+    marginRight: 40,
+    background: `linear-gradient(rgba(210, 96, 26, 0.2), rgba(210, 96, 26, 0.2))`,
   },
   testColor: {
     background: 'purple',
@@ -138,7 +133,7 @@ function Frontpage() {
       {/* FAQ Section */}
       <Box className={classes.featureBox}>
         <Typography
-          variant="h4"
+          variant="h3"
           align="center"
           color="text.primary"
           gutterBottom
