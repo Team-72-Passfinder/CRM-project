@@ -6,10 +6,6 @@ const controller = require('../controllers/event');
 app.route('/event').post(controller.create).get(controller.findAll);
 //app.route('/user').post(controller.create).get(controller.findAll).get('/search', controller.search);
 
-app
-  .route('/event/:id')
-  .put(controller.update)
-  .delete(controller.delete)
-  .get(controller.findOne);
+app.route('/event/:id').get(controller.findOne);
 
 module.exports = app;

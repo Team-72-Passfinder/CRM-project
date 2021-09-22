@@ -12,6 +12,7 @@ import CreateContact from './pages/CreateContact/CreateContact'
 import Login from './pages/login/login'
 import Home from './pages/home/home'
 import Frontpage from './pages/frontpage/frontpage'
+import Event from './pages/event/event'
 
 const App = () => {
     return (
@@ -35,6 +36,10 @@ const App = () => {
                 <Route exact path='/home'>
                     <Home />
                 </Route>
+                <Route exact path='/event:id'>
+                    <Event />         
+               </Route>
+
             </Switch>
         </Router>
     );

@@ -5,6 +5,12 @@ const BASE_URL = 'http://localhost:5000';
 export function getEvents() {
   return axios.get('/event').then((response) => response.data);
 }
+export function getEvent(id) {
+  let endpoint = BASE_URL + '/event/' + id;
+
+  return axios.get(endpoint).then((response) => response.data);
+}
+
 
 export async function login(username, password) {
   await axios
