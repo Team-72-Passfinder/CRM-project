@@ -79,7 +79,7 @@ exports.addFromId = async (req, res) => {
     });
   }
   // Validate belongsTo input
-  if (!(await controller.checkValidId(User, OwnerUserId))) {
+  if (!(await controller.checkValidId(User, ownerUserId))) {
     return res.status(400).send({
       message: 'Missing or invalid userId that this contact belongs to!',
     });
@@ -96,7 +96,7 @@ exports.addFromId = async (req, res) => {
         });
       }
       const contact = new Contact({
-        belongsTo: OwnerUserId, // not the
+        belongsTo: ownerUserId, // not the
         firstName: userData.firstName,
         lastName: userData.lastName,
         email: userData.email,
