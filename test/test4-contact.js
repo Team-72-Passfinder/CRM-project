@@ -24,7 +24,24 @@ let user = new UserModel({
 user.save((err, user) => {
 
   mocha.describe('Test Contact routes', function () {
+
+    // Normal GET
     mocha.describe('/GET route', function () {
+      mocha.it('it should GET all the contacts in the database (empty)', function (done) {
+        chai
+          .request(server)
+          .get('/contact')
+          .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.a('array');
+            res.body.length.should.be.eql(0);
+            done();
+          });
+      });
+    });
+
+    // GETALL
+    mocha.describe('/GETALL route', function () {
       mocha.it('it should GET all the contacts of a given user (empty)', function (done) {
         chai
           .request(server)
@@ -70,7 +87,7 @@ user.save((err, user) => {
         };
         chai
           .request(server)
-          .get('/contact/')
+          .post('/contact/')
           .send(contact)
           .end((err, res) => {
             res.should.have.status(200);
@@ -92,7 +109,7 @@ user.save((err, user) => {
         };
         chai
           .request(server)
-          .get('/contact/' + user.id)
+          .post('/contact/' + user.id)
           .send(contact)
           .end((err, res) => {
             res.should.have.status(200);
@@ -102,6 +119,7 @@ user.save((err, user) => {
             res.body.should.have.property('lastName');
             res.body.should.have.property('email');
             res.body.should.have.property('dateOfBirth');
+            res.body.should.have.property('optionalUserId');
             done();
           });
       });
@@ -143,7 +161,6 @@ user.save((err, user) => {
 
       mocha.describe('/PUT/:id user', () => {
         mocha.it('it should UPDATE a contact given the id', (done) => {
-
           chai
             .request(server)
             .put('/contact/' + contact.id)
@@ -165,19 +182,17 @@ user.save((err, user) => {
 
       mocha.describe('/DELETE/:id user', () => {
         mocha.it('it should DELETE a contact given the id', (done) => {
-          contact.save((err, contact) => {
-            chai
-              .request(server)
-              .delete('/contact/' + contact.id)
-              .end((err, res) => {
-                res.should.have.status(200);
-                res.body.should.be.a('object');
-                res.body.should.have
-                  .property('message')
-                  .eql('Data is deleted successfully!');
-                done();
-              });
-          });
+          chai
+            .request(server)
+            .delete('/contact/' + contact.id)
+            .end((err, res) => {
+              res.should.have.status(200);
+              res.body.should.be.a('object');
+              res.body.should.have
+                .property('message')
+                .eql('Data is deleted successfully!');
+              done();
+            });
         });
       });
     });
