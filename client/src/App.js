@@ -36,8 +36,8 @@ const App = () => {
                 <Route exact path='/home'>
                     <Home />
                 </Route>
-                <Route exact path='/event:id'>
-                    <Event />         
+                <Route exact path='/event/:id'>
+                    <Event />
                </Route>
 
             </Switch>

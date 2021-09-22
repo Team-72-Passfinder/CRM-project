@@ -80,7 +80,7 @@ function Home() {
                       <Typography>{events[card].description}</Typography>
                     </CardContent>
                     <CardActions>
-                      <Link to={'/event:' + events[card]._id}>
+                      <Link to={'/event/' + events[card]._id}>
                         <Button variant="warning" size="lg">
                           View
                         </Button>

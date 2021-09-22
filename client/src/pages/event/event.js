@@ -18,10 +18,10 @@ const useStyles = makeStyles((theme) => ({
 function Event() {
     const classes = useStyles();
     const [event, setEvent] = useState();
-    
 
     useEffect(() => {
-        getEvent().then((res) => {
+        let id = window.location.pathname.split('/')[2]
+        getEvent(id).then((res) => {
           setEvent(res);
         });
       }, []);
@@ -35,7 +35,7 @@ function Event() {
                         <Typography variant='h6'>
                                 {event.name}
                             </Typography>
-                        </main>                
+                        </main>
                     </React.Fragment>
                 }
             </div>
