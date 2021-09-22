@@ -1,34 +1,15 @@
 import React, { useState } from 'react'
 
-import { AppBar, Toolbar, IconButton, Drawer, List, ListItem, ListItemIcon, ListItemText, makeStyles } from '@material-ui/core'
+import { AppBar, Toolbar, IconButton, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@mui/material'
 
-import MenuIcon from '@material-ui/icons/Menu'
-import CloseIcon from '@material-ui/icons/Close'
-import HomeIcon from '@material-ui/icons/Home';
-import PeopleIcon from '@material-ui/icons/People';
-import AccountBoxIcon from '@material-ui/icons/AccountBox';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-
-const useStyles = makeStyles((theme) => ({
-    list: {
-        width: '200px',
-    },
-    closeButton: {
-        marginLeft: theme.spacing(1),
-        marginTop: theme.spacing(1),
-    },
-    ListItem: {
-        marginLeft: theme.spacing(1),
-    },
-    listIcon: {
-        width: theme.spacing(4),
-        height: theme.spacing(4),
-    }
-}))
+import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
+import HomeIcon from '@mui/icons-material/Home';
+import PeopleIcon from '@mui/icons-material/People';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 function Navbar() {
-    const classes = useStyles()
-
     const [open, setOpen] = useState(false)
 
     const handleDrawerOpen = () => {
@@ -42,13 +23,13 @@ function Navbar() {
     function getIcon(text) {
         switch(text) {
             case 'Home':
-                return <HomeIcon className={classes.listIcon} />
+                return <HomeIcon sx={{ fontSize: 30 }} />
             case 'Socials':
-                return <PeopleIcon className={classes.listIcon} />
+                return <PeopleIcon sx={{ fontSize: 30 }}/>
             case 'Profile':
-                return <AccountBoxIcon className={classes.listIcon} />
+                return <AccountBoxIcon sx={{ fontSize: 30 }} />
             case 'Log Out':
-                return <ExitToAppIcon className={classes.listIcon} />
+                return <ExitToAppIcon sx={{ fontSize: 30 }} />
             default:
                 return
         }
@@ -69,7 +50,7 @@ function Navbar() {
 
     return (
         <div>
-            <AppBar position="static">
+            <AppBar position='static'>
                 <Toolbar>
                     <IconButton onClick={handleDrawerOpen}>
                         <MenuIcon htmlColor='white' />
@@ -79,14 +60,14 @@ function Navbar() {
 
             <Drawer anchor={'left'} open={open}>
                 <div>
-                    <IconButton className={classes.closeButton} onClick={handleDrawerClose}>
+                    <IconButton sx={{ marginLeft: 2, marginTop: 2 }} onClick={handleDrawerClose}>
                         <CloseIcon />
                     </IconButton>
                 </div>
-                <List className={classes.list}>
+                <List sx={{ width: '200px' }}>
                     {['Home', 'Socials', 'Profile', 'Log Out'].map((text) => (
-                        <ListItem className={classes.ListItem} button key={text} onClick={() => handleDrawerItemClick(text)}>
-                            <ListItemIcon>
+                        <ListItem button key={text} onClick={() => handleDrawerItemClick(text)}>
+                            <ListItemIcon sx={{ marginLeft: 2 }}>
                                 {getIcon(text)}
                             </ListItemIcon>
                             <ListItemText primary={text} />

@@ -9,6 +9,7 @@ import DatePicker from '@mui/lab/DatePicker'
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 
 import { getContact, save } from '../../api';
+import Navbar from '../../components/Navbar/Navbar';
 
 const formList = [
     {
@@ -127,7 +128,8 @@ function EditContact() {
     return (
         <LocalizationProvider dateAdapter={DateAdapter}>
             <div>
-                <Stack
+                <Navbar />
+                <Stack sx={{ my: 2 }}
                     alignItems='center'
                     spacing={2}
                     // sx={{ background: 'red' }}
