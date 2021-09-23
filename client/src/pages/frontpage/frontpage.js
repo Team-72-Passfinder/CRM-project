@@ -86,8 +86,8 @@ function Frontpage() {
       </Box>
       {/* End Hero unit */}
 
-      {/* FAQ Section */}
-      <Box className={classes.featureBox}>
+      {/* Feature section */}
+      <Box className={classes.featureSectionBox}>
         <Typography
           variant="h3"
           align="center"
@@ -122,7 +122,27 @@ function Frontpage() {
           </Box>
         </Paper>
       </Box>
-      {/* End FAQ Section */}
+      {/* End Feature section */}
+
+      {/* About us section */}
+      <Box className={classes.aboutUsSectionBox}>
+        <Typography
+          variant="h4"
+          align="center"
+          color="text.primary"
+          gutterBottom
+        >
+          About us
+        </Typography>
+        <Box className={classes.aboutUsTextBox}>
+          <Typography variant="body1" align="center" color="text.secondary">
+            Feature number two. Lorem ipsum dolor sit amet, consectetur
+            adipiscing elit. Praesent vestibulum nibh quis sagittis placerat. Ut
+            nisi quam, pharetra at risus a, scelerisque tristique magna
+          </Typography>
+        </Box>
+      </Box>
+      {/* End About us section */}
     </div>
   );
 }

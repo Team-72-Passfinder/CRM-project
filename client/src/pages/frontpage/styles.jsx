@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   button: {
     margin: 16,
   },
-  featureBox: {
+  featureSectionBox: {
     paddingTop: 30,
     paddingBottom: 30,
     alignItems: 'center',
@@ -41,17 +41,15 @@ const useStyles = makeStyles((theme) => ({
   },
   featurePaper: {
     padding: 10,
-    marginTop: 20,
-    marginLeft: 20,
-    marginRight: 20,
+    margin: 20,
     background: `linear-gradient(rgba(210, 96, 26, 0.2), rgba(210, 96, 26, 0.2))`,
     maxWidth: '70vw',
   },
   featureImage: {
-    marginRight: 40,
+    marginLeft: 30,
+    marginRight: 30,
     marginTop: 10,
     marginBottom: 10,
-    marginLeft: 20,
     height: '20%',
     width: '20%',
     maxWidth: 180,
@@ -59,6 +57,16 @@ const useStyles = makeStyles((theme) => ({
   },
   featureText: {
     margin: 20,
+  },
+  aboutUsSectionBox: {
+    paddingTop: 30,
+    paddingBottom: 30,
+    alignItems: 'center',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  aboutUsTextBox: {
+    maxWidth: '50vw',
   },
   testColor: {
     background: 'purple',
