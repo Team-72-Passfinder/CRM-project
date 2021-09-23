@@ -29,7 +29,6 @@ exports.create = async (req, res) => {
   }
   // Enforce UTC timezone
   if (req.body.dateOfBirth) {
-    console.log(req.body.dateOfBirth);
     if (controller.checkValidDate(req.body.dateOfBirth) == 'Invalid Date') {
       return res.status(400).send({
         message: 'Invalid dateOfBirth!',
@@ -63,14 +62,12 @@ exports.create = async (req, res) => {
         message: 'Error when creating contact!',
       });
     });
-
-  console.log('New fresh contact created! Yay');
 };
 
 // If contact is to be added from an existed userId ===============================
 exports.addFromId = async (req, res) => {
-  let contactUserId = req.body.userId;
-  let ownerUserId = req.params.id;
+  let contactUserId = req.body.contactUserId;
+  let ownerUserId = req.params.ownerId;
 
   // Validate userId input
   if (!contactUserId || !(await controller.checkValidId(User, contactUserId))) {
@@ -126,8 +123,6 @@ exports.addFromId = async (req, res) => {
         .status(500)
         .send({ message: 'Error when accessing the user database!' });
     });
-
-  console.log('New contact created from existed user! Yay');
 };
 
 // Update a contact identified by the contact's Id ==============================
@@ -157,7 +152,6 @@ exports.update = (req, res) => {
 
   // Enforce UTC timezone
   if (req.body.dateOfBirth) {
-    console.log(req.body.dateOfBirth);
     if (controller.checkValidDate(req.body.dateOfBirth) == 'Invalid Date') {
       return res.status(400).send({
         message: 'Invalid dateOfBirth!',
