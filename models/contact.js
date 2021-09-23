@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 
 const ContactSchema = new mongoose.Schema(
   {
+    belongsTo: {
+      type: String,
+      required: true,
+    },
     firstName: {
       type: String,
       required: true,
@@ -23,6 +27,10 @@ const ContactSchema = new mongoose.Schema(
       required: false,
     },
     biography: {
+      type: String,
+      required: false,
+    },
+    optionalUserId: {
       type: String,
       required: false,
     },

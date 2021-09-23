@@ -39,7 +39,11 @@ mocha.describe('Test Event routes', function () {
         .end((err, res) => {
           res.should.have.status(400);
           res.body.should.be.a('object');
-          res.body.should.have.property('message').eql('Missing event name or event name contains invalid characters!');
+          res.body.should.have
+            .property('message')
+            .eql(
+              'Missing event name or event name contains invalid characters!'
+            );
           done();
         });
     });
@@ -77,7 +81,6 @@ mocha.describe('Test Event routes', function () {
         chai
           .request(server)
           .get('/event/' + event.id)
-          .send(event)
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('object');

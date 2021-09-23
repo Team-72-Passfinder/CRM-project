@@ -2,6 +2,8 @@
 // Controller to perform CRUD
 const validateDate = require("validate-date");
 const { isValidObjectId } = require("mongoose");
+const User = require('../models/user');
+const Contact = require('../models/contact');
 
 // Update a contacts identified by the contact's Id ==============================
 function updateData(controller, req, res) {
@@ -101,7 +103,7 @@ function checkValidDate(date) {
   return validateDate(date);
 }
 
-// FUnction to check for valid Ids 
+// Function to check for valid Ids 
 // Used mostly for user and contact
 async function checkValidId(controller, id) {
   var check = true;
@@ -119,7 +121,7 @@ async function checkValidId(controller, id) {
 // Used mostly for convo and relationship
 async function checkExist(controller, ids) {
   var check = false;
-  await controller.findOne({ userId: ids }).then((found) => {
+  await controller.findOne({ people: ids }).then((found) => {
     if (found) {
       check = true;
     }
@@ -127,18 +129,40 @@ async function checkExist(controller, ids) {
   return check;
 }
 
+// FUnction to check for valid contactIds with given belongsTo
+// Used mostly for user and contact
+async function checkValidIdWithBelongsTo(controller, id, belongsTo) {
+  var check = true;
+  if (!id || !isValidObjectId(id)) { check = false; }
+
+  await controller.findById(id).then((foundId) => {
+    if (!foundId || foundId.belongsTo != belongsTo) {
+      check = false;
+    }
+  });
+  return check;
+}
+
 // Check for self-existence in the database ==========================================
-// Basic checking: used for conversation and relationship
-async function validConvoOrRelationship(controller1, controller2, req) {
-  const sortedIds = req.body.userId.sort();
+// Basic checking: used for relationship and convo
+async function validRelationshipOrConvo(controller2, req, type) {
+  const sortedIds = req.body.people.sort();
   // Check for duplicate userIds
-  if (req.body.userId[0] == req.body.userId[1]) {
+  if (sortedIds[0] == sortedIds[1]) {
     return false;
   }
 
+  var firstValid, secValid;
+
   // Then check for valid Ids
-  const firstValid = await checkValidId(controller1, sortedIds[0]);
-  const secValid = await checkValidId(controller1, sortedIds[1]);
+  if (type == 'relationship') {
+    firstValid = await checkValidIdWithBelongsTo(Contact, sortedIds[0], req.body.belongsTo);
+    secValid = await checkValidIdWithBelongsTo(Contact, sortedIds[1], req.body.belongsTo);
+  }
+  else {
+    firstValid = await checkValidId(User, sortedIds[0]);
+    secValid = await checkValidId(User, sortedIds[1]);
+  }
   // Check for existence
   const existed = await checkExist(controller2, sortedIds);
   if (firstValid && secValid && !existed) {
@@ -147,4 +171,28 @@ async function validConvoOrRelationship(controller1, controller2, req) {
   return false;
 }
 
-module.exports = { updateData, deleteData, findAllData, findOne, checkInvalid, checkValidDate, validConvoOrRelationship };
+// Get all contact/relationships that belong to a specific user ======================
+async function getAllByUserId(controller, req, res) {
+  const ownerId = req.params.belongsToId;
+  // Validate the given UserId first
+  await User.findById(ownerId).then((user) => {
+    if (!user) {
+      res.status(400).send({ message: 'Invalid userId!' });
+    }
+    else {
+      // Then move on to get-all
+      controller.find({ belongsTo: ownerId }).then((data) => {
+        res.status(200).send(data);
+      })
+    }
+  }).catch((err) => {
+    console.log(err);
+    res.status(500).send({ message: 'Error when accessing the database!' });
+  });
+}
+
+module.exports = {
+  updateData, deleteData, findAllData, findOne,
+  checkInvalid, checkValidDate, validRelationshipOrConvo,
+  checkValidId, getAllByUserId,
+};

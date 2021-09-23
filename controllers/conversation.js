@@ -2,20 +2,20 @@
 const Conversation = require('../models/conversation');
 const controller = require('./controller-support');
 const Search = require('./search');
-const User = require('../models/user');
 
 // Create a new convo ===========================================================
 exports.create = async (req, res) => {
   // Validate requests
   // Since a convo can be created without any message,
   // we validate users' ids only
-  if (!req.body.userId) {
+  if (!req.body.people) {
     return res.status(400).send({
       message: 'Require at least an user in convo!',
     });
   }
   // Check for existing conversation and valid userIds
-  let check = await controller.validConvoOrRelationship(User, Conversation, req);
+
+  let check = await controller.validRelationshipOrConvo(Conversation, req, 'convo');
   if (!check) {
     return res.status(400).send({
       message: 'Invalid userId or this conversation has existed!'
@@ -23,7 +23,7 @@ exports.create = async (req, res) => {
   }
   // check for existed convo with these users
   // But if there exists messages, we check for content and userId
-  if (!validateMessageContent(req, req.body.userId)) {
+  if (!validateMessageContent(req, req.body.people)) {
     return res.status(400).send({
       message: "Missing message sender or content or sender's id does not match",
     });
@@ -31,7 +31,7 @@ exports.create = async (req, res) => {
 
   // Create a new convo
   const conversation = new Conversation({
-    userId: req.body.userId.sort(),
+    people: req.body.people.sort(),
     messages: req.body.messages || [],
   });
 
@@ -53,9 +53,9 @@ exports.create = async (req, res) => {
 
 // Update a convo identified by the convo's Id ===================================
 exports.update = (req, res) => {
-  // userIds can't be changed because they're default
-  // Check if userId is included in the sent data
-  if (req.body.userId) {
+  // people's userIds can't be changed because they're default
+  // Check if people's userId is included in the sent data
+  if (req.body.people) {
     return res.status(400).send({
       message: 'Users of this conversation is unchangeable!',
     });
@@ -65,7 +65,7 @@ exports.update = (req, res) => {
 
   // Get list of userId by this id to validate sender of updating messages
   Conversation.findById(id).then((data) => {
-    const userList = data.userId;
+    const userList = data.people;
     //console.log(userList);
     // Validate info: message id
     if (!validateMessageContent(req, userList)) {
@@ -106,11 +106,11 @@ exports.findOne = (req, res) => {
 // Function to validate messages in convo
 function validateMessageContent(req, userList) {
   // Validate info: message id
-  // Checking for userId in sender should match the users in the convo
+  // Checking for people's userId in sender should match the users in the convo
   for (const ind in req.body.messages) {
     const mes = req.body.messages[ind];
     // Check if sender is missing
-    // Also check for matching sender and the userIds
+    // Also check for matching sender and the people's userIds
     if (mes.sender == "" || !userList.includes(mes.sender)) {
       return false;
     }

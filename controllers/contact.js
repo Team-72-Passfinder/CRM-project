@@ -2,12 +2,20 @@
 const Contact = require('../models/contact');
 const controller = require('./controller-support');
 const Search = require('./search');
-// Controller to perform CRUD on user parameter
 const User = require('../models/user');
 
 // Create a new Contact ===================================================
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
   // Validate requests
+  if (
+    !req.body.belongsTo ||
+    !(await controller.checkValidId(User, req.body.belongsTo))
+  ) {
+    return res.status(400).send({
+      message: 'Missing or invalid userId that this contact belongs to!',
+    });
+  }
+
   if (!req.body.firstName || controller.checkInvalid(req.body.firstName)) {
     return res.status(400).send({
       message: 'Missing or invalid firstname!',
@@ -21,8 +29,7 @@ exports.create = (req, res) => {
   }
   // Enforce UTC timezone
   if (req.body.dateOfBirth) {
-    console.log(req.body.dateOfBirth);
-    if (controller.checkValidDate(req.body.dateOfBirth) == "Invalid Date") {
+    if (controller.checkValidDate(req.body.dateOfBirth) == 'Invalid Date') {
       return res.status(400).send({
         message: 'Invalid dateOfBirth!',
       });
@@ -34,6 +41,7 @@ exports.create = (req, res) => {
 
   // Create a new contact using these information
   const contact = new Contact({
+    belongsTo: req.body.belongsTo,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email || '',
@@ -54,14 +62,28 @@ exports.create = (req, res) => {
         message: 'Error when creating contact!',
       });
     });
-
-  console.log('New contact created! Yay');
 };
 
 // If contact is to be added from an existed userId ===============================
-exports.addFromId = (req, res) => {
+exports.addFromId = async (req, res) => {
+  let contactUserId = req.body.contactUserId;
+  let ownerUserId = req.params.ownerId;
+
+  // Validate userId input
+  if (!contactUserId || !(await controller.checkValidId(User, contactUserId))) {
+    return res.status(400).send({
+      message: 'Missing or invalid userId!',
+    });
+  }
+  // Validate belongsTo input
+  if (!(await controller.checkValidId(User, ownerUserId))) {
+    return res.status(400).send({
+      message: 'Missing or invalid userId that this contact belongs to!',
+    });
+  }
+
   // Create a new contact by accessing the user's database
-  User.findById(req.params.id)
+  User.findById(contactUserId)
     .then((userData) => {
       // If contact with this id is not found
       if (!userData) {
@@ -71,12 +93,14 @@ exports.addFromId = (req, res) => {
         });
       }
       const contact = new Contact({
+        belongsTo: ownerUserId, // not the
         firstName: userData.firstName,
         lastName: userData.lastName,
         email: userData.email,
         phoneNumber: '',
         dateOfBirth: userData.dateOfBirth,
         biography: userData.biography || '',
+        optionalUserId: contactUserId,
       });
 
       // Save this contact to database
@@ -99,13 +123,16 @@ exports.addFromId = (req, res) => {
         .status(500)
         .send({ message: 'Error when accessing the user database!' });
     });
-
-  console.log('New contact created from existed user! Yay');
 };
 
 // Update a contact identified by the contact's Id ==============================
 exports.update = (req, res) => {
   // Validate data before update the BD
+  if (req.body.belongsTo) {
+    return res.status(400).send({
+      message: 'Owner of the contact are unchangaeble!',
+    });
+  }
   if (req.body.firstName && controller.checkInvalid(req.body.firstName)) {
     return res.status(400).send({
       message: 'invalid firstname!',
@@ -116,11 +143,16 @@ exports.update = (req, res) => {
       message: 'invalid lastname!',
     });
   }
+  // Prevent update optionalUserId so it less messy
+  if (req.body.optionalUserId) {
+    return res.status(400).send({
+      message: 'Cannot change optionalUserId!',
+    });
+  }
 
   // Enforce UTC timezone
   if (req.body.dateOfBirth) {
-    console.log(req.body.dateOfBirth);
-    if (controller.checkValidDate(req.body.dateOfBirth) == "Invalid Date") {
+    if (controller.checkValidDate(req.body.dateOfBirth) == 'Invalid Date') {
       return res.status(400).send({
         message: 'Invalid dateOfBirth!',
       });
@@ -150,4 +182,9 @@ exports.findOne = (req, res) => {
 // Search for contacts that match with first&lastname ============================
 exports.search = (req, res) => {
   Search.contactSearch(Contact, req, res);
+};
+
+// Get all contacts that belong to a specific user ============================
+exports.getall = (req, res) => {
+  controller.getAllByUserId(Contact, req, res);
 };

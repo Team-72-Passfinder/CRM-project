@@ -1,11 +1,17 @@
 // Controller to perform CRUD on relationship parameter
 const Relationship = require('../models/relationship');
 const controller = require('./controller-support');
-const Contact = require('../models/contact');
 const Search = require('./search');
+const User = require('../models/user');
 
 // Create a new relationship ===================================================
 exports.create = async (req, res) => {
+  // Validate belongsTo
+  if (!req.body.belongsTo || !(await controller.checkValidId(User, req.body.belongsTo))) {
+    return res.status(400).send({
+      message: 'Missing or invalid userId that this contact belongs to!',
+    });
+  }
   // Check for valid datetime
   if (!req.body.startedDatetime) {
     return res.status(400).send({
@@ -13,9 +19,9 @@ exports.create = async (req, res) => {
     });
   }
   // Check if this relationship contains exactly 2 users
-  if (Object.keys(req.body.userId).length != 2) {
+  if (Object.keys(req.body.people).length != 2) {
     return res.status(400).send({
-      message: 'Require 2 userIds in relationship!',
+      message: 'Require 2 people in relationship!',
     });
   }
   // Enforce UTC timezone
@@ -31,16 +37,17 @@ exports.create = async (req, res) => {
     }
   }
 
-  // Check for existing relationship and for valid userIds
-  let check = await controller.validConvoOrRelationship(Contact, Relationship, req);
+  // Check for existing relationship and for valid people
+  let check = await controller.validRelationshipOrConvo(Relationship, req, 'relationship');
   if (!check) {
     return res.status(400).send({
-      message: 'Invalid userId or this relationship has existed!'
+      message: 'Invalid contact Ids or this relationship has existed!'
     });
   }
   //else
   const relationship = new Relationship({
-    userId: req.body.userId.sort(),
+    belongsTo: req.body.belongsTo,
+    people: req.body.people.sort(),
     startedDatetime: req.body.startedDatetime,
     tag: req.body.tag || [],
     description: req.body.description || '',
@@ -62,11 +69,16 @@ exports.create = async (req, res) => {
 
 // Update a relationship identified by the relationship's Id ==============================
 exports.update = (req, res) => {
-  // userId and startedDateTime are to be fixed!
+  // belongsTo, people and startedDateTime are to be fixed!
   // check if the request includes these fields
-  if (req.body.userId) {
+  if (req.body.belongsTo) {
     return res.status(400).send({
-      message: 'userId in this relationship is unchangaeble!',
+      message: "Owner of the relationship are unchangaeble!",
+    });
+  }
+  if (req.body.people) {
+    return res.status(400).send({
+      message: 'people in this relationship are unchangaeble!',
     });
   }
   if (req.body.startedDatetime) {
@@ -96,4 +108,9 @@ exports.findOne = (req, res) => {
 // Searching for relationship given tags
 exports.search = (req, res) => {
   Search.relationshipSearch(Relationship, req, res);
+};
+
+// Get all relationship that belong to a specific user ============================
+exports.getall = (req, res) => {
+  controller.getAllByUserId(Relationship, req, res);
 };

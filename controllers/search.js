@@ -1,10 +1,16 @@
 
+const ctrl = require('./controller-support');
+const User = require('../models/user');
 // Basic search function ====================================================
 // The basic search query request looks like this:
 /*{
     "query": string
 }*/
-function contactSearch(controller, req, res) {
+async function contactSearch(controller, req, res) {
+  // Check valid userId
+  if (!(await ctrl.checkValidId(User, req.params.belongsToId))) {
+    return res.status(400).send({ message: 'Invalid userId!' });
+  }
   // check query's body
   if (!checkValidQuery(req)) {
     return res.status(500).send({ message: 'Missing query!' });
@@ -13,6 +19,7 @@ function contactSearch(controller, req, res) {
   const text = req.body.query;
   controller
     .find({
+      belongsTo: req.params.belongsToId,
       $or: [{ firstName: { $regex: text, $options: 'i' } },
       { lastName: { $regex: text, $options: 'i' } },
       { email: { $regex: text, $options: 'i' } }]
@@ -155,14 +162,21 @@ function convoSearch(controller, req, res) {
   "query": string
 }*/
 
-function relationshipSearch(controller, req, res) {
+async function relationshipSearch(controller, req, res) {
+  // Check valid userId
+  if (!(await ctrl.checkValidId(User, req.params.belongsToId))) {
+    return res.status(400).send({ message: 'Invalid userId!' });
+  }
   // check query's body
   if (!checkValidQuery(req)) {
     return res.status(500).send({ message: 'Missing query!' });
   }
 
   controller
-    .find({ tag: { $regex: req.body.query, $options: 'i' } })
+    .find({
+      belongsTo: req.params.belongsToId,
+      tag: { $regex: req.body.query, $options: 'i' }
+    })
     //.find({ $text: { $search: req.body.query } })
     .then((data) => {
       res.status(200).send(data);
