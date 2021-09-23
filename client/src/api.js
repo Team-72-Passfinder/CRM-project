@@ -2,6 +2,13 @@ const axios = require('axios');
 
 const BASE_URL = 'http://localhost:5000';
 
+const instance = axios.create({
+    baseURL: 'http://localhost:5000',
+    headers: {
+        'Authorization': 'Bearer ' + localStorage.getItem('token-myapp')
+    }
+})
+
 export function getEvents() {
   return axios.get('/event').then((response) => response.data);
 }
@@ -15,7 +22,8 @@ export async function login(username, password) {
     .then(function (response) {
       console.log(response);
       localStorage.setItem('token-myapp', response.data);
-      window.location.href = '/';
+      instance.headers = { 'Authorization': `bearer ${response.data}`}
+      window.location.href = '/home';
     })
     .catch(function (error) {
       console.log(error.response.status);
@@ -52,4 +60,10 @@ export function save(contact) {
     let endpoint = BASE_URL + '/contact/' + contact._id;
 
     return axios.put(endpoint, contact).then(res => res.data).catch(e => console.log(e.response))
+}
+
+export function me() {
+    let endpoint = '/profile'
+
+    return instance.get(endpoint).then(res => res.data);
 }
