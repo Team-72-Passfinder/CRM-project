@@ -1,12 +1,12 @@
 // Controller to perform CRUD on Contact parameter
 const Contact = require('../models/contact');
-const controller = require('./general-controller');
+const controller = require('./controller-support');
+const Search = require('./search');
 // Controller to perform CRUD on user parameter
 const User = require('../models/user');
 
 // Create a new Contact ===================================================
 exports.create = (req, res) => {
-  //console.log(req);
   // Validate requests
   if (!req.body.firstName || controller.checkInvalid(req.body.firstName)) {
     return res.status(400).send({
@@ -58,7 +58,7 @@ exports.create = (req, res) => {
   console.log('New contact created! Yay');
 };
 
-// If contact is to be added from an existed userId
+// If contact is to be added from an existed userId ===============================
 exports.addFromId = (req, res) => {
   // Create a new contact by accessing the user's database
   User.findById(req.params.id)
@@ -145,4 +145,9 @@ exports.findAll = (req, res) => {
 // Find a single contact with the contact's id ====================================
 exports.findOne = (req, res) => {
   controller.findOne(Contact, req, res);
+};
+
+// Search for contacts that match with first&lastname ============================
+exports.search = (req, res) => {
+  Search.contactSearch(Contact, req, res);
 };

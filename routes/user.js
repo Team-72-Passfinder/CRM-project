@@ -4,7 +4,8 @@ const app = express();
 const controller = require('../controllers/user');
 
 app.route('/user').post(controller.create).get(controller.findAll);
-//app.route('/user').post(controller.create).get(controller.findAll).get('/search', controller.search);
+
+app.route('/user/search').get(controller.search);
 
 app
   .route('/user/:id')

@@ -1,19 +1,15 @@
 import React, { useEffect, useState } from 'react'
 
-import { Typography, TextField, Button, makeStyles, Box } from '@material-ui/core'
+import { Typography, TextField, Button, makeStyles, Box, InputAdornment } from '@material-ui/core'
+
+// import EmailIcon from '@material-ui/icons/Email';
+import AddIcon from '@material-ui/icons/Add';
 
 import Navbar from '../../components/Navbar/Navbar'
 import { addContact } from '../../api';
+// import InputStandard from '../../components/Input/InputStandard';
 
 const useStyles = makeStyles((theme) => ({
-    // loot: {
-    //     display: 'flex',
-    //     flexDirection: 'column',
-    //     alignItems: 'center',
-    //     // width: '100vw',
-    //     // height: '100vh',
-    //     background:'red'
-    // },
     title: {
         fontSize: '28px',
         marginTop: theme.spacing(5),
@@ -22,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     form: {
         display: 'flex',
         // width: '300px',
-        width: '60%',
+        width: '80%',
         alignItems: 'center',
         flexDirection: 'column'
     },
@@ -33,21 +29,28 @@ const useStyles = makeStyles((theme) => ({
         alignItems: 'center',
     },
     TextField: {
-        marginTop: '5px',
-        marginBottom: '5px',
+        marginTop: theme.spacing(1),
+        marginBottom: theme.spacing(1),
+        // marginInlineEnd: '20px'
     },
     input: {
         // color: 'blue'
     },
     submitButton: {
         marginTop: '20px',
+    },
+    hbox: {
+        display: 'flex',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'space-between'
     }
 }))
 
 function CreateContact() {
     const classes = useStyles();
 
-    const [contact, setContact] = useState({ firstName: 'none', lastName: 'none', email: 'none', phoneNumber: 'none' })
+    const [contact, setContact] = useState({ firstName: 'none', lastName: 'none', email: 'none', phoneNumber: 'none', dateOfBirth: '2021-09-00', biography: 'none' })
     const [submitDisabled, setSubmitDisabled] = useState(true)
 
     const emptyFieldErrorMessage = 'This field is required'
@@ -58,6 +61,7 @@ function CreateContact() {
 
     useEffect(() => {
         const inputs = document.querySelectorAll('input')
+        console.log(contact)
         Array.from(inputs).filter(input => {
             if(input.required === true) {
                 if(!input.validity.valid) {
@@ -74,34 +78,50 @@ function CreateContact() {
             <Navbar />
             <Box className={classes.formContainer}>
                 <Typography className={classes.title}>
-                    Create new contact
+                    Contact form
                 </Typography>
                 <form className={classes.form}>
                     <TextField
                         className={classes.TextField}
                         label="First Name"
+                        variant='outlined'
                         size='small'
                         fullWidth
                         error={contact.firstName === ''}
                         onClick={e => contact.firstName === 'none' && setContact(prev => ({ ...prev, firstName: '' }))}
-                        onChange={e => setContact(prev => ({ ...prev, firstName: e.target.value })) }
+                        onChange={e => setContact(prev => ({ ...prev, firstName: e.target.value }))}
                         helperText={contact.firstName === '' && emptyFieldErrorMessage}
                         required
                     />
                     <TextField
                         className={classes.TextField}
                         label="Last Name"
+                        variant='outlined'
                         size='small'
                         fullWidth
                         error={contact.lastName === ''}
                         onClick={e => contact.lastName === 'none' && setContact(prev => ({ ...prev, lastName: '' }))}
-                        onChange={e => setContact(prev => ({...prev, lastName: e.target.value })) }
+                        onChange={e => setContact(prev => ({ ...prev, lastName: e.target.value }))}
                         helperText={contact.lastName === '' && emptyFieldErrorMessage}
                         required
                     />
                     <TextField
                         className={classes.TextField}
+                        label="Birthday"
+                        variant='outlined'
+                        size='small'
+                        type="date"
+                        fullWidth
+                        defaultValue='Birthday'
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        onChange={e => setContact(prev => ({ ...prev, dateOfBirth: e.target.value })) }
+                    />
+                    <TextField
+                        className={classes.TextField}
                         label="Email"
+                        variant='outlined'
                         size='small'
                         type='email'
                         fullWidth
@@ -113,13 +133,25 @@ function CreateContact() {
                     <TextField
                         className={classes.TextField}
                         label="Phone Number"
+                        variant='outlined'
                         size='small'
                         type='tel'
                         fullWidth
-                        // error={contact.phoneNumber === ''}
+                        error={((contact.phoneNumber !== '' && contact.phoneNumber !== 'none') && isNaN(contact.phoneNumber))}
                         onClick={e => contact.phoneNumber === 'none' && setContact(prev => ({ ...prev, phoneNumber: '' }))}
                         onChange={e => setContact(prev => ({ ...prev, phoneNumber: e.target.value })) }
-                        // helperText={(contact.phoneNumber === '' && emptyFieldErrorMessage)}
+                        helperText={(((contact.phoneNumber !== '' && contact.phoneNumber !== 'none') && isNaN(contact.phoneNumber)) && 'Must contain only numbers')}
+                    />
+                    <TextField
+                        className={classes.TextField}
+                        label='bio'
+                        variant='outlined'
+                        size='small'
+                        fullWidth
+                        multiline
+                        rows={2}
+                        onClick={e => contact.biography === 'none' && setContact(prev => ({ ...prev, biography: '' }))}
+                        onChange={e => setContact(prev => ({ ...prev, biography: e.target.value }))}
                     />
                     <Button className={classes.submitButton} variant="contained" color="primary" fullWidth onClick={saveContact} disabled={submitDisabled}>
                         Save

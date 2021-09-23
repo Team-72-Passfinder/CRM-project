@@ -1,6 +1,7 @@
 // Controller to perform CRUD on event parameter
 const Event = require('../models/event');
-const controller = require('./general-controller');
+const controller = require('./controller-support');
+const Search = require('./search')
 
 // Create a new event ===================================================
 exports.create = (req, res) => {
@@ -87,25 +88,7 @@ exports.findOne = (req, res) => {
   controller.findOne(Event, req, res);
 };
 
-/*
-// Searching for event with tag/eventName ======================================// Should have option whether event is finished yet for not
+// Search for events ==========================================================
 exports.search = (req, res) => {
-  const query = req.query.searchQuery;
-  // Return all events using find()
-  var eventMap = {};
-  User
-    .find(query // Limited by finish status of the event)
-    .then((data) => {
-      data.forEach(function (user) {
-        eventMap[user._id] = {
-          // Info to return
-        }
-      })
-      res.send(userMap);
-    })
-    // Catching error when accessing the database
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send({ message: 'Error when accessing the database!' });
-    });
-}*/
+  Search.eventSearch(Event, req, res);
+};
