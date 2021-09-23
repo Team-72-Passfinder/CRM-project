@@ -66,11 +66,11 @@ function Frontpage() {
             Welcome to Citrus Contact!
           </Typography>
           <Typography variant="body1" align="center" color="text.secondary">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent
-            vestibulum nibh quis sagittis placerat. Ut nisi quam, pharetra at
-            risus a, scelerisque tristique magna. Pellentesque justo nulla,
-            venenatis eget urna ac, luctus suscipit tortor. Pellentesque vitae
-            sagittis risus. Duis non libero quis ipsum hendrerit commodo
+            Have you ever troubled yourself trying to keep in check with all the
+            connections you have? Feared you may missed an important meeting
+            event? Want to know if there is a potential customer in your
+            acquaitances pool? Our software Citrus Contact, a citrus-flavoured,
+            unique and easy-to-use solution for all of your problems.
           </Typography>
           <Box display="flex" justifyContent="center">
             <Button
@@ -100,9 +100,9 @@ function Frontpage() {
           <Box display="flex" alignItems="center">
             <img className={classes.featureImage} src={logo} alt="Logo" />
             <Typography align="center" className={classes.featureText}>
-              Feature number one. Lorem ipsum dolor sit amet, consectetur
-              adipiscing elit. Praesent vestibulum nibh quis sagittis placerat.
-              Ut nisi quam, pharetra at risus a, scelerisque tristique magna
+              Feature number one. You can have relationship between your
+              contacts, allow you to find potential customers from your known
+              customers.
             </Typography>
           </Box>
         </Paper>
@@ -114,9 +114,9 @@ function Frontpage() {
         >
           <Box display="flex" alignItems="center">
             <Typography align="center" className={classes.featureText}>
-              Feature number two. Lorem ipsum dolor sit amet, consectetur
-              adipiscing elit. Praesent vestibulum nibh quis sagittis placerat.
-              Ut nisi quam, pharetra at risus a, scelerisque tristique magna
+              Feature number two. A system that keep track of which contact you
+              frequently participate in events which, thus help you estimate the
+              closeness of your contacts.
             </Typography>
             <img className={classes.featureImage} src={logo} alt="Logo" />
           </Box>
@@ -136,9 +136,8 @@ function Frontpage() {
         </Typography>
         <Box className={classes.aboutUsTextBox}>
           <Typography variant="body1" align="center" color="text.secondary">
-            Feature number two. Lorem ipsum dolor sit amet, consectetur
-            adipiscing elit. Praesent vestibulum nibh quis sagittis placerat. Ut
-            nisi quam, pharetra at risus a, scelerisque tristique magna
+            We are a team of 5 passionate and inspired CS students, enrolled in
+            University of Melbourne. This webapp is our capstone project.
           </Typography>
         </Box>
       </Box>
