@@ -6,6 +6,9 @@ const server = require('../server');
 
 const UserModel = require('../models/user');
 const EventModel = require('../models/event');
+const ContactModel = require('../models/contact');
+const RelationshipModel = require('../models/relationship');
+const ConversationModel = require('../models/conversation');
 
 var assert = chai.assert;
 
@@ -28,6 +31,15 @@ mocha.describe('Clean the database before tests', () => {
   });
   mocha.it('Delete event collection', function (done) {
     EventModel.deleteMany({}, done);
+  });
+  mocha.it('Delete contact collection', function (done) {
+    ContactModel.deleteMany({}, done);
+  });
+  mocha.it('Delete relationship collection', function (done) {
+    RelationshipModel.deleteMany({}, done);
+  });
+  mocha.it('Delete conversation collection', function (done) {
+    ConversationModel.deleteMany({}, done);
   });
 });
 
