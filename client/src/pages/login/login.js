@@ -5,8 +5,6 @@ import { Box, Container, TextField, Button, Link, Alert, Typography } from '@mui
 import { login } from '../../api'
 
 function Login() {
-    // const classes = useStyles()
-
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [alert, setAlert] = useState()
@@ -85,39 +83,6 @@ function Login() {
                     Login
                 </Button>
             </Box>
-            {/* <Typography className={classes.title}>
-                Login
-            </Typography>
-            {alert}
-            <form className={classes.form}>
-                <TextField
-                    className={classes.input}
-                    variant='outlined'
-                    size='small'
-                    fullWidth
-                    label='username'
-                    onChange={e => setUsername(e.target.value)} />
-                <TextField
-                    className={classes.input}
-                    variant='outlined'
-                    type='password'
-                    size='small'
-                    fullWidth
-                    label='password'
-                    onChange={e => setPassword(e.target.value)} />
-                <Link className={classes.link} href='/forgot-password'>
-                    Forgot password?
-                </Link>
-                <Button
-                    className={classes.button}
-                    variant='contained'
-                    color='primary'
-                    fullWidth
-                    onClick={submitHandler}
-                >
-                    Login
-                </Button>
-            </form> */}
         </Container>
     );
 }
