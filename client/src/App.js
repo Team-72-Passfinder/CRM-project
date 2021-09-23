@@ -12,6 +12,7 @@ import CreateContact from './pages/CreateContact/CreateContact'
 import Login from './pages/login/login'
 import Home from './pages/home/home'
 import Frontpage from './pages/frontpage/frontpage'
+import EditContact from './pages/EditContact/EditContact'
 
 const App = () => {
     return (
@@ -25,6 +26,9 @@ const App = () => {
                 </Route>
                 <Route path='/contact/add'>
                     <CreateContact />
+                </Route>
+                <Route path='/contact/edit/:id'>
+                    <EditContact />
                 </Route>
                 <Route exact path='/contact/:id'>
                     <Contact />
