@@ -1,51 +1,10 @@
-// import { set } from 'mongoose'
 import React, { useState } from 'react'
-// import { BsFillExclamationTriangleFill, BsExclamationCircleFill } from 'react-icons/bs'
 
-import { Typography, Box, TextField, Button, makeStyles, Link } from '@material-ui/core'
-import { Alert } from '@material-ui/lab'
+import { Box, Container, TextField, Button, Link, Alert, Typography } from '@mui/material'
 
 import { login } from '../../api'
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        display: 'flex',
-        width: '100vw',
-        height: '100vh',
-        alignItems: 'center',
-        justifyContent: 'center',
-        flexDirection: 'column',
-        marginLeft: '-8px',
-        marginBottom: '-8px',
-        marginTop: '-8px',
-    },
-    title: {
-        fontSize: '28px',
-        fontWeight: '600',
-        marginBottom: theme.spacing(2),
-    },
-    form: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        width: '250px'
-    },
-    input: {
-        marginTop: theme.spacing(1),
-        marginBottom: theme.spacing(1),
-    },
-    link: {
-        
-    },
-    button: {
-        marginTop: theme.spacing(1),
-        marginBottom: theme.spacing(1),
-    }
-}))
-
 function Login() {
-    const classes = useStyles()
-
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [alert, setAlert] = useState()
@@ -71,32 +30,51 @@ function Login() {
     }
 
     return (
-        <div className={classes.root}>
-            <Typography className={classes.title}>
-                Login
-            </Typography>
-            {alert}
-            <form className={classes.form}>
+        <Container sx={{ display: 'flex', width: '100vw', height: '100vh', justifyContent: 'center', alignItems: 'center' }} maxWidth="xs">
+            <Box
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    width: '300px',
+                    maxWidth: '80vw'
+                }}
+            >
+                <Typography
+                    sx={{
+                        mb: 2,
+                    }}
+                    variant='h5'
+                >
+                    Login
+                </Typography>
+                <Box sx={{ width: '300px' }}>
+                    {alert}
+                </Box>
                 <TextField
-                    className={classes.input}
-                    variant='outlined'
-                    size='small'
+                    margin="normal"
+                    variant="outlined"
+                    size="small"
                     fullWidth
-                    label='username'
-                    onChange={e => setUsername(e.target.value)} />
+                    label="username"
+                    onChange={e => setUsername(e.target.value)}
+                />
                 <TextField
-                    className={classes.input}
-                    variant='outlined'
-                    type='password'
-                    size='small'
+                    margin="normal"
+                    variant="outlined"
+                    type="password"
+                    size="small"
                     fullWidth
-                    label='password'
-                    onChange={e => setPassword(e.target.value)} />
-                <Link className={classes.link} href='/forgot-password'>
-                    Forgot password?
-                </Link>
+                    label="password"
+                    onChange={e => setPassword(e.target.value)}
+                />
+                <Box sx={{ display: 'flex', width: '100%', justifyContent: 'right', mb: 2 }}>
+                    <Link href='/forgot-password' underline="none">
+                        Forgot password?
+                    </Link>
+                </Box>
                 <Button
-                    className={classes.button}
+                    margin="normal"
                     variant='contained'
                     color='primary'
                     fullWidth
@@ -104,8 +82,8 @@ function Login() {
                 >
                     Login
                 </Button>
-            </form>
-        </div>
+            </Box>
+        </Container>
     );
 }
 
