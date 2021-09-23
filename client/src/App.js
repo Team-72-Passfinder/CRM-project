@@ -4,6 +4,7 @@ import {
     BrowserRouter as Router,
     Switch,
     Route,
+    Redirect,
 } from 'react-router-dom'
 
 import ContactList from './pages/ContactList/ContactList'
@@ -13,6 +14,7 @@ import Login from './pages/login/login'
 import Home from './pages/home/home'
 import Frontpage from './pages/frontpage/frontpage'
 import EditContact from './pages/EditContact/EditContact'
+import Profile from './pages/Profile/profile'
 
 const App = () => {
     return (
@@ -33,6 +35,9 @@ const App = () => {
                 <Route exact path='/contact/:id'>
                     <Contact />
                 </Route>
+                <PrivateRoute path='/profile'>
+                    <Profile />
+                </PrivateRoute>
                 <Route exact path='/contact'>
                     <ContactList />
                 </Route>
@@ -41,6 +46,28 @@ const App = () => {
                 </Route>
             </Switch>
         </Router>
+    );
+}
+
+function PrivateRoute({ children, ...rest }) {
+    let auth = localStorage.getItem('token-myapp');
+
+    return (
+        <Route
+            {...rest}
+            render={({ location }) =>
+                auth? (
+                    children
+                ) : (
+                    <Redirect
+                        to={{
+                            pathname: "/login",
+                            state: { from: location }
+                        }}
+                    />
+                )
+            }
+        />
     );
 }
 
