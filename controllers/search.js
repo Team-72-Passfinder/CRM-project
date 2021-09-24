@@ -100,11 +100,11 @@ async function eventSearch(req, res) {
     return res.status(500).send({ message: 'Missing query!' });
   }
   // Validate dateTime [from, to] if exist
-  if (req.body.from && !ctrl.checkValidDate(req.body.from)) {
+  if (req.body.from && ctrl.checkValidDate(req.body.from) == 'Invalid Date') {
     return res.status(400).send({ message: 'Invalid (from) date!' });
   }
   // Only check (to) date if (from) date exists
-  if ((req.body.from && req.body.to && !ctrl.checkValidDate(req.body.to))
+  if ((req.body.from && req.body.to && ctrl.checkValidDate(req.body.to) == 'Invalid Date')
     //or (to) date exists but (from) date doesn't or vice versa
     || (!req.body.from && req.body.to) || (req.body.from && !req.body.to)) {
     return res.status(400).send({ message: 'Missing or Invalid (from)/ (to) date!' });
