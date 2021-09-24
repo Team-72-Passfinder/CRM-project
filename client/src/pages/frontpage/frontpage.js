@@ -10,7 +10,9 @@ import {
   Paper,
   Grid,
   Link,
-} from '@material-ui/core';
+  createTheme,
+  ThemeProvider,
+} from '@mui/material';
 
 import useStyles from './styles';
 
@@ -25,6 +27,13 @@ function Frontpage() {
   const scrollToContact = () =>
     contactRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
+  const orangeTheme = createTheme({
+    palette: {
+      primary: {
+        main: '#d2601a',
+      },
+    },
+  });
   const classes = useStyles();
 
   return (
@@ -64,18 +73,13 @@ function Frontpage() {
       {/* Hero unit */}
       <Box className={classes.hero}>
         <Container>
-          <Box align="center">
+          <Box display="flex" justifyContent="center" alignItems="center">
             <img className={classes.logoHero} src={logo} alt="Logo" />
           </Box>
-          <Typography
-            variant="h3"
-            align="center"
-            color="text.primary"
-            gutterBottom
-          >
+          <Typography variant="h3" color="white" align="center" gutterBottom>
             Welcome to Citrus Contact!
           </Typography>
-          <Typography variant="body1" align="center" color="text.secondary">
+          <Typography variant="body1" color="white" align="center">
             Have you ever troubled yourself trying to keep in check with all the
             connections you have? Feared you may missed an important meeting
             event? Want to know if there is a potential customer in your
@@ -83,14 +87,16 @@ function Frontpage() {
             unique and easy-to-use solution for all of your problems.
           </Typography>
           <Box display="flex" justifyContent="center">
-            <Button
-              className={classes.button}
-              color="primary"
-              variant="contained"
-              onClick={goToRegister}
-            >
-              Get started
-            </Button>
+            <ThemeProvider theme={orangeTheme}>
+              <Button
+                color="primary"
+                variant="contained"
+                onClick={goToRegister}
+                sx={{ margin: 4 }}
+              >
+                Get started
+              </Button>
+            </ThemeProvider>
           </Box>
         </Container>
       </Box>
@@ -109,7 +115,7 @@ function Frontpage() {
         <Paper elevation={3} className={classes.featurePaper}>
           <Box display="flex" alignItems="center">
             <img className={classes.featureImage} src={logo} alt="Logo" />
-            <Typography align="center" className={classes.featureText}>
+            <Typography align="center" p={5}>
               Feature number one. You can have relationship between your
               contacts, allow you to find potential customers from your known
               customers.
@@ -123,7 +129,7 @@ function Frontpage() {
           alignItems="center"
         >
           <Box display="flex" alignItems="center">
-            <Typography align="center" className={classes.featureText}>
+            <Typography align="center" p={5}>
               Feature number two. A system that keep track of which contact you
               frequently participate in events with, thus help you estimate the
               closeness of your relationships.
@@ -155,9 +161,9 @@ function Frontpage() {
 
       <footer ref={contactRef}>
         <Box className={classes.footerSectionBox}>
-          <Grid container alignItems="center" justify="center">
+          <Grid container alignItems="center" justifyContent="center">
             <Grid item xs align="left">
-              <Typography variant="h7" color="text.primary">
+              <Typography variant="h7" color="inherit">
                 Made by Team Passfinders, 2021
               </Typography>
             </Grid>
@@ -165,8 +171,10 @@ function Frontpage() {
               <img className={classes.footerImage} src={logo} alt="Logo" />
             </Grid>
             <Grid item xs align="right">
-              <Typography variant="h6">Contact</Typography>
-              <Typography variant="h7">
+              <Typography variant="h6" color="inherit">
+                Contact
+              </Typography>
+              <Typography variant="h7" color="inherit">
                 Email: lamkhoan@student.unimelb.edu.au
               </Typography>
             </Grid>

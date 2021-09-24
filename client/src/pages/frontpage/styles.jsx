@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core/styles';
+import makeStyles from '@mui/styles/makeStyles';
 import heroImage from '../frontpage/hero-image2.jpg';
 
 const useStyles = makeStyles((theme) => ({
@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: 180,
     maxHeight: 180,
     animation: `$spin 20s linear infinite`,
+    alignSelf: 'center',
   },
   toolbar: {
     minHeight: 48,
@@ -29,9 +30,6 @@ const useStyles = makeStyles((theme) => ({
   },
   toolbarButton: {
     marginRight: 12,
-  },
-  button: {
-    margin: 16,
   },
   featureSectionBox: {
     paddingTop: 30,
@@ -53,11 +51,8 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: 10,
     height: '20%',
     width: '20%',
-    maxWidth: 180,
-    maxHeight: 180,
-  },
-  featureText: {
-    margin: 20,
+    maxWidth: 120,
+    maxHeight: 120,
   },
   aboutUsSectionBox: {
     paddingTop: 30,
@@ -72,7 +67,8 @@ const useStyles = makeStyles((theme) => ({
   footerSectionBox: {
     padding: 10,
     color: 'white',
-    background: '#d2601a',
+    //background: '#d2601a', //orange
+    background: '#1D3C45',
   },
   footerGridItem: {
     alignItems: 'center',
