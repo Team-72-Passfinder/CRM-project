@@ -8,6 +8,7 @@ import {
   AppBar,
   Toolbar,
   Paper,
+  Grid,
 } from '@material-ui/core';
 
 import useStyles from './styles';
@@ -115,8 +116,8 @@ function Frontpage() {
           <Box display="flex" alignItems="center">
             <Typography align="center" className={classes.featureText}>
               Feature number two. A system that keep track of which contact you
-              frequently participate in events which, thus help you estimate the
-              closeness of your contacts.
+              frequently participate in events with, thus help you estimate the
+              closeness of your relationships.
             </Typography>
             <img className={classes.featureImage} src={logo} alt="Logo" />
           </Box>
@@ -142,6 +143,27 @@ function Frontpage() {
         </Box>
       </Box>
       {/* End About us section */}
+
+      <footer>
+        <Box className={classes.footerSectionBox}>
+          <Grid container alignItems="center" justify="center">
+            <Grid item xs align="left">
+              <Typography variant="h7" color="text.primary">
+                Made by Team Passfinders, 2021
+              </Typography>
+            </Grid>
+            <Grid item xs align="center">
+              <img className={classes.footerImage} src={logo} alt="Logo" />
+            </Grid>
+            <Grid item xs align="right">
+              <Typography variant="h6">Contact</Typography>
+              <Typography variant="h7">
+                Email: lamkhoan@student.unimelb.edu.au
+              </Typography>
+            </Grid>
+          </Grid>
+        </Box>
+      </footer>
     </div>
   );
 }

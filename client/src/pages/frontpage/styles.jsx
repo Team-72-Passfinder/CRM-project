@@ -68,6 +68,19 @@ const useStyles = makeStyles((theme) => ({
   aboutUsTextBox: {
     maxWidth: '50vw',
   },
+  footerSectionBox: {
+    padding: 10,
+    color: 'white',
+    background: '#d2601a',
+  },
+  footerGridItem: {
+    alignItems: 'center',
+    display: 'flex',
+  },
+  footerImage: {
+    maxWidth: 60,
+    maxHeight: 60,
+  },
   testColor: {
     background: 'purple',
   },
