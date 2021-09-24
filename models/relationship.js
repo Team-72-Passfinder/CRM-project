@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 
 const RelationshipSchema = new mongoose.Schema(
   {
+    belongsTo: {
+      type: String,
+      required: true,
+    },
     people: {
       type: [String], // max 2 people
       required: true,
@@ -23,5 +27,8 @@ const RelationshipSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+// Create index for searching
+RelationshipSchema.index({ tag: 'text' });
 
 module.exports = mongoose.model('Relationship', RelationshipSchema);

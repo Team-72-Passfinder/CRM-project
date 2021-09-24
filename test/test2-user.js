@@ -44,7 +44,11 @@ mocha.describe('Test User routes', function () {
           .end((err, res) => {
             res.should.have.status(400);
             res.body.should.be.a('object');
-            res.body.should.have.property('message').eql('Missing firstName or firstName contains invalid characters!');
+            res.body.should.have
+              .property('message')
+              .eql(
+                'Missing firstName or firstName contains invalid characters!'
+              );
             done();
           });
       }
@@ -102,10 +106,10 @@ mocha.describe('Test User routes', function () {
   mocha.describe('/GET/:id route', () => {
     mocha.it('it should GET a user by the given id', (done) => {
       let user = new UserModel({
-        username: 'bigbromario',
+        username: 'contactBro',
         password: 'securepassword123',
         email: 'shroomboy@yahoo.com',
-        firstName: 'Mario',
+        firstName: 'ContactTester',
         lastName: 'Picasso',
         dateOfBirth: '1/1/1234',
       });

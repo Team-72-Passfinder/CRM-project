@@ -33,19 +33,33 @@ In addition, it's better to **commit frequently**. This way, we can easily see t
 
 ## Installation
 
-In the project directory, you can run in the terminal:
-
 Add `.env` file at the root of the project. Fill neccessary information into it (contact Lam if you don't know).
 
-### `npm install`
+In the project directory, you can run these in the terminal:
 
-To install the neccessary dependencies.
+### Core commands
 
-### `npm run dev`
+#### `npm install` at root and client folder
+
+To install the neccessary dependencies. Remember to do this in both root folder and `/client` folder.
+
+#### `npm run build` at client folder
+
+To build static files.
+
+#### `npm start` at client folder
+
+To start the frontend.
+
+#### `npm run dev` at root folder
 
 To runs the server backend in the development mode.
 
-### `npm run test`
+After run all above commands (ideally in 2 terminals, one for frontend and one for backend), it should open a new web window at `localhost:3000` and displayed some frontpage content there.
+
+### More commands:
+
+#### `npm test` at root folder
 
 To runs the Mocha tests in `/test` folder.
 
@@ -123,3 +137,4 @@ For frontend, follow the `README.md` in folder `client`.
 ## Reading resources
 
 <https://www.toptal.com/software/trunk-based-development-git-flow>
+<https://www.youtube.com/watch?v=2AIL1c-cJM0&ab_channel=TheFullStackJunkie>

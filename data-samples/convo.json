@@ -1,6 +1,6 @@
 [
   {
-    "userId": [
+    "people": [
       "6128f7781f70352b9160407f",
       "612b497f5eb1853ce6da5a88"
     ],
@@ -16,7 +16,7 @@
     ]
   },
   {
-    "userId": [
+    "people": [
       "6128f7781f70352b9160407f",
       "612b497f5eb1853ce6da5a88"
     ],
@@ -27,12 +27,12 @@
       },
       {
         "sender": "612b497f5eb1853ce6da5a88",
-        "content": "hello!"
+        "content": "This will raise an error of unmatched sender and userId!"
       }
     ]
   },
   {
-    "userId": [
+    "people": [
       "6128f7781f70352b9160407f",
       "612b497f5eb1853ce6da5a88"
     ],
@@ -48,14 +48,14 @@
     ]
   },
   {
-    "userId": [
+    "people": [
       "6128f7431f70352b9160407d",
       "6128f7781f70352b9160407f"
     ],
     "messages": []
   },
   {
-    "userId": [],
+    "people": [],
     "messages": [
       {
         "sender": "This will raise an error of missing users!",

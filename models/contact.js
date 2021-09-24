@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 
 const ContactSchema = new mongoose.Schema(
   {
+    belongsTo: {
+      type: String,
+      required: true,
+    },
     firstName: {
       type: String,
       required: true,
@@ -26,10 +30,17 @@ const ContactSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    optionalUserId: {
+      type: String,
+      required: false,
+    },
   },
   {
     timestamps: true,
   }
 );
+
+// Create index for searching
+//ContactSchema.index({ firstName: 1, lastName: -1 });
 
 module.exports = mongoose.model('Contact', ContactSchema);

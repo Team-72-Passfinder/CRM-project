@@ -10,7 +10,7 @@ router.get(
   '/profile',
   passport.authenticate('jwt', { session: false }),
   async (req, res) => {
-    res.send('success');
+    res.send(req.user);
   }
 );
 
