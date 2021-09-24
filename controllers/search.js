@@ -104,8 +104,8 @@ async function eventSearch(req, res) {
     return res.status(400).send({ message: 'Invalid (from) date!' });
   }
   // Only check (to) date if (from) date exists
-  if ((req.body.from && (req.body.to && !ctrl.checkValidDate(req.body.to)))
-    //or (to) date exists but (from) date doesn't
+  if ((req.body.from && req.body.to && !ctrl.checkValidDate(req.body.to))
+    //or (to) date exists but (from) date doesn't or vice versa
     || (!req.body.from && req.body.to) || (req.body.from && !req.body.to)) {
     return res.status(400).send({ message: 'Missing or Invalid (from)/ (to) date!' });
   }
@@ -149,7 +149,7 @@ async function eventSearch(req, res) {
         });
       });
   }
-  console.log(eventMap);
+  //console.log(eventMap);
   const keys = Object.keys(req.body);
   // Now consider completed status
   if (keys.indexOf('completed') > -1 && typeof (req.body.completed) == "boolean") {
