@@ -1,12 +1,16 @@
 
 const ctrl = require('./controller-support');
 const User = require('../models/user');
+const Event = require('../models/event');
+const Relationship = require('../models/relationship');
+const Convo = require('../models/conversation');
+const Contact = require('../models/contact');
 // Basic search function ====================================================
 // The basic search query request looks like this:
 /*{
     "query": string
 }*/
-async function contactSearch(controller, req, res) {
+async function contactSearch(req, res) {
   // Check valid userId
   if (!(await ctrl.checkValidId(User, req.params.belongsToId))) {
     return res.status(400).send({ message: 'Invalid userId!' });
@@ -17,7 +21,7 @@ async function contactSearch(controller, req, res) {
   }
 
   const text = req.body.query;
-  controller
+  Contact
     .find({
       belongsTo: req.params.belongsToId,
       $or: [{ firstName: { $regex: text, $options: 'i' } },
@@ -40,14 +44,14 @@ async function contactSearch(controller, req, res) {
 // Search function for User only =============================================
 // since some info is protected and not to be returned directly
 // returns an array of users 
-function userSearch(controller, req, res) {
+function userSearch(req, res) {
   // check query's body
   if (!checkValidQuery(req)) {
     return res.status(500).send({ message: 'Missing query!' });
   }
   var userMap = [];
   const text = req.body.query;
-  controller
+  User
     //.find({ $text: { $search: req.body.query } }) // full-text search
     // partial-text-search:
     .find({
@@ -83,44 +87,80 @@ function userSearch(controller, req, res) {
 /*{
   "query": string,
   "completed": boolean, // indicates that only looking for finished/unfinished events
-  "dateTime": date      // looks for particular event on particular date
+  "from": date          // looks for particular events from this date
+  "to": date            // looks for particular events upto the end of this date
 }*/
-function eventSearch(controller, req, res) {
+async function eventSearch(req, res) {
+  // Declaring an array of data to return
+  var eventMap = [];
+
+  // Validate received parameters
   // check query's body
   if (!checkValidQuery(req)) {
     return res.status(500).send({ message: 'Missing query!' });
   }
+  // Validate dateTime [from, to] if exist
+  if (req.body.from && !ctrl.checkValidDate(req.body.from)) {
+    return res.status(400).send({ message: 'Invalid (from) date!' });
+  }
+  // Only check (to) date if (from) date exists
+  if ((req.body.from && (req.body.to && !ctrl.checkValidDate(req.body.to)))
+    //or (to) date exists but (from) date doesn't
+    || (!req.body.from && req.body.to) || (req.body.from && !req.body.to)) {
+    return res.status(400).send({ message: 'Missing or Invalid (from)/ (to) date!' });
+  }
 
+  // Then, start searching
+  // 2 Cases: 1 with dateTime and 1 without
   const text = req.body.query;
-  // Else, filter out the completed status
-  var eventMap = [];
-  // Case of updated sucessfully
-  controller
-    .find({
+  const from = req.body.from;
+  const to = req.body.to;
+  if (from) {
+    // Combine date time in find() query
+    await Event.find({
+      $or: [{ name: { $regex: text, $options: 'i' } },
+      { description: { $regex: text, $options: 'i' } }],
+      dateTime: {
+        $gte: new Date(new Date(from).setHours(0, 0, 0)),
+        $lt: new Date(new Date(to).setHours(23, 59, 59))
+      }
+    }).then((data) => {
+      eventMap = data;
+    })// Case of error
+      .catch((err) => {
+        console.log(err);
+        res.status(500).send({
+          message: 'Error when accessing the database!',
+        });
+      });
+  }
+  // Else, searching for query only
+  else {
+    await Event.find({
       $or: [{ name: { $regex: text, $options: 'i' } },
       { description: { $regex: text, $options: 'i' } }]
-    })
-    .then((data) => {
-      if (Object.keys(req.body).length > 1) {
-        data.forEach((event) => {
-          if (event.completed === req.body.completed) {
-            //console.log(event.completed);
-            eventMap.push(event);
-          }
+    }).then((data) => {
+      eventMap = data;
+    })// Case of error
+      .catch((err) => {
+        console.log(err);
+        res.status(500).send({
+          message: 'Error when accessing the database!',
         });
-      }
-      else {
-        eventMap = data;
-      }
-      res.status(200).send(eventMap);
-    })
-    // Case of error
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send({
-        message: 'Error when accessing the database!',
       });
+  }
+  console.log(eventMap);
+  const keys = Object.keys(req.body);
+  // Now consider completed status
+  if (keys.indexOf('completed') > -1 && typeof (req.body.completed) == "boolean") {
+    eventMap.forEach((ev) => {
+      if (ev.completed != req.body.completed) {
+        //console.log(event.completed);
+        eventMap.splice(eventMap.indexOf(ev), 1);
+      }
     });
+  }
+  res.status(200).send(eventMap);
 }
 
 // Function to search for messages given conversation's id =======================
@@ -129,7 +169,7 @@ function eventSearch(controller, req, res) {
 /*{
   "query": string
 }*/
-function convoSearch(controller, req, res) {
+function convoSearch(req, res) {
   // check query's body
   if (!checkValidQuery(req)) {
     return res.status(500).send({ message: 'Missing query!' });
@@ -139,7 +179,7 @@ function convoSearch(controller, req, res) {
   // import data that contains those ids
   var data = [];
   // Find from database
-  controller.findById(id).then((found) => {
+  Convo.findById(id).then((found) => {
     //console.log(data);
     found.messages.forEach((mes) => {
       if (mes.content.includes(req.body.query)) {
@@ -162,7 +202,7 @@ function convoSearch(controller, req, res) {
   "query": string
 }*/
 
-async function relationshipSearch(controller, req, res) {
+async function relationshipSearch(req, res) {
   // Check valid userId
   if (!(await ctrl.checkValidId(User, req.params.belongsToId))) {
     return res.status(400).send({ message: 'Invalid userId!' });
@@ -172,7 +212,7 @@ async function relationshipSearch(controller, req, res) {
     return res.status(500).send({ message: 'Missing query!' });
   }
 
-  controller
+  Relationship
     .find({
       belongsTo: req.params.belongsToId,
       tag: { $regex: req.body.query, $options: 'i' }

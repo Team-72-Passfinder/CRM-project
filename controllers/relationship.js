@@ -112,5 +112,5 @@ exports.search = (req, res) => {
 
 // Get all relationship that belong to a specific user ============================
 exports.getall = (req, res) => {
-  controller.getAllByUserId(Relationship, req, res);
+  controller.getAllByUserId(req, res);
 };
