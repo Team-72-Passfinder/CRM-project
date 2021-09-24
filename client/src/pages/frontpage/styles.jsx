@@ -18,9 +18,10 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
     color: 'white',
   },
-  logoBox: {
-    height: 180,
-    paddingBottom: 30,
+  logoHero: {
+    maxWidth: 180,
+    maxHeight: 180,
+    animation: `$spin 20s linear infinite`,
   },
   toolbar: {
     minHeight: 48,

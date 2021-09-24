@@ -64,12 +64,8 @@ function Frontpage() {
       {/* Hero unit */}
       <Box className={classes.hero}>
         <Container>
-          <Box
-            display="flex"
-            justifyContent="center"
-            className={classes.logoBox}
-          >
-            <img src={logo} alt="Logo" />
+          <Box align="center">
+            <img className={classes.logoHero} src={logo} alt="Logo" />
           </Box>
           <Typography
             variant="h3"
