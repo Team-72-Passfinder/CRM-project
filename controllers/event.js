@@ -90,5 +90,5 @@ exports.findOne = (req, res) => {
 
 // Search for events ==========================================================
 exports.search = (req, res) => {
-  Search.eventSearch(Event, req, res);
+  Search.eventSearch(req, res);
 };

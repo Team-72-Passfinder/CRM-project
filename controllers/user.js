@@ -224,5 +224,5 @@ exports.findOne = (req, res) => {
 
 // Search for users that match with username, first&lastname and email ========
 exports.search = (req, res) => {
-  Search.userSearch(User, req, res);
+  Search.userSearch(req, res);
 };

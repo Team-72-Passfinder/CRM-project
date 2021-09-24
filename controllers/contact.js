@@ -181,7 +181,7 @@ exports.findOne = (req, res) => {
 
 // Search for contacts that match with first&lastname ============================
 exports.search = (req, res) => {
-  Search.contactSearch(Contact, req, res);
+  Search.contactSearch(req, res);
 };
 
 // Get all contacts that belong to a specific user ============================
