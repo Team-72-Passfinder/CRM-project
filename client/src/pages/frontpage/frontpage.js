@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import logo from '../frontpage/citrus-contact-logo.png';
 import {
   Button,
@@ -9,18 +9,21 @@ import {
   Toolbar,
   Paper,
   Grid,
+  Link,
 } from '@material-ui/core';
 
 import useStyles from './styles';
 
 function Frontpage() {
-  const goToLogin = () => {
-    window.location.href = '/login';
-  };
+  const goToLogin = () => (window.location.href = '/login');
+  const goToRegister = () => (window.location.href = '/register');
 
-  const goToRegister = () => {
-    window.location.href = '/register';
-  };
+  const aboutUsRef = useRef(null);
+  const contactRef = useRef(null);
+  const scrollToAboutUs = () =>
+    aboutUsRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const scrollToContact = () =>
+    contactRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
   const classes = useStyles();
 
@@ -29,12 +32,22 @@ function Frontpage() {
       <AppBar position="static">
         <Toolbar className={classes.toolbar}>
           <Box display="flex" flexGrow={1}>
-            <Typography variant="h6">Passfinders</Typography>
+            <Link href="/" color="inherit">
+              <Typography variant="h6">Passfinders</Typography>
+            </Link>
           </Box>
-          <Button color="inherit" className={classes.toolbarButton}>
+          <Button
+            color="inherit"
+            className={classes.toolbarButton}
+            onClick={scrollToAboutUs}
+          >
             About us
           </Button>
-          <Button color="inherit" className={classes.toolbarButton}>
+          <Button
+            color="inherit"
+            className={classes.toolbarButton}
+            onClick={scrollToContact}
+          >
             Contact
           </Button>
           <Button
@@ -126,7 +139,7 @@ function Frontpage() {
       {/* End Feature section */}
 
       {/* About us section */}
-      <Box className={classes.aboutUsSectionBox}>
+      <Box className={classes.aboutUsSectionBox} ref={aboutUsRef}>
         <Typography
           variant="h4"
           align="center"
@@ -144,7 +157,7 @@ function Frontpage() {
       </Box>
       {/* End About us section */}
 
-      <footer>
+      <footer ref={contactRef}>
         <Box className={classes.footerSectionBox}>
           <Grid container alignItems="center" justify="center">
             <Grid item xs align="left">

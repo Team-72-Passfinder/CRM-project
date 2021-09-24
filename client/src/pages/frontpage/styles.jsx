@@ -80,6 +80,11 @@ const useStyles = makeStyles((theme) => ({
   footerImage: {
     maxWidth: 60,
     maxHeight: 60,
+    animation: `$spin 10s linear infinite`,
+  },
+  '@keyframes spin': {
+    '0%': { transform: 'rotate(0deg)' },
+    '100%': { transform: 'rotate(360deg)' },
   },
   testColor: {
     background: 'purple',
