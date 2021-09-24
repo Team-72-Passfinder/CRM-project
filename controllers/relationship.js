@@ -107,10 +107,10 @@ exports.findOne = (req, res) => {
 
 // Searching for relationship given tags
 exports.search = (req, res) => {
-  Search.relationshipSearch(Relationship, req, res);
+  Search.relationshipSearch(req, res);
 };
 
 // Get all relationship that belong to a specific user ============================
 exports.getall = (req, res) => {
-  controller.getAllByUserId(req, res);
+  controller.getAllByUserId(Relationship, req, res);
 };
