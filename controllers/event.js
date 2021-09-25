@@ -40,6 +40,7 @@ exports.create = async (req, res) => {
     req.body.dateTime += 'Z';
   }
 
+  // Proceed participant lists to get names if inputs are contactIds!
   const rawPcpt = req.body.participants;
   const participants = await controller.getNameFromContactId(req.body.belongsTo, rawPcpt);
   // Check for error:
