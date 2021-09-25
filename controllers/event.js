@@ -68,7 +68,7 @@ exports.update = (req, res) => {
   // validate DateTime, name and completness status
   if (req.body.belongsTo) {
     return res.status(400).send({
-      message: 'Owner of the contact are unchangaeble!',
+      message: 'Owner of the event are unchangaeble!',
     });
   }
   if (req.body.name && controller.checkInvalid(req.body.name)) {
