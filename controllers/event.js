@@ -41,11 +41,14 @@ exports.create = async (req, res) => {
   }
 
   // Proceed participant lists to get names if inputs are contactIds!
-  const rawPcpt = req.body.participants;
-  const participants = await controller.getNameFromContactId(req.body.belongsTo, rawPcpt);
-  // Check for error:
-  if (participants.length != Object.keys(rawPcpt).length) {
-    return res.status(400).send({ message: 'Error when accessing the contact database!' })
+  var participants = [];
+  if (req.body.participants) {
+    const rawPcpt = req.body.participants;
+    participants = await controller.getNameFromContactId(req.body.belongsTo, rawPcpt);
+    // Check for error:
+    if (participants.length != Object.keys(rawPcpt).length) {
+      return res.status(400).send({ message: 'Error when accessing the contact database!' })
+    }
   }
 
   const event = new Event({
@@ -53,7 +56,7 @@ exports.create = async (req, res) => {
     name: req.body.name,
     dateTime: req.body.dateTime,
     completed: req.body.completed,
-    participants: participants || [],
+    participants: participants,
     description: req.body.description || '',
   });
 
