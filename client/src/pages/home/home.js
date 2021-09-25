@@ -18,26 +18,17 @@ const useStyles = makeStyles((theme) => ({
   root: {
     background: '#fff1e1',
   },
-  card: {
-    height: '100%',
-    width: '100%',
-    display: 'flex',
-
-    flexDirection: 'column',
-    background: 'blue',
-  },
-
-  cardContent: {
-    flexGrow: 1,
-    background: 'blue',
-  },
   eventGrid: {
     maxwidth: 'md',
     background: '#fff1e1',
     padding: 40,
   },
-  cardItem: {
-    height: '100%',
+  eventDescription: {
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    display: '-webkit-box',
+    WebkitBoxOrient: 'vertical',
+    WebkitLineClamp: '2',
   },
 }));
 
@@ -81,8 +72,8 @@ function Home() {
         </Container>
 
         <Grid container spacing={4} className={classes.eventGrid}>
-          {cardIndex.map((card) => (
-            <Grid item key={card} xs={12} sm={6} md={4}>
+          {cardIndex.map((i) => (
+            <Grid item key={i} xs={12} sm={6} md={4}>
               <Card
                 sx={{
                   display: 'flex',
@@ -93,26 +84,20 @@ function Home() {
               >
                 <CardContent>
                   <Typography gutterBottom variant="h5" component="h2">
-                    {events[card].name}
+                    {events[i].name}
                   </Typography>
                   <Typography gutterBottom variant="body1" component="h2">
-                    {getDate(events[card].dateTime)}
+                    {getDate(events[i].dateTime)}
                   </Typography>
                   <Typography
                     variant="body2"
-                    sx={{
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      display: '-webkit-box',
-                      WebkitBoxOrient: 'vertical',
-                      WebkitLineClamp: '2',
-                    }}
+                    className={classes.eventDescription}
                   >
-                    {events[card].description}
+                    {events[i].description}
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <Link to={'/event/' + events[card]._id}>
+                  <Link to={'/event/' + events[i]._id}>
                     <Button variant="warning" size="lg">
                       View
                     </Button>
