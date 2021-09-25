@@ -10,6 +10,17 @@ export function getEvent(id) {
 
   return axios.get(endpoint).then((response) => response.data);
 }
+export function addEvent(event) {
+  let endpoint = BASE_URL + '/event/';
+
+  return axios.post(endpoint, event).then(res => res.data)
+}
+
+export function setEvent(id) {
+  let endpoint = BASE_URL + '/event/' + id;
+
+  return axios.post(endpoint, id).then(res => res.data)
+}
 
 
 export async function login(username, password) {

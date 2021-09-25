@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { AppBar } from '@material-ui/core';
 import { Button } from '@material-ui/core';
 import { Card } from '@material-ui/core';
 import { CardActions } from '@material-ui/core';
@@ -14,18 +13,32 @@ import { Link } from 'react-router-dom';
 import { getEvents } from '../../api';
 
 const useStyles = makeStyles((theme) => ({
+  body: {
+    background: '#fff1e1',
+  },
+  heroContent:{
+    background: '#fff1e1',
+  },
   card: {
     height: '100%',
+    width: '100%',
     display: 'flex',
+    
     flexDirection: 'column',
+    background: 'blue',
   },
 
   cardContent: {
     flexGrow: 1,
+    background: 'blue',
   },
+  cardGrid:{
+    maxwidth: 'md',
+    background: '#fff1e1',
+  }
 }));
 
-const maxCards = 6;
+const maxCards = 10;
 const cards = Array.from(Array(maxCards).keys());
 
 function Home() {
@@ -48,8 +61,7 @@ function Home() {
     return (
       <React.Fragment>
         <PermanentDrawerLeft />
-        <AppBar position="relative"></AppBar>
-        <main>
+        <main >
           {/* Hero unit */}
           <div className={classes.heroContent}>
             <Container maxWidth="sm">
@@ -63,7 +75,7 @@ function Home() {
                 Welcome Back (name)
               </Typography>
             </Container>
-          </div>
+          
           <Container className={classes.cardGrid} maxWidth="md">
             {/* End hero unit */}
             <Grid container spacing={4}>
@@ -91,6 +103,7 @@ function Home() {
               ))}
             </Grid>
           </Container>
+          </div>
         </main>
       </React.Fragment>
     );

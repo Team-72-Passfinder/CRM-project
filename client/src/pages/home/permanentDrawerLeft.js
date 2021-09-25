@@ -11,6 +11,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
   },
+  
   appBar: {
     width: `calc(100% - ${drawerWidth}px)`,
     marginLeft: drawerWidth,
@@ -38,6 +39,18 @@ const useStyles = makeStyles((theme) => ({
 
 export default function PermanentDrawerLeft() {
   const classes = useStyles();
+  const goToLogin = () => {
+    window.location.href = '/login';
+  };
+  const goToProfile = () => {
+    window.location.href = '/profile';
+  };
+  const goToChat = () => {
+    window.location.href = '/chat';
+  };
+  const goToEvent = () => {
+    window.location.href = '/events';
+  };
 
   return (
     <div className={classes.root}>
@@ -50,31 +63,39 @@ export default function PermanentDrawerLeft() {
         }}
         anchor="left"
       >
-<Link to="/event">
-  <Button variant="outline-light" size="lg">
-    Event
-  </Button>
-</Link>
-<Link to="/chat">
-  <Button variant="outline-light" size="lg">
-    Chat
-  </Button>
-</Link>
-<Link to="/social">
-  <Button variant="outline-light" size="lg">
-    Socials
-  </Button>
-</Link>
-<Link to="/profile">
-  <Button variant="outline-light" size="lg">
-    Profile
-  </Button>
-</Link>
-<Link to="/login">
-  <Button variant="warning" size="lg">
-    Login
-  </Button>
-</Link>
+
+<Button
+              className={classes.button}
+              color="primary"
+              variant="outlined"
+              onClick={goToEvent}
+            >
+              Events
+            </Button>
+            <Button
+              className={classes.button}
+              color="primary"
+              variant="outlined"
+              onClick={goToChat}
+            >
+              Chat
+            </Button>
+            <Button
+              className={classes.button}
+              color="primary"
+              variant="outlined"
+              onClick={goToProfile}
+            >
+              Profile
+            </Button>
+            <Button
+              className={classes.button}
+              color="primary"
+              variant="outlined"
+              onClick={goToLogin}
+            >
+              Logout
+            </Button>
      
       </Drawer>
     </div>
