@@ -57,7 +57,7 @@ To runs the server backend in the development mode.
 
 After run all above commands (ideally in 2 terminals, one for frontend and one for backend), it should open a new web window at `localhost:3000` and displayed some frontpage content there.
 
-### More commands:
+### More commands
 
 #### `npm test` at root folder
 
@@ -113,6 +113,7 @@ DB_USER     = _____
 DB_PASSWORD = _____
 DB_URL      = _____
 DB_NAME     = _____
+DB_TEST_NAME = _____
 
 PASSPORT_SECRET = _____
 ```
