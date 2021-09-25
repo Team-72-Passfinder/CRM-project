@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react'
 
-// import { IconButton,  makeStyles, Paper, InputBase, Avatar, List, ListItem, ListItemAvatar, ListItemText, Fab } from '@material-ui/core'
+import { Container, Box, Stack, Paper, Divider, InputBase, List, ListItem, ListItemText, ListItemAvatar, Avatar, Typography, Button, Tabs, Tab, Fab, IconButton } from '@mui/material'
 
-import { Container, Box, Paper, InputBase, Stack, List, ListItem, ListItemText, ListItemAvatar, Avatar, Typography, Button, Tabs, Tab, Slide } from '@mui/material'
-
-import SearchIcon from '@material-ui/icons/Search'
-import AddIcon from '@material-ui/icons/Add'
+import SortIcon from '@mui/icons-material/Sort';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import AddIcon from '@mui/icons-material/Add';
 
 import { getContacts } from '../../api'
 import Navbar from '../../components/Navbar/Navbar'
@@ -66,8 +65,6 @@ function ContactList() {
     const [contacts, setContacts] = useState([])
     const [search, setSearch] = useState('')
     const [tab, setTab] = useState('All')
-    const [checked, setChecked] = useState(false)
-    const containerRef = React.useRef(null);
 
     // Click on individual contact to go to detailed page.
     function handleClick(id) {
@@ -76,7 +73,6 @@ function ContactList() {
 
     const handleTabChange = (event, newValue) => {
         setTab(newValue);
-        setChecked(true)
     };
 
 
@@ -134,35 +130,51 @@ function ContactList() {
             padding: 0 }}>
             <Navbar />
             <Box sx={{ display: 'flex', width: '100vw', alignItems: 'center', flexDirection: 'column' }}>
-                <Paper sx={{ background: '#EBEBEB', width: '368px', maxWidth: '90vw', my: '30px' }} elevation={0}>
-                    <InputBase sx={{ ml: '10px' }} placeholder='Search for contacts' />
-                </Paper>
+                <Stack
+                    sx={{
+                        width: '368px',
+                        maxWidth: '90vw',
+                    }}
+                    direction="row"
+                    justifyContent="center"
+                    alignItems="center"
+                >
+                    <Paper sx={{ background: '#EBEBEB', width: '316px', maxWidth: '90%', mr: '10px', my: '10px' }} elevation={0}>
+                        <InputBase sx={{ ml: '10px', width: '296px' }} placeholder='Search for contacts' onChange={ (e) => { setSearch(e.target.value) }} />
+                    </Paper>
+                    <IconButton>
+                        <AddIcon />
+                    </IconButton>
+                </Stack>
                 <Tabs
                     sx={{
                         width: '368px',
+                        maxWidth: '90vw',
+                        height: '40px',
+                        minHeight: '30px',
                         background: '#F7F7F7',
                         borderRadius: '30px',
+                        mb: '10px',
                     }}
                     TabIndicatorProps={{
                         style: {
                             height: '100%',
                             background: '#DF7861',
                             borderRadius: '30px',
-                            zIndex: '0'
+                            zIndex: 0
                         },
                     }}
                     variant='fullWidth'
                     value={tab}
                     onChange={handleTabChange}
-                    ref={containerRef}
                 >
                     <Tab
                         sx={{
+                            height: '40px',
+                            minHeight: '40px',
                             fontWeight: 600,
                             borderRadius: '30px',
                             '&.Mui-selected': {
-                                // background: '#DF7861',
-                                // opacity: 0,
                                 color: 'white',
                                 boxShadow: '4px 4px 20px 5px rgba(223, 120, 97, 0.25)',
                                 zIndex: 1
@@ -170,73 +182,65 @@ function ContactList() {
                         }}
                         value="All"
                         label="All"
-                        // ref={containerRef}
                     />
                     <Tab
                         sx={{
+                            height: '40px',
+                            minHeight: '40px',
                             fontWeight: 600,
                             borderRadius: '30px',
                             '&.Mui-selected': {
-                                // opacity: '0.1',
                                 color: 'white',
-                                boxShadow: '4px 4px 20px 5px rgba(223, 120, 97, 0.25)',
+                                boxShadow: '-4px -4px 20px 5px rgba(223, 120, 97, 0.25)',
                                 zIndex: 1
                             }
                         }}
                         value="User"
                         label="User"
-                        ref={containerRef}
                     />
                 </Tabs>
-                <Stack spacing={2}>
-                    {
+                <List>
+                    {search === '' ?
                         contacts.map((element) => (
                             <ListItem
                                 sx={{
                                     background: 'white',
                                     width: 368,
-                                    borderRadius: 2,
-                                    boxShadow: '1px 1px 2px rgba(0, 0, 0, 0.25)'
                                 }} id={element._id} key={element._id} button onClick={e => handleClick(element._id)}>
                                 <ListItemAvatar>
                                     <Avatar>{element.firstName[0]}</Avatar>
                                 </ListItemAvatar>
                                 <ListItemText>
-                                    <Typography sx={{  }}>
+                                    <Typography sx={{ color: '#2F4858', fontWeight: 'bold', fontSize: '15px' }}>
+                                        {element.firstName} {element.lastName}
+                                    </Typography>
+                                </ListItemText>
+                            </ListItem>
+                        ))
+                        :
+                        // Filtered contacts
+                        contacts.filter(contact => contact.firstName.toLowerCase().match(search.toLowerCase()) || contact.lastName.toLowerCase().match(search.toLowerCase())).map((element) => (
+                            <ListItem
+                                sx={{
+                                    background: 'white',
+                                    width: 368,
+                                }} id={element._id} key={element._id} button onClick={e => handleClick(element._id)}>
+                                <ListItemAvatar>
+                                    <Avatar>{element.firstName[0]}</Avatar>
+                                </ListItemAvatar>
+                                <ListItemText>
+                                    <Typography sx={{ fontWeight: 'bold', fontSize: '15px' }}>
                                         {element.firstName} {element.lastName}
                                     </Typography>
                                 </ListItemText>
                             </ListItem>
                         ))
                     }
-                </Stack>
+                </List>
             </Box>
-            <List>
-                {/* {search === '' ?
-                    contacts.map((element) => (
-                        <ListItem  id={element._id} key={element._id} button onClick={e => handleClick(element._id)}>
-                            <ListItemAvatar>
-                                <Avatar>{element.firstName[0]}</Avatar>
-                            </ListItemAvatar>
-                            <ListItemText>
-                                {element.firstName} {element.lastName}
-                            </ListItemText>
-                        </ListItem>
-                    ))
-                    :
-                    // Filtered contacts
-                    contacts.filter(contact => contact.firstName.toLowerCase().match(search) || contact.lastName.toLowerCase().match(search)).map((element) => (
-                        <ListItem id={element._id} key={element._id} button onClick={e => handleClick(element._id)}>
-                            <ListItemAvatar>
-                                <Avatar>{element.firstName[0]}</Avatar>
-                            </ListItemAvatar>
-                            <ListItemText>
-                                {element.firstName} {element.lastName}
-                            </ListItemText>
-                        </ListItem>
-                    ))
-                } */}
-            </List>
+            <Fab sx={{ position: 'absolute', right: 16, bottom: 16 }}>
+                <SortIcon />
+            </Fab>
         </Container>
     )
 }
