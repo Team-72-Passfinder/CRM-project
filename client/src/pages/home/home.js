@@ -31,9 +31,10 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
     background: 'blue',
   },
-  cardGrid: {
+  eventGrid: {
     maxwidth: 'md',
     background: '#fff1e1',
+    padding: 40,
   },
   cardItem: {
     height: '100%',
@@ -41,7 +42,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const maxCards = 10;
-const cards = Array.from(Array(maxCards).keys());
+let cardIndex = Array.from(Array(maxCards).keys());
 
 function Home() {
   const classes = useStyles();
@@ -60,6 +61,10 @@ function Home() {
   };
 
   if (events.length > 0) {
+    // Prevent undefined entries
+    if (events.length < maxCards)
+      cardIndex = Array.from(Array(events.length).keys());
+
     return (
       <div className={classes.root}>
         <Navbar />
@@ -75,49 +80,48 @@ function Home() {
           </Typography>
         </Container>
 
-        <Container className={classes.cardGrid} maxWidth="md">
-          <Grid container spacing={4}>
-            {cards.map((card) => (
-              <Grid item key={card} xs={12} sm={6} md={4}>
-                <Card
-                  sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    height: '100%',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <CardContent>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      {events[card].name}
-                    </Typography>
-                    <Typography gutterBottom variant="h5" component="h2">
-                      {getDate(events[card].dateTime)}
-                    </Typography>
-                    <Typography
-                      sx={{
-                        overflow: 'hidden',
-                        textOverflow: 'ellipsis',
-                        display: '-webkit-box',
-                        WebkitBoxOrient: 'vertical',
-                        WebkitLineClamp: '2',
-                      }}
-                    >
-                      {events[card].description}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <Link to={'/event/' + events[card]._id}>
-                      <Button variant="warning" size="lg">
-                        View
-                      </Button>
-                    </Link>
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
+        <Grid container spacing={4} className={classes.eventGrid}>
+          {cardIndex.map((card) => (
+            <Grid item key={card} xs={12} sm={6} md={4}>
+              <Card
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  height: '100%',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <CardContent>
+                  <Typography gutterBottom variant="h5" component="h2">
+                    {events[card].name}
+                  </Typography>
+                  <Typography gutterBottom variant="body1" component="h2">
+                    {getDate(events[card].dateTime)}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    sx={{
+                      overflow: 'hidden',
+                      textOverflow: 'ellipsis',
+                      display: '-webkit-box',
+                      WebkitBoxOrient: 'vertical',
+                      WebkitLineClamp: '2',
+                    }}
+                  >
+                    {events[card].description}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <Link to={'/event/' + events[card]._id}>
+                    <Button variant="warning" size="lg">
+                      View
+                    </Button>
+                  </Link>
+                </CardActions>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
       </div>
     );
   } else {
