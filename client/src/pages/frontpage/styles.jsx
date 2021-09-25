@@ -1,5 +1,5 @@
 import makeStyles from '@mui/styles/makeStyles';
-import heroImage from '../frontpage/hero-image2.jpg';
+import heroImage from './hero-image2.jpg';
 
 const useStyles = makeStyles((theme) => ({
   root: {

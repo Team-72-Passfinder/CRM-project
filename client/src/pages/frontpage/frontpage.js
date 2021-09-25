@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import logo from '../frontpage/citrus-contact-logo.png';
+import logo from './citrus-contact-logo.png';
 import {
   Button,
   Typography,
