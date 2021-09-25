@@ -7,13 +7,11 @@ import {
   Grid,
   Typography,
   Container,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/styles';
-import PermanentDrawerLeft from './permanentDrawerLeft';
+} from '@mui/material';
+import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
 
 import Navbar from '../../components/Navbar/Navbar';
-
 import { getEvents } from '../../api';
 
 const useStyles = makeStyles((theme) => ({
@@ -81,7 +79,14 @@ function Home() {
           <Grid container spacing={4}>
             {cards.map((card) => (
               <Grid item key={card} xs={12} sm={6} md={4}>
-                <Card className={classes.cardItem}>
+                <Card
+                  sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    height: '100%',
+                    justifyContent: 'space-between',
+                  }}
+                >
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
                       {events[card].name}
@@ -89,7 +94,17 @@ function Home() {
                     <Typography gutterBottom variant="h5" component="h2">
                       {getDate(events[card].dateTime)}
                     </Typography>
-                    <Typography>{events[card].description}</Typography>
+                    <Typography
+                      sx={{
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        display: '-webkit-box',
+                        WebkitBoxOrient: 'vertical',
+                        WebkitLineClamp: '2',
+                      }}
+                    >
+                      {events[card].description}
+                    </Typography>
                   </CardContent>
                   <CardActions>
                     <Link to={'/event/' + events[card]._id}>
