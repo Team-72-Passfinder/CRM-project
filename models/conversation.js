@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const ConversationSchema = new mongoose.Schema(
   {
-    userId: {
+    people: {
       type: [String],
       required: true,
     },
@@ -21,5 +21,8 @@ const ConversationSchema = new mongoose.Schema(
     timestamps: true,
   }
 );
+
+// Create index for searching: field: messages
+//ConversationSchema.index({ messages: {content: 1 }});
 
 module.exports = mongoose.model('Conversation', ConversationSchema);

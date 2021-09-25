@@ -20,7 +20,7 @@ passport.use(
           return done(err, false);
         }
 
-        console.log(jwt_payload);
+        console.log(user)
 
         if (user) {
           return done(null, user);
