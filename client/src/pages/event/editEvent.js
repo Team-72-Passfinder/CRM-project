@@ -70,7 +70,7 @@ function EditEvent() {
      onChange={setText}
 
    />
-   <button onClick={e => setEvent(prev => ({ ...prev, name: e.target.value })) }>Save</button>    <button >Exit</button>
+   <button onClick={e => setEvent(prev => ({ ...prev, name: e.target.value ,description: e.target.value, date: e.target.value})) }>Save</button>    <button >Exit</button>
 
 
    <br />
