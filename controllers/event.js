@@ -40,12 +40,19 @@ exports.create = async (req, res) => {
     req.body.dateTime += 'Z';
   }
 
+  const rawPcpt = req.body.participants;
+  const participants = await controller.getNameFromContactId(req.body.belongsTo, rawPcpt);
+  // Check for error:
+  if (participants.length != Object.keys(rawPcpt).length) {
+    return res.status(400).send({ message: 'Error when accessing the contact database!' })
+  }
+
   const event = new Event({
     belongsTo: req.body.belongsTo,
     name: req.body.name,
     dateTime: req.body.dateTime,
     completed: req.body.completed,
-    participants: req.body.participants || [],
+    participants: participants || [],
     description: req.body.description || '',
   });
 

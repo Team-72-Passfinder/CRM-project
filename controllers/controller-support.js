@@ -191,8 +191,34 @@ async function getAllByUserId(controller, req, res) {
   });
 }
 
+// Get name of saved contact that belongs to a specific user ======================
+async function getNameFromContactId(belongsTo, list) {
+  // Array that stores transformed contactId
+  const participants = [];
+  // Loop the list
+  for (let index = 0; index < list.length; index++) {
+    const elem = list[index];
+    if (isValidObjectId(elem)) {
+      await Contact.find({ _id: elem, belongsTo: belongsTo }).then((found) => {
+        if (found) {
+          const name = found[0].firstName + " " + found[0].lastName;
+          participants.push(name);
+        }
+      }).catch((err) => {
+        console.log(err);
+        // do nothing --> checks for length of participant list will give error for us
+      });
+    }
+    else {
+      participants.push(elem);
+    }
+  }
+  //console.log(participants);
+  return participants;
+}
+
 module.exports = {
   updateData, deleteData, findAllData, findOne,
   checkInvalid, checkValidDate, validRelationshipOrConvo,
-  checkValidId, getAllByUserId,
+  checkValidId, getAllByUserId, getNameFromContactId,
 };
