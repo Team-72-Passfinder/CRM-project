@@ -1,6 +1,7 @@
 // Controller to perform CRUD on event parameter
 const Event = require('../models/event');
 const controller = require('./controller-support');
+const Validator = require('./validator');
 const Search = require('./search');
 const User = require('../models/user');
 
@@ -9,20 +10,20 @@ exports.create = async (req, res) => {
   // Validate requests
   if (
     !req.body.belongsTo ||
-    !(await controller.checkValidId(User, req.body.belongsTo))
+    !(await Validator.checkValidId(User, req.body.belongsTo))
   ) {
     return res.status(400).send({
       message: 'Missing or invalid userId that this contact belongs to!',
     });
   }
 
-  if (!req.body.name || controller.checkInvalid(req.body.name)) {
+  if (!req.body.name || Validator.checkInvalid(req.body.name)) {
     return res.status(400).send({
       message: 'Missing event name or event name contains invalid characters!',
     });
   }
 
-  if (!req.body.dateTime || controller.checkValidDate(req.body.dateTime) == "Invalid Date") {
+  if (!req.body.dateTime || Validator.checkValidDate(req.body.dateTime) == "Invalid Date") {
     return res.status(400).send({
       message: 'Missing or invalid datetime!',
     });
@@ -82,12 +83,12 @@ exports.update = (req, res) => {
       message: 'Owner of the event are unchangaeble!',
     });
   }
-  if (req.body.name && controller.checkInvalid(req.body.name)) {
+  if (req.body.name && Validator.checkInvalid(req.body.name)) {
     return res.status(400).send({
       message: "Event name should not contain invalid characters!",
     });
   }
-  if (req.body.dateTime && controller.checkValidDate(req.body.dateTime) == "Invalid Date") {
+  if (req.body.dateTime && Validator.checkValidDate(req.body.dateTime) == "Invalid Date") {
     return res.status(400).send({
       message: "Invalid Date",
     });

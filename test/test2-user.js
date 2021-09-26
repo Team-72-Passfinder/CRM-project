@@ -26,6 +26,7 @@ mocha.describe('Test User routes', function () {
     });
   });
 
+  /*
   mocha.describe('/POST route', () => {
     mocha.it(
       'it should not POST a user without firstName field',
@@ -102,7 +103,7 @@ mocha.describe('Test User routes', function () {
         });
     });
   });
-
+*/
   mocha.describe('/GET/:id route', () => {
     mocha.it('it should GET a user by the given id', (done) => {
       let user = new UserModel({

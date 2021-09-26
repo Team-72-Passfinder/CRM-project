@@ -1,6 +1,7 @@
 // Controller to perform CRUD on user parameter
 const User = require('../models/user');
 const controller = require('./controller-support');
+const Validator = require('./validator');
 const Search = require('./search');
 
 /*
@@ -18,17 +19,17 @@ exports.update = (req, res) => {
   // Validate firstname, lastname, dateOfBirth information
   // since username and email can't be changed
   // Password is going to be considered sepeartedly due to security matter!
-  if (controller.checkInvalid(req.body.firstName)) {
+  if (Validator.checkInvalid(req.body.firstName)) {
     return res.status(400).send({
       message: 'Firstname contains invalid characters!',
     });
   }
-  if (controller.checkInvalid(req.body.lastName)) {
+  if (Validator.checkInvalid(req.body.lastName)) {
     return res.status(400).send({
       message: 'Lastname contains invalid characters!',
     });
   }
-  if (controller.checkValidDate(req.body.dateOfBirth) == "Invalid Date") {
+  if (Validator.checkValidDate(req.body.dateOfBirth) == "Invalid Date") {
     return res.status(400).send({
       message: 'Invalid dateOfBirth!',
     });
@@ -140,60 +141,3 @@ exports.findOne = (req, res) => {
 exports.search = (req, res) => {
   Search.userSearch(req, res);
 };
-
-// Function to validate when creating a new user ===================================================
-// Return error type when validation fails
-async function checkValidUser(req) {
-  // Checking missing username or password
-  if (!req.body.username || !req.body.password) {
-    const message = "Missing username or password!";
-    return message;
-  }
-
-  // Check if firstname contains invalid characters
-  if (!req.body.firstName || controller.checkInvalid(req.body.firstName)) {
-    const message = "Missing or invalid firstName!";
-    return message;
-  }
-
-  // Check if lastName contains invalid characters
-  if (!req.body.lastName || controller.checkInvalid(req.body.lastName)) {
-    const message = "Missing or invalid lastName!";
-    return message;
-  }
-
-  // Check if DOB is valid
-  // Check if lastName contains invalid characters
-  if (!req.body.dateOfBirth || controller.checkValidDate(req.body.dateOfBirth) == "Invalid Date") {
-    const message = "Missing or invalid dateOfBirth!";
-    return message;
-  }
-
-  // Check for existing username or email ==================================
-  // Check for username
-  await User.findOne({ email: req.body.email }).then((existedEmail) => {
-    // If the email is found
-    if (existedEmail) {
-      const message = "Email has been registered!";
-      return message;
-    }
-  });
-
-  // continue to check for username
-  await User.findOne({ username: req.body.username }).then((existedUname) => {
-    // If the username is found
-    if (existedUname) {
-      const message = "Username has been registered!";
-      return message;
-    }
-  });
-
-  // Enforce UTC timezone before return
-  if (req.body.dateOfBirth.charAt(req.body.dateOfBirth.length - 1) != 'Z') {
-    req.body.dateOfBirth += 'Z';
-  }
-  const message = "valid";
-  return message;
-}
-
-module.exports = { checkValidUser };

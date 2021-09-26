@@ -1,13 +1,14 @@
 // Controller to perform CRUD on relationship parameter
 const Relationship = require('../models/relationship');
 const controller = require('./controller-support');
+const Validator = require('./validator');
 const Search = require('./search');
 const User = require('../models/user');
 
 // Create a new relationship ===================================================
 exports.create = async (req, res) => {
   // Validate belongsTo
-  if (!req.body.belongsTo || !(await controller.checkValidId(User, req.body.belongsTo))) {
+  if (!req.body.belongsTo || !(await Validator.checkValidId(User, req.body.belongsTo))) {
     return res.status(400).send({
       message: 'Missing or invalid userId that this contact belongs to!',
     });
@@ -27,7 +28,7 @@ exports.create = async (req, res) => {
   // Enforce UTC timezone
   if (req.body.startedDatetime) {
     //console.log(req.body.startedDatetime);
-    if (controller.checkValidDate(req.body.startedDatetime) == "Invalid Date") {
+    if (Validator.checkValidDate(req.body.startedDatetime) == "Invalid Date") {
       return res.status(400).send({
         message: 'Invalid startedDatetime!',
       });
@@ -38,7 +39,7 @@ exports.create = async (req, res) => {
   }
 
   // Check for existing relationship and for valid people
-  let check = await controller.validRelationshipOrConvo(Relationship, req, 'relationship');
+  let check = await Validator.validRelationshipOrConvo(Relationship, req, 'relationship');
   if (!check) {
     return res.status(400).send({
       message: 'Invalid contact Ids or this relationship has existed!'

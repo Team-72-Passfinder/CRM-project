@@ -1,6 +1,7 @@
 // Controller to perform CRUD on Contact parameter
 const Contact = require('../models/contact');
 const controller = require('./controller-support');
+const Validator = require('./validator');
 const Search = require('./search');
 const User = require('../models/user');
 
@@ -9,27 +10,27 @@ exports.create = async (req, res) => {
   // Validate requests
   if (
     !req.body.belongsTo ||
-    !(await controller.checkValidId(User, req.body.belongsTo))
+    !(await Validator.checkValidId(User, req.body.belongsTo))
   ) {
     return res.status(400).send({
       message: 'Missing or invalid userId that this contact belongs to!',
     });
   }
 
-  if (!req.body.firstName || controller.checkInvalid(req.body.firstName)) {
+  if (!req.body.firstName || Validator.checkInvalid(req.body.firstName)) {
     return res.status(400).send({
       message: 'Missing or invalid firstname!',
     });
   }
 
-  if (!req.body.lastName || controller.checkInvalid(req.body.lastName)) {
+  if (!req.body.lastName || Validator.checkInvalid(req.body.lastName)) {
     return res.status(400).send({
       message: 'Missing or invalid lastName!',
     });
   }
   // Enforce UTC timezone
   if (req.body.dateOfBirth) {
-    if (controller.checkValidDate(req.body.dateOfBirth) == 'Invalid Date') {
+    if (Validator.checkValidDate(req.body.dateOfBirth) == 'Invalid Date') {
       return res.status(400).send({
         message: 'Invalid dateOfBirth!',
       });
@@ -70,13 +71,13 @@ exports.addFromId = async (req, res) => {
   let ownerUserId = req.params.ownerId;
 
   // Validate userId input
-  if (!contactUserId || !(await controller.checkValidId(User, contactUserId))) {
+  if (!contactUserId || !(await Validator.checkValidId(User, contactUserId))) {
     return res.status(400).send({
       message: 'Missing or invalid userId!',
     });
   }
   // Validate belongsTo input
-  if (!(await controller.checkValidId(User, ownerUserId))) {
+  if (!(await Validator.checkValidId(User, ownerUserId))) {
     return res.status(400).send({
       message: 'Missing or invalid userId that this contact belongs to!',
     });
@@ -133,12 +134,12 @@ exports.update = (req, res) => {
       message: 'Owner of the contact are unchangaeble!',
     });
   }
-  if (req.body.firstName && controller.checkInvalid(req.body.firstName)) {
+  if (req.body.firstName && Validator.checkInvalid(req.body.firstName)) {
     return res.status(400).send({
       message: 'invalid firstname!',
     });
   }
-  if (req.body.lastName && controller.checkInvalid(req.body.lastName)) {
+  if (req.body.lastName && Validator.checkInvalid(req.body.lastName)) {
     return res.status(400).send({
       message: 'invalid lastname!',
     });
@@ -152,7 +153,7 @@ exports.update = (req, res) => {
 
   // Enforce UTC timezone
   if (req.body.dateOfBirth) {
-    if (controller.checkValidDate(req.body.dateOfBirth) == 'Invalid Date') {
+    if (Validator.checkValidDate(req.body.dateOfBirth) == 'Invalid Date') {
       return res.status(400).send({
         message: 'Invalid dateOfBirth!',
       });
