@@ -4,13 +4,40 @@ const controller = require('./controller-support');
 const Validator = require('./validator');
 const Search = require('./search');
 
-/*
-// Scatch function for POST()
-exports.create = (req, res) => {
-  console.log(req);
-  res.status(200).send({ message: 'nothing to create' });
+
+// Scatch function for POST() - to be removed & replaced with passport later
+exports.create = async (req, res) => {
+  const message = await Validator.checkValidUser(req);
+  //console.log(message);
+  if (message != 'valid') {
+    return res.status(400).send({ message: message });
+  }
+  // else, create a new user
+  const user = new User({
+    //_id: Mongoose.Types.ObjectId(),
+    username: req.body.username,
+    password: req.body.password,
+    email: req.body.email,
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    dateOfBirth: new Date(req.body.dateOfBirth),
+    biography: req.body.biography || '',
+  });
+
+  // Save this user to database
+  user
+    .save()
+    .then((data) => {
+      res.send(data);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({
+        message: 'Error when creating user!',
+      });
+    });
 };
-*/
+
 
 // Update an user identified by the user's Id ==============================
 // This Update function behaves differently from other controllers

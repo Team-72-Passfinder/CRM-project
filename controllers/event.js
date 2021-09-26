@@ -45,7 +45,7 @@ exports.create = async (req, res) => {
   var participants = [];
   if (req.body.participants) {
     const rawPcpt = req.body.participants;
-    participants = await controller.getNameFromContactId(req.body.belongsTo, rawPcpt);
+    participants = await controller.getNamesFromContactIds(req.body.belongsTo, rawPcpt);
     // Check for error:
     if (participants.length != Object.keys(rawPcpt).length) {
       return res.status(400).send({ message: 'Error when accessing the contact database!' })

@@ -6,28 +6,29 @@ const { isValidObjectId } = require("mongoose");
 // Function to validate when creating a new user ===================================================
 // Return error type when validation fails
 async function checkValidUser(req) {
+  var message;
   // Checking missing username or password
-  if (!req.body.username || !req.body.password) {
-    const message = "Missing username or password!";
+  if (!req.body.username || !req.body.password || !req.body.email) {
+    message = "Missing username or password or email!";
     return message;
   }
 
   // Check if firstname contains invalid characters
-  if (!req.body.firstName || User.checkInvalid(req.body.firstName)) {
-    const message = "Missing or invalid firstName!";
+  if (!req.body.firstName || checkInvalid(req.body.firstName)) {
+    message = "Missing or invalid firstName!";
     return message;
   }
 
   // Check if lastName contains invalid characters
-  if (!req.body.lastName || User.checkInvalid(req.body.lastName)) {
-    const message = "Missing or invalid lastName!";
+  if (!req.body.lastName || checkInvalid(req.body.lastName)) {
+    message = "Missing or invalid lastName!";
     return message;
   }
 
   // Check if DOB is valid
   // Check if lastName contains invalid characters
-  if (!req.body.dateOfBirth || User.checkValidDate(req.body.dateOfBirth) == "Invalid Date") {
-    const message = "Missing or invalid dateOfBirth!";
+  if (!req.body.dateOfBirth || checkValidDate(req.body.dateOfBirth) == "Invalid Date") {
+    message = "Missing or invalid dateOfBirth!";
     return message;
   }
 
@@ -36,8 +37,10 @@ async function checkValidUser(req) {
   await User.findOne({ email: req.body.email }).then((existedEmail) => {
     // If the email is found
     if (existedEmail) {
-      const message = "Email has been registered!";
-      return message;
+      message = "Email has been registered!";
+    }
+    else {
+      message = "valid";
     }
   });
 
@@ -45,8 +48,7 @@ async function checkValidUser(req) {
   await User.findOne({ username: req.body.username }).then((existedUname) => {
     // If the username is found
     if (existedUname) {
-      const message = "Username has been registered!";
-      return message;
+      message = "Username has been registered!";
     }
   });
 
@@ -54,7 +56,7 @@ async function checkValidUser(req) {
   if (req.body.dateOfBirth.charAt(req.body.dateOfBirth.length - 1) != 'Z') {
     req.body.dateOfBirth += 'Z';
   }
-  const message = "valid";
+  //reaching this point means: message = "valid";
   return message;
 }
 

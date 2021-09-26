@@ -26,7 +26,6 @@ mocha.describe('Test User routes', function () {
     });
   });
 
-  /*
   mocha.describe('/POST route', () => {
     mocha.it(
       'it should not POST a user without firstName field',
@@ -48,7 +47,7 @@ mocha.describe('Test User routes', function () {
             res.body.should.have
               .property('message')
               .eql(
-                'Missing firstName or firstName contains invalid characters!'
+                'Missing or invalid firstName!'
               );
             done();
           });
@@ -98,12 +97,12 @@ mocha.describe('Test User routes', function () {
           res.body.should.be.a('object');
           res.body.should.have
             .property('message')
-            .eql('This email has been registered! Try another one!');
+            .eql('Email has been registered!');
           done();
         });
     });
   });
-*/
+
   mocha.describe('/GET/:id route', () => {
     mocha.it('it should GET a user by the given id', (done) => {
       let user = new UserModel({
