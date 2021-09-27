@@ -15,6 +15,8 @@ import Home from './pages/home/home';
 import Frontpage from './pages/frontpage/frontpage';
 import EditContact from './pages/EditContact/EditContact';
 import Profile from './pages/Profile/profile';
+import Event from './pages/event/event';
+import EditEvent from './pages/event/editEvent';
 import { ThemeProvider } from '@mui/material/styles';
 
 import theme from './theme';
@@ -47,6 +49,12 @@ const App = () => {
           </Route>
           <Route exact path="/home">
             <Home />
+          </Route>
+          <Route exact path="/event/:id">
+            <Event />
+          </Route>
+          <Route exact path="/event/:id/edit">
+            <EditEvent />
           </Route>
         </Switch>
       </Router>

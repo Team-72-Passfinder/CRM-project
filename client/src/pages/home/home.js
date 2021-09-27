@@ -11,7 +11,7 @@ import {
 import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
 
-import Navbar from '../../components/Navbar/Navbar';
+import Navbar from '../../components/Navbar';
 import { getEvents } from '../../api';
 
 const useStyles = makeStyles((theme) => ({

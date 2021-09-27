@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
-import { Stack, Avatar, TextField, Box, Button } from '@mui/material';
+import { Stack, TextField, Button } from '@mui/material';
 
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateAdapter from '@mui/lab/AdapterDayjs';
 import DatePicker from '@mui/lab/DatePicker';
 
-import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
-
-import Navbar from '../../components/Navbar/Navbar';
+import Navbar from '../../components/Navbar';
 import { getEvent, saveEvent } from '../../api';
 
 const formList = [
