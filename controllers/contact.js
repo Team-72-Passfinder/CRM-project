@@ -8,15 +8,6 @@ const User = require('../models/user');
 // Create a new Contact ===================================================
 exports.create = async (req, res) => {
   // Validate requests
-  if (
-    !req.body.belongsTo ||
-    !(await Validator.checkValidId(User, req.body.belongsTo))
-  ) {
-    return res.status(400).send({
-      message: 'Missing or invalid userId that this contact belongs to!',
-    });
-  }
-
   if (!req.body.firstName || Validator.checkInvalid(req.body.firstName)) {
     return res.status(400).send({
       message: 'Missing or invalid firstname!',
@@ -42,7 +33,7 @@ exports.create = async (req, res) => {
 
   // Create a new contact using these information
   const contact = new Contact({
-    belongsTo: req.body.belongsTo,
+    belongsTo: req.user._id,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email || '',
@@ -67,24 +58,18 @@ exports.create = async (req, res) => {
 
 // If contact is to be added from an existed userId ===============================
 exports.addFromId = async (req, res) => {
-  let contactUserId = req.body.contactUserId;
-  let ownerUserId = req.params.ownerId;
+  //let contactUserId = req.body.contactUserId;
+  let userId = req.params.userId;
 
-  // Validate userId input
-  if (!contactUserId || !(await Validator.checkValidId(User, contactUserId))) {
+  // Validate the UserId 
+  if (!(await Validator.checkValidId(User, userId))) {
     return res.status(400).send({
       message: 'Missing or invalid userId!',
     });
   }
-  // Validate belongsTo input
-  if (!(await Validator.checkValidId(User, ownerUserId))) {
-    return res.status(400).send({
-      message: 'Missing or invalid userId that this contact belongs to!',
-    });
-  }
 
   // Create a new contact by accessing the user's database
-  User.findById(contactUserId)
+  User.findById(userId)
     .then((userData) => {
       // If contact with this id is not found
       if (!userData) {
@@ -94,14 +79,14 @@ exports.addFromId = async (req, res) => {
         });
       }
       const contact = new Contact({
-        belongsTo: ownerUserId, // not the
+        belongsTo: req.user._id,
         firstName: userData.firstName,
         lastName: userData.lastName,
         email: userData.email,
         phoneNumber: '',
         dateOfBirth: userData.dateOfBirth,
         biography: userData.biography || '',
-        optionalUserId: contactUserId,
+        optionalUserId: userId,
       });
 
       // Save this contact to database

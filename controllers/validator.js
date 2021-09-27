@@ -108,8 +108,8 @@ async function checkValidIdWithBelongsTo(controller, id, belongsTo) {
   var check = true;
   if (!id || !isValidObjectId(id)) { check = false; }
 
-  await controller.findById(id).then((foundId) => {
-    if (!foundId || foundId.belongsTo != belongsTo) {
+  await controller.find({ _id: id, belongsTo: belongsTo }).then((foundId) => {
+    if (!foundId) {
       check = false;
     }
   });
@@ -129,8 +129,8 @@ async function validRelationshipOrConvo(controller2, req, type) {
 
   // Then check for valid Ids
   if (type == 'relationship') {
-    firstValid = await checkValidIdWithBelongsTo(Contact, sortedIds[0], req.body.belongsTo);
-    secValid = await checkValidIdWithBelongsTo(Contact, sortedIds[1], req.body.belongsTo);
+    firstValid = await checkValidIdWithBelongsTo(Contact, sortedIds[0], req.user._id);
+    secValid = await checkValidIdWithBelongsTo(Contact, sortedIds[1], req.user._id);
   }
   else {
     firstValid = await checkValidId(User, sortedIds[0]);

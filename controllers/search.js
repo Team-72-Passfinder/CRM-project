@@ -1,20 +1,17 @@
 
-const ctrl = require('./controller-support');
 const User = require('../models/user');
 const Event = require('../models/event');
 const Relationship = require('../models/relationship');
 const Convo = require('../models/conversation');
 const Contact = require('../models/contact');
+const Validator = require('./validator');
 // Basic search function ====================================================
 // The basic search query request looks like this:
 /*{
     "query": string
 }*/
 async function contactSearch(req, res) {
-  // Check valid userId
-  if (!(await ctrl.checkValidId(User, req.params.belongsToId))) {
-    return res.status(400).send({ message: 'Invalid userId!' });
-  }
+
   // check query's body
   if (!checkValidQuery(req)) {
     return res.status(500).send({ message: 'Missing query!' });
@@ -23,7 +20,7 @@ async function contactSearch(req, res) {
   const text = req.body.query;
   Contact
     .find({
-      belongsTo: req.params.belongsToId,
+      belongsTo: req.user._id,
       $or: [{ firstName: { $regex: text, $options: 'i' } },
       { lastName: { $regex: text, $options: 'i' } },
       { email: { $regex: text, $options: 'i' } }]
@@ -95,20 +92,16 @@ async function eventSearch(req, res) {
   var eventMap = [];
 
   // Validate received parameters
-  // Check valid userId
-  if (!(await ctrl.checkValidId(User, req.params.belongsToId))) {
-    return res.status(400).send({ message: 'Invalid userId!' });
-  }
   // check query's body
   if (!checkValidQuery(req)) {
     return res.status(500).send({ message: 'Missing query!' });
   }
   // Validate dateTime [from, to] if exist
-  if (req.body.from && ctrl.checkValidDate(req.body.from) == 'Invalid Date') {
+  if (req.body.from && Validator.checkValidDate(req.body.from) == 'Invalid Date') {
     return res.status(400).send({ message: 'Invalid (from) date!' });
   }
   // Only check (to) date if (from) date exists
-  if ((req.body.from && req.body.to && ctrl.checkValidDate(req.body.to) == 'Invalid Date')
+  if ((req.body.from && req.body.to && Validator.checkValidDate(req.body.to) == 'Invalid Date')
     //or (to) date exists but (from) date doesn't or vice versa
     || (!req.body.from && req.body.to) || (req.body.from && !req.body.to)) {
     return res.status(400).send({ message: 'Missing or Invalid (from)/ (to) date!' });
@@ -122,7 +115,7 @@ async function eventSearch(req, res) {
   if (from) {
     // Combine date time in find() query
     await Event.find({
-      belongsTo: req.params.belongsToId,
+      belongsTo: req.user._id,
       $or: [{ name: { $regex: text, $options: 'i' } },
       { description: { $regex: text, $options: 'i' } }],
       dateTime: {
@@ -142,7 +135,7 @@ async function eventSearch(req, res) {
   // Else, searching for query only
   else {
     await Event.find({
-      belongsTo: req.params.belongsToId,
+      belongsTo: req.user._id,
       $or: [{ name: { $regex: text, $options: 'i' } },
       { description: { $regex: text, $options: 'i' } }]
     }).then((data) => {
@@ -209,10 +202,6 @@ function convoSearch(req, res) {
 }*/
 
 async function relationshipSearch(req, res) {
-  // Check valid userId
-  if (!(await ctrl.checkValidId(User, req.params.belongsToId))) {
-    return res.status(400).send({ message: 'Invalid userId!' });
-  }
   // check query's body
   if (!checkValidQuery(req)) {
     return res.status(500).send({ message: 'Missing query!' });
@@ -220,7 +209,7 @@ async function relationshipSearch(req, res) {
 
   Relationship
     .find({
-      belongsTo: req.params.belongsToId,
+      belongsTo: req.user._id,
       tag: { $regex: req.body.query, $options: 'i' }
     })
     //.find({ $text: { $search: req.body.query } })

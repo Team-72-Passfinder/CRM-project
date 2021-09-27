@@ -88,7 +88,7 @@ function findOne(controller, req, res) {
 
 // Get all contact/relationships that belong to a specific user ======================
 async function getAllByUserId(controller, req, res) {
-  const ownerId = req.params.belongsToId;
+  const ownerId = req.user._id;
   // Validate the given UserId first
   await User.findById(ownerId).then((user) => {
     if (!user) {

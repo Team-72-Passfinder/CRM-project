@@ -3,16 +3,10 @@ const Relationship = require('../models/relationship');
 const controller = require('./controller-support');
 const Validator = require('./validator');
 const Search = require('./search');
-const User = require('../models/user');
 
 // Create a new relationship ===================================================
 exports.create = async (req, res) => {
   // Validate belongsTo
-  if (!req.body.belongsTo || !(await Validator.checkValidId(User, req.body.belongsTo))) {
-    return res.status(400).send({
-      message: 'Missing or invalid userId that this contact belongs to!',
-    });
-  }
   // Check for valid datetime
   if (!req.body.startedDatetime) {
     return res.status(400).send({
@@ -47,13 +41,13 @@ exports.create = async (req, res) => {
   }
   //else
   const relationship = new Relationship({
-    belongsTo: req.body.belongsTo,
+    belongsTo: req.user._id,
     people: req.body.people.sort(),
     startedDatetime: req.body.startedDatetime,
     tag: req.body.tag || [],
     description: req.body.description || '',
   });
-  console.log("new rela created!");
+  //console.log("new rela created!");
   // Save this relationship to database
   relationship
     .save()

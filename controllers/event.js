@@ -3,21 +3,11 @@ const Event = require('../models/event');
 const controller = require('./controller-support');
 const Validator = require('./validator');
 const Search = require('./search');
-const User = require('../models/user');
 
 // Create a new event ===================================================
 exports.create = async (req, res) => {
   // Validate requests
-  if (
-    !req.body.belongsTo ||
-    !(await Validator.checkValidId(User, req.body.belongsTo))
-  ) {
-    return res.status(400).send({
-      message: 'Missing or invalid userId that this contact belongs to!',
-    });
-  }
-
-  if (!req.body.name || Validator.checkInvalid(req.body.name)) {
+  if (!req.body.name) {
     return res.status(400).send({
       message: 'Missing event name or event name contains invalid characters!',
     });
@@ -45,7 +35,7 @@ exports.create = async (req, res) => {
   var participants = [];
   if (req.body.participants) {
     const rawPcpt = req.body.participants;
-    participants = await controller.getNamesFromContactIds(req.body.belongsTo, rawPcpt);
+    participants = await controller.getNamesFromContactIds(req.user._id, rawPcpt);
     // Check for error:
     if (participants.length != Object.keys(rawPcpt).length) {
       return res.status(400).send({ message: 'Error when accessing the contact database!' })
@@ -53,7 +43,7 @@ exports.create = async (req, res) => {
   }
 
   const event = new Event({
-    belongsTo: req.body.belongsTo,
+    belongsTo: req.user._id,
     name: req.body.name,
     dateTime: req.body.dateTime,
     completed: req.body.completed,
