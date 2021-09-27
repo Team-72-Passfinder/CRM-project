@@ -134,7 +134,6 @@ function Navbar({ active }) {
                 position="static"
                 sx={{
                     width: `100vw`,
-                    // maxWidth: `90vw`,
                     ml: { sm: `${drawerWidth}px` },
                     display: { sm: 'none' },
                     background: 'white',
