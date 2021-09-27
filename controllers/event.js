@@ -1,18 +1,29 @@
 // Controller to perform CRUD on event parameter
 const Event = require('../models/event');
 const controller = require('./controller-support');
-const Search = require('./search')
+const Validator = require('./validator');
+const Search = require('./search');
+const User = require('../models/user');
 
 // Create a new event ===================================================
-exports.create = (req, res) => {
+exports.create = async (req, res) => {
   // Validate requests
-  if (!req.body.name || controller.checkInvalid(req.body.name)) {
+  if (
+    !req.body.belongsTo ||
+    !(await Validator.checkValidId(User, req.body.belongsTo))
+  ) {
+    return res.status(400).send({
+      message: 'Missing or invalid userId that this contact belongs to!',
+    });
+  }
+
+  if (!req.body.name || Validator.checkInvalid(req.body.name)) {
     return res.status(400).send({
       message: 'Missing event name or event name contains invalid characters!',
     });
   }
 
-  if (!req.body.dateTime || controller.checkValidDate(req.body.dateTime) == "Invalid Date") {
+  if (!req.body.dateTime || Validator.checkValidDate(req.body.dateTime) == "Invalid Date") {
     return res.status(400).send({
       message: 'Missing or invalid datetime!',
     });
@@ -30,11 +41,23 @@ exports.create = (req, res) => {
     req.body.dateTime += 'Z';
   }
 
+  // Proceed participant lists to get names if inputs are contactIds!
+  var participants = [];
+  if (req.body.participants) {
+    const rawPcpt = req.body.participants;
+    participants = await controller.getNamesFromContactIds(req.body.belongsTo, rawPcpt);
+    // Check for error:
+    if (participants.length != Object.keys(rawPcpt).length) {
+      return res.status(400).send({ message: 'Error when accessing the contact database!' })
+    }
+  }
+
   const event = new Event({
+    belongsTo: req.body.belongsTo,
     name: req.body.name,
     dateTime: req.body.dateTime,
     completed: req.body.completed,
-    participants: req.body.participants || [],
+    participants: participants,
     description: req.body.description || '',
   });
 
@@ -55,12 +78,17 @@ exports.create = (req, res) => {
 // Update event identified by the event's Id ==============================
 exports.update = (req, res) => {
   // validate DateTime, name and completness status
-  if (req.body.name && controller.checkInvalid(req.body.name)) {
+  if (req.body.belongsTo) {
+    return res.status(400).send({
+      message: 'Owner of the event are unchangaeble!',
+    });
+  }
+  if (req.body.name && Validator.checkInvalid(req.body.name)) {
     return res.status(400).send({
       message: "Event name should not contain invalid characters!",
     });
   }
-  if (req.body.dateTime && controller.checkValidDate(req.body.dateTime) == "Invalid Date") {
+  if (req.body.dateTime && Validator.checkValidDate(req.body.dateTime) == "Invalid Date") {
     return res.status(400).send({
       message: "Invalid Date",
     });
@@ -91,4 +119,9 @@ exports.findOne = (req, res) => {
 // Search for events ==========================================================
 exports.search = (req, res) => {
   Search.eventSearch(req, res);
+};
+
+// Get all contacts that belong to a specific user ============================
+exports.getall = (req, res) => {
+  controller.getAllByUserId(Event, req, res);
 };

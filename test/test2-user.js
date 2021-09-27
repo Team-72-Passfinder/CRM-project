@@ -47,7 +47,7 @@ mocha.describe('Test User routes', function () {
             res.body.should.have
               .property('message')
               .eql(
-                'Missing firstName or firstName contains invalid characters!'
+                'Missing or invalid firstName!'
               );
             done();
           });
@@ -97,7 +97,7 @@ mocha.describe('Test User routes', function () {
           res.body.should.be.a('object');
           res.body.should.have
             .property('message')
-            .eql('This email has been registered! Try another one!');
+            .eql('Email has been registered!');
           done();
         });
     });
