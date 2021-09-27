@@ -95,6 +95,10 @@ async function eventSearch(req, res) {
   var eventMap = [];
 
   // Validate received parameters
+  // Check valid userId
+  if (!(await ctrl.checkValidId(User, req.params.belongsToId))) {
+    return res.status(400).send({ message: 'Invalid userId!' });
+  }
   // check query's body
   if (!checkValidQuery(req)) {
     return res.status(500).send({ message: 'Missing query!' });
@@ -118,6 +122,7 @@ async function eventSearch(req, res) {
   if (from) {
     // Combine date time in find() query
     await Event.find({
+      belongsTo: req.params.belongsToId,
       $or: [{ name: { $regex: text, $options: 'i' } },
       { description: { $regex: text, $options: 'i' } }],
       dateTime: {
@@ -137,6 +142,7 @@ async function eventSearch(req, res) {
   // Else, searching for query only
   else {
     await Event.find({
+      belongsTo: req.params.belongsToId,
       $or: [{ name: { $regex: text, $options: 'i' } },
       { description: { $regex: text, $options: 'i' } }]
     }).then((data) => {

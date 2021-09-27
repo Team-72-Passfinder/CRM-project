@@ -2,6 +2,10 @@ const mongoose = require('mongoose');
 
 const EventSchema = new mongoose.Schema(
   {
+    belongsTo: {
+      type: String,
+      required: true,
+    },
     name: {
       type: String,
       required: true,

@@ -1,6 +1,7 @@
 // Controller to perform CRUD on Convo parameter
 const Conversation = require('../models/conversation');
 const controller = require('./controller-support');
+const Validator = require('./validator');
 const Search = require('./search');
 
 // Create a new convo ===========================================================
@@ -15,7 +16,7 @@ exports.create = async (req, res) => {
   }
   // Check for existing conversation and valid userIds
 
-  let check = await controller.validRelationshipOrConvo(Conversation, req, 'convo');
+  let check = await Validator.validRelationshipOrConvo(Conversation, req, 'convo');
   if (!check) {
     return res.status(400).send({
       message: 'Invalid userId or this conversation has existed!'
