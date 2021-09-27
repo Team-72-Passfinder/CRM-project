@@ -58,7 +58,6 @@ function Home() {
 
     return (
       <div className={classes.root}>
-        <Navbar />
         <Container maxWidth="sm">
           <Typography
             component="h1"
