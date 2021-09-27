@@ -78,7 +78,12 @@ export function getContact(id) {
 export function addContact(contact) {
   let endpoint = BASE_URL + '/contact';
 
-  return axios.post(endpoint, contact).then((res) => res.data);
+  contact.dateOfBirth = new Date(contact.dateOfBirth);
+
+  return axios
+    .post(endpoint, contact)
+    .then((res) => res.data)
+    .catch((e) => console.log(e.response));
 }
 
 export function save(contact) {

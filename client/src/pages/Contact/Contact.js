@@ -8,7 +8,7 @@ import EventIcon from '@material-ui/icons/Event';
 
 import { getContact } from '../../api'
 import Email from '@material-ui/icons/Email';
-import Navbar from '../../components/Navbar/Navbar';
+import Navbar from '../../components/Navbar';
 
 const useStyles = makeStyles((theme) => ({
     profileContainer: {

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 
 import { Container, Box, List, ListItem, ListItemText, Typography, Avatar } from '@mui/material'
-import Navbar from '../../components/Navbar/Navbar'
+import Navbar from '../../components/Navbar'
 import { me } from '../../api'
 
 const profileItemList = ['Email', 'Phone number', 'Date Of Birth']
