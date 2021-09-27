@@ -132,7 +132,20 @@ async function getNamesFromContactIds(belongsTo, participantList) {
   return participants;
 }
 
+// Delete data that is associated with user, called when a user is deleted
+// Including: contact, event and relationship
+// Convo??
+async function deleteDataOfUser(controller, userId) {
+  await controller.deleteMany({ belongsTo: userId }).then(() => {
+    console.log('data deleted!');
+  }).catch((err) => {
+    console.log(err);
+  })
+}
+
+
 module.exports = {
   updateData, deleteData, findAllData,
   findOne, getAllByUserId, getNamesFromContactIds,
+  deleteDataOfUser,
 };
