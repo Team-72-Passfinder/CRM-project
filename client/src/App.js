@@ -15,37 +15,42 @@ import Home from './pages/home/home'
 import Frontpage from './pages/frontpage/frontpage'
 import EditContact from './pages/EditContact/EditContact'
 import Profile from './pages/Profile/profile'
+import { ThemeProvider } from '@mui/material/styles'
+
+import theme from './theme'
 
 const App = () => {
     return (
-        <Router>
-            <Switch>
-                <Route exact path='/'>
-                    <Frontpage />
-                </Route>
-                <Route exact path='/login'>
-                    <Login />
-                </Route>
-                <Route path='/contact/add'>
-                    <CreateContact />
-                </Route>
-                <Route path='/contact/edit/:id'>
-                    <EditContact />
-                </Route>
-                <Route exact path='/contact/:id'>
-                    <Contact />
-                </Route>
-                <PrivateRoute path='/profile'>
-                    <Profile />
-                </PrivateRoute>
-                <Route exact path='/contact'>
-                    <ContactList />
-                </Route>
-                <Route exact path='/home'>
-                    <Home />
-                </Route>
-            </Switch>
-        </Router>
+        <ThemeProvider theme={theme}>
+            <Router>
+                <Switch>
+                    <Route exact path='/'>
+                        <Frontpage />
+                    </Route>
+                    <Route exact path='/login'>
+                        <Login />
+                    </Route>
+                    <Route path='/contact/add'>
+                        <CreateContact />
+                    </Route>
+                    <Route path='/contact/edit/:id'>
+                        <EditContact />
+                    </Route>
+                    <Route exact path='/contact/:id'>
+                        <Contact />
+                    </Route>
+                    <PrivateRoute path='/profile'>
+                        <Profile />
+                    </PrivateRoute>
+                    <Route exact path='/contact'>
+                        <ContactList />
+                    </Route>
+                    <Route exact path='/home'>
+                        <Home />
+                    </Route>
+                </Switch>
+            </Router>
+        </ThemeProvider>
     );
 }
 

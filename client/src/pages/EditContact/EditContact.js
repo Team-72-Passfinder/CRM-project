@@ -9,7 +9,7 @@ import DatePicker from '@mui/lab/DatePicker'
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 
 import { getContact, save } from '../../api';
-import Navbar from '../../components/Navbar/Navbar';
+import Navbar from '../../components/Navbar';
 
 const formList = [
     {
