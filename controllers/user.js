@@ -3,9 +3,9 @@ const User = require('../models/user');
 const controller = require('./controller-support');
 const Validator = require('./validator');
 const Search = require('./search');
-//const Contact = require('../models/contact');
-//const Event = require('../models/event');
-//const Relationship = require('../models/relationship');
+const Contact = require('../models/contact');
+const Event = require('../models/event');
+const Relationship = require('../models/relationship');
 
 
 // Scatch function for POST() - to be removed & replaced with passport later
@@ -108,8 +108,8 @@ exports.update = (req, res) => {
 
 // Delete an user with the specified user's Id ==============================
 exports.delete = async (req, res) => {
-  controller.deleteData(User, req, res);
-  /*
+  //controller.deleteData(User, req, res);
+
   // Delete user's data before delete the user
   const id = req.user._id;
 
@@ -137,8 +137,6 @@ exports.delete = async (req, res) => {
       console.log(err);
       res.status(500).send({ message: 'Error accessing the database!' });
     });
-  */
-
 };
 
 // Retrieve and return all users from the database =========================
