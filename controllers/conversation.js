@@ -100,6 +100,21 @@ exports.findOne = (req, res) => {
   controller.findOne(Conversation, req, res);
 };
 
+// Get all conversation that belong to a specific user ============================
+exports.getall = (req, res) => {
+  //controller.getAllByUserId(Conversation, req, res);
+  const ownerId = req.user._id;
+  // Validate the given UserId first
+  Conversation.find({ people: ownerId }).then((match) => {
+    if (match) {
+      res.status(200).send(match);
+    }
+  }).catch((err) => {
+    console.log(err);
+    res.status(500).send({ message: 'Error when accessing the database!' });
+  });
+};
+
 // Delete a particular message in convo
 // new function: this should be considered after all other
 // essential features are implemented
