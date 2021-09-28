@@ -40,4 +40,46 @@ const userTester = {
   }
 }
 
-module.exports = { userTester };
+const eventTester = {
+  missingName: {
+    dateTime: '1/1/1234',
+    completed: false,
+  },
+
+  validEvent: {
+    name: 'Coffee with Katie',
+    dateTime: '1/1/1234',
+    completed: false,
+  },
+
+  newEventForGetRoute: {
+    name: 'Yearly company meeting',
+    dateTime: '1/2/1234',
+    participants: ['me', 'boss', 'secretary', 'junior'],
+    description: 'Fun time',
+    completed: true,
+  },
+
+  newEventForPutRoute: {
+    name: 'Visit big boss Kanyes birthday',
+    dateTime: '4/2/1245',
+    participants: ['me', 'bigboss', 'underling'],
+    description: 'Wholesome bro time',
+    completed: false,
+  },
+
+  updateEvent: {
+    name: 'Visit big boss Kanyes daughter birthday',
+    description: 'children',
+  },
+
+  newEventForDelRoute: {
+    name: 'Restaurant with myself',
+    dateTime: '5/4/1234',
+    participants: ['me'],
+    description: 'Nothing wrong with dining alone',
+    completed: false,
+  }
+}
+
+module.exports = { userTester, eventTester };

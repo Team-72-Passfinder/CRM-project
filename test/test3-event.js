@@ -1,3 +1,4 @@
+/*
 // Run higher order test first
 require('./test2-user');
 
@@ -192,3 +193,4 @@ mocha.describe('Test Event routes', function () {
     });
   });
 });
+*/
