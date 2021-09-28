@@ -1,7 +1,5 @@
 const axios = require('axios');
 
-const BASE_URL = 'http://localhost:5000';
-
 const instance = axios.create({
   baseURL: 'http://localhost:5000',
   headers: {
@@ -13,24 +11,24 @@ export function getEvents() {
   return axios.get('/event').then((response) => response.data);
 }
 export function getEvent(id) {
-  let endpoint = BASE_URL + '/event/' + id;
+  let endpoint = '/event/' + id;
 
   return axios.get(endpoint).then((response) => response.data);
 }
 export function addEvent(event) {
-  let endpoint = BASE_URL + '/event/';
+  let endpoint = '/event/';
 
   return axios.post(endpoint, event).then((res) => res.data);
 }
 
 export function setEvent(id) {
-  let endpoint = BASE_URL + '/event/' + id;
+  let endpoint = '/event/' + id;
 
   return axios.post(endpoint, id).then((res) => res.data);
 }
 
-export function saveEvent(event) {
-  let endpoint = BASE_URL + '/event/' + event._id;
+export function updateEvent(event) {
+  let endpoint = '/event/' + event._id;
 
   return axios
     .put(endpoint, event)
@@ -40,7 +38,7 @@ export function saveEvent(event) {
 
 export async function login(username, password) {
   await axios
-    .post(BASE_URL + '/login', {
+    .post('/login', {
       username: username,
       password: password,
     })
@@ -64,19 +62,19 @@ export async function login(username, password) {
 }
 
 export function getContacts() {
-  let endpoint = BASE_URL + '/contact';
+  let endpoint = '/contact';
 
   return axios.get(endpoint).then((res) => res.data);
 }
 
 export function getContact(id) {
-  let endpoint = BASE_URL + '/contact/' + id;
+  let endpoint = '/contact/' + id;
 
   return axios.get(endpoint).then((res) => res.data);
 }
 
 export function addContact(contact) {
-  let endpoint = BASE_URL + '/contact';
+  let endpoint = '/contact';
 
   contact.dateOfBirth = new Date(contact.dateOfBirth);
 
@@ -86,8 +84,8 @@ export function addContact(contact) {
     .catch((e) => console.log(e.response));
 }
 
-export function save(contact) {
-  let endpoint = BASE_URL + '/contact/' + contact._id;
+export function updateContact(contact) {
+  let endpoint = '/contact/' + contact._id;
 
   return axios
     .put(endpoint, contact)

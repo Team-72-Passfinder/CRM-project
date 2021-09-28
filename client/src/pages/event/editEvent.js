@@ -7,7 +7,7 @@ import DateAdapter from '@mui/lab/AdapterDayjs';
 import DatePicker from '@mui/lab/DatePicker';
 
 import Navbar from '../../components/Navbar';
-import { getEvent, saveEvent } from '../../api';
+import { getEvent, updateEvent } from '../../api';
 
 const formList = [
   {
@@ -44,7 +44,7 @@ function EditEvent() {
     // Temporary fix
     delete event.belongsTo;
     console.log(event);
-    saveEvent(event);
+    updateEvent(event);
   }
 
   function getEventData(key) {
