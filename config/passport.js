@@ -5,7 +5,7 @@ var passport = require('passport'),
   LocalStrategy = require('passport-local');
 
 const User = require('mongoose').model('User');
-//const Validator = require('../controllers/validator');
+const Validator = require('../controllers/validator');
 
 passport.use(
   'jwt',
@@ -56,7 +56,8 @@ passport.use(
     {
       passReqToCallback: true,
     },
-    function (req, username, password, done) {
+    async function (req, username, password, done) {
+      /*
       User.findOne({ username: username }, function (err, user) {
         if (err) {
           return done(err);
@@ -79,7 +80,7 @@ passport.use(
 
         return done(null, newUser);
       });
-      /*
+      */
       const message = await Validator.checkValidUser(req);
       //console.log(message);
       if (message == 'valid') {
@@ -90,16 +91,15 @@ passport.use(
         newUser.email = req.body.email;
         newUser.firstName = req.body.firstName;
         newUser.lastName = req.body.lastName;
-        newUser.dateOfBirth = req.body.dateOfBirth;
+        newUser.dateOfBirth = new Date(req.body.dateOfBirth);
 
         newUser.save();
-
         return done(null, newUser);
       }
       else {
         return done(null, false, { message: message });
       }
-      */
+
     }
   )
 );

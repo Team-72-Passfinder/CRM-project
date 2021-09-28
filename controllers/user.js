@@ -135,7 +135,7 @@ exports.delete = async (req, res) => {
     // Catching error when accessing the database
     .catch((err) => {
       console.log(err);
-      res.status(500).send({ message: 'Error accessing the database!' });
+      res.status(500).send({ message: 'Error when accessing the database!' });
     });
 };
 

@@ -42,6 +42,9 @@ async function checkValidUser(req) {
     else {
       message = "valid";
     }
+  }).catch((err) => {
+    console.log(err);
+    message = "Error when accessing the database!";
   });
 
   // continue to check for username
@@ -50,6 +53,9 @@ async function checkValidUser(req) {
     if (existedUname) {
       message = "Username has been registered!";
     }
+  }).catch((err) => {
+    console.log(err);
+    message = "Error when accessing the database!";
   });
 
   // Enforce UTC timezone before return

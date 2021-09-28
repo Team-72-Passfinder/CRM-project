@@ -137,7 +137,7 @@ async function getNamesFromContactIds(belongsTo, participantList) {
 // Convo??
 async function deleteDataOfUser(controller, userId) {
   await controller.deleteMany({ belongsTo: userId }).then(() => {
-    console.log('data deleted!');
+    //console.log('data deleted!');
   }).catch((err) => {
     console.log(err);
   })
