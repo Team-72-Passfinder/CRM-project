@@ -5,38 +5,11 @@ const mocha = require('mocha');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const server = require('../server').app;
-//const URI = require('../config/config').bdURI;
-//let token = "";
+const UserModel = require('../models/user');
 
+let token = "";
 
-//const UserModel = require('../models/user');
-const validUser = {
-  username: 'username', password: 'password',
-  email: 'fakeemail@gmail.com', firstName: 'fakeFirstName',
-  lastName: 'fakeLastName', dateOfBirth: "1980-11-30"
-};
-
-const inValidUserLogin = {
-  username: 'difusername', password: 'password'
-}
-
-const validUserLogin = {
-  username: 'username', password: 'password'
-}
-
-const preSavedUsername = {
-  username: 'username', password: 'fakePassword',
-  email: 'mario@mushroom.com', firstName: 'Mar',
-  lastName: 'Rio', dateOfBirth: "1999-11-30"
-};
-
-const preSavedEmail = {
-  username: 'marmar', password: 'fakePassword',
-  email: 'fakeemail@gmail.com', firstName: 'Mar',
-  lastName: 'Rio', dateOfBirth: "1999-11-30"
-};
-
-//const updateUser = { firstName: 'Mar', lastName: 'Rio' };
+const { userTester } = require('./test-input');
 
 chai.use(chaiHttp);
 let should = chai.should();
@@ -47,17 +20,10 @@ mocha.describe('Test User routes', function () {
     mocha.it(
       'it should not REGISTER a user without firstName field',
       function (done) {
-        let user = {
-          username: 'pikachu',
-          password: '123123123',
-          email: 'alo123@gmail.com',
-          lastName: 'Chu',
-          dateOfBirth: '12/3/1234',
-        };
         chai
           .request(server)
           .post('/register')
-          .send(user)
+          .send(userTester.missingFirstName)
           .end((err, res) => {
             res.should.have.status(401);
             res.body.should.be.a('object');
@@ -70,7 +36,7 @@ mocha.describe('Test User routes', function () {
       chai
         .request(server)
         .post('/register')
-        .send(validUser)
+        .send(userTester.validUser)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
@@ -84,7 +50,7 @@ mocha.describe('Test User routes', function () {
       chai
         .request(server)
         .post('/register')
-        .send(preSavedUsername)
+        .send(userTester.preSavedUsername)
         .end((err, res) => {
           res.should.have.status(401);
           res.body.should.be.a('object');
@@ -96,7 +62,7 @@ mocha.describe('Test User routes', function () {
       chai
         .request(server)
         .post('/register')
-        .send(preSavedEmail)
+        .send(userTester.preSavedEmail)
         .end((err, res) => {
           res.should.have.status(401);
           res.body.should.be.a('object');
@@ -110,7 +76,7 @@ mocha.describe('Test User routes', function () {
       chai
         .request(server)
         .post('/login')
-        .send(inValidUserLogin)
+        .send(userTester.inValidUserLogin)
         .end((err, res) => {
           res.should.have.status(401);
           res.body.should.be.a('object');
@@ -122,20 +88,21 @@ mocha.describe('Test User routes', function () {
       chai
         .request(server)
         .post('/login')
-        .send(validUserLogin)
+        .send(userTester.validUserLogin)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
           res.body.should.have.property('token');
-          //token = res.body.token;
+          token = res.body.token;
           done();
         });
     });
-    /*
+
     mocha.it('it should show PROFILE of the correct user ', function (done) {
+      //console.log(token);
       chai
         .request(server)
-        .post('/profile')
+        .get('/profile')
         .auth(token, { type: 'bearer' })
         .end((err, res) => {
           res.should.have.status(200);
@@ -148,16 +115,17 @@ mocha.describe('Test User routes', function () {
           res.body.should.have.property('dateOfBirth');
           done();
         });
-    });*/
+    });
   });
 
-  /*
+
   mocha.describe('************* AUTH AFTER LOGIN *************', () => {
     mocha.describe('/GET route', function () {
       mocha.it('it should GET all the users (1)', function (done) {
         chai
           .request(server)
           .get('/user')
+          .auth(token, { type: 'bearer' })
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('array');
@@ -172,8 +140,8 @@ mocha.describe('Test User routes', function () {
         chai
           .request(server)
           .put('/user')
-          //.set({ "Authorization": `Bearer ${token}` })
-          .send(updateUser)
+          .auth(token, { type: 'bearer' })
+          .send(userTester.updateUser)
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('object');
@@ -184,17 +152,67 @@ mocha.describe('Test User routes', function () {
       });
     });
 
+
     mocha.describe('/GET/:id route', () => {
       mocha.it('it should GET a user by the given id', (done) => {
-        console.log(done);
+        let user = new UserModel(userTester.newUser);
+        user.save((err, user) => {
+          chai
+            .request(server)
+            .get('/user/' + user.id)
+            .auth(token, { type: 'bearer' })
+            .send(user)
+            .end((err, res) => {
+              res.should.have.status(200);
+              res.body.should.be.a('object');
+              res.body.should.have.property('username');
+              res.body.should.have.property('email');
+              res.body.should.have.property('firstName');
+              res.body.should.have.property('lastName');
+              res.body.should.have.property('dateOfBirth');
+              res.body.should.have.property('_id').eql(user.id);
+              done();
+            });
+        })
       });
     });
 
-    mocha.describe('/DELETE user', () => {
-      mocha.it('it should DELETE a user given the id', (done) => {
-        console.log(done);
+    mocha.describe('/GET/SEARCH route', () => {
+      mocha.it('it should perform SEARCH query successfully ', (done) => {
+        let query = {
+          query: "user"
+        };
+        chai
+          .request(server)
+          .get('/user/search')
+          .auth(token, { type: 'bearer' })
+          .send(query)
+          .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.a('array');
+            res.body.length.should.be.eql(2);
+            done();
+          });
       });
     });
+
+
+    mocha.describe('/DELETE user', () => {
+      mocha.it('it should DELETE the current user', (done) => {
+        chai
+          .request(server)
+          .delete('/user')
+          .auth(token, { type: 'bearer' })
+          .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.a('object');
+            res.body.should.have
+              .property('message')
+              .eql('User is deleted successfully!');
+            done();
+          });
+      });
+    });
+
   });
-  */
 });
