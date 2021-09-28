@@ -85,7 +85,7 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
     });
   });
 
-  mocha.describe('/GET/getall/:id route', function () {
+  mocha.describe('/GET/getall route', function () {
     mocha.it('it should GET all the events of a given user', function (done) {
       chai
         .request(server)
@@ -157,18 +157,20 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
   mocha.describe('/GET/SEARCH route', () => {
     mocha.it('it should perform SEARCH query successfully ', (done) => {
       let query = {
-        query: "james",
+        query: "with",
         completed: false,
+        from: '1/1/1234',
+        to: '1/2/1234'
       };
       chai
         .request(server)
-        .get('/contact/search')
+        .get('/event/search')
         .auth(token, { type: 'bearer' })
         .send(query)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('array');
-          res.body.length.should.be.eql(0);
+          res.body.length.should.be.eql(1);
           done();
         });
     });
@@ -198,3 +200,4 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
     });
   });
 });
+

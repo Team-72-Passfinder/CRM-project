@@ -82,4 +82,42 @@ const eventTester = {
   }
 }
 
-module.exports = { userTester, eventTester };
+const contactTester = {
+  newUser: {
+    username: 'contacttest', password: 'fakePassword',
+    email: 'contacttest@gmail.com', firstName: 'contact',
+    lastName: 'test', dateOfBirth: "1999-11-30"
+  },
+
+  testUserForPostRoute: {
+    username: 'contacttest2', password: 'fakePassword',
+    email: 'contacttest2@gmail.com', firstName: 'contact',
+    lastName: 'test', dateOfBirth: "1999-11-30"
+  },
+
+  missingFirstName: { lastName: 'Komin' },
+
+  validContact: {
+    firstName: 'Nunu', lastName: 'Theboy', email: 'Nunu5i@gmail.com',
+    phoneNumber: '193746xxxx', dateOfBirth: '2020-02-20', biography: ''
+  },
+
+  newContactForGetRoute: {
+    firstName: 'Koma', lastName: 'Komin', email: 'Komama@gmail.com',
+    phoneNumber: '193746xxxx', dateOfBirth: '2020-02-20'
+  },
+
+  newContactForPutRoute: {
+    firstName: 'Leng', lastName: 'Ming', email: 'lmht@gmail.com',
+    phoneNumber: '123746xxxx', dateOfBirth: '2020-12-20', biography: '',
+  },
+
+  updateContact: { firstName: 'Ding ding', lastName: 'Dong dong', },
+
+  newContactForDelRoute: {
+    firstName: 'Haa', lastName: 'Sugii', email: 'Hasugi@gmail.com',
+    phoneNumber: '123746xxxx', dateOfBirth: '2020-12-20', biography: '',
+  }
+}
+
+module.exports = { userTester, eventTester, contactTester };

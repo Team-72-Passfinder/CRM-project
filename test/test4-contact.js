@@ -1,3 +1,4 @@
+/*
 // Run higher order test first
 require('./test3-event');
 
@@ -227,3 +228,4 @@ mocha.describe('Test Contact routes', function () {
     });
   });
 });
+*/
