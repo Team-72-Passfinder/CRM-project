@@ -19,6 +19,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 function AddContact({ open, setOpen, setContacts, progressing }) {
     const [contact, setContact] = useState({ firstName: 'none', lastName: 'none', email: '', phoneNumber: '', dateOfBirth: new Date(), belongsTo: '6128d8da5abef9dd792d90ff' })
+    const [submitDisabled, setSubmitDisabled] = useState(true)
 
     const handleClose = () => {
         setOpen(false);
@@ -33,11 +34,26 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
                     setTimeout(() => {
                         progressing.current = false
                         setContacts(res)
-                    }, 500)
+                    }, 200)
                 })
             }
         })
     }
+
+    useEffect(() => {
+        const inputs = document.querySelectorAll('input')
+        
+        Array.from(inputs).filter(input => {
+            if(input.required === true) {
+                console.log(contact)
+                if(!input.validity.valid) {
+                    setSubmitDisabled(true)
+                } else {
+                    setSubmitDisabled(false)
+                }
+            }
+        })
+    }, [contact])
 
     return (
         <Dialog
@@ -79,16 +95,17 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
                         </Avatar>
                     </label>
                 </div>
-                <StandardInput label='First name' name='firstName' value={contact.firstName} setValue={setContact} required={true} type='text' />
-                <StandardInput label='Last name' name='lastName' value={contact.lastName} setValue={setContact} required={true} type='text' />
-                <StandardInput label='Email' name='email' value={contact.email} setValue={setContact} reqeuired={false} type='email' />
-                <StandardInput label='Phone number' name='phoneNumber' value={contact.phoneNumber} setValue={setContact} reqeuired={false} type='tel' />
+                <StandardInput id="firstName" label='First name' name='firstName' value={contact.firstName} setValue={setContact} required={true} type='text' />
+                <StandardInput id="lastName" label='Last name' name='lastName' value={contact.lastName} setValue={setContact} required={true} type='text' />
+                <StandardInput id="email" label='Email' name='email' value={contact.email} setValue={setContact} reqeuired={false} type='email' />
+                <StandardInput id="phoneNumber" label='Phone number' name='phoneNumber' value={contact.phoneNumber} setValue={setContact} reqeuired={false} type='tel' />
                 <LocalizationProvider dateAdapter={DateAdapter}>
                     <FormControl margin="dense" variant="filled">
                         <Typography sx={{ fontSize: '15px', fontWeight: 600 }} margin="none">
                             Date of birth
                         </Typography>
                         <DatePicker
+                            id="dateOfBirth"
                             value={contact.dateOfBirth}
                             disableFuture
                             onChange={(newValue) => {
@@ -123,7 +140,7 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
                         />
                     </FormControl>
                 </LocalizationProvider>
-                <Button sx={{ width: 300, my: '10px', '&.MuiButton-disableElevation': { boxShadow: '4px 4px 20px 5px rgba(223, 120, 97, 0.25)' } }} color="primary" variant="contained" disableElevation onClick={saveContact}>
+                <Button sx={{ width: 300, my: '10px', '&.MuiButton-disableElevation': { boxShadow: `(${submitDisabled} && 'none') || '4px 4px 20px 5px rgba(223, 120, 97, 0.25)'` } }} color="primary" variant="contained" disableElevation disabled={submitDisabled} onClick={saveContact}>
                     Save
                 </Button>
             </Box>

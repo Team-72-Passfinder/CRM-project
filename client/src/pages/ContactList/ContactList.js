@@ -1,15 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react'
 
-import { Container, Box, Stack, Paper, CircularProgress, InputBase, List, ListItem, ListItemText, ListItemAvatar, Avatar, Typography, Toolbar, Button, Tabs, Tab, Fab, IconButton, Slide } from '@mui/material'
+import { Box, Stack, Paper, CircularProgress, InputBase, List, ListItem, ListItemText, ListItemAvatar, Avatar, Typography, Tabs, Tab, Fab, IconButton, } from '@mui/material'
 
 import SortIcon from '@mui/icons-material/Sort';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import AddIcon from '@mui/icons-material/Add';
 
 import { getContacts } from '../../api'
 import Navbar from '../../components/Navbar'
 
-// import CreateContact from '../CreateContact/CreateContact'
 import AddContact from '../Contact/AddContact';
 
 function ContactList() {
