@@ -11,8 +11,8 @@ app.route('/event/search/:belongsToId').get(controller.search);
 
 app
   .route('/event/:id')
+  .get(controller.findOne)
   .put(controller.update)
-  .delete(controller.delete)
-  .get(controller.findOne);
+  .delete(controller.delete);
 
 module.exports = app;
