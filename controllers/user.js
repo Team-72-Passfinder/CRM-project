@@ -7,6 +7,9 @@ const Contact = require('../models/contact');
 const Event = require('../models/event');
 const Relationship = require('../models/relationship');
 
+// Authentication
+const jwt = require('jsonwebtoken');
+
 
 // Scatch function for POST() - to be removed & replaced with passport later
 exports.create = async (req, res) => {
@@ -15,30 +18,26 @@ exports.create = async (req, res) => {
   if (message != 'valid') {
     return res.status(400).send({ message: message });
   }
-  // else, create a new user
-  const user = new User({
-    //_id: Mongoose.Types.ObjectId(),
-    username: req.body.username,
-    password: req.body.password,
-    email: req.body.email,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    dateOfBirth: new Date(req.body.dateOfBirth),
-    biography: req.body.biography || '',
-  });
+  var newUser = new User();
 
-  // Save this user to database
-  user
-    .save()
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send({
-        message: 'Error when creating user!',
+  newUser.username = req.body.username;
+  newUser.password = newUser.hashPassword(req.body.password);
+  newUser.email = req.body.email;
+  newUser.firstName = req.body.firstName;
+  newUser.lastName = req.body.lastName;
+  newUser.dateOfBirth = new Date(req.body.dateOfBirth);
+
+  newUser.save().then((user) => {
+    if (user) {
+      let token = jwt.sign({ _id: user._id }, process.env.PASSPORT_SECRET, {
+        expiresIn: '10d',
       });
-    });
+      res.status(200).send({ token: token, user: user });
+    }
+  }).catch((err) => {
+    console.log(err);
+    res.status(500).send({ message: 'Error when creating user!', });
+  });
 };
 
 
@@ -108,11 +107,8 @@ exports.update = (req, res) => {
 
 // Delete an user with the specified user's Id ==============================
 exports.delete = async (req, res) => {
-  //controller.deleteData(User, req, res);
-
   // Delete user's data before delete the user
   const id = req.user._id;
-
   // Delete events:
   await controller.deleteDataOfUser(Event, id);
   // Delete contacts:

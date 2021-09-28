@@ -1,10 +1,11 @@
-var express = require('express');
-var router = express.Router();
+/*
+const express = require('express');
+const router = express.Router();
 
-var passport = require('passport');
+const passport = require('passport');
 require('../config/passport');
 
-var jwt = require('jsonwebtoken');
+const passport = require('../config/passport');
 
 router.get(
   '/profile',
@@ -14,9 +15,10 @@ router.get(
   }
 );
 
+/*
 router.post(
   '/login',
-  passport.authenticate('login', { session: false }),
+  //passport.authenticate('login', { session: false }),
   async (req, res) => {
     let token = jwt.sign({ _id: req.user._id }, process.env.PASSPORT_SECRET, {
       expiresIn: '10d',
@@ -39,3 +41,4 @@ router.post(
 );
 
 module.exports = router;
+*/
