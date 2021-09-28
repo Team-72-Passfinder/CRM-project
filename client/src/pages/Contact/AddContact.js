@@ -11,13 +11,13 @@ import CloseIcon from '@mui/icons-material/Close';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import StandardInput from '../../components/StandardInput';
 
-import { addContact } from '../../api';
+import { addContact, getContacts } from '../../api';
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-function AddContact({ open, setOpen }) {
+function AddContact({ open, setOpen, setContacts, progressing }) {
     const [contact, setContact] = useState({ firstName: 'none', lastName: 'none', email: '', phoneNumber: '', dateOfBirth: new Date(), belongsTo: '6128d8da5abef9dd792d90ff' })
 
     const handleClose = () => {
@@ -25,7 +25,18 @@ function AddContact({ open, setOpen }) {
     };
 
     function saveContact() {
-        addContact(contact)
+        addContact(contact).then(res => {
+            if(contact.firstName === res.firstName && contact.lastName === res.lastName) {
+                progressing.current = true
+                handleClose();
+                getContacts().then(res => {
+                    setTimeout(() => {
+                        progressing.current = false
+                        setContacts(res)
+                    }, 500)
+                })
+            }
+        })
     }
 
     return (
