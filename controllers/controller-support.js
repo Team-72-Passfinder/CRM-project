@@ -114,9 +114,9 @@ async function getNamesFromContactIds(belongsTo, participantList) {
   for (let index = 0; index < participantList.length; index++) {
     const elem = participantList[index];
     if (isValidObjectId(elem)) {
-      await Contact.find({ _id: elem, belongsTo: belongsTo }).then((found) => {
+      await Contact.findOne({ _id: elem, belongsTo: belongsTo }).then((found) => {
         if (found) {
-          const name = found[0].firstName + " " + found[0].lastName;
+          const name = found.firstName + " " + found.lastName;
           participants.push(name);
         }
       }).catch((err) => {

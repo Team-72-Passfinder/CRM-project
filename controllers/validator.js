@@ -114,7 +114,7 @@ async function checkValidIdWithBelongsTo(controller, id, belongsTo) {
   var check = true;
   if (!id || !isValidObjectId(id)) { check = false; }
 
-  await controller.find({ _id: id, belongsTo: belongsTo }).then((foundId) => {
+  await controller.findOne({ _id: id, belongsTo: belongsTo }).then((foundId) => {
     if (!foundId) {
       check = false;
     }
