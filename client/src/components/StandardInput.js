@@ -58,7 +58,7 @@ function StandardInput({ label, name, value, setValue, required, type }) {
     return (
         <FormControl margin="dense" variant="filled">
             <Typography sx={{ fontSize: '15px', fontWeight: 600 }} margin="none">
-                {label}
+                {label}{required && '*'}
             </Typography>
             <FilledInput
                 id={name}
@@ -78,6 +78,7 @@ function StandardInput({ label, name, value, setValue, required, type }) {
                 hiddenLabel={true}
                 onChange={e => setValue(prev => ({ ...prev, [name]: e.target.value }))}
                 error={isError()}
+                required={required}
             />
             {generateHelperText()}
         </FormControl>
