@@ -5,6 +5,7 @@ var passport = require('passport'),
   LocalStrategy = require('passport-local');
 
 const User = require('mongoose').model('User');
+const Validator = require('../controllers/validator');
 
 passport.use(
   'jwt',
@@ -49,7 +50,6 @@ passport.use(
   })
 );
 
-/*
 passport.use(
   'registration',
   new LocalStrategy(
@@ -80,7 +80,8 @@ passport.use(
 
         return done(null, newUser);
       });
-      
+      */
+
       const message = await Validator.checkValidUser(req);
       //console.log(message);
       if (message == 'valid') {
@@ -103,6 +104,5 @@ passport.use(
     }
   )
 );
-*/
 
 module.exports = passport;

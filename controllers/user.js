@@ -7,11 +7,9 @@ const Contact = require('../models/contact');
 const Event = require('../models/event');
 const Relationship = require('../models/relationship');
 
-// Authentication
-const jwt = require('jsonwebtoken');
-
 
 // Scatch function for POST() - to be removed & replaced with passport later
+/*
 exports.create = async (req, res) => {
   const message = await Validator.checkValidUser(req);
   //console.log(message);
@@ -39,7 +37,7 @@ exports.create = async (req, res) => {
     res.status(500).send({ message: 'Error when creating user!', });
   });
 };
-
+*/
 
 // Update an user identified by the user's Id ==============================
 // This Update function behaves differently from other controllers
