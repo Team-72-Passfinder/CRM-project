@@ -31,7 +31,7 @@ function Profile() {
 
     return (
         <Container sx={{ width: '100vw', padding: 0 }}>
-            <Navbar />
+            <Navbar active="Profile" />
             {
                 user !== undefined &&
                 <React.Fragment>
