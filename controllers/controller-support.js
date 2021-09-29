@@ -1,10 +1,9 @@
-// CRUD GENERATOR!!!
+
 // Controller to perform CRUD and other support functions 
 const { isValidObjectId } = require("mongoose");
-const User = require('../models/user');
 const Contact = require('../models/contact');
 
-// Update a contacts identified by the contact's Id ==============================
+// Update a data identified by the data's Id =====================================
 function updateData(controller, req, res) {
   // Get the id
   const id = req.params.id;
@@ -24,7 +23,7 @@ function updateData(controller, req, res) {
     });
 }
 
-// Delete a contact with the specified contact's Id ==============================
+// Delete a data with the specified data's Id ====================================
 function deleteData(controller, req, res) {
   const id = req.params.id;
   controller
@@ -36,7 +35,7 @@ function deleteData(controller, req, res) {
           .status(404)
           .send({ message: 'No data found to be deleted!' });
       }
-      // Else, the contact should be deleted successfully
+      // Else, the data should be deleted successfully
       res.status(200).send({ message: 'Data is deleted successfully!' });
     })
     // Catching error when accessing the database
@@ -46,10 +45,9 @@ function deleteData(controller, req, res) {
     });
 }
 
-// These folowings relate to Search engine??
-// Retrieve and return all contacts from the database =========================
+// Retrieve and return all data from the database =================================
 function findAllData(controller, req, res) {
-  // Return all contacts using find()
+  // Return all data using find()
   controller
     .find()
     .then((data) => {
@@ -62,21 +60,21 @@ function findAllData(controller, req, res) {
     });
 }
 
-// Find a single contact with the contact's id ====================================
+// Find a single data with the data's id ===========================================
 function findOne(controller, req, res) {
   // ID
   const id = req.params.id;
   controller
     .findById(id)
     .then((data) => {
-      // If contact with this id is not found
+      // If data with this id is not found
       if (!data) {
         // return the error messages
         return res.status(404).send({
           message: 'No data is found with this id!',
         });
       }
-      // else, return the contact
+      // else, return
       res.send(data);
     })
     // Catching the error when assessing the DB
@@ -86,24 +84,18 @@ function findOne(controller, req, res) {
     });
 }
 
-// Get all contact/relationships that belong to a specific user ======================
+// Get all contacts/relationships/events that belong to the user ==================
 async function getAllByUserId(controller, req, res) {
   const ownerId = req.user._id;
-  // Validate the given UserId first
-  await User.findById(ownerId).then((user) => {
-    if (!user) {
-      res.status(400).send({ message: 'Invalid userId!' });
-    }
-    else {
-      // Then move on to get-all
-      controller.find({ belongsTo: ownerId }).then((data) => {
-        res.status(200).send(data);
-      })
-    }
-  }).catch((err) => {
-    console.log(err);
-    res.status(500).send({ message: 'Error when accessing the database!' });
-  });
+
+  await controller.find({ belongsTo: ownerId }).then((data) => {
+    res.status(200).send(data);
+  })
+    // Catching error
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({ message: 'Error when accessing the database!' });
+    });
 }
 
 // Get name of saved contact that belongs to a specific user ======================
@@ -145,7 +137,6 @@ async function deleteDataOfUser(controller, userId) {
 
 
 module.exports = {
-  updateData, deleteData, findAllData,
-  findOne, getAllByUserId, getNamesFromContactIds,
-  deleteDataOfUser,
+  updateData, deleteData, findAllData, findOne,
+  getAllByUserId, getNamesFromContactIds, deleteDataOfUser,
 };

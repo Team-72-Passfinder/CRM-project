@@ -3,7 +3,7 @@ const Contact = require('../models/contact');
 const validateDate = require("validate-date");
 const { isValidObjectId } = require("mongoose");
 
-// Function to validate when creating a new user ===================================================
+// Function to validate when creating a new user ============================================
 // Return error type when validation fails
 async function checkValidUser(req) {
   var message;
@@ -32,7 +32,7 @@ async function checkValidUser(req) {
     return message;
   }
 
-  // Check for existing username or email ==================================
+  // Check for existing username or email ==================================================
   // Check for username
   await User.findOne({ email: req.body.email }).then((existedEmail) => {
     // If the email is found
@@ -53,6 +53,7 @@ async function checkValidUser(req) {
     if (existedUname) {
       message = "Username has been registered!";
     }
+    // Else, the message stays at status 'valid'
   }).catch((err) => {
     console.log(err);
     message = "Error when accessing the database!";
@@ -62,11 +63,11 @@ async function checkValidUser(req) {
   if (req.body.dateOfBirth.charAt(req.body.dateOfBirth.length - 1) != 'Z') {
     req.body.dateOfBirth += 'Z';
   }
-  //reaching this point means: message = "valid";
+
   return message;
 }
 
-// Checks for valid character in fields such as names ==============================
+// Checks for valid character in fields such as names ======================================
 function checkInvalid(string) {
   var format = /[!@#$%^&*()_+\-=\\[\]{};':"\\|,.<>\\/?]+/;
 
@@ -77,12 +78,12 @@ function checkInvalid(string) {
   }
 }
 
-// Checks for valid dateTime =======================================================
+// Checks for valid dateTime ===============================================================
 function checkValidDate(date) {
   return validateDate(date);
 }
 
-// Function to check for valid Ids =================================================
+// Function to check for valid Ids =========================================================
 // Used mostly for user and contact
 async function checkValidId(controller, id) {
   var check = true;
@@ -96,14 +97,12 @@ async function checkValidId(controller, id) {
   return check;
 }
 
-// FUnction to check for existence of data block =====================================
+// FUnction to check for existence of data block ===========================================
 // Used mostly for convo and relationship
 async function checkExist(controller, ids) {
   var check = false;
   await controller.findOne({ people: ids }).then((found) => {
-    if (found) {
-      check = true;
-    }
+    if (found) { check = true; }
   });
   return check;
 }
@@ -115,14 +114,12 @@ async function checkValidIdWithBelongsTo(controller, id, belongsTo) {
   if (!id || !isValidObjectId(id)) { check = false; }
 
   await controller.findOne({ _id: id, belongsTo: belongsTo }).then((foundId) => {
-    if (!foundId) {
-      check = false;
-    }
+    if (!foundId) { check = false; }
   });
   return check;
 }
 
-// Check for self-existence in the database ==========================================
+// Check for self-existence in the database ==================================================
 // Basic checking: used for relationship and convo
 async function validRelationshipOrConvo(controller2, req, type) {
   const sortedIds = req.body.people.sort();
