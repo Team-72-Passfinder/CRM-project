@@ -5,11 +5,13 @@ const Relationship = require('../models/relationship');
 const Convo = require('../models/conversation');
 const Contact = require('../models/contact');
 const Validator = require('./validator');
-// Basic search function ====================================================
+
 // The basic search query request looks like this:
 /*{
     "query": string
 }*/
+
+// Search function for contact =============================================
 async function contactSearch(req, res) {
 
   // check query's body
@@ -39,7 +41,7 @@ async function contactSearch(req, res) {
 
 
 // Search function for User only =============================================
-// since some info is protected and not to be returned directly
+// since some fields are protected and not to be returned directly
 // returns an array of users 
 function userSearch(req, res) {
   // check query's body
@@ -82,10 +84,10 @@ function userSearch(req, res) {
 // searching with filter - use specificly for event ===========================
 // a query may look like the following:
 /*{
-  "query": string,
-  "completed": boolean, // indicates that only looking for finished/unfinished events
-  "from": date          // looks for particular events from this date
-  "to": date            // looks for particular events upto the end of this date
+  **"query": string,
+    "completed": boolean, // indicates that only looking for finished/unfinished events
+    "from": date          // looks for particular events from this date
+    "to": date            // looks for particular events upto the end of this date
 }*/
 async function eventSearch(req, res) {
   // Declaring an array of data to return
@@ -154,7 +156,6 @@ async function eventSearch(req, res) {
   if (keys.indexOf('completed') > -1 && typeof (req.body.completed) == "boolean") {
     eventMap.forEach((ev) => {
       if (ev.completed != req.body.completed) {
-        //console.log(event.completed);
         eventMap.splice(eventMap.indexOf(ev), 1);
       }
     });
@@ -163,11 +164,7 @@ async function eventSearch(req, res) {
 }
 
 // Function to search for messages given conversation's id =======================
-// app.route('/conversation/search/:id')
-// search json file looks like this:
-/*{
-  "query": string
-}*/
+// app.route('/conversation/search/:id') - this id is the id of the convo
 function convoSearch(req, res) {
   // check query's body
   if (!checkValidQuery(req)) {
@@ -196,11 +193,6 @@ function convoSearch(req, res) {
 
 // Function to search a relationship
 // Searching by tags
-// search json file looks like this:
-/*{
-  "query": string
-}*/
-
 async function relationshipSearch(req, res) {
   // check query's body
   if (!checkValidQuery(req)) {
@@ -212,7 +204,7 @@ async function relationshipSearch(req, res) {
       belongsTo: req.user._id,
       tag: { $regex: req.body.query, $options: 'i' }
     })
-    //.find({ $text: { $search: req.body.query } })
+
     .then((data) => {
       res.status(200).send(data);
     }).catch((err) => {
