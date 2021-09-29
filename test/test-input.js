@@ -112,7 +112,7 @@ const contactTester = {
     phoneNumber: '123746xxxx', dateOfBirth: '2020-12-20', biography: '',
   },
 
-  updateContact: { firstName: 'Ding ding', lastName: 'Dong dong', },
+  updateContact: { firstName: 'Ding ding', lastName: 'Dong dong', jobTitle: ['PingPong Professor'] },
 
   newContactForDelRoute: {
     firstName: 'Haa', lastName: 'Sugii', email: 'Hasugi@gmail.com',

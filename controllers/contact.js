@@ -39,6 +39,7 @@ exports.create = async (req, res) => {
     email: req.body.email || '',
     phoneNumber: req.body.phoneNumber || '',
     dateOfBirth: req.body.dateOfBirth || null,
+    jobTitle: req.body.jobTitle || '',
     biography: req.body.biography || '',
   });
 
@@ -85,6 +86,7 @@ exports.addFromId = async (req, res) => {
         email: userData.email,
         phoneNumber: '',
         dateOfBirth: userData.dateOfBirth,
+        jobTitle: '',
         biography: userData.biography || '',
         optionalUserId: userId,
       });

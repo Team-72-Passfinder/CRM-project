@@ -180,6 +180,7 @@ mocha.describe('************* TEST CONTACT ROUTES *************', function () {
               res.body.should.have.property('belongsTo');
               res.body.should.have.property('firstName').eql('Ding ding');
               res.body.should.have.property('lastName').eql('Dong dong');
+              res.body.should.have.property('jobTitle').eql(['PingPong Professor']);
               done();
             });
         });
