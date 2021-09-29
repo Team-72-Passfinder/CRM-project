@@ -161,7 +161,7 @@ mocha.describe('************* TEST CONTACT ROUTES *************', function () {
     });
   });
 
-  mocha.describe('/PUT/:id user', () => {
+  mocha.describe('/PUT/:id ', () => {
     mocha.it('it should UPDATE a contact given the id', (done) => {
       chai
         .request(server)
@@ -205,7 +205,7 @@ mocha.describe('************* TEST CONTACT ROUTES *************', function () {
     });
   });
 
-  mocha.describe('/DELETE/:id user', () => {
+  mocha.describe('/DELETE/:id ', () => {
     mocha.it('it should DELETE a contact given the id', (done) => {
       chai
         .request(server)

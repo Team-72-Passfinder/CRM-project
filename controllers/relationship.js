@@ -14,7 +14,7 @@ exports.create = async (req, res) => {
     });
   }
   // Check if this relationship contains exactly 2 users
-  if (Object.keys(req.body.people).length != 2) {
+  if (!req.body.people || Object.keys(req.body.people).length != 2) {
     return res.status(400).send({
       message: 'Require 2 people in relationship!',
     });

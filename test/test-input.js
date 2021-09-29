@@ -120,4 +120,32 @@ const contactTester = {
   }
 }
 
-module.exports = { userTester, eventTester, contactTester };
+const relaTester = {
+  newUser: {
+    username: 'relatest', password: 'fakePassword',
+    email: 'relatest@gmail.com', firstName: 'rela',
+    lastName: 'test', dateOfBirth: "1999-11-30"
+  },
+
+  contact1: {
+    firstName: 'one', lastName: 'number', email: 'numOne@gmail.com',
+    phoneNumber: '193746xxxx', dateOfBirth: '2020-02-20', biography: ''
+  },
+
+  contact2: {
+    firstName: 'two', lastName: 'number', email: 'numTwo@gmail.com',
+    phoneNumber: '193746xxxx', dateOfBirth: '2020-02-20', biography: ''
+  },
+
+  contact3: {
+    firstName: 'three', lastName: 'number', email: 'numThree@gmail.com',
+    phoneNumber: '193746xxxx', dateOfBirth: '2020-02-20', biography: ''
+  },
+
+  missingContact: {
+    startedDatetime: '12-10-2000',
+    tag: ['engineers']
+  }
+}
+
+module.exports = { userTester, eventTester, contactTester, relaTester };

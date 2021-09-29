@@ -128,7 +128,7 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
     });
   });
 
-  mocha.describe('/PUT/:id user', () => {
+  mocha.describe('/PUT/:id ', () => {
     mocha.it('it should UPDATE an event given the id', (done) => {
       chai
         .request(server)
@@ -176,7 +176,7 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
     });
   });
 
-  mocha.describe('/DELETE/:id user', () => {
+  mocha.describe('/DELETE/:id ', () => {
     mocha.it('it should DELETE an event given the id', (done) => {
       chai
         .request(server)
