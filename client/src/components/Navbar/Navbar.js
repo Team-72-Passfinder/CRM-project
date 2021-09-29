@@ -50,7 +50,7 @@ function Navbar() {
 
     return (
         <div>
-            <AppBar sx={{ background: 'white', boxShadow: 'none' }} position='static'>
+            <AppBar sx={{ background: '#d2601a', boxShadow: 'none' }} position='static'>
                 <Toolbar>
                     <IconButton onClick={handleDrawerOpen}>
                         <MenuIcon />
