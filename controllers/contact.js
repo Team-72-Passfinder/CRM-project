@@ -174,5 +174,5 @@ exports.search = (req, res) => {
 
 // Get all contacts that belong to a specific user ============================
 exports.getall = (req, res) => {
-  controller.getAllByUserId(Contact, req, res);
+  controller.getall(Contact, req, res);
 };

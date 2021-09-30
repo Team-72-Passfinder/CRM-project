@@ -139,7 +139,8 @@ async function eventSearch(req, res) {
     await Event.find({
       belongsTo: req.user._id,
       $or: [{ name: { $regex: text, $options: 'i' } },
-      { description: { $regex: text, $options: 'i' } }]
+      { description: { $regex: text, $options: 'i' } }],
+      participants: req.body.participants
     }).then((data) => {
       eventMap = data;
     })// Case of error

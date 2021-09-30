@@ -108,6 +108,7 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
         .auth(token, { type: 'bearer' })
         .send(eventTester.newEventForGetRoute)
         .end((err, res) => {
+          res.should.have.status(200);
           chai
             .request(server)
             .get('/event/' + res.body._id)

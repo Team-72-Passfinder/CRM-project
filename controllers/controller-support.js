@@ -85,7 +85,7 @@ function findOne(controller, req, res) {
 }
 
 // Get all contacts/relationships/events that belong to the user ==================
-async function getAllByUserId(controller, req, res) {
+async function getall(controller, req, res) {
   const ownerId = req.user._id;
 
   await controller.find({ belongsTo: ownerId }).then((data) => {
@@ -138,5 +138,5 @@ async function deleteDataOfUser(controller, userId) {
 
 module.exports = {
   updateData, deleteData, findAllData, findOne,
-  getAllByUserId, getNamesFromContactIds, deleteDataOfUser,
+  getall, getNamesFromContactIds, deleteDataOfUser,
 };
