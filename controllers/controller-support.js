@@ -124,6 +124,20 @@ async function getNamesFromContactIds(belongsTo, participantList) {
   return participants;
 }
 
+// Function to structure event for returning ==================================
+// Main job: turns participants into names instead of leaving it as contactIds
+async function display(event) {
+  return {
+    _id: event._id,
+    belongsTo: event.belongsTo,
+    name: event.name,
+    dateTime: event.dateTime,
+    completed: event.completed,
+    participants: await getNamesFromContactIds(event.belongsTo, event.participants),
+    description: event.description || '',
+  }
+}
+
 // Delete data that is associated with user, called when a user is deleted
 // Including: contact, event and relationship
 // Convo??
@@ -137,6 +151,6 @@ async function deleteDataOfUser(controller, userId) {
 
 
 module.exports = {
-  updateData, deleteData, findAllData, findOne,
+  updateData, deleteData, findAllData, findOne, display,
   getall, getNamesFromContactIds, deleteDataOfUser,
 };

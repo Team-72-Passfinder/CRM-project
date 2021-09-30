@@ -25,24 +25,12 @@ exports.create = async (req, res) => {
     });
   }
 
-  // Create an event
   // Enfore dateTime
   if (req.body.dateTime.charAt(req.body.dateTime.length - 1) != 'Z') {
     req.body.dateTime += 'Z';
   }
 
-  /*
-  // Proceed participant lists to get names if inputs are contactIds!
-  var participants = [];
-  if (req.body.participants) {
-    const rawPcpt = req.body.participants;
-    participants = await controller.getNamesFromContactIds(req.user._id, rawPcpt);
-    // Check for error:
-    if (participants.length != Object.keys(rawPcpt).length) {
-      return res.status(400).send({ message: 'Error when accessing the contact database!' })
-    }
-  }*/
-
+  // Create an event
   const event = new Event({
     belongsTo: req.user._id,
     name: req.body.name,
@@ -56,15 +44,7 @@ exports.create = async (req, res) => {
   event
     .save()
     .then(async (data) => {
-      res.send({
-        _id: data._id,
-        belongsTo: data.belongsTo,
-        name: data.name,
-        dateTime: data.dateTime,
-        completed: data.completed,
-        participants: await controller.getNamesFromContactIds(data.belongsTo, data.participants) || [],
-        description: data.description || '',
-      });
+      res.send(await controller.display(data));
     })
     .catch((err) => {
       console.log(err);
@@ -103,15 +83,7 @@ exports.update = async (req, res) => {
   // Case of updated sucessfully
   Event.findByIdAndUpdate(id, { $set: req.body }, { new: true })
     .then(async (updatedData) => {
-      res.status(200).send({
-        _id: updatedData._id,
-        belongsTo: updatedData.belongsTo,
-        name: updatedData.name,
-        dateTime: updatedData.dateTime,
-        completed: updatedData.completed,
-        participants: await controller.getNamesFromContactIds(updatedData._id, updatedData.participants) || [],
-        description: updatedData.description || '',
-      });
+      res.status(200).send(await controller.display(updatedData));
     })
     // Case of error
     .catch((err) => {
@@ -148,15 +120,7 @@ exports.findOne = (req, res) => {
         });
       }
       // else, return
-      res.send({
-        _id: data._id,
-        belongsTo: data.belongsTo,
-        name: data.name,
-        dateTime: data.dateTime,
-        completed: data.completed,
-        participants: await controller.getNamesFromContactIds(data.belongsTo, data.participants),
-        description: data.description || '',
-      });
+      res.send(await controller.display(data));
     })
     // Catching the error when assessing the DB
     .catch((err) => {

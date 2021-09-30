@@ -140,7 +140,6 @@ async function eventSearch(req, res) {
       belongsTo: req.user._id,
       $or: [{ name: { $regex: text, $options: 'i' } },
       { description: { $regex: text, $options: 'i' } }],
-      participants: req.body.participants
     }).then((data) => {
       eventMap = data;
     })// Case of error
@@ -153,6 +152,15 @@ async function eventSearch(req, res) {
   }
   //console.log(eventMap);
   const keys = Object.keys(req.body);
+  // If searching with contacts
+  if (keys.indexOf('participants') > -1) {
+    eventMap.forEach((ev) => {
+      if (!req.body.participants.every(elem => ev.participants.includes(elem))) {
+        eventMap.splice(eventMap.indexOf(ev), 1);
+      }
+    });
+  }
+
   // Now consider completed status
   if (keys.indexOf('completed') > -1 && typeof (req.body.completed) == "boolean") {
     eventMap.forEach((ev) => {
@@ -161,7 +169,9 @@ async function eventSearch(req, res) {
       }
     });
   }
-  res.status(200).send(eventMap);
+
+  // Then modify the eventMap for displaying 
+  res.status(200).send({ eventMap });
 }
 
 // Function to search for messages given conversation's id =======================
