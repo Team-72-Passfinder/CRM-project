@@ -36,197 +36,232 @@ mocha.describe('************* TEST CONTACT ROUTES *************', function () {
     );
   });
 
-  // This API will be deprecated in final version
-  mocha.describe('/GET route', function () {
-    mocha.it(
-      'it should GET all the contacts in the database (empty)',
-      function (done) {
+  mocha.describe('************* CHECK ROUTES WITHOUT AUTH *************', () => {
+    mocha.it('it should not give access to GET-USER without a verified token ', function (done) {
+      chai
+        .request(server)
+        .get('/user')
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.should.be.a('object');
+          done();
+        });
+    });
+    mocha.it('it should not give access to GET without a verified token ', function (done) {
+      chai
+        .request(server)
+        .get('/contact/getall')
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.should.be.a('object');
+          done();
+        });
+    });
+    mocha.it('it should not give access to SEARCH without a verified token ', function (done) {
+      chai
+        .request(server)
+        .get('/contact/search')
+        .send({ query: "" })
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.should.be.a('object');
+          done();
+        });
+    });
+  });
+
+  mocha.describe('************* CHECK ROUTES WITH VERIFIED TOKEN *************', () => {
+    // This API will be deprecated in final version
+    mocha.describe('/GET route', function () {
+      mocha.it(
+        'it should GET all the contacts in the database (empty)',
+        function (done) {
+          chai
+            .request(server)
+            .get('/contact')
+            .auth(token, { type: 'bearer' })
+            .end((err, res) => {
+              res.should.have.status(200);
+              res.body.should.be.a('array');
+              res.body.length.should.be.eql(0);
+              done();
+            });
+        }
+      );
+    });
+
+    mocha.describe('/POST route', () => {
+      mocha.it(
+        'it should not POST a contact without firstName field',
+        function (done) {
+          chai
+            .request(server)
+            .post('/contact')
+            .auth(token, { type: 'bearer' })
+            .send(contactTester.missingFirstName)
+            .end((err, res) => {
+              res.should.have.status(400);
+              res.body.should.be.a('object');
+              res.body.should.have
+                .property('message')
+                .eql('Missing or invalid firstname!');
+              done();
+            });
+        }
+      );
+
+      // Normal creation of contact
+      mocha.it('it should POST a correct contact ', function (done) {
         chai
           .request(server)
-          .get('/contact')
+          .post('/contact/')
+          .auth(token, { type: 'bearer' })
+          .send(contactTester.validContact1)
+          .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.a('object');
+            res.body.should.have.property('belongsTo');
+            res.body.should.have.property('firstName');
+            res.body.should.have.property('lastName');
+            res.body.should.have.property('email');
+            res.body.should.have.property('phoneNumber');
+            res.body.should.have.property('dateOfBirth');
+            done();
+          });
+      });
+
+      // creation of contact with a given user id
+      mocha.it(
+        'it should POST a correct contact from an existing User ',
+        function (done) {
+          let user = new UserModel(contactTester.testUserForPostRoute);
+          user.save((err, user) => {
+            chai
+              .request(server)
+              .post('/contact/add/' + user._id)
+              .auth(token, { type: 'bearer' })
+              .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.a('object');
+                res.body.should.have.property('belongsTo');
+                res.body.should.have.property('firstName');
+                res.body.should.have.property('lastName');
+                res.body.should.have.property('email');
+                res.body.should.have.property('dateOfBirth');
+                res.body.should.have.property('optionalUserId');
+                done();
+              });
+          });
+        });
+    });
+
+    mocha.describe('/GET/getall route', function () {
+      mocha.it('it should GET all the contacts of the user', function (done) {
+        chai
+          .request(server)
+          .get('/contact/getall')
           .auth(token, { type: 'bearer' })
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('array');
-            res.body.length.should.be.eql(0);
+            res.body.length.should.be.eql(2); // Nunu(validContact) and newuser
             done();
           });
-      }
-    );
-  });
+      });
+    });
 
-  mocha.describe('/POST route', () => {
-    mocha.it(
-      'it should not POST a contact without firstName field',
-      function (done) {
+    mocha.describe('/GET/:id route', () => {
+      mocha.it('it should GET a contact by the given id', (done) => {
         chai
           .request(server)
           .post('/contact')
           .auth(token, { type: 'bearer' })
-          .send(contactTester.missingFirstName)
+          .send(contactTester.validContact2)
           .end((err, res) => {
-            res.should.have.status(400);
-            res.body.should.be.a('object');
-            res.body.should.have
-              .property('message')
-              .eql('Missing or invalid firstname!');
+            chai
+              .request(server)
+              .get('/contact/' + res.body._id)
+              .auth(token, { type: 'bearer' })
+              .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.a('object');
+                res.body.should.have.property('belongsTo');
+                res.body.should.have.property('firstName');
+                res.body.should.have.property('lastName');
+                res.body.should.have.property('_id').eql(res.body._id);
+                done();
+              });
+          });
+      });
+    });
+
+    mocha.describe('/PUT/:id ', () => {
+      mocha.it('it should UPDATE a contact given the id', (done) => {
+        chai
+          .request(server)
+          .post('/contact')
+          .auth(token, { type: 'bearer' })
+          .send(contactTester.validContact3)
+          .end((err, res) => {
+            chai
+              .request(server)
+              .put('/contact/' + res.body._id)
+              .auth(token, { type: 'bearer' })
+              .send(contactTester.updateContact)
+              .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.a('object');
+                res.body.should.have.property('belongsTo');
+                res.body.should.have.property('firstName').eql('Ding ding');
+                res.body.should.have.property('lastName').eql('Dong dong');
+                res.body.should.have.property('jobTitle').eql(['PingPong Professor']);
+                done();
+              });
+          });
+      });
+    });
+
+    mocha.describe('/GET/SEARCH route', () => {
+      mocha.it('it should perform SEARCH query successfully ', (done) => {
+        let query = {
+          query: "kom"
+        };
+        chai
+          .request(server)
+          .get('/contact/search')
+          .auth(token, { type: 'bearer' })
+          .send(query)
+          .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.a('array');
+            res.body.length.should.be.eql(1);
             done();
           });
-      }
-    );
-
-    // Normal creation of contact
-    mocha.it('it should POST a correct contact ', function (done) {
-      chai
-        .request(server)
-        .post('/contact/')
-        .auth(token, { type: 'bearer' })
-        .send(contactTester.validContact1)
-        .end((err, res) => {
-          res.should.have.status(200);
-          res.body.should.be.a('object');
-          res.body.should.have.property('belongsTo');
-          res.body.should.have.property('firstName');
-          res.body.should.have.property('lastName');
-          res.body.should.have.property('email');
-          res.body.should.have.property('phoneNumber');
-          res.body.should.have.property('dateOfBirth');
-          done();
-        });
-    });
-
-    // creation of contact with a given user id
-    mocha.it(
-      'it should POST a correct contact from an existing User ',
-      function (done) {
-        let user = new UserModel(contactTester.testUserForPostRoute);
-        user.save((err, user) => {
-          chai
-            .request(server)
-            .post('/contact/add/' + user.id)
-            .auth(token, { type: 'bearer' })
-            // I used the same Id for testing convenience, in production this shouldn't happen
-            .end((err, res) => {
-              res.should.have.status(200);
-              res.body.should.be.a('object');
-              res.body.should.have.property('belongsTo');
-              res.body.should.have.property('firstName');
-              res.body.should.have.property('lastName');
-              res.body.should.have.property('email');
-              res.body.should.have.property('dateOfBirth');
-              res.body.should.have.property('optionalUserId').eql(user.id);
-              done();
-            });
-        });
       });
-  });
-
-  mocha.describe('/GET/getall route', function () {
-    mocha.it('it should GET all the contacts of the user', function (done) {
-      chai
-        .request(server)
-        .get('/contact/getall')
-        .auth(token, { type: 'bearer' })
-        .end((err, res) => {
-          res.should.have.status(200);
-          res.body.should.be.a('array');
-          res.body.length.should.be.eql(2); // Nunu(validContact) and newuser
-          done();
-        });
     });
-  });
 
-  mocha.describe('/GET/:id route', () => {
-    mocha.it('it should GET a contact by the given id', (done) => {
-      chai
-        .request(server)
-        .post('/contact')
-        .auth(token, { type: 'bearer' })
-        .send(contactTester.validContact2)
-        .end((err, res) => {
-          chai
-            .request(server)
-            .get('/contact/' + res.body._id)
-            .auth(token, { type: 'bearer' })
-            .end((err, res) => {
-              res.should.have.status(200);
-              res.body.should.be.a('object');
-              res.body.should.have.property('belongsTo');
-              res.body.should.have.property('firstName');
-              res.body.should.have.property('lastName');
-              res.body.should.have.property('_id').eql(res.body._id);
-              done();
-            });
-        });
-    });
-  });
-
-  mocha.describe('/PUT/:id ', () => {
-    mocha.it('it should UPDATE a contact given the id', (done) => {
-      chai
-        .request(server)
-        .post('/contact')
-        .auth(token, { type: 'bearer' })
-        .send(contactTester.validContact3)
-        .end((err, res) => {
-          chai
-            .request(server)
-            .put('/contact/' + res.body._id)
-            .auth(token, { type: 'bearer' })
-            .send(contactTester.updateContact)
-            .end((err, res) => {
-              res.should.have.status(200);
-              res.body.should.be.a('object');
-              res.body.should.have.property('belongsTo');
-              res.body.should.have.property('firstName').eql('Ding ding');
-              res.body.should.have.property('lastName').eql('Dong dong');
-              res.body.should.have.property('jobTitle').eql(['PingPong Professor']);
-              done();
-            });
-        });
-    });
-  });
-
-  mocha.describe('/GET/SEARCH route', () => {
-    mocha.it('it should perform SEARCH query successfully ', (done) => {
-      let query = {
-        query: "kom"
-      };
-      chai
-        .request(server)
-        .get('/contact/search')
-        .auth(token, { type: 'bearer' })
-        .send(query)
-        .end((err, res) => {
-          res.should.have.status(200);
-          res.body.should.be.a('array');
-          res.body.length.should.be.eql(1);
-          done();
-        });
-    });
-  });
-
-  mocha.describe('/DELETE/:id ', () => {
-    mocha.it('it should DELETE a contact given the id', (done) => {
-      chai
-        .request(server)
-        .post('/contact')
-        .auth(token, { type: 'bearer' })
-        .send(contactTester.validContact4)
-        .end((err, res) => {
-          chai
-            .request(server)
-            .delete('/contact/' + res.body._id)
-            .auth(token, { type: 'bearer' })
-            .end((err, res) => {
-              res.should.have.status(200);
-              res.body.should.be.a('object');
-              res.body.should.have
-                .property('message')
-                .eql('Data is deleted successfully!');
-              done();
-            });
-        });
+    mocha.describe('/DELETE/:id ', () => {
+      mocha.it('it should DELETE a contact given the id', (done) => {
+        chai
+          .request(server)
+          .post('/contact')
+          .auth(token, { type: 'bearer' })
+          .send(contactTester.validContact4)
+          .end((err, res) => {
+            chai
+              .request(server)
+              .delete('/contact/' + res.body._id)
+              .auth(token, { type: 'bearer' })
+              .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.a('object');
+                res.body.should.have
+                  .property('message')
+                  .eql('Data is deleted successfully!');
+                done();
+              });
+          });
+      });
     });
   });
 });

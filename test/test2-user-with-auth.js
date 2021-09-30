@@ -98,8 +98,55 @@ mocha.describe('Test User routes', function () {
         });
     });
 
-    mocha.it('it should show PROFILE of the correct user ', function (done) {
+    mocha.it('it should not show PROFILE of a user without verified token ', function (done) {
       //console.log(token);
+      chai
+        .request(server)
+        .get('/profile')
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.should.be.a('object');
+          done();
+        });
+    });
+  });
+
+  mocha.describe('************* CHECK ROUTES WITHOUT AUTH *************', () => {
+    mocha.it('it should not give access to GET without a verified token ', function (done) {
+      chai
+        .request(server)
+        .get('/user')
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.should.be.a('object');
+          done();
+        });
+    });
+    mocha.it('it should not give access to PUT without a verified token ', function (done) {
+      chai
+        .request(server)
+        .put('/user')
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.should.be.a('object');
+          done();
+        });
+    });
+    mocha.it('it should not give access to DELETE without a verified token ', function (done) {
+      chai
+        .request(server)
+        .delete('/user')
+        .end((err, res) => {
+          res.should.have.status(401);
+          res.body.should.be.a('object');
+          done();
+        });
+    });
+  });
+
+
+  mocha.describe('************* AUTH AFTER LOGIN *************', () => {
+    mocha.it('it should show PROFILE of the correct user with verified token', function (done) {
       chai
         .request(server)
         .get('/profile')
@@ -116,10 +163,7 @@ mocha.describe('Test User routes', function () {
           done();
         });
     });
-  });
 
-
-  mocha.describe('************* AUTH AFTER LOGIN *************', () => {
     mocha.describe('/GET route', function () {
       mocha.it('it should GET all the users (1)', function (done) {
         chai
