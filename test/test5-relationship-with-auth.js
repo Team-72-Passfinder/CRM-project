@@ -264,6 +264,7 @@ mocha.describe('************* TEST RELATIONSHIP ROUTES *************', function 
             startedDatetime: '1-2-2002'
           })
           .end((err, res) => {
+            //console.log(res.body);
             res.should.have.status(200);
             chai
               .request(server)
@@ -283,14 +284,11 @@ mocha.describe('************* TEST RELATIONSHIP ROUTES *************', function 
 
     mocha.describe('/GET/SEARCH route', () => {
       mocha.it('it should perform SEARCH query successfully ', (done) => {
-        let query = {
-          query: "engi"
-        };
         chai
           .request(server)
           .get('/relationship/search')
           .auth(token, { type: 'bearer' })
-          .send(query)
+          .send({ query: "engi" })
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('array');

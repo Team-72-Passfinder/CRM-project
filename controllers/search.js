@@ -225,10 +225,15 @@ async function relationshipSearch(req, res) {
       belongsTo: req.user._id,
       tag: { $regex: req.body.query, $options: 'i' }
     })
-
-    .then((data) => {
-      res.status(200).send(data);
-    }).catch((err) => {
+    .then(async (data) => {
+      // Then modify the eventMap for display
+      var returnedMap = [];
+      for (let i = 0; i < data.length; i++) {
+        returnedMap.push(await ctrlSupport.displayRela(data[i]));
+      }
+      res.status(200).send(returnedMap);
+    })
+    .catch((err) => {
       console.log(err);
       res.status(500).send({ message: 'Error when accessing the database!' });
     });

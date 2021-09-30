@@ -27,7 +27,7 @@ function updateData(controller, req, res) {
 function deleteData(controller, req, res) {
   const id = req.params.id;
   controller
-    .findByIdAndRemove(id)
+    .findByIdAndDelete(id)
     .then((data) => {
       if (!data) {
         // If no id found -> return error message
@@ -128,6 +128,7 @@ async function displayEvent(event) {
 // Main job: turns people into names instead of leaving it as contactIds
 async function displayRela(rela) {
   return {
+    _id: rela._id,
     belongsTo: rela.belongsTo,
     people: await getNamesFromContactIds(rela.belongsTo, rela.people),
     startedDatetime: rela.startedDatetime,
