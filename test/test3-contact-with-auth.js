@@ -1,5 +1,5 @@
 // Run higher order test first
-require('./test3-event-with-auth');
+require('./test2-user-with-auth');
 
 const mocha = require('mocha');
 const chai = require('chai');

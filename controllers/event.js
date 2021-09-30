@@ -44,7 +44,7 @@ exports.create = async (req, res) => {
   event
     .save()
     .then(async (data) => {
-      res.send(await controller.display(data));
+      res.status(200).send(await controller.display(data));
     })
     .catch((err) => {
       console.log(err);

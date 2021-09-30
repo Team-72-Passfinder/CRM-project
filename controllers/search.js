@@ -86,9 +86,10 @@ function userSearch(req, res) {
 // a query may look like the following:
 /*{
   **"query": string,
-    "completed": boolean, // indicates that only looking for finished/unfinished events
-    "from": date          // looks for particular events from this date
-    "to": date            // looks for particular events upto the end of this date
+    "completed": boolean,         // indicates that only looking for finished/unfinished events
+    "from": date                  // looks for particular events from this date
+    "to": date                    // looks for particular events upto the end of this date
+    "participants": [contactIds]  // looks for events that contain these contacts as participants
 }*/
 async function eventSearch(req, res) {
   // Declaring an array of data to return
@@ -158,7 +159,6 @@ async function eventSearch(req, res) {
     var index = eventMap.length - 1;
     while (index >= 0) {
       if (!req.body.participants.every(value => eventMap[index].participants.includes(value))) {
-        //if (!eventMap[index].participants.includes(req.body.participants)) {
         eventMap.splice(index, 1);
       }
       index -= 1;

@@ -35,7 +35,7 @@ async function checkValidUser(req) {
     return message;
   }
 
-  // Check for existing username or email ==================================================
+  // Check for existing username or email 
   // Check for username
   await User.findOne({ email: req.body.email })
     .then((existedEmail) => {
@@ -117,7 +117,7 @@ async function checkExist(controller, ids) {
   return check;
 }
 
-// Function to check for valid contactIds with given belongsTo
+// Function to check for valid contactIds with given belongsTo =============================
 // Used mostly for user and contact
 async function checkValidIdWithBelongsTo(controller, id, belongsTo) {
   var check = true;

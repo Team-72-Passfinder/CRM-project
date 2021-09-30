@@ -1,5 +1,5 @@
 // Run higher order test first
-require('./test4-contact-with-auth');
+require('./test4-event-with-auth');
 
 const mocha = require('mocha');
 const chai = require('chai');
