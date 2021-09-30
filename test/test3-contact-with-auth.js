@@ -81,7 +81,7 @@ mocha.describe('************* TEST CONTACT ROUTES *************', function () {
         .request(server)
         .post('/contact/')
         .auth(token, { type: 'bearer' })
-        .send(contactTester.validContact)
+        .send(contactTester.validContact1)
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
@@ -142,7 +142,7 @@ mocha.describe('************* TEST CONTACT ROUTES *************', function () {
         .request(server)
         .post('/contact')
         .auth(token, { type: 'bearer' })
-        .send(contactTester.newContactForGetRoute)
+        .send(contactTester.validContact2)
         .end((err, res) => {
           chai
             .request(server)
@@ -167,7 +167,7 @@ mocha.describe('************* TEST CONTACT ROUTES *************', function () {
         .request(server)
         .post('/contact')
         .auth(token, { type: 'bearer' })
-        .send(contactTester.newContactForPutRoute)
+        .send(contactTester.validContact3)
         .end((err, res) => {
           chai
             .request(server)
@@ -212,7 +212,7 @@ mocha.describe('************* TEST CONTACT ROUTES *************', function () {
         .request(server)
         .post('/contact')
         .auth(token, { type: 'bearer' })
-        .send(contactTester.newContactForDelRoute)
+        .send(contactTester.validContact4)
         .end((err, res) => {
           chai
             .request(server)

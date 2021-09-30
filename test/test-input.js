@@ -40,14 +40,47 @@ const userTester = {
   }
 }
 
-const eventTester = {
-  missingName: {
-    dateTime: '1/1/1234',
-    completed: false,
+const contactTester = {
+  newUser: {
+    username: 'contacttest', password: 'fakePassword',
+    email: 'contacttest@gmail.com', firstName: 'contact',
+    lastName: 'test', dateOfBirth: "1999-11-30"
   },
 
-  validEvent: {
-    name: 'Coffee with Katie',
+  testUserForPostRoute: {
+    username: 'contacttest2', password: 'fakePassword',
+    email: 'contacttest2@gmail.com', firstName: 'contact',
+    lastName: 'test', dateOfBirth: "1999-11-30"
+  },
+
+  missingFirstName: { lastName: 'Komin' },
+
+  // These contacts can be reused for testing event and relationship routes
+  validContact1: {
+    firstName: 'Nunu', lastName: 'Theboy', email: 'Nunu5i@gmail.com',
+    phoneNumber: '193746xxxx', dateOfBirth: '2020-02-20', biography: ''
+  },
+
+  validContact2: {
+    firstName: 'Koma', lastName: 'Komin', email: 'Komama@gmail.com',
+    phoneNumber: '193746xxxx', dateOfBirth: '2020-02-20'
+  },
+
+  validContact3: {
+    firstName: 'Leng', lastName: 'Ming', email: 'lmht@gmail.com',
+    phoneNumber: '123746xxxx', dateOfBirth: '2020-12-20', biography: '',
+  },
+
+  updateContact: { firstName: 'Ding ding', lastName: 'Dong dong', jobTitle: ['PingPong Professor'] },
+
+  validContact4: {
+    firstName: 'Haa', lastName: 'Sugii', email: 'Hasugi@gmail.com',
+    phoneNumber: '123746xxxx', dateOfBirth: '2020-12-20', biography: '',
+  }
+}
+
+const eventTester = {
+  missingName: {
     dateTime: '1/1/1234',
     completed: false,
   },
@@ -72,52 +105,6 @@ const eventTester = {
     name: 'Visit big boss Kanyes daughter birthday',
     description: 'children',
   },
-
-  newEventForDelRoute: {
-    name: 'Restaurant with myself',
-    dateTime: '5/4/1234',
-    participants: ['me'],
-    description: 'Nothing wrong with dining alone',
-    completed: false,
-  }
-}
-
-const contactTester = {
-  newUser: {
-    username: 'contacttest', password: 'fakePassword',
-    email: 'contacttest@gmail.com', firstName: 'contact',
-    lastName: 'test', dateOfBirth: "1999-11-30"
-  },
-
-  testUserForPostRoute: {
-    username: 'contacttest2', password: 'fakePassword',
-    email: 'contacttest2@gmail.com', firstName: 'contact',
-    lastName: 'test', dateOfBirth: "1999-11-30"
-  },
-
-  missingFirstName: { lastName: 'Komin' },
-
-  validContact: {
-    firstName: 'Nunu', lastName: 'Theboy', email: 'Nunu5i@gmail.com',
-    phoneNumber: '193746xxxx', dateOfBirth: '2020-02-20', biography: ''
-  },
-
-  newContactForGetRoute: {
-    firstName: 'Koma', lastName: 'Komin', email: 'Komama@gmail.com',
-    phoneNumber: '193746xxxx', dateOfBirth: '2020-02-20'
-  },
-
-  newContactForPutRoute: {
-    firstName: 'Leng', lastName: 'Ming', email: 'lmht@gmail.com',
-    phoneNumber: '123746xxxx', dateOfBirth: '2020-12-20', biography: '',
-  },
-
-  updateContact: { firstName: 'Ding ding', lastName: 'Dong dong', jobTitle: ['PingPong Professor'] },
-
-  newContactForDelRoute: {
-    firstName: 'Haa', lastName: 'Sugii', email: 'Hasugi@gmail.com',
-    phoneNumber: '123746xxxx', dateOfBirth: '2020-12-20', biography: '',
-  }
 }
 
 const relaTester = {
@@ -125,21 +112,6 @@ const relaTester = {
     username: 'relatest', password: 'fakePassword',
     email: 'relatest@gmail.com', firstName: 'rela',
     lastName: 'test', dateOfBirth: "1999-11-30"
-  },
-
-  contact1: {
-    firstName: 'one', lastName: 'number', email: 'numOne@gmail.com',
-    phoneNumber: '193746xxxx', dateOfBirth: '2020-02-20', biography: ''
-  },
-
-  contact2: {
-    firstName: 'two', lastName: 'number', email: 'numTwo@gmail.com',
-    phoneNumber: '193746xxxx', dateOfBirth: '2020-02-20', biography: ''
-  },
-
-  contact3: {
-    firstName: 'three', lastName: 'number', email: 'numThree@gmail.com',
-    phoneNumber: '193746xxxx', dateOfBirth: '2020-02-20', biography: ''
   },
 
   missingContact: {

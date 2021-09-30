@@ -11,8 +11,10 @@ const server = require('../server').app;
 chai.use(chaiHttp);
 let should = chai.should();
 
-const { userTester, eventTester } = require('./test-input');
+const { userTester, contactTester, eventTester } = require('./test-input');
 let token = "";
+let contactId1, contactId2;
+let eventIdForDelRoute;
 
 // Declaring a user to be used for testing
 
@@ -31,8 +33,32 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
             token = res.body.token;
             done();
           });
-      }
-    );
+      });
+
+    mocha.it('Second, create two contacts for use ',
+      function (done) {
+        chai
+          .request(server)
+          .post('/contact/')
+          .auth(token, { type: 'bearer' })
+          .send(contactTester.validContact1)
+          .end((err, res) => {
+            res.should.have.status(200);
+            res.body.should.be.a('object');
+            contactId1 = res.body._id;
+            chai
+              .request(server)
+              .post('/contact/')
+              .auth(token, { type: 'bearer' })
+              .send(contactTester.validContact2)
+              .end((err, res) => {
+                res.should.have.status(200);
+                res.body.should.be.a('object');
+                contactId2 = res.body._id;
+                done();
+              });
+          });
+      });
   });
 
   // This API will be deprecated in final version
@@ -67,12 +93,18 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
           done();
         });
     });
+
     mocha.it('it should POST a correct event ', function (done) {
       chai
         .request(server)
         .post('/event')
         .auth(token, { type: 'bearer' })
-        .send(eventTester.validEvent)
+        .send({
+          name: 'Coffee with Katie',
+          dateTime: '1/1/1234',
+          completed: false,
+          participants: [contactId1, contactId2],
+        })
         .end((err, res) => {
           res.should.have.status(200);
           res.body.should.be.a('object');
@@ -80,6 +112,8 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
           res.body.should.have.property('name');
           res.body.should.have.property('dateTime');
           res.body.should.have.property('completed');
+          res.body.should.have.property('participants').eql(['Nunu Theboy', 'Koma Komin']);
+          eventIdForDelRoute = res.body._id;
           done();
         });
     });
@@ -161,7 +195,8 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
         query: "with",
         completed: false,
         from: '1/1/1234',
-        to: '1/2/1234'
+        to: '1/2/1234',
+        participants: [contactId1]
       };
       chai
         .request(server)
@@ -181,22 +216,15 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
     mocha.it('it should DELETE an event given the id', (done) => {
       chai
         .request(server)
-        .post('/event')
+        .delete('/event/' + eventIdForDelRoute)
         .auth(token, { type: 'bearer' })
-        .send(eventTester.newEventForDelRoute)
         .end((err, res) => {
-          chai
-            .request(server)
-            .delete('/event/' + res.body._id)
-            .auth(token, { type: 'bearer' })
-            .end((err, res) => {
-              res.should.have.status(200);
-              res.body.should.be.a('object');
-              res.body.should.have
-                .property('message')
-                .eql('Data is deleted successfully!');
-              done();
-            });
+          res.should.have.status(200);
+          res.body.should.be.a('object');
+          res.body.should.have
+            .property('message')
+            .eql('Data is deleted successfully!');
+          done();
         });
     });
   });

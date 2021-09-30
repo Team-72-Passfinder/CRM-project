@@ -9,7 +9,7 @@ const server = require('../server').app;
 chai.use(chaiHttp);
 let should = chai.should();
 
-const { relaTester } = require('./test-input');
+const { contactTester, relaTester } = require('./test-input');
 let token = "";
 let contactId1, contactId2, contactId3;
 let relaForDelRoute;
@@ -38,7 +38,7 @@ mocha.describe('************* TEST RELATIONSHIP ROUTES *************', function 
           .request(server)
           .post('/contact/')
           .auth(token, { type: 'bearer' })
-          .send(relaTester.contact1)
+          .send(contactTester.validContact1)
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('object');
@@ -47,7 +47,7 @@ mocha.describe('************* TEST RELATIONSHIP ROUTES *************', function 
               .request(server)
               .post('/contact/')
               .auth(token, { type: 'bearer' })
-              .send(relaTester.contact2)
+              .send(contactTester.validContact2)
               .end((err, res) => {
                 res.should.have.status(200);
                 res.body.should.be.a('object');
@@ -184,7 +184,7 @@ mocha.describe('************* TEST RELATIONSHIP ROUTES *************', function 
         .request(server)
         .post('/contact')
         .auth(token, { type: 'bearer' })
-        .send(relaTester.contact3)
+        .send(contactTester.validContact3)
         .end((err, res) => {
           res.should.have.status(200);
           contactId3 = res.body._id;
