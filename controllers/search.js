@@ -42,7 +42,7 @@ async function contactSearch(req, res) {
 
 
 // Search function for User only =============================================
-// since some fields are protected and not to be returned directly
+// Email and password are protected and not to be returned directly
 // returns an array of users 
 function userSearch(req, res) {
   // check query's body

@@ -35,7 +35,7 @@ app.use(conversationRoute);
 app.use(contactRoute);
 
 // Authentication
-require('./models/user');
+//require('./models/user');
 //app.use(require('./routes/userRouter'));
 
 // Basic route
