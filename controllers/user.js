@@ -7,38 +7,6 @@ const Contact = require('../models/contact');
 const Event = require('../models/event');
 const Relationship = require('../models/relationship');
 
-
-// Scatch function for POST() - to be removed & replaced with passport later
-/*
-exports.create = async (req, res) => {
-  const message = await Validator.checkValidUser(req);
-  //console.log(message);
-  if (message != 'valid') {
-    return res.status(400).send({ message: message });
-  }
-  var newUser = new User();
-
-  newUser.username = req.body.username;
-  newUser.password = newUser.hashPassword(req.body.password);
-  newUser.email = req.body.email;
-  newUser.firstName = req.body.firstName;
-  newUser.lastName = req.body.lastName;
-  newUser.dateOfBirth = new Date(req.body.dateOfBirth);
-
-  newUser.save().then((user) => {
-    if (user) {
-      let token = jwt.sign({ _id: user._id }, process.env.PASSPORT_SECRET, {
-        expiresIn: '10d',
-      });
-      res.status(200).send({ token: token, user: user });
-    }
-  }).catch((err) => {
-    console.log(err);
-    res.status(500).send({ message: 'Error when creating user!', });
-  });
-};
-*/
-
 // Update an user identified by the user's Id ==============================
 // This Update function behaves differently from other controllers
 // It does not return password

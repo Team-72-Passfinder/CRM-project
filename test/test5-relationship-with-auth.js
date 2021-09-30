@@ -253,7 +253,7 @@ mocha.describe('************* TEST RELATIONSHIP ROUTES *************', function 
     });
 
     mocha.describe('/PUT/:id ', () => {
-      mocha.it('it should UPDATE a contact given the id', (done) => {
+      mocha.it('it should UPDATE a relationship given the id', (done) => {
         chai
           // create new relationship for PUT route
           .request(server)
@@ -301,7 +301,7 @@ mocha.describe('************* TEST RELATIONSHIP ROUTES *************', function 
     });
 
     mocha.describe('/DELETE/:id ', () => {
-      mocha.it('it should DELETE a contact given the id', (done) => {
+      mocha.it('it should DELETE a relationship given the id', (done) => {
         chai
           .request(server)
           .delete('/relationship/' + relaForDelRoute)

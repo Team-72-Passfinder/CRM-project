@@ -4,6 +4,7 @@ const controller = require('./controller-support');
 const Validator = require('./validator');
 const Search = require('./search');
 const User = require('../models/user');
+const { isValidObjectId } = require('mongoose');
 
 // Create a new Contact ===================================================
 exports.create = async (req, res) => {
@@ -39,7 +40,7 @@ exports.create = async (req, res) => {
     email: req.body.email || '',
     phoneNumber: req.body.phoneNumber || '',
     dateOfBirth: req.body.dateOfBirth || null,
-    jobTitle: req.body.jobTitle || '',
+    jobTitle: req.body.jobTitle || [],
     biography: req.body.biography || '',
   });
 
@@ -59,16 +60,13 @@ exports.create = async (req, res) => {
 
 // If contact is to be added from an existed userId ===============================
 exports.addFromId = async (req, res) => {
-  //let contactUserId = req.body.contactUserId;
-  let userId = req.params.userId;
-
   // Validate the UserId 
-  if (!(await Validator.checkValidId(User, userId))) {
+  if (!req.params.userId || !isValidObjectId(req.params.userId)) {
     return res.status(400).send({
-      message: 'Missing or invalid userId!',
+      message: 'Missing userId!',
     });
   }
-
+  let userId = req.params.userId;
   // Create a new contact by accessing the user's database
   User.findById(userId)
     .then((userData) => {
@@ -86,7 +84,7 @@ exports.addFromId = async (req, res) => {
         email: userData.email,
         phoneNumber: '',
         dateOfBirth: userData.dateOfBirth,
-        jobTitle: '',
+        jobTitle: [],
         biography: userData.biography || '',
         optionalUserId: userId,
       });
@@ -96,12 +94,6 @@ exports.addFromId = async (req, res) => {
         .save()
         .then((data) => {
           res.send(data);
-        })
-        .catch((err) => {
-          console.log(err);
-          res.status(500).send({
-            message: 'Error when creating contact!',
-          });
         });
     })
     // Catching the error when assessing the DB
