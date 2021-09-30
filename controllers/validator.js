@@ -92,50 +92,46 @@ function checkValidDate(date) {
 // Function to check for valid Ids =========================================================
 // Used mostly for user and contact
 async function checkValidId(controller, id) {
-  var check = true;
   if (!id || !isValidObjectId(id)) {
-    check = false;
+    return false;
   }
 
   await controller.findById(id).then((foundId) => {
     if (!foundId) {
-      check = false;
+      return false;
     }
+    return true;
   });
-  return check;
 }
 
 // Function to check for existence of data block ===========================================
 // Used mostly for convo and relationship
 async function checkExist(controller, ids) {
-  var check = false;
   await controller.findOne({ people: ids }).then((found) => {
     if (found) {
-      check = true;
+      return true;
     }
+    return false;
   });
-  return check;
 }
 
 // Function to check for valid contactIds with given belongsTo =============================
 // Used mostly for user and contact
 async function checkValidIdWithBelongsTo(controller, id, belongsTo) {
-  var check = true;
+  //var check = true;
   if (!id || !isValidObjectId(id)) {
-    check = false;
+    console.log("invalid Obj Id");
+    return false;
   }
-  if (!belongsTo || !isValidObjectId(belongsTo)) {
-    check = false;
-  }
-
   await controller
     .findOne({ _id: id, belongsTo: belongsTo })
     .then((foundId) => {
       if (!foundId) {
-        check = false;
+        //console.log("nothing found with this id");
+        return false;
       }
+      return true;
     });
-  return check;
 }
 
 // Check for self-existence in the database ==================================================
