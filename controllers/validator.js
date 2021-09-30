@@ -92,12 +92,12 @@ function checkValidDate(date) {
 // Function to check for valid Ids =========================================================
 // Used mostly for user and contact
 async function checkValidId(controller, id) {
-  var check = true;
   if (!id || !isValidObjectId(id)) {
-    check = false;
+    return false;
   }
 
-  await controller.findById(id).then((foundId) => {
+  var check = true;
+  await controller.findOne({ _id: id }).then((foundId) => {
     if (!foundId) {
       check = false;
     }
@@ -120,14 +120,14 @@ async function checkExist(controller, ids) {
 // Function to check for valid contactIds with given belongsTo =============================
 // Used mostly for user and contact
 async function checkValidIdWithBelongsTo(controller, id, belongsTo) {
-  var check = true;
   if (!id || !isValidObjectId(id)) {
-    check = false;
+    return false;
   }
   if (!belongsTo || !isValidObjectId(belongsTo)) {
-    check = false;
+    return false;
   }
 
+  var check = true;
   await controller
     .findOne({ _id: id, belongsTo: belongsTo })
     .then((foundId) => {
@@ -165,6 +165,7 @@ async function validRelationshipOrConvo(controller2, req, type) {
     firstValid = await checkValidId(User, sortedIds[0]);
     secValid = await checkValidId(User, sortedIds[1]);
   }
+
   // Check for existence
   const existed = await checkExist(controller2, sortedIds);
   if (firstValid && secValid && !existed) {

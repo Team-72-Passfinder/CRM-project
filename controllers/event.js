@@ -44,7 +44,7 @@ exports.create = async (req, res) => {
   event
     .save()
     .then(async (data) => {
-      res.status(200).send(await controller.display(data));
+      res.status(200).send(await controller.displayEvent(data));
     })
     .catch((err) => {
       console.log(err);
@@ -83,7 +83,7 @@ exports.update = async (req, res) => {
   // Case of updated sucessfully
   Event.findByIdAndUpdate(id, { $set: req.body }, { new: true })
     .then(async (updatedData) => {
-      res.status(200).send(await controller.display(updatedData));
+      res.status(200).send(await controller.displayEvent(updatedData));
     })
     // Case of error
     .catch((err) => {
@@ -120,7 +120,7 @@ exports.findOne = (req, res) => {
         });
       }
       // else, return
-      res.send(await controller.display(data));
+      res.send(await controller.displayEvent(data));
     })
     // Catching the error when assessing the DB
     .catch((err) => {
@@ -136,5 +136,18 @@ exports.search = (req, res) => {
 
 // Get all contacts that belong to a specific user ============================
 exports.getall = (req, res) => {
-  controller.getall(Event, req, res);
+  const ownerId = req.user._id;
+
+  Event.find({ belongsTo: ownerId }).then(async (data) => {
+    var eventMap = [];
+    for (let i = 0; i < data.length; i++) {
+      eventMap.push(await controller.displayEvent(data[i]));
+    }
+    res.status(200).send(eventMap);
+  })
+    // Catching error
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({ message: 'Error when accessing the database!' });
+    });
 };

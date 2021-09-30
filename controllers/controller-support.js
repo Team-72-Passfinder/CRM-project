@@ -84,27 +84,13 @@ function findOne(controller, req, res) {
     });
 }
 
-// Get all contacts/relationships/events that belong to the user ==================
-async function getall(controller, req, res) {
-  const ownerId = req.user._id;
-
-  await controller.find({ belongsTo: ownerId }).then((data) => {
-    res.status(200).send(data);
-  })
-    // Catching error
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send({ message: 'Error when accessing the database!' });
-    });
-}
-
 // Get name of saved contact that belongs to a specific user ======================
-async function getNamesFromContactIds(belongsTo, participantList) {
+async function getNamesFromContactIds(belongsTo, contactList) {
   // Array that stores transformed contactId
   const participants = [];
   // Loop the list
-  for (let index = 0; index < participantList.length; index++) {
-    const elem = participantList[index];
+  for (let index = 0; index < contactList.length; index++) {
+    const elem = contactList[index];
     if (isValidObjectId(elem)) {
       await Contact.findOne({ _id: elem, belongsTo: belongsTo }).then((found) => {
         if (found) {
@@ -126,7 +112,7 @@ async function getNamesFromContactIds(belongsTo, participantList) {
 
 // Function to structure event for returning ==================================
 // Main job: turns participants into names instead of leaving it as contactIds
-async function display(event) {
+async function displayEvent(event) {
   return {
     _id: event._id,
     belongsTo: event.belongsTo,
@@ -135,6 +121,18 @@ async function display(event) {
     completed: event.completed,
     participants: await getNamesFromContactIds(event.belongsTo, event.participants),
     description: event.description || '',
+  }
+}
+
+// Function to structure relationship for returning ============================
+// Main job: turns people into names instead of leaving it as contactIds
+async function displayRela(rela) {
+  return {
+    belongsTo: rela.belongsTo,
+    people: await getNamesFromContactIds(rela.belongsTo, rela.people),
+    startedDatetime: rela.startedDatetime,
+    tag: rela.tag,
+    description: rela.description,
   }
 }
 
@@ -151,6 +149,7 @@ async function deleteDataOfUser(controller, userId) {
 
 
 module.exports = {
-  updateData, deleteData, findAllData, findOne, display,
-  getall, getNamesFromContactIds, deleteDataOfUser,
+  updateData, deleteData, findAllData, findOne,
+  getNamesFromContactIds, deleteDataOfUser,
+  displayEvent, displayRela
 };

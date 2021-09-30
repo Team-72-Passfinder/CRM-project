@@ -51,8 +51,8 @@ exports.create = async (req, res) => {
   // Save this relationship to database
   relationship
     .save()
-    .then((data) => {
-      res.send(data);
+    .then(async (data) => {
+      res.send(await controller.displayRela(data));
     })
     .catch((err) => {
       console.log(err);
@@ -82,7 +82,21 @@ exports.update = (req, res) => {
     });
   }
   // Only tags and description can be updated
-  controller.updateData(Relationship, req, res);
+  //controller.updateData(Relationship, req, res);
+  const id = req.params.id;
+
+  // Case of updated sucessfully
+  Relationship.findByIdAndUpdate(id, { $set: req.body }, { new: true })
+    .then(async (updatedData) => {
+      res.status(200).send(await controller.displayRela(updatedData));
+    })
+    // Case of error
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({
+        message: 'Error when updating Data!',
+      });
+    });
 };
 
 // Delete a relationship with the specified relationship's Id ==============================
@@ -97,7 +111,26 @@ exports.findAll = (req, res) => {
 
 // Find a single relationship with the relationship's id ====================================
 exports.findOne = (req, res) => {
-  controller.findOne(Relationship, req, res);
+  //controller.findOne(Relationship, req, res);
+  const id = req.params.id;
+  Relationship
+    .findById(id)
+    .then(async (data) => {
+      // If data with this id is not found
+      if (!data) {
+        // return the error messages
+        return res.status(404).send({
+          message: 'No data is found with this id!',
+        });
+      }
+      // else, return
+      res.send(await controller.displayRela(data));
+    })
+    // Catching the error when assessing the DB
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({ message: 'Error when accessing the database!' });
+    });
 };
 
 // Searching for relationship given tags
@@ -107,5 +140,18 @@ exports.search = (req, res) => {
 
 // Get all relationship that belong to a specific user ============================
 exports.getall = (req, res) => {
-  controller.getall(Relationship, req, res);
+  const ownerId = req.user._id;
+
+  Relationship.find({ belongsTo: ownerId }).then(async (data) => {
+    var relaMap = [];
+    for (let i = 0; i < data.length; i++) {
+      relaMap.push(await controller.displayRela(data[i]));
+    }
+    res.status(200).send(relaMap);
+  })
+    // Catching error
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({ message: 'Error when accessing the database!' });
+    });
 };

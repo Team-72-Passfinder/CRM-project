@@ -166,5 +166,14 @@ exports.search = (req, res) => {
 
 // Get all contacts that belong to a specific user ============================
 exports.getall = (req, res) => {
-  controller.getall(Contact, req, res);
+  const ownerId = req.user._id;
+
+  Contact.find({ belongsTo: ownerId }).then((data) => {
+    res.status(200).send(data);
+  })
+    // Catching error
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({ message: 'Error when accessing the database!' });
+    });
 };
