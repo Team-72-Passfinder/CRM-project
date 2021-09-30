@@ -5,6 +5,7 @@ const Relationship = require('../models/relationship');
 const Convo = require('../models/conversation');
 const Contact = require('../models/contact');
 const Validator = require('./validator');
+const ctrlSupport = require('./controller-support');
 
 // The basic search query request looks like this:
 /*{
@@ -150,28 +151,37 @@ async function eventSearch(req, res) {
         });
       });
   }
-  //console.log(eventMap);
+
   const keys = Object.keys(req.body);
   // If searching with contacts
   if (keys.indexOf('participants') > -1) {
-    eventMap.forEach((ev) => {
-      if (!req.body.participants.every(elem => ev.participants.includes(elem))) {
-        eventMap.splice(eventMap.indexOf(ev), 1);
+    var index = eventMap.length - 1;
+    while (index >= 0) {
+      if (!req.body.participants.every(value => eventMap[index].participants.includes(value))) {
+        //if (!eventMap[index].participants.includes(req.body.participants)) {
+        eventMap.splice(index, 1);
       }
-    });
+      index -= 1;
+    }
   }
 
   // Now consider completed status
   if (keys.indexOf('completed') > -1 && typeof (req.body.completed) == "boolean") {
-    eventMap.forEach((ev) => {
-      if (ev.completed != req.body.completed) {
-        eventMap.splice(eventMap.indexOf(ev), 1);
+    var ind = eventMap.length - 1;
+    while (ind >= 0) {
+      if (eventMap[ind].completed != req.body.completed) {
+        eventMap.splice(ind, 1);
       }
-    });
+      ind -= 1;
+    }
   }
 
-  // Then modify the eventMap for displaying 
-  res.status(200).send({ eventMap });
+  // Then modify the eventMap for display
+  var returnedEv = [];
+  for (let i = 0; i < eventMap.length; i++) {
+    returnedEv.push(await ctrlSupport.display(eventMap[i]));
+  }
+  res.status(200).send(returnedEv);
 }
 
 // Function to search for messages given conversation's id =======================
