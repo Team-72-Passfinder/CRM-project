@@ -87,15 +87,15 @@ function findOne(controller, req, res) {
 // Get name of saved contact that belongs to a specific user ======================
 async function getNamesFromContactIds(belongsTo, contactList) {
   // Array that stores transformed contactId
-  const participants = [];
+  const names = [];
   // Loop the list
   for (let index = 0; index < contactList.length; index++) {
     const elem = contactList[index];
     if (isValidObjectId(elem)) {
       await Contact.findOne({ _id: elem, belongsTo: belongsTo }).then((found) => {
         if (found) {
-          const name = found.firstName + " " + found.lastName;
-          participants.push(name);
+          //const name = found.firstName + " " + found.lastName;
+          names.push(found.firstName + " " + found.lastName);
         }
       }).catch((err) => {
         console.log(err);
@@ -103,11 +103,11 @@ async function getNamesFromContactIds(belongsTo, contactList) {
       });
     }
     else {
-      participants.push(elem);
+      names.push(elem);
     }
   }
-  //console.log(participants);
-  return participants;
+  //console.log(names);
+  return names;
 }
 
 // Function to structure event for returning ==================================
