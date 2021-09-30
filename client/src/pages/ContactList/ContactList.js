@@ -146,7 +146,7 @@ function ContactList() {
                                     <Avatar>{element.firstName[0]}</Avatar>
                                 </ListItemAvatar>
                                 <ListItemText>
-                                    <Typography sx={{ color: '#2F4858', fontWeight: 'bold', fontSize: '15px' }}>
+                                    <Typography sx={{ color: '#141010', fontWeight: 'bold', fontSize: '15px' }}>
                                         {element.firstName} {element.lastName}
                                     </Typography>
                                 </ListItemText>

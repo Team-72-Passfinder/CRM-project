@@ -10,7 +10,7 @@ const instance = axios.create({
 })
 
 export function getEvents() {
-  return axios.get('/event').then((response) => response.data);
+  return instance.get('/event').then((response) => response.data);
 }
 
 export async function login(username, password) {
@@ -66,6 +66,12 @@ export function save(contact) {
 
 export function me() {
     let endpoint = '/profile'
+
+    return instance.get(endpoint).then(res => res.data);
+}
+
+export function getEventById(id) {
+    let endpoint = '/event/' + id
 
     return instance.get(endpoint).then(res => res.data);
 }
