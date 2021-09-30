@@ -26,7 +26,8 @@ async function contactSearch(req, res) {
       belongsTo: req.user._id,
       $or: [{ firstName: { $regex: text, $options: 'i' } },
       { lastName: { $regex: text, $options: 'i' } },
-      { email: { $regex: text, $options: 'i' } }]
+      { email: { $regex: text, $options: 'i' } },
+      { jobTitle: { $regex: text, $options: 'i' } }]
     })
     .then((data) => {
       res.status(200).send(data);
