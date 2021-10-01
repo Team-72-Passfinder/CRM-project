@@ -17,6 +17,7 @@ import { Link } from 'react-router-dom';
 import Navbar from '../../components/Navbar';
 import { getEvents } from '../../api';
 import logo from './citrus-contact-logo.png';
+import { Box } from '@mui/system';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -71,42 +72,47 @@ function Home() {
       cardIndex = Array.from(Array(events.length).keys());
 
     return (
-      <div className={classes.root}>
-        <ThemeProvider theme={orangeTheme}>
-          <Navbar variant="contained" color="primary" />
-        </ThemeProvider>
-        <img
-          src={logo}
-          alt="Logo"
-          align="right"
-          height="150px"
-          style={{ padding: 10 }}
-        />
-        <Container maxWidth="sm">
-          <Typography
-            component="h1"
-            variant="h2"
-            align="center"
-            color="black"
-            gutterBottom
-            style={{ fontWeight: 600 }}
-          >
-            Welcome Back (name)
-          </Typography>
-        </Container>
+      <Box className={classes.root}>
+        <Navbar active="Home" />
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            paddingLeft: '10vw',
+            paddingRight: '10vw',
+          }}
+        >
+          {/* Hero Unit */}
+          <img src={logo} alt="Logo" width="120px" style={{ padding: 10 }} />
+          <Container maxWidth="sm">
+            <Typography
+              component="h1"
+              variant="h2"
+              align="center"
+              color="black"
+              gutterBottom
+              style={{ fontWeight: 600 }}
+            >
+              Welcome Back (name)
+            </Typography>
+          </Container>
+          {/* End Hero Unit */}
 
-        <Grid container spacing={4} className={classes.eventGrid}>
-          {cardIndex.map((i) => (
-            <Grid item key={i} xs={12} sm={6} md={4}>
-              <Card
-                display="flex"
-                flexDirection="column"
-                height="100%"
-                justifyContent="space-between"
-                elevation={3}
-                color="#d2601a"
-              >
-                <CardActionArea style={{ backgroundColor: '#f7e0d2' }}>
+          {/* Event Grid Unit */}
+          <Grid container spacing={4} className={classes.eventGrid}>
+            {cardIndex.map((i) => (
+              <Grid item key={i} xs={12} sm={6} md={4}>
+                <Card
+                  elevation={3}
+                  sx={{
+                    height: '100%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    justifyContent: 'space-between',
+                    backgroundColor: '#f7e0d2',
+                  }}
+                >
                   <CardContent>
                     <Typography
                       gutterBottom
@@ -138,12 +144,13 @@ function Home() {
                       </Button>
                     </ThemeProvider>
                   </CardActions>
-                </CardActionArea>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </div>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+          {/* End Event Grid Unit */}
+        </Box>
+      </Box>
     );
   } else {
     return <h3> Loading...</h3>;
