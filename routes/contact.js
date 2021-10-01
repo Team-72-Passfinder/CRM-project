@@ -1,14 +1,17 @@
 const express = require('express');
 const app = express();
+const passport = require('../config/passport');
 
 const controller = require('../controllers/contact');
+
+app.use(passport.authenticate('jwt', { session: false }))
 
 app.route('/contact').post(controller.create).get(controller.findAll);
 
 // Unnecessary as /search with empty "query" is equivalent to getall
-app.route('/contact/getall/:belongsToId').get(controller.getall);
+app.route('/contact/getall').get(controller.getall);
 
-app.route('/contact/search/:belongsToId').get(controller.search);
+app.route('/contact/search').get(controller.search);
 
 app
   .route('/contact/:id')
@@ -16,6 +19,6 @@ app
   .delete(controller.delete)
   .get(controller.findOne);
 
-app.route('/contact/add/:ownerId').post(controller.addFromId);
+app.route('/contact/add/:userId').post(controller.addFromId);
 
 module.exports = app;

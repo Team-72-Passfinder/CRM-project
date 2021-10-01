@@ -14,9 +14,9 @@ import {
 import { makeStyles } from '@mui/styles';
 import { Link } from 'react-router-dom';
 
-import Navbar from '../../components/Navbar/Navbar';
+import Navbar from '../../components/Navbar';
 import { getEvents } from '../../api';
-import logo from './citrus-contact-logo.png'
+import logo from './citrus-contact-logo.png';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -25,7 +25,6 @@ const useStyles = makeStyles((theme) => ({
   eventGrid: {
     maxwidth: 'md',
     padding: 40,
-    
   },
   eventDescription: {
     overflow: 'hidden',
@@ -40,8 +39,7 @@ const maxCards = 10;
 let cardIndex = Array.from(Array(maxCards).keys());
 
 function Home() {
-
-    const orangeTheme = createTheme({
+  const orangeTheme = createTheme({
     palette: {
       primary: {
         main: '#d2601a',
@@ -64,9 +62,8 @@ function Home() {
   };
 
   function handleClick(id) {
-    window.location.href = '/event/' + id
-}
-
+    window.location.href = '/event/' + id;
+  }
 
   if (events.length > 0) {
     // Prevent undefined entries
@@ -75,12 +72,16 @@ function Home() {
 
     return (
       <div className={classes.root}>
-        <ThemeProvider theme={orangeTheme} >
-          
-        <Navbar variant="contained"
-                        color="primary"/>
+        <ThemeProvider theme={orangeTheme}>
+          <Navbar variant="contained" color="primary" />
         </ThemeProvider>
-        <img  src={logo} alt="Logo" align="right" height= "150px" style={{padding: 10}}/>
+        <img
+          src={logo}
+          alt="Logo"
+          align="right"
+          height="150px"
+          style={{ padding: 10 }}
+        />
         <Container maxWidth="sm">
           <Typography
             component="h1"
@@ -91,47 +92,52 @@ function Home() {
             style={{ fontWeight: 600 }}
           >
             Welcome Back (name)
-          </Typography> 
+          </Typography>
         </Container>
 
         <Grid container spacing={4} className={classes.eventGrid}>
           {cardIndex.map((i) => (
-            <Grid item key={i} xs={12} sm={6} md={4} >
-              <Card                
-                  display= 'flex'
-                  flexDirection= 'column'
-                  height= '100%'
-                  justifyContent= 'space-between'
-                  elevation={3}   
-                  color= '#d2601a'         
+            <Grid item key={i} xs={12} sm={6} md={4}>
+              <Card
+                display="flex"
+                flexDirection="column"
+                height="100%"
+                justifyContent="space-between"
+                elevation={3}
+                color="#d2601a"
               >
-                <CardActionArea style={{backgroundColor: '#f7e0d2'}}>
-                <CardContent>
-                  <Typography gutterBottom variant="h4" component="h2" style={{ fontWeight: 600 }}>
-                    {events[i].name}
-                  </Typography>
-                  <Typography gutterBottom variant="body1" component="h2">
-                    {getDate(events[i].dateTime)}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    className={classes.eventDescription}
-                  >
-                    {events[i].description}
-                  </Typography>
-                </CardContent>
-                <CardActions>
-                <ThemeProvider theme={orangeTheme}>
-                     <Button 
+                <CardActionArea style={{ backgroundColor: '#f7e0d2' }}>
+                  <CardContent>
+                    <Typography
+                      gutterBottom
+                      variant="h4"
+                      component="h2"
+                      style={{ fontWeight: 600 }}
+                    >
+                      {events[i].name}
+                    </Typography>
+                    <Typography gutterBottom variant="body1" component="h2">
+                      {getDate(events[i].dateTime)}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      className={classes.eventDescription}
+                    >
+                      {events[i].description}
+                    </Typography>
+                  </CardContent>
+                  <CardActions>
+                    <ThemeProvider theme={orangeTheme}>
+                      <Button
                         className={classes.toolbarButton}
                         variant="contained"
                         color="primary"
-                        onClick={e => handleClick(events[i]._id)}
+                        onClick={(e) => handleClick(events[i]._id)}
                       >
                         View
-                    </Button> 
-                   </ThemeProvider>
-                </CardActions>
+                      </Button>
+                    </ThemeProvider>
+                  </CardActions>
                 </CardActionArea>
               </Card>
             </Grid>
