@@ -56,34 +56,20 @@ function Contact() {
             <Box sx={{ flexGrow: { sm: 1, }, background: '#F7F7F7', }} >
                 {
                     contactInfo !== undefined &&
-                    <Box sx={{ display: 'flex', height: { sm: '100vh' }, alignItems: 'center', flexDirection: { xs: 'column', sm: 'row' }, background: '#F7F7F7', }}>
-                        <Box sx={{ display: 'flex', width: { sm: '50%' }, height: '80vh', flexDirection: 'column', alignItems: 'center', }}>
-                            <Box sx={{ my: '10px', }}>
-                                <Avatar sx={{ width: '80px', height: '80px', fontSize: '28px' }} alt={contactInfo.firstName} src="/broken-image.jpg" />
+                    <Box sx={{ display: 'flex', height: { sm: '100vh' }, alignItems: 'center', justifyContent: 'center', flexDirection: { xs: 'column', sm: 'row' }, background: '#F7F7F7', }}>
+                        <Box sx={{ display: 'flex', height: '80vh', flexDirection: 'column', alignItems: 'center', }}>
+                            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' }, alignItems: 'center', justifyContent: 'center' }}>
+                                <Box sx={{ my: '10px', mr: { sm: '20px' } }}>
+                                    <Avatar sx={{ width: '80px', height: '80px', fontSize: '28px' }} alt={contactInfo.firstName} src="/broken-image.jpg" />
+                                </Box>
+                                <Typography sx={{ fontSize: { xs: '18px', sm: '24px' }, fontWeight: 700, color: '#272727' }}>
+                                    {contactInfo.firstName} {contactInfo.lastName}
+                                </Typography>
                             </Box>
-                            <Typography sx={{ fontSize: '18px', fontWeight: 700, color: '#272727' }}>
-                                {contactInfo.firstName} {contactInfo.lastName}
-                            </Typography>
                             <Button sx={{ display: { xs: 'none', sm: 'flex' } }} variant="contained" onClick={handleClick}>
                                 Edit Profile
                             </Button>
-                            <IconPillTabs profilePanel={<Profile info={contactInfo} />} eventsPanel={<Events events={events} />} tab={tab} handleTabChange={handleTabChange}  />
-                            <Box sx={{ display: { xs: 'none', sm: 'flex' } }}>
-                                <Profile info={contactInfo} />
-                            </Box>
-                        </Box>
-                        <Box sx={{ display: { xs: 'none', sm: 'flex' }, height: '80vh', flexDirection: 'column', alignItems: 'center', }}>
-                            <Box sx={{ display: 'flex', justifyContent: 'left', width: '100%' }}>
-                                <Typography sx={{ fontSize: '28px', fontWeight: 700 }}>
-                                    Events
-                                </Typography>
-                            </Box>
-                            <Box sx={{ display: 'flex', }}>
-                                <Stack>
-                                    <Events events={events} />
-                                </Stack>
-                                
-                            </Box>
+                            <IconPillTabs profilePanel={<Profile info={contactInfo} />} eventsPanel={<Events events={events} />} tab={tab} handleTabChange={handleTabChange} setTab={setTab}  />
                         </Box>
                     </Box>
                 } 

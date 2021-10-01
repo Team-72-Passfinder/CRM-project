@@ -19,7 +19,7 @@ const tabStyle = {
     }
 }
 
-function IconPillTabs({ profilePanel, eventsPanel, tab, handleTabChange }) {
+function IconPillTabs({ profilePanel, eventsPanel, tab, handleTabChange, setTab }) {
     return (
         <TabContext value={tab}>
             <Tabs
@@ -27,7 +27,6 @@ function IconPillTabs({ profilePanel, eventsPanel, tab, handleTabChange }) {
                     minHeight: '70px',
                     background: '#F7F7F7',
                     borderRadius: '10px',
-                    display: { sm: 'none' }
                 }}
                 TabIndicatorProps={{
                     style: {
@@ -40,7 +39,6 @@ function IconPillTabs({ profilePanel, eventsPanel, tab, handleTabChange }) {
                         zIndex: 0
                     },
                 }}
-
                 value={tab}
                 onChange={handleTabChange}
             >
@@ -55,12 +53,12 @@ function IconPillTabs({ profilePanel, eventsPanel, tab, handleTabChange }) {
                     value="Events"
                 />
             </Tabs>
-            <TabPanel sx={{ display: { sm: 'none' } }} value="Profile">
+            <TabPanel value="Profile">
                 <Stack>
                     {profilePanel}
                 </Stack>
             </TabPanel>
-            <TabPanel sx={{ display: { sm: 'none' } }} value="Events">
+            <TabPanel value="Events">
                 <Stack>
                     {eventsPanel}
                 </Stack>
