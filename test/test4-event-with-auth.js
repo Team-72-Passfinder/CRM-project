@@ -66,19 +66,6 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
     '************* CHECK ROUTES WITHOUT AUTH *************',
     () => {
       mocha.it(
-        'it should not give access to GET-USER without a verified token ',
-        function (done) {
-          chai
-            .request(server)
-            .get('/user')
-            .end((err, res) => {
-              res.should.have.status(401);
-              res.body.should.be.a('object');
-              done();
-            });
-        }
-      );
-      mocha.it(
         'it should not give access to GET without a verified token ',
         function (done) {
           chai
@@ -111,6 +98,7 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
   mocha.describe(
     '************* CHECK ROUTES WITH VERIFIED TOKEN *************',
     () => {
+      /*
       // This API will be deprecated in final version
       mocha.describe('/GET route', function () {
         mocha.it('it should GET all the events (empty)', function (done) {
@@ -126,6 +114,7 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
             });
         });
       });
+      */
 
       mocha.describe('/POST route', () => {
         mocha.it(
