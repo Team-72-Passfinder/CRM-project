@@ -60,30 +60,6 @@ function findAllData(controller, req, res) {
     });
 }
 
-// Find a single data with the data's id ===========================================
-function findOne(controller, req, res) {
-  // ID
-  const id = req.params.id;
-  controller
-    .findById(id)
-    .then((data) => {
-      // If data with this id is not found
-      if (!data) {
-        // return the error messages
-        return res.status(404).send({
-          message: 'No data is found with this id!',
-        });
-      }
-      // else, return
-      res.send(data);
-    })
-    // Catching the error when assessing the DB
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send({ message: 'Error when accessing the database!' });
-    });
-}
-
 // Get name of saved contact that belongs to a specific user ======================
 async function getNamesFromContactIds(belongsTo, contactList) {
   // Array that stores transformed contactId
@@ -150,7 +126,7 @@ async function deleteDataOfUser(controller, userId) {
 
 
 module.exports = {
-  updateData, deleteData, findAllData, findOne,
+  updateData, deleteData, findAllData,
   getNamesFromContactIds, deleteDataOfUser,
   displayEvent, displayRela
 };

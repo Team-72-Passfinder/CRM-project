@@ -155,8 +155,28 @@ exports.findAll = (req, res) => {
 };
 
 // Find a single contact with the contact's id ====================================
+// that returns one that belongs to the current logged-in user only
 exports.findOne = (req, res) => {
-  controller.findOne(Contact, req, res);
+  // ID
+  const id = req.params.id;
+  Contact
+    .findOne({ _id: id, belongsTo: req.user._id })
+    .then((data) => {
+      // If data with this id is not found
+      if (!data) {
+        // return the error messages
+        return res.status(404).send({
+          message: 'No contact is found with this id!',
+        });
+      }
+      // else, return
+      res.send(data);
+    })
+    // Catching the error when assessing the DB
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({ message: 'Error when accessing the database!' });
+    });
 };
 
 // Search for contacts that match with first&lastname ============================

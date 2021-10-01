@@ -110,17 +110,18 @@ exports.findAll = (req, res) => {
 };
 
 // Find a single relationship with the relationship's id ====================================
+// that returns one that belongs to the current logged-in user only
 exports.findOne = (req, res) => {
   //controller.findOne(Relationship, req, res);
   const id = req.params.id;
   Relationship
-    .findById(id)
+    .findOne({ _id: id, belongsTo: req.user._id })
     .then(async (data) => {
       // If data with this id is not found
       if (!data) {
         // return the error messages
         return res.status(404).send({
-          message: 'No data is found with this id!',
+          message: 'No relationship is found with this id!',
         });
       }
       // else, return
