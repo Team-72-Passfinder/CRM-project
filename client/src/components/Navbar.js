@@ -1,6 +1,20 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
 
-import { AppBar, Toolbar, IconButton, Drawer, List, ListItem, ListItemIcon, ListItemText } from '@mui/material'
+import { Link } from 'react-router-dom';
+
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Drawer,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Stack,
+  Box,
+  ButtonBase,
+} from '@mui/material';
 
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
@@ -9,74 +23,45 @@ import PeopleIcon from '@mui/icons-material/People';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
-function Navbar() {
-    const [open, setOpen] = useState(false)
+import StandardDrawer from './StandardDrawer';
 
-    const handleDrawerOpen = () => {
-        setOpen(true)
-    }
+function Navbar({ active }) {
+  const [open, setOpen] = useState(false);
 
-    function handleDrawerClose() {
-        setOpen(false)
-    }
+  const handleDrawerToggle = () => {
+    setOpen(!open);
+  };
 
-    function getIcon(text) {
-        switch(text) {
-            case 'Home':
-                return <HomeIcon sx={{ fontSize: 30 }} />
-            case 'Socials':
-                return <PeopleIcon sx={{ fontSize: 30 }}/>
-            case 'Profile':
-                return <AccountBoxIcon sx={{ fontSize: 30 }} />
-            case 'Log Out':
-                return <ExitToAppIcon sx={{ fontSize: 30 }} />
-            default:
-                return
-        }
-    }
+  return (
+    <div>
+      <AppBar
+        position="static"
+        sx={{
+          width: `100vw`,
+          display: { sm: 'none' },
+          background: 'white',
+          boxShadow: 'none',
+        }}
+      >
+        <Toolbar>
+          <IconButton
+            aria-label="open drawer"
+            edge="start"
+            onClick={handleDrawerToggle}
+            sx={{ display: { sm: 'none' } }}
+          >
+            <MenuIcon />
+          </IconButton>
+        </Toolbar>
+      </AppBar>
 
-    function handleDrawerItemClick(text) {
-        switch (text) {
-            case 'Home':
-                window.location.pathname = '/'
-                break;
-            case 'Socials':
-                window.location.pathname = '/contact'
-                break;
-            default:
-                return
-        }
-    }
-
-    return (
-        <div>
-            <AppBar sx={{ background: '#d2601a', boxShadow: 'none' }} position='static'>
-                <Toolbar>
-                    <IconButton onClick={handleDrawerOpen}>
-                        <MenuIcon />
-                    </IconButton>
-                </Toolbar>
-            </AppBar>
-
-            <Drawer anchor={'left'} open={open}>
-                <div>
-                    <IconButton sx={{ marginLeft: 2, marginTop: 2 }} onClick={handleDrawerClose}>
-                        <CloseIcon />
-                    </IconButton>
-                </div>
-                <List sx={{ width: '200px' }}>
-                    {['Home', 'Socials', 'Profile', 'Log Out'].map((text) => (
-                        <ListItem button key={text} onClick={() => handleDrawerItemClick(text)}>
-                            <ListItemIcon sx={{ marginLeft: 2 }}>
-                                {getIcon(text)}
-                            </ListItemIcon>
-                            <ListItemText primary={text} />
-                        </ListItem>
-                    ))}
-                </List>
-            </Drawer>
-        </div>
-    )
+      <StandardDrawer
+        active={active}
+        open={open}
+        handleDrawerToggle={handleDrawerToggle}
+      />
+    </div>
+  );
 }
 
-export default Navbar
+export default Navbar;
