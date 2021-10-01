@@ -13,9 +13,15 @@ exports.create = async (req, res) => {
     });
   }
 
-  if (!req.body.dateTime || Validator.checkValidDate(req.body.dateTime) == "Invalid Date") {
+  if (!req.body.startedDateTime || Validator.checkValidDate(req.body.startedDateTime) == "Invalid Date") {
     return res.status(400).send({
-      message: 'Missing or invalid datetime!',
+      message: 'Missing or invalid startedDatetime!',
+    });
+  }
+
+  if (!req.body.endedDateTime || Validator.checkValidDate(req.body.endedDateTime) == "Invalid Date") {
+    return res.status(400).send({
+      message: 'Missing or invalid endedDateTime!',
     });
   }
 
@@ -26,15 +32,19 @@ exports.create = async (req, res) => {
   }
 
   // Enfore dateTime
-  if (req.body.dateTime.charAt(req.body.dateTime.length - 1) != 'Z') {
-    req.body.dateTime += 'Z';
+  if (req.body.startedDateTime.charAt(req.body.startedDateTime.length - 1) != 'Z') {
+    req.body.startedDateTime += 'Z';
+  }
+  if (req.body.endedDateTime.charAt(req.body.endedDateTime.length - 1) != 'Z') {
+    req.body.endedDateTime += 'Z';
   }
 
   // Create an event
   const event = new Event({
     belongsTo: req.user._id,
     name: req.body.name,
-    dateTime: req.body.dateTime,
+    startedDateTime: req.body.startedDateTime,
+    endedDateTime: req.body.endedDateTime,
     completed: req.body.completed,
     participants: req.body.participants || [],
     description: req.body.description || '',
@@ -67,9 +77,14 @@ exports.update = async (req, res) => {
       message: "Event name should not contain invalid characters!",
     });
   }
-  if (req.body.dateTime && Validator.checkValidDate(req.body.dateTime) == "Invalid Date") {
+  if (req.body.startedDateTime && Validator.checkValidDate(req.body.startedDateTime) == "Invalid Date") {
     return res.status(400).send({
-      message: "Invalid Date",
+      message: "Invalid startedDateTime!",
+    });
+  }
+  if (req.body.endedDateTime && Validator.checkValidDate(req.body.endedDateTime) == "Invalid Date") {
+    return res.status(400).send({
+      message: "Invalid endedDateTime!",
     });
   }
   if (req.body.completed && req.body.completed == null) {

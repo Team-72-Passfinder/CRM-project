@@ -145,7 +145,8 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
             .auth(token, { type: 'bearer' })
             .send({
               name: 'Coffee with Katie',
-              dateTime: '1/1/1234',
+              startedDateTime: '1/1/1234',
+              endedDateTime: '1/3/1234',
               completed: false,
               participants: [contactId1, contactId2],
             })
@@ -154,7 +155,7 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
               res.body.should.be.a('object');
               res.body.should.have.property('belongsTo');
               res.body.should.have.property('name');
-              res.body.should.have.property('dateTime');
+              res.body.should.have.property('startedDateTime');
               res.body.should.have.property('completed');
               res.body.should.have
                 .property('participants')
@@ -201,7 +202,7 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
                   res.body.should.be.a('object');
                   res.body.should.have.property('belongsTo');
                   res.body.should.have.property('name');
-                  res.body.should.have.property('dateTime');
+                  res.body.should.have.property('startedDateTime');
                   res.body.should.have.property('participants');
                   res.body.should.have.property('description');
                   res.body.should.have.property('completed');
