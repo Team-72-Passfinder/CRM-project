@@ -15,7 +15,7 @@ exports.create = async (req, res) => {
 
   if (!req.body.startedDateTime || Validator.checkValidDate(req.body.startedDateTime) == "Invalid Date") {
     return res.status(400).send({
-      message: 'Missing or invalid startedDatetime!',
+      message: 'Missing or invalid startedDateTime!',
     });
   }
 
