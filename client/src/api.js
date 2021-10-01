@@ -7,8 +7,16 @@ const instance = axios.create({
   },
 });
 
+// Im not sure what instace = axios.create is so I make a config object
+const config = {
+  headers: {
+    Authorization: 'Bearer ' + localStorage.getItem('token-myapp'),
+  },
+};
+
 export function getEvents() {
-  return axios.get('/event').then((response) => response.data);
+  console.log(config);
+  return axios.get('/event', config).then((response) => response.data);
 }
 export function getEvent(id) {
   let endpoint = '/event/' + id;
@@ -44,8 +52,8 @@ export async function login(username, password) {
     })
     .then(function (response) {
       console.log(response);
-      localStorage.setItem('token-myapp', response.data);
-      instance.headers = { Authorization: `bearer ${response.data}` };
+      localStorage.setItem('token-myapp', response.data.token);
+      instance.headers = { Authorization: `bearer ${response.data.token}` };
       window.location.href = '/home';
     })
     .catch(function (error) {
