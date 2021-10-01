@@ -156,6 +156,7 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
               res.body.should.have.property('belongsTo');
               res.body.should.have.property('name');
               res.body.should.have.property('startedDateTime');
+              res.body.should.have.property('endedDateTime');
               res.body.should.have.property('completed');
               res.body.should.have
                 .property('participants')
@@ -203,6 +204,7 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
                   res.body.should.have.property('belongsTo');
                   res.body.should.have.property('name');
                   res.body.should.have.property('startedDateTime');
+                  res.body.should.have.property('endedDateTime');
                   res.body.should.have.property('participants');
                   res.body.should.have.property('description');
                   res.body.should.have.property('completed');
