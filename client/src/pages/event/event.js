@@ -1,57 +1,75 @@
-// import React from 'react'
-// var cors = require("cors");
-// const sampleEvent = {
-//   date: '1/10/2021',
-//   time: '14:00',
-//   contact: 'Alice'
-// }
+import React, { useState, useEffect, Component } from 'react';
+import { AppBar } from '@mui/material';
+import { Button } from '@mui/material';
+import { Card } from '@mui/material';
+import { CardActions } from '@mui/material';
+import { CardContent } from '@mui/material';
+import { Grid } from '@mui/material';
+import { Typography } from '@mui/material';
+import { makeStyles } from '@mui/styles';
+import { Container } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { Box } from '@mui/material';
+import { EditText, EditTextarea } from 'react-edit-text';
+import 'react-edit-text/dist/index.css';
 
+import { getEvent } from '../../api';
+import { editEvent } from '../../api';
+const useStyles = makeStyles((theme) => ({}));
 
-// class Event extends React.Component {
+function Event() {
+  const classes = useStyles();
+  const [event, setEvent] = useState();
 
-//     constructor(props) {
-//         super(props);
-//         this.state = {
-//           error: null,
-//           isLoaded: false,
-//           items: []
-//         };
-//       }
-
-//       componentDidMount() {
-//         fetch("http://localhost:3000/event"+id)
-//           .then(res => res.json())
-//           .then(
-//             (result) => {
-//               this.setState({
-//                 isLoaded: true,
-//                 items: result.items
-//               });
-//             },
-//             // Note: it's important to handle errors here
-//             // instead of a catch() block so that we don't swallow
-//             // exceptions from actual bugs in components.
-//             (error) => {
-//               this.setState({
-//                 isLoaded: true,
-//                 error
-//               });
-//             }
-//           )
-//       }
-//   render() {
-//     return (
-//       <div className="event">
-//         <ul>
-//         {items.map(item => (
-//             <li key={item.id}>
-//               {item.name} {item.dateTime}
-//             </li>
-//           ))}
-//         </ul>
-//       </div>
-//     );
-//   }
-// }
-
-// export default Event;
+  useEffect(() => {
+    let id = window.location.pathname.split('/')[2];
+    getEvent(id).then((res) => {
+      setEvent(res);
+    });
+  }, []);
+  const getDate = (date) => {
+    var jsDate = new Date(date);
+    return jsDate.toLocaleString('en-GB', { timeZone: 'UTC' });
+  };
+  const goToEdit = () => {
+    window.location.href =
+      '/event/' + window.location.pathname.split('/')[2] + '/edit';
+  };
+  if (event != null) {
+    return (
+      <div className={classes.root}>
+        {
+          <React.Fragment>
+            <main>
+              <Box className={classes.formContainer}>
+                <Typography className={classes.title}>Event</Typography>
+                <form className={classes.form}>
+                  <Box mt={5}>
+                    <Typography variant="h6">{event.name}</Typography>
+                    <Typography variant="h6">
+                      {getDate(event.dateTime)}
+                    </Typography>
+                    <Typography variant="h6">{event.description}</Typography>
+                  </Box>
+                </form>
+              </Box>
+              <div>
+                <Button
+                  className={classes.button}
+                  color="primary"
+                  variant="outlined"
+                  onClick={goToEdit}
+                >
+                  Edit
+                </Button>
+              </div>
+            </main>
+          </React.Fragment>
+        }
+      </div>
+    );
+  } else {
+    return <h3> Loading...</h3>;
+  }
+}
+export default Event;
