@@ -238,7 +238,7 @@ function convoSearch(req, res) {
     });
 }
 
-// Function to search a relationship
+// Function to search a relationship ==============================================
 // Searching by tags
 async function relationshipSearch(req, res) {
   // check query's body
@@ -264,6 +264,7 @@ async function relationshipSearch(req, res) {
     });
 }
 
+// Checks for valid search's query =================================================
 function checkValidQuery(req) {
   const keys = Object.keys(req.body);
 
