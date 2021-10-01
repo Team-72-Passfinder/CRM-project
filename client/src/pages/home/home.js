@@ -7,15 +7,13 @@ import {
   Grid,
   Typography,
   Container,
-  CardActionArea,
   createTheme,
   ThemeProvider,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Link } from 'react-router-dom';
 
 import Navbar from '../../components/Navbar';
-import { getEvents } from '../../api';
+import { getEvents, me } from '../../api';
 import logo from './citrus-contact-logo.png';
 import { Box } from '@mui/system';
 
@@ -50,10 +48,15 @@ function Home() {
   const classes = useStyles();
 
   const [events, setEvents] = useState([]);
+  const [userData, setUserData] = useState([]);
 
   useEffect(() => {
     getEvents().then((res) => {
       setEvents(res);
+    });
+    me().then((res) => {
+      console.log(res);
+      setUserData(res);
     });
   }, []);
 
@@ -94,7 +97,7 @@ function Home() {
               gutterBottom
               style={{ fontWeight: 600 }}
             >
-              Welcome Back (name)
+              Welcome Back {userData.username}
             </Typography>
           </Container>
           {/* End Hero Unit */}
