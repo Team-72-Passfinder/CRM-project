@@ -132,7 +132,6 @@ function EditContact() {
                 <Stack sx={{ my: 2 }}
                     alignItems='center'
                     spacing={2}
-                    // sx={{ background: 'red' }}
                 >
                 <div key='avatar'>
                     <input id='uploadImage' accept='image/*' type='file' style={{display: 'none'}} />

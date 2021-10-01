@@ -22,10 +22,10 @@ function Events({ events }) {
         <Stack>
             {
                 events.map(event => (
-                    <Card sx={{ my: '10px', background: 'white' }} raised>
+                    <Card sx={{ my: '10px', background: 'white', borderRadius: '10px' }} raised>
                         <CardContent>
                             <Box sx={{ display: 'flex', flexDirection: 'row', }}>
-                                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContents: 'center', mr: '10px' }}>
+                                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContents: 'center', mr: '20px' }}>
                                     <Typography sx={{ fontSize: '24px', fontWeight: 900, color: '#272727' }}>
                                         {new Date(event.dateTime).getDate()}
                                     </Typography>
@@ -34,8 +34,11 @@ function Events({ events }) {
                                     </Typography>
                                 </Box>
                                 <Box sx={{ display: 'flex', flexDirection: 'column', color: '#272727' }}>
-                                    <Typography sx={{ fontSize: '16px', fontWeight: 700, }}>
+                                    <Typography sx={{ fontSize: '16px', fontWeight: 700, my: '5px' }}>
                                         {event.name}
+                                    </Typography>
+                                    <Typography sx={{ fontWeight: '300' }}>
+                                        {new Date(event.dateTime).toTimeString().substring(0,5)}
                                     </Typography>
                                     <AvatarGroup max={3}>
                                         {

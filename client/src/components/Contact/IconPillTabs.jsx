@@ -55,7 +55,7 @@ function IconPillTabs({ profilePanel, eventsPanel, tab, handleTabChange }) {
                     value="Events"
                 />
             </Tabs>
-            <TabPanel value="Profile">
+            <TabPanel sx={{ display: { sm: 'none' } }} value="Profile">
                 <Stack>
                     {profilePanel}
                 </Stack>
