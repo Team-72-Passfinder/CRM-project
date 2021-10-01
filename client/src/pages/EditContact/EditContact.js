@@ -113,6 +113,7 @@ function EditContact() {
     if (element.required) {
       return getContactData(element.label) === '';
     }
+  }
 
   return (
     <LocalizationProvider dateAdapter={DateAdapter}>
@@ -205,7 +206,6 @@ function EditContact() {
       </div>
     </LocalizationProvider>
   );
-  }
 }
 
 export default EditContact;
