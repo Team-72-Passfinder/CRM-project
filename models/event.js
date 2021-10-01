@@ -16,7 +16,7 @@ const EventSchema = new mongoose.Schema(
     },
     endedDateTime: {
       type: Date,
-      required: true,
+      required: false,
     },
     participants: {
       type: [String],

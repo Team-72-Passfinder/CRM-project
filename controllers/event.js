@@ -19,9 +19,9 @@ exports.create = async (req, res) => {
     });
   }
 
-  if (!req.body.endedDateTime || Validator.checkValidDate(req.body.endedDateTime) == "Invalid Date") {
+  if (req.body.endedDateTime && Validator.checkValidDate(req.body.endedDateTime) == "Invalid Date") {
     return res.status(400).send({
-      message: 'Missing or invalid endedDateTime!',
+      message: 'Invalid endedDateTime!',
     });
   }
 
@@ -35,7 +35,7 @@ exports.create = async (req, res) => {
   if (req.body.startedDateTime.charAt(req.body.startedDateTime.length - 1) != 'Z') {
     req.body.startedDateTime += 'Z';
   }
-  if (req.body.endedDateTime.charAt(req.body.endedDateTime.length - 1) != 'Z') {
+  if (req.body.endedDateTime && req.body.endedDateTime.charAt(req.body.endedDateTime.length - 1) != 'Z') {
     req.body.endedDateTime += 'Z';
   }
 
@@ -44,7 +44,7 @@ exports.create = async (req, res) => {
     belongsTo: req.user._id,
     name: req.body.name,
     startedDateTime: req.body.startedDateTime,
-    endedDateTime: req.body.endedDateTime,
+    endedDateTime: req.body.endedDateTime || '',
     completed: req.body.completed,
     participants: req.body.participants || [],
     description: req.body.description || '',
