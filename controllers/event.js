@@ -105,18 +105,19 @@ exports.findAll = (req, res) => {
 };
 
 // Find a single event with the event's id ====================================
+// that returns one that belongs to the current logged-in user only
 exports.findOne = (req, res) => {
   //controller.findOne(Event, req, res);
   // ID
   const id = req.params.id;
   Event
-    .findById(id)
+    .findOne({ _id: id, belongsTo: req.user._id })
     .then(async (data) => {
       // If data with this id is not found
       if (!data) {
         // return the error messages
         return res.status(404).send({
-          message: 'No data is found with this id!',
+          message: 'No event is found with this id!',
         });
       }
       // else, return

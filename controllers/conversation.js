@@ -96,8 +96,29 @@ exports.findAll = (req, res) => {
 };
 
 // Find a single convo with the convo's id ========================================
+// that returns one that belongs to the current logged-in user only
 exports.findOne = (req, res) => {
-  controller.findOne(Conversation, req, res);
+  //controller.findOne(Conversation, req, res);
+  // ID
+  const id = req.params.id;
+  Conversation
+    .findOne({ _id: id, people: { $regex: req.user._id } })
+    .then((data) => {
+      // If data with this id is not found
+      if (!data) {
+        // return the error messages
+        return res.status(404).send({
+          message: 'No conversation is found with this id!',
+        });
+      }
+      // else, return
+      res.send(data);
+    })
+    // Catching the error when assessing the DB
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({ message: 'Error when accessing the database!' });
+    });
 };
 
 // Get all conversation that belong to a specific user ============================
