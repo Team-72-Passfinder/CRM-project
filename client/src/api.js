@@ -104,5 +104,11 @@ export function updateContact(contact) {
 export function me() {
   let endpoint = '/profile';
 
-  return instance.get(endpoint, config).then((res) => res.data);
+  return instance.get(endpoint).then(res => res.data);
+}
+
+export function getEventById(id) {
+    let endpoint = '/event/' + id
+
+    return instance.get(endpoint).then(res => res.data);
 }
