@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 
-import { Container, Box, Stack, Paper, Divider, InputBase, List, ListItem, ListItemText, ListItemAvatar, Avatar, Typography, Toolbar, Button, Tabs, Tab, Fab, IconButton, Slide } from '@mui/material'
+import { Box, Stack, Paper, CircularProgress, InputBase, List, ListItem, ListItemText, ListItemAvatar, Avatar, Typography, Tabs, Tab, Fab, IconButton, } from '@mui/material'
 
 import SortIcon from '@mui/icons-material/Sort';
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import AddIcon from '@mui/icons-material/Add';
 
 import { getContacts } from '../../api'
 import Navbar from '../../components/Navbar'
 
-// import CreateContact from '../CreateContact/CreateContact'
 import AddContact from '../Contact/AddContact';
 
 function ContactList() {
@@ -17,6 +15,8 @@ function ContactList() {
     const [search, setSearch] = useState('')
     const [tab, setTab] = useState('All')
     const [open, setOpen] = React.useState(false)
+
+    const progressing = useRef(false);
 
     // Click on individual contact to go to detailed page.
     function handleClick(id) {
@@ -39,16 +39,16 @@ function ContactList() {
     }, [])
 
     return (
-        // <div>
-        <Container 
+        <Box 
             sx={{
-                padding: 0,
+                display: 'flex',
                 height: '100vh',
                 minWidth: '100vw',
                 width: '100vw',
                 overflow: 'hidden',
+                flexDirection: 'column',
+                alignItems: 'center',
             }} 
-            maxWidth={false}
         >
             <Navbar active="Socials" />
             <Box sx={{ display: 'flex', width: '100vw', alignItems: 'center', flexDirection: 'column', }}>
@@ -56,6 +56,7 @@ function ContactList() {
                     sx={{
                         width: '368px',
                         maxWidth: '90vw',
+                        // position: 'absolute',
                     }}
                     direction="row"
                     justifyContent="center"
@@ -121,59 +122,62 @@ function ContactList() {
                         label="User"
                     />
                 </Tabs>
-                <Box sx={{ display: 'flex', width: '100vw', height: '90vh', justifyContent:'center', overflowY: 'scroll' }}>
-                    <List
-                        sx={{
-                            width: '368px',
-                            maxWidth: '90vw',
-                        }}>
-                        {search === '' ?
-                            contacts.map((element) => (
-                                <ListItem
-                                    sx={{
-                                        background: 'white',
-                                        width: 368,
-                                        maxWidth: '90vw'
-                                    }} id={element._id} key={element._id} button onClick={e => handleClick(element._id)}>
-                                    <ListItemAvatar>
-                                        <Avatar>{element.firstName[0]}</Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText>
-                                        <Typography sx={{ color: '#2F4858', fontWeight: 'bold', fontSize: '15px' }}>
-                                            {element.firstName} {element.lastName}
-                                        </Typography>
-                                    </ListItemText>
-                                </ListItem>
-                            ))
-                            :
-                            // Filtered contacts
-                            contacts.filter(contact => contact.firstName.toLowerCase().match(search.toLowerCase()) || contact.lastName.toLowerCase().match(search.toLowerCase())).map((element) => (
-                                <ListItem
-                                    sx={{
-                                        background: 'white',
-                                        width: '368px',
-                                        maxWidth: '90vw',
-                                    }} id={element._id} key={element._id} button onClick={e => handleClick(element._id)}>
-                                    <ListItemAvatar>
-                                        <Avatar>{element.firstName[0]}</Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText>
-                                        <Typography sx={{ fontWeight: 'bold', fontSize: '15px' }}>
-                                            {element.firstName} {element.lastName}
-                                        </Typography>
-                                    </ListItemText>
-                                </ListItem>
-                            ))
-                        }
-                    </List>
                 </Box>
-            </Box>
+                <Box sx={{ display: `${(progressing.current && 'flex') || 'none'}`, height: '100%', alignItems: 'center', }}>
+                    <CircularProgress color="primary" />
+                </Box>
+                <List
+                    id="list"
+                    sx={{
+                        width: '368px',
+                        maxWidth: '90vw',
+                        overflow: 'auto',
+                        display: `${(progressing.current && 'none') || 'initial'}`,
+                    }}>
+                    {search === '' ?
+                        contacts.map((element) => (
+                            <ListItem
+                                sx={{
+                                    background: 'white',
+                                    width: 368,
+                                    maxWidth: '90vw'
+                                }} id={element._id} key={element._id} button onClick={e => handleClick(element._id)}>
+                                <ListItemAvatar>
+                                    <Avatar>{element.firstName[0]}</Avatar>
+                                </ListItemAvatar>
+                                <ListItemText>
+                                    <Typography sx={{ color: '#2F4858', fontWeight: 'bold', fontSize: '15px' }}>
+                                        {element.firstName} {element.lastName}
+                                    </Typography>
+                                </ListItemText>
+                            </ListItem>
+                        ))
+                        :
+                        // Filtered contacts
+                        contacts.filter(contact => contact.firstName.toLowerCase().match(search.toLowerCase()) || contact.lastName.toLowerCase().match(search.toLowerCase())).map((element) => (
+                            <ListItem
+                                sx={{
+                                    background: 'white',
+                                    width: '368px',
+                                    maxWidth: '90vw',
+                                }} id={element._id} key={element._id} button onClick={e => handleClick(element._id)}>
+                                <ListItemAvatar>
+                                    <Avatar>{element.firstName[0]}</Avatar>
+                                </ListItemAvatar>
+                                <ListItemText>
+                                    <Typography sx={{ fontWeight: 'bold', fontSize: '15px' }}>
+                                        {element.firstName} {element.lastName}
+                                    </Typography>
+                                </ListItemText>
+                            </ListItem>
+                        ))
+                    }
+                </List>
             <Fab sx={{ position: 'fixed', right: 16, bottom: 16 }}>
                 <SortIcon />
             </Fab>
-            <AddContact open={open} setOpen={setOpen} />
-        </Container>
-        // {/* </div> */}
+            <AddContact open={open} setOpen={setOpen} contacts={contacts} setContacts={setContacts} progressing={progressing} />
+        </Box>
     )
 }
 
