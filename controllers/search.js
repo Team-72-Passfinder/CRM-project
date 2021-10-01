@@ -1,4 +1,3 @@
-
 const User = require('../models/user');
 const Event = require('../models/event');
 const Relationship = require('../models/relationship');
@@ -14,21 +13,21 @@ const ctrlSupport = require('./controller-support');
 
 // Search function for contact =============================================
 async function contactSearch(req, res) {
-
   // check query's body
   if (!checkValidQuery(req)) {
     return res.status(500).send({ message: 'Missing query!' });
   }
 
   const text = req.body.query;
-  Contact
-    .find({
-      belongsTo: req.user._id,
-      $or: [{ firstName: { $regex: text, $options: 'i' } },
+  Contact.find({
+    belongsTo: req.user._id,
+    $or: [
+      { firstName: { $regex: text, $options: 'i' } },
       { lastName: { $regex: text, $options: 'i' } },
       { email: { $regex: text, $options: 'i' } },
-      { jobTitle: { $regex: text, $options: 'i' } }]
-    })
+      { jobTitle: { $regex: text, $options: 'i' } },
+    ],
+  })
     .then((data) => {
       res.status(200).send(data);
     })
@@ -41,10 +40,9 @@ async function contactSearch(req, res) {
     });
 }
 
-
 // Search function for User only =============================================
 // Email and password are protected and not to be returned directly
-// returns an array of users 
+// returns an array of users
 function userSearch(req, res) {
   // check query's body
   if (!checkValidQuery(req)) {
@@ -56,11 +54,14 @@ function userSearch(req, res) {
     //.find({ $text: { $search: req.body.query } }) // full-text search
     // partial-text-search:
     .find({
-      $or: [{ username: { $regex: text, $options: 'i' } },
-      { firstName: { $regex: text, $options: 'i' } },
-      { lastName: { $regex: text, $options: 'i' } },
-      { email: { $regex: text, $options: 'i' } }]
-    }).then((data) => {
+      $or: [
+        { username: { $regex: text, $options: 'i' } },
+        { firstName: { $regex: text, $options: 'i' } },
+        { lastName: { $regex: text, $options: 'i' } },
+        { email: { $regex: text, $options: 'i' } },
+      ],
+    })
+    .then((data) => {
       data.forEach((user) => {
         userMap.push({
           _id: user._id,
@@ -69,9 +70,9 @@ function userSearch(req, res) {
           firstname: user.firstName,
           lastName: user.lastName,
           dateOfBirth: user.dateOfBirth,
-          biography: user.biography || "",
-        })
-      })
+          biography: user.biography || '',
+        });
+      });
       res.status(200).send(userMap);
     })
     // Catching error when accessing the database
@@ -102,14 +103,24 @@ async function eventSearch(req, res) {
     return res.status(500).send({ message: 'Missing query!' });
   }
   // Validate dateTime [from, to] if exist
-  if (req.body.from && Validator.checkValidDate(req.body.from) == 'Invalid Date') {
+  if (
+    req.body.from &&
+    Validator.checkValidDate(req.body.from) == 'Invalid Date'
+  ) {
     return res.status(400).send({ message: 'Invalid (from) date!' });
   }
   // Only check (to) date if (from) date exists
-  if ((req.body.from && req.body.to && Validator.checkValidDate(req.body.to) == 'Invalid Date')
+  if (
+    (req.body.from &&
+      req.body.to &&
+      Validator.checkValidDate(req.body.to) == 'Invalid Date') ||
     //or (to) date exists but (from) date doesn't or vice versa
-    || (!req.body.from && req.body.to) || (req.body.from && !req.body.to)) {
-    return res.status(400).send({ message: 'Missing or Invalid (from)/ (to) date!' });
+    (!req.body.from && req.body.to) ||
+    (req.body.from && !req.body.to)
+  ) {
+    return res
+      .status(400)
+      .send({ message: 'Missing or Invalid (from)/ (to) date!' });
   }
 
   // Then, start searching
@@ -121,15 +132,18 @@ async function eventSearch(req, res) {
     // Combine date time in find() query
     await Event.find({
       belongsTo: req.user._id,
-      $or: [{ name: { $regex: text, $options: 'i' } },
-      { description: { $regex: text, $options: 'i' } }],
+      $or: [
+        { name: { $regex: text, $options: 'i' } },
+        { description: { $regex: text, $options: 'i' } },
+      ],
       dateTime: {
         $gte: new Date(new Date(from).setHours(0, 0, 0)),
-        $lt: new Date(new Date(to).setHours(23, 59, 59))
-      }
-    }).then((data) => {
-      eventMap = data;
-    })// Case of error
+        $lt: new Date(new Date(to).setHours(23, 59, 59)),
+      },
+    })
+      .then((data) => {
+        eventMap = data;
+      }) // Case of error
       .catch((err) => {
         console.log(err);
         res.status(500).send({
@@ -141,11 +155,14 @@ async function eventSearch(req, res) {
   else {
     await Event.find({
       belongsTo: req.user._id,
-      $or: [{ name: { $regex: text, $options: 'i' } },
-      { description: { $regex: text, $options: 'i' } }],
-    }).then((data) => {
-      eventMap = data;
-    })// Case of error
+      $or: [
+        { name: { $regex: text, $options: 'i' } },
+        { description: { $regex: text, $options: 'i' } },
+      ],
+    })
+      .then((data) => {
+        eventMap = data;
+      }) // Case of error
       .catch((err) => {
         console.log(err);
         res.status(500).send({
@@ -159,7 +176,11 @@ async function eventSearch(req, res) {
   if (keys.indexOf('participants') > -1) {
     var index = eventMap.length - 1;
     while (index >= 0) {
-      if (!req.body.participants.every(value => eventMap[index].participants.includes(value))) {
+      if (
+        !req.body.participants.every((value) =>
+          eventMap[index].participants.includes(value)
+        )
+      ) {
         eventMap.splice(index, 1);
       }
       index -= 1;
@@ -167,7 +188,10 @@ async function eventSearch(req, res) {
   }
 
   // Now consider completed status
-  if (keys.indexOf('completed') > -1 && typeof (req.body.completed) == "boolean") {
+  if (
+    keys.indexOf('completed') > -1 &&
+    typeof req.body.completed == 'boolean'
+  ) {
     var ind = eventMap.length - 1;
     while (ind >= 0) {
       if (eventMap[ind].completed != req.body.completed) {
@@ -180,7 +204,7 @@ async function eventSearch(req, res) {
   // Then modify the eventMap for display
   var returnedEv = [];
   for (let i = 0; i < eventMap.length; i++) {
-    returnedEv.push(await ctrlSupport.display(eventMap[i]));
+    returnedEv.push(await ctrlSupport.displayEvent(eventMap[i]));
   }
   res.status(200).send(returnedEv);
 }
@@ -197,16 +221,17 @@ function convoSearch(req, res) {
   // import data that contains those ids
   var data = [];
   // Find from database
-  Convo.findById(id).then((found) => {
-    //console.log(data);
-    found.messages.forEach((mes) => {
-      if (mes.content.includes(req.body.query)) {
-        data.push(mes);
-      }
-    });
-    // found the conversation --> look for messages content
-    res.status(200).send(data);
-  })
+  Convo.findById(id)
+    .then((found) => {
+      //console.log(data);
+      found.messages.forEach((mes) => {
+        if (mes.content.includes(req.body.query)) {
+          data.push(mes);
+        }
+      });
+      // found the conversation --> look for messages content
+      res.status(200).send(data);
+    })
     .catch((err) => {
       console.log(err);
       res.status(500).send({ message: 'Error when accessing the database!' });
@@ -221,11 +246,10 @@ async function relationshipSearch(req, res) {
     return res.status(500).send({ message: 'Missing query!' });
   }
 
-  Relationship
-    .find({
-      belongsTo: req.user._id,
-      tag: { $regex: req.body.query, $options: 'i' }
-    })
+  Relationship.find({
+    belongsTo: req.user._id,
+    tag: { $regex: req.body.query, $options: 'i' },
+  })
     .then(async (data) => {
       // Then modify the eventMap for display
       var returnedMap = [];
@@ -238,11 +262,9 @@ async function relationshipSearch(req, res) {
       console.log(err);
       res.status(500).send({ message: 'Error when accessing the database!' });
     });
-
 }
 
 function checkValidQuery(req) {
-
   const keys = Object.keys(req.body);
 
   if (keys.indexOf('query') == -1) {
@@ -251,4 +273,10 @@ function checkValidQuery(req) {
   return true;
 }
 
-module.exports = { contactSearch, userSearch, eventSearch, convoSearch, relationshipSearch };
+module.exports = {
+  contactSearch,
+  userSearch,
+  eventSearch,
+  convoSearch,
+  relationshipSearch,
+};
