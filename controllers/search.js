@@ -136,7 +136,7 @@ async function eventSearch(req, res) {
         { name: { $regex: text, $options: 'i' } },
         { description: { $regex: text, $options: 'i' } },
       ],
-      dateTime: {
+      startedDateTime: {
         $gte: new Date(new Date(from).setHours(0, 0, 0)),
         $lt: new Date(new Date(to).setHours(23, 59, 59)),
       },

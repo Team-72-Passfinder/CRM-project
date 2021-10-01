@@ -81,13 +81,15 @@ const contactTester = {
 
 const eventTester = {
   missingName: {
-    dateTime: '1/1/1234',
+    startedDateTime: '1/1/1234',
+    endedDateTime: '1/1/1234',
     completed: false,
   },
 
   newEventForGetRoute: {
     name: 'Yearly company meeting',
-    dateTime: '1/2/1234',
+    startedDateTime: '1/2/1234',
+    endedDateTime: '1/3/1234',
     participants: ['me', 'boss', 'secretary', 'junior'],
     description: 'Fun time',
     completed: true,
@@ -95,7 +97,8 @@ const eventTester = {
 
   newEventForPutRoute: {
     name: 'Visit big boss Kanyes birthday',
-    dateTime: '4/2/1245',
+    startedDateTime: '4/2/1245',
+    endedDateTime: '4/3/1245',
     participants: ['me', 'bigboss', 'underling'],
     description: 'Wholesome bro time',
     completed: false,
