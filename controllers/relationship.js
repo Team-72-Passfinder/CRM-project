@@ -3,16 +3,10 @@ const Relationship = require('../models/relationship');
 const controller = require('./controller-support');
 const Validator = require('./validator');
 const Search = require('./search');
-const User = require('../models/user');
 
 // Create a new relationship ===================================================
 exports.create = async (req, res) => {
   // Validate belongsTo
-  if (!req.body.belongsTo || !(await Validator.checkValidId(User, req.body.belongsTo))) {
-    return res.status(400).send({
-      message: 'Missing or invalid userId that this contact belongs to!',
-    });
-  }
   // Check for valid datetime
   if (!req.body.startedDatetime) {
     return res.status(400).send({
@@ -20,7 +14,7 @@ exports.create = async (req, res) => {
     });
   }
   // Check if this relationship contains exactly 2 users
-  if (Object.keys(req.body.people).length != 2) {
+  if (!req.body.people || Object.keys(req.body.people).length != 2) {
     return res.status(400).send({
       message: 'Require 2 people in relationship!',
     });
@@ -47,18 +41,18 @@ exports.create = async (req, res) => {
   }
   //else
   const relationship = new Relationship({
-    belongsTo: req.body.belongsTo,
+    belongsTo: req.user._id,
     people: req.body.people.sort(),
     startedDatetime: req.body.startedDatetime,
     tag: req.body.tag || [],
     description: req.body.description || '',
   });
-  console.log("new rela created!");
+  //console.log("new rela created!");
   // Save this relationship to database
   relationship
     .save()
-    .then((data) => {
-      res.send(data);
+    .then(async (data) => {
+      res.send(await controller.displayRela(data));
     })
     .catch((err) => {
       console.log(err);
@@ -88,7 +82,21 @@ exports.update = (req, res) => {
     });
   }
   // Only tags and description can be updated
-  controller.updateData(Relationship, req, res);
+  //controller.updateData(Relationship, req, res);
+  const id = req.params.id;
+
+  // Case of updated sucessfully
+  Relationship.findByIdAndUpdate(id, { $set: req.body }, { new: true })
+    .then(async (updatedData) => {
+      res.status(200).send(await controller.displayRela(updatedData));
+    })
+    // Case of error
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({
+        message: 'Error when updating Data!',
+      });
+    });
 };
 
 // Delete a relationship with the specified relationship's Id ==============================
@@ -102,8 +110,28 @@ exports.findAll = (req, res) => {
 };
 
 // Find a single relationship with the relationship's id ====================================
+// that returns one that belongs to the current logged-in user only
 exports.findOne = (req, res) => {
-  controller.findOne(Relationship, req, res);
+  //controller.findOne(Relationship, req, res);
+  const id = req.params.id;
+  Relationship
+    .findOne({ _id: id, belongsTo: req.user._id })
+    .then(async (data) => {
+      // If data with this id is not found
+      if (!data) {
+        // return the error messages
+        return res.status(404).send({
+          message: 'No relationship is found with this id!',
+        });
+      }
+      // else, return
+      res.send(await controller.displayRela(data));
+    })
+    // Catching the error when assessing the DB
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({ message: 'Error when accessing the database!' });
+    });
 };
 
 // Searching for relationship given tags
@@ -113,5 +141,18 @@ exports.search = (req, res) => {
 
 // Get all relationship that belong to a specific user ============================
 exports.getall = (req, res) => {
-  controller.getAllByUserId(Relationship, req, res);
+  const ownerId = req.user._id;
+
+  Relationship.find({ belongsTo: ownerId }).then(async (data) => {
+    var relaMap = [];
+    for (let i = 0; i < data.length; i++) {
+      relaMap.push(await controller.displayRela(data[i]));
+    }
+    res.status(200).send(relaMap);
+  })
+    // Catching error
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({ message: 'Error when accessing the database!' });
+    });
 };
