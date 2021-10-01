@@ -3,41 +3,9 @@ const User = require('../models/user');
 const controller = require('./controller-support');
 const Validator = require('./validator');
 const Search = require('./search');
-
-
-// Scatch function for POST() - to be removed & replaced with passport later
-exports.create = async (req, res) => {
-  const message = await Validator.checkValidUser(req);
-  //console.log(message);
-  if (message != 'valid') {
-    return res.status(400).send({ message: message });
-  }
-  // else, create a new user
-  const user = new User({
-    //_id: Mongoose.Types.ObjectId(),
-    username: req.body.username,
-    password: req.body.password,
-    email: req.body.email,
-    firstName: req.body.firstName,
-    lastName: req.body.lastName,
-    dateOfBirth: new Date(req.body.dateOfBirth),
-    biography: req.body.biography || '',
-  });
-
-  // Save this user to database
-  user
-    .save()
-    .then((data) => {
-      res.send(data);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send({
-        message: 'Error when creating user!',
-      });
-    });
-};
-
+const Contact = require('../models/contact');
+const Event = require('../models/event');
+const Relationship = require('../models/relationship');
 
 // Update an user identified by the user's Id ==============================
 // This Update function behaves differently from other controllers
@@ -87,7 +55,8 @@ exports.update = (req, res) => {
   }
 
   // Get the id
-  const id = req.params.id;
+  //const id = req.params.id;
+  const id = req.user._id;
   // Case of updated sucessfully
   User.findByIdAndUpdate(id, { $set: req.body }, { new: true }).then(
     (updatedData) => {
@@ -103,8 +72,33 @@ exports.update = (req, res) => {
 };
 
 // Delete an user with the specified user's Id ==============================
-exports.delete = (req, res) => {
-  controller.deleteData(User, req, res);
+exports.delete = async (req, res) => {
+  // Delete user's data before delete the user
+  const id = req.user._id;
+  // Delete events:
+  await controller.deleteDataOfUser(Event, id);
+  // Delete contacts:
+  await controller.deleteDataOfUser(Contact, id);
+  // Delete relationships:
+  await controller.deleteDataOfUser(Relationship, id);
+
+  User
+    .findByIdAndRemove(id)
+    .then((data) => {
+      if (!data) {
+        // If no id found -> return error message
+        return res
+          .status(404)
+          .send({ message: 'No data found to be deleted!' });
+      }
+      // Else, the contact should be deleted successfully
+      res.status(200).send({ message: 'User is deleted successfully!' });
+    })
+    // Catching error when accessing the database
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({ message: 'Error when accessing the database!' });
+    });
 };
 
 // Retrieve and return all users from the database =========================

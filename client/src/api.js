@@ -7,31 +7,39 @@ const instance = axios.create({
   },
 });
 
+// Im not sure what instace = axios.create is so I make a config object
+const config = {
+  headers: {
+    Authorization: 'Bearer ' + localStorage.getItem('token-myapp'),
+  },
+};
+
 export function getEvents() {
-  return axios.get('/event').then((response) => response.data);
+  let endpoint = '/event/';
+  return axios.get(endpoint, config).then((response) => response.data);
 }
 export function getEvent(id) {
   let endpoint = '/event/' + id;
 
-  return axios.get(endpoint).then((response) => response.data);
+  return axios.get(endpoint, config).then((response) => response.data);
 }
 export function addEvent(event) {
   let endpoint = '/event/';
 
-  return axios.post(endpoint, event).then((res) => res.data);
+  return axios.post(endpoint, event, config).then((res) => res.data);
 }
 
 export function setEvent(id) {
   let endpoint = '/event/' + id;
 
-  return axios.post(endpoint, id).then((res) => res.data);
+  return axios.post(endpoint, id, config).then((res) => res.data);
 }
 
 export function updateEvent(event) {
   let endpoint = '/event/' + event._id;
 
   return axios
-    .put(endpoint, event)
+    .put(endpoint, event, config)
     .then((res) => res.data)
     .catch((e) => console.log(e.response));
 }
@@ -44,8 +52,8 @@ export async function login(username, password) {
     })
     .then(function (response) {
       console.log(response);
-      localStorage.setItem('token-myapp', response.data);
-      instance.headers = { Authorization: `bearer ${response.data}` };
+      localStorage.setItem('token-myapp', response.data.token);
+      instance.headers = { Authorization: `bearer ${response.data.token}` };
       window.location.href = '/home';
     })
     .catch(function (error) {
@@ -64,13 +72,13 @@ export async function login(username, password) {
 export function getContacts() {
   let endpoint = '/contact';
 
-  return axios.get(endpoint).then((res) => res.data);
+  return axios.get(endpoint, config).then((res) => res.data);
 }
 
 export function getContact(id) {
   let endpoint = '/contact/' + id;
 
-  return axios.get(endpoint).then((res) => res.data);
+  return axios.get(endpoint, config).then((res) => res.data);
 }
 
 export function addContact(contact) {
@@ -79,7 +87,7 @@ export function addContact(contact) {
   contact.dateOfBirth = new Date(contact.dateOfBirth);
 
   return axios
-    .post(endpoint, contact)
+    .post(endpoint, contact, config)
     .then((res) => res.data)
     .catch((e) => console.log(e.response));
 }
@@ -88,7 +96,7 @@ export function updateContact(contact) {
   let endpoint = '/contact/' + contact._id;
 
   return axios
-    .put(endpoint, contact)
+    .put(endpoint, contact, config)
     .then((res) => res.data)
     .catch((e) => console.log(e.response));
 }
@@ -96,5 +104,5 @@ export function updateContact(contact) {
 export function me() {
   let endpoint = '/profile';
 
-  return instance.get(endpoint).then((res) => res.data);
+  return instance.get(endpoint, config).then((res) => res.data);
 }

@@ -26,6 +26,10 @@ const ContactSchema = new mongoose.Schema(
       type: Date,
       required: false,
     },
+    jobTitle: {
+      type: [String],
+      required: false,
+    },
     biography: {
       type: String,
       required: false,

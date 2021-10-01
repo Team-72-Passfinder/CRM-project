@@ -5,7 +5,9 @@ var passport = require('passport'),
   LocalStrategy = require('passport-local');
 
 const User = require('mongoose').model('User');
+const Validator = require('../controllers/validator');
 
+// Checks for valid token when performing any route (except login and registration)
 passport.use(
   'jwt',
   new JwtStrategy(
@@ -20,7 +22,7 @@ passport.use(
           return done(err, false);
         }
 
-        console.log(user)
+        //console.log(user)
 
         if (user) {
           return done(null, user);
@@ -32,6 +34,7 @@ passport.use(
   )
 );
 
+// Does the login and returns a token if login successfully
 passport.use(
   'login',
   new LocalStrategy((username, password, done) => {
@@ -49,22 +52,20 @@ passport.use(
   })
 );
 
+// Does the registration and returns a token if successful
+// If any field turns out to be invalid -> get unauthoried
+// Message of error is sent to FE
 passport.use(
   'registration',
   new LocalStrategy(
     {
       passReqToCallback: true,
     },
-    function (req, username, password, done) {
-      User.findOne({ username: username }, function (err, user) {
-        if (err) {
-          return done(err);
-        }
+    async function (req, username, password, done) {
 
-        if (user) {
-          return done(null, false);
-        }
-
+      const message = await Validator.checkValidUser(req);
+      //console.log(message);
+      if (message == 'valid') {
         var newUser = new User();
 
         newUser.username = username;
@@ -72,12 +73,15 @@ passport.use(
         newUser.email = req.body.email;
         newUser.firstName = req.body.firstName;
         newUser.lastName = req.body.lastName;
-        newUser.dateOfBirth = req.body.dateOfBirth;
+        newUser.dateOfBirth = new Date(req.body.dateOfBirth);
 
         newUser.save();
-
         return done(null, newUser);
-      });
+      }
+      else {
+        return done(null, false, { message: message });
+      }
+
     }
   )
 );

@@ -35,8 +35,8 @@ app.use(conversationRoute);
 app.use(contactRoute);
 
 // Authentication
-require('./models/user');
-app.use(require('./routes/userRouter'));
+//require('./models/user');
+//app.use(require('./routes/userRouter'));
 
 // Basic route
 let server = app.listen(port, function () {

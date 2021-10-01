@@ -4,19 +4,11 @@ const controller = require('./controller-support');
 const Validator = require('./validator');
 const Search = require('./search');
 const User = require('../models/user');
+const { isValidObjectId } = require('mongoose');
 
 // Create a new Contact ===================================================
 exports.create = async (req, res) => {
   // Validate requests
-  if (
-    !req.body.belongsTo ||
-    !(await Validator.checkValidId(User, req.body.belongsTo))
-  ) {
-    return res.status(400).send({
-      message: 'Missing or invalid userId that this contact belongs to!',
-    });
-  }
-
   if (!req.body.firstName || Validator.checkInvalid(req.body.firstName)) {
     return res.status(400).send({
       message: 'Missing or invalid firstname!',
@@ -42,12 +34,13 @@ exports.create = async (req, res) => {
 
   // Create a new contact using these information
   const contact = new Contact({
-    belongsTo: req.body.belongsTo,
+    belongsTo: req.user._id,
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     email: req.body.email || '',
     phoneNumber: req.body.phoneNumber || '',
     dateOfBirth: req.body.dateOfBirth || null,
+    jobTitle: req.body.jobTitle || [],
     biography: req.body.biography || '',
   });
 
@@ -67,24 +60,15 @@ exports.create = async (req, res) => {
 
 // If contact is to be added from an existed userId ===============================
 exports.addFromId = async (req, res) => {
-  let contactUserId = req.body.contactUserId;
-  let ownerUserId = req.params.ownerId;
-
-  // Validate userId input
-  if (!contactUserId || !(await Validator.checkValidId(User, contactUserId))) {
+  // Validate the UserId 
+  if (!req.params.userId || !isValidObjectId(req.params.userId)) {
     return res.status(400).send({
-      message: 'Missing or invalid userId!',
+      message: 'Missing userId!',
     });
   }
-  // Validate belongsTo input
-  if (!(await Validator.checkValidId(User, ownerUserId))) {
-    return res.status(400).send({
-      message: 'Missing or invalid userId that this contact belongs to!',
-    });
-  }
-
+  let userId = req.params.userId;
   // Create a new contact by accessing the user's database
-  User.findById(contactUserId)
+  User.findById(userId)
     .then((userData) => {
       // If contact with this id is not found
       if (!userData) {
@@ -94,14 +78,15 @@ exports.addFromId = async (req, res) => {
         });
       }
       const contact = new Contact({
-        belongsTo: ownerUserId, // not the
+        belongsTo: req.user._id,
         firstName: userData.firstName,
         lastName: userData.lastName,
         email: userData.email,
         phoneNumber: '',
         dateOfBirth: userData.dateOfBirth,
+        jobTitle: [],
         biography: userData.biography || '',
-        optionalUserId: contactUserId,
+        optionalUserId: userId,
       });
 
       // Save this contact to database
@@ -109,12 +94,6 @@ exports.addFromId = async (req, res) => {
         .save()
         .then((data) => {
           res.send(data);
-        })
-        .catch((err) => {
-          console.log(err);
-          res.status(500).send({
-            message: 'Error when creating contact!',
-          });
         });
     })
     // Catching the error when assessing the DB
@@ -176,8 +155,28 @@ exports.findAll = (req, res) => {
 };
 
 // Find a single contact with the contact's id ====================================
+// that returns one that belongs to the current logged-in user only
 exports.findOne = (req, res) => {
-  controller.findOne(Contact, req, res);
+  // ID
+  const id = req.params.id;
+  Contact
+    .findOne({ _id: id, belongsTo: req.user._id })
+    .then((data) => {
+      // If data with this id is not found
+      if (!data) {
+        // return the error messages
+        return res.status(404).send({
+          message: 'No contact is found with this id!',
+        });
+      }
+      // else, return
+      res.send(data);
+    })
+    // Catching the error when assessing the DB
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({ message: 'Error when accessing the database!' });
+    });
 };
 
 // Search for contacts that match with first&lastname ============================
@@ -187,5 +186,14 @@ exports.search = (req, res) => {
 
 // Get all contacts that belong to a specific user ============================
 exports.getall = (req, res) => {
-  controller.getAllByUserId(Contact, req, res);
+  const ownerId = req.user._id;
+
+  Contact.find({ belongsTo: ownerId }).then((data) => {
+    res.status(200).send(data);
+  })
+    // Catching error
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({ message: 'Error when accessing the database!' });
+    });
 };
