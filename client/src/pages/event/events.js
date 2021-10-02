@@ -3,6 +3,7 @@ import {
   Button,
   Card,
   CardActions,
+  CardHeader,
   CardContent,
   Grid,
   Typography,
@@ -15,14 +16,19 @@ import { makeStyles } from '@mui/styles';
 import Navbar from '../../components/Navbar';
 import { getEvents, me } from '../../api';
 import { Box } from '@mui/system';
+import AddEvent from './addEvent';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    background: '#fff1e1',
+    background: 'white',
   },
   eventGrid: {
     maxwidth: 'md',
     padding: 40,
+  },
+  AddEvent: {
+    align:"center"
+
   },
   eventDescription: {
     overflow: 'hidden',
@@ -75,15 +81,15 @@ function Events() {
     cardIndex = Array.from(Array(events.length).keys());
 //sort events by date and time
     var newcardIndex = cardIndex.sort((a,b) => {
-        return events[a].dateTime > events[b].dateTime ? 1 : -1;
+        return events[a].startedDateTime > events[b].dateTime ? 1 : -1;
     }).reverse();
 
     var currentEvents = newcardIndex.filter(function (e) {
-        return events[e].endedDateTime > Date.toLocaleString('en-GB', { timeZone: 'UTC' })
+        return events[e].startedDateTime > Date.toLocaleString('en-GB', { timeZone: 'UTC' })
       });
 
       var pastEvents = newcardIndex.filter(function (e) {
-        return events[e].dateTime < Date.toLocaleString('en-GB', { timeZone: 'UTC' })
+        return events[e].startedDateTime < Date.toLocaleString('en-GB', { timeZone: 'UTC' })
       });
 
     return (
@@ -109,8 +115,10 @@ function Events() {
               gutterBottom
               style={{ fontWeight: 600 }}
             >
-              My Events {events.length}
+              My Events: {events.length}
             </Typography>
+            <AddEvent className={classes.AddEvent}
+            />
           </Container>
           {/* End Hero Unit */}
 
@@ -121,7 +129,7 @@ function Events() {
               align="center"
               color="black"
             >
-              Upcoming Events {currentEvents.length}
+              Upcoming Events: {currentEvents.length}
             </Typography>
             
           <Grid container spacing={4} className={classes.eventGrid}>
@@ -135,20 +143,20 @@ function Events() {
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
-                    backgroundColor: '#f7e0d2',
                   }}
                 >
+                 <CardHeader title={events[i].name} align="center"sx={{ backgroundColor: "#DF7861" }} style={{ fontWeight: 600 }}>
+                        </CardHeader>
                   <CardContent>
-                    <Typography
-                      gutterBottom
-                      variant="h4"
-                      component="h2"
-                      style={{ fontWeight: 600 }}
-                    >
-                      {events[i].name}
-                    </Typography>
+
                     <Typography gutterBottom variant="body1" component="h2">
-                      {getDate(events[i].dateTime)}
+                      {getDate(events[i].startedDateTime)}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      className={classes.eventParticipants}
+                    >
+                     Number of Participants: {events[i].participants.length}
                     </Typography>
                     <Typography
                       variant="body2"
@@ -179,7 +187,7 @@ function Events() {
               align="center"
               color="black"
             >
-              Past Events   {pastEvents.length}
+              Past Events:   {pastEvents.length}
             </Typography>
             <Grid container spacing={4} className={classes.eventGrid}>
             {pastEvents.map((i) => (
@@ -192,20 +200,21 @@ function Events() {
                     display: 'flex',
                     flexDirection: 'column',
                     justifyContent: 'space-between',
-                    backgroundColor: '#D3D3D3',
+                    backgroundColor: '#f0f0f0',
                   }}
                 >
+                     <CardHeader title={events[i].name} sx={{ backgroundColor: "#DF7861", fontWeight: 600 }}>
+                        </CardHeader>
                   <CardContent>
-                    <Typography
-                      gutterBottom
-                      variant="h4"
-                      component="h2"
-                      style={{ fontWeight: 600 }}
-                    >
-                      {events[i].name}
-                    </Typography>
+                
                     <Typography gutterBottom variant="body1" component="h2">
-                      {getDate(events[i].dateTime)}
+                      {getDate(events[i].startedDateTime)}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      className={classes.eventParticipants}
+                    >
+                    Number of Participants:  {events[i].participants.length}
                     </Typography>
                     <Typography
                       variant="body2"
