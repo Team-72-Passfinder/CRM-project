@@ -86,7 +86,7 @@ function Home() {
                     {events[i].name}
                   </Typography>
                   <Typography gutterBottom variant="body1" component="h2">
-                    {getDate(events[i].dateTime)}
+                    {getDate(events[i].startedDateTime)}
                   </Typography>
                   <Typography
                     variant="body2"
