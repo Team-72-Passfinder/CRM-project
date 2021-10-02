@@ -20,10 +20,11 @@ import { Box } from '@mui/system';
 const useStyles = makeStyles((theme) => ({
   root: {
     background: '#fff1e1',
+    height: '100vh',
   },
   eventGrid: {
     maxwidth: 'md',
-    padding: 40,
+    paddingLeft: 30,
   },
   eventDescription: {
     overflow: 'hidden',
@@ -32,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
     WebkitBoxOrient: 'vertical',
     WebkitLineClamp: '2',
   },
+  overallCard: {},
 }));
 
 const maxCards = 10;
@@ -55,7 +57,6 @@ function Home() {
       setEvents(res);
     });
     me().then((res) => {
-      console.log(res);
       setUserData(res);
     });
   }, []);
@@ -82,11 +83,12 @@ function Home() {
             display: 'flex',
             flexDirection: 'column',
             alignItems: 'center',
-            paddingLeft: '10vw',
-            paddingRight: '10vw',
+            paddingLeft: '20vw',
+            paddingRight: '20vw',
           }}
         >
           {/* Hero Unit */}
+
           <img src={logo} alt="Logo" width="120px" style={{ padding: 10 }} />
           <Container maxWidth="sm">
             <Typography
