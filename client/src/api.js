@@ -15,7 +15,7 @@ const config = {
 };
 
 export function getEvents() {
-  let endpoint = '/event/';
+  let endpoint = '/event/getall';
   return axios.get(endpoint, config).then((response) => response.data);
 }
 export function getEvent(id) {
