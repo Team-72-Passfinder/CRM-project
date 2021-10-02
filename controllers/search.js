@@ -248,9 +248,23 @@ async function relationshipSearch(req, res) {
 
   Relationship.find({
     belongsTo: req.user._id,
-    tag: { $regex: req.body.query, $options: 'i' },
+    $or: [{ tag: { $regex: req.body.query, $options: 'i' } },
+    { description: { $regex: req.body.query, $options: 'i' } }]
   })
     .then(async (data) => {
+      // If user search by the contactIds
+      const keys = Object.keys(req.body);
+      // If searching with contacts
+      if (keys.indexOf('people') > -1) {
+        var index = data.length - 1;
+        while (index >= 0) {
+          if (!req.body.people.every((value) => data[index].people.includes(value))) {
+            data.splice(index, 1);
+          }
+          index -= 1;
+        }
+      }
+
       // Then modify the eventMap for display
       var returnedMap = [];
       for (let i = 0; i < data.length; i++) {
