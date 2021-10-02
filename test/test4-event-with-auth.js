@@ -66,19 +66,6 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
     '************* CHECK ROUTES WITHOUT AUTH *************',
     () => {
       mocha.it(
-        'it should not give access to GET-USER without a verified token ',
-        function (done) {
-          chai
-            .request(server)
-            .get('/user')
-            .end((err, res) => {
-              res.should.have.status(401);
-              res.body.should.be.a('object');
-              done();
-            });
-        }
-      );
-      mocha.it(
         'it should not give access to GET without a verified token ',
         function (done) {
           chai
@@ -111,6 +98,7 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
   mocha.describe(
     '************* CHECK ROUTES WITH VERIFIED TOKEN *************',
     () => {
+      /*
       // This API will be deprecated in final version
       mocha.describe('/GET route', function () {
         mocha.it('it should GET all the events (empty)', function (done) {
@@ -126,6 +114,7 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
             });
         });
       });
+      */
 
       mocha.describe('/POST route', () => {
         mocha.it(
@@ -156,7 +145,8 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
             .auth(token, { type: 'bearer' })
             .send({
               name: 'Coffee with Katie',
-              dateTime: '1/1/1234',
+              startedDateTime: '1/1/1234',
+              endedDateTime: '1/3/1234',
               completed: false,
               participants: [contactId1, contactId2],
             })
@@ -165,7 +155,8 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
               res.body.should.be.a('object');
               res.body.should.have.property('belongsTo');
               res.body.should.have.property('name');
-              res.body.should.have.property('dateTime');
+              res.body.should.have.property('startedDateTime');
+              res.body.should.have.property('endedDateTime');
               res.body.should.have.property('completed');
               res.body.should.have
                 .property('participants')
@@ -212,7 +203,8 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
                   res.body.should.be.a('object');
                   res.body.should.have.property('belongsTo');
                   res.body.should.have.property('name');
-                  res.body.should.have.property('dateTime');
+                  res.body.should.have.property('startedDateTime');
+                  res.body.should.have.property('endedDateTime');
                   res.body.should.have.property('participants');
                   res.body.should.have.property('description');
                   res.body.should.have.property('completed');
