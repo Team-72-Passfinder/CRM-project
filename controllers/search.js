@@ -209,35 +209,6 @@ async function eventSearch(req, res) {
   res.status(200).send(returnedEv);
 }
 
-// Function to search for messages given conversation's id =======================
-// app.route('/conversation/search/:id') - this id is the id of the convo
-function convoSearch(req, res) {
-  // check query's body
-  if (!checkValidQuery(req)) {
-    return res.status(500).send({ message: 'Missing query!' });
-  }
-  // Id of the convo
-  const id = req.params.id;
-  // import data that contains those ids
-  var data = [];
-  // Find from database
-  Convo.findById(id)
-    .then((found) => {
-      //console.log(data);
-      found.messages.forEach((mes) => {
-        if (mes.content.includes(req.body.query)) {
-          data.push(mes);
-        }
-      });
-      // found the conversation --> look for messages content
-      res.status(200).send(data);
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send({ message: 'Error when accessing the database!' });
-    });
-}
-
 // Function to search a relationship ==============================================
 // Searching by tags
 async function relationshipSearch(req, res) {
@@ -278,6 +249,77 @@ async function relationshipSearch(req, res) {
     });
 }
 
+// Function to search for convo
+async function convoSearch(req, res) {
+  // check query's body
+  if (!checkValidQuery(req)) {
+    return res.status(500).send({ message: 'Missing query!' });
+  }
+  // query is going to be looked at in user's db
+  const text = req.body.query;
+  await User.find({
+    $or: [
+      { firstName: { $regex: text, $options: 'i' } },
+      { lastName: { $regex: text, $options: 'i' } },
+    ],
+  }).then(async (data) => {
+    // Make a map of people in convo
+    var peopleMap = [];
+    data.forEach((user) => {
+      // Ignore the current logged-in user
+      if (req.user._id != user._id) {
+        peopleMap.push([req.user._id, user._id].sort());
+      }
+    });
+    console.log(peopleMap);
+    var convoMap = [];
+    // Now look for these people in convo
+    for (let i = 0; i < peopleMap.length; i++) {
+      const people = peopleMap[i];
+      await Convo.findOne({ people: people }).then((found) => {
+        if (found) {
+          convoMap.push(found);
+        }
+      });
+    }
+    res.send(convoMap);
+
+  }).catch((err) => {
+    console.log(err);
+    return res.status(500).send({ message: "Error when accessing the database!" });
+  })
+}
+
+// Function to search for messages given conversation's id =======================
+// app.route('/conversation/search/:id') - this id is the id of the convo
+function messageSearch(req, res) {
+  // check query's body
+  if (!checkValidQuery(req)) {
+    return res.status(500).send({ message: 'Missing query!' });
+  }
+  // Id of the convo
+  const id = req.params.id;
+  // import data that contains those ids
+  var data = [];
+  // Find from database
+  Convo.findById(id)
+    .then((found) => {
+      //console.log(data);
+      found.messages.forEach((mes) => {
+        if (mes.content.includes(req.body.query)) {
+          data.push(mes);
+        }
+      });
+      // found the conversation --> look for messages content
+      res.status(200).send(data);
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({ message: 'Error when accessing the database!' });
+    });
+}
+
+
 // Checks for valid search's query =================================================
 function checkValidQuery(req) {
   const keys = Object.keys(req.body);
@@ -292,6 +334,6 @@ module.exports = {
   contactSearch,
   userSearch,
   eventSearch,
-  convoSearch,
+  messageSearch, convoSearch,
   relationshipSearch,
 };
