@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { Box, Dialog, Slide, IconButton, AppBar, Toolbar, Typography, Avatar, FilledInput, FormControl, Button } from '@mui/material'
+import { Box, Dialog, Slide, IconButton, AppBar, Toolbar, Typography, Avatar, FilledInput, FormControl, Button, Alert } from '@mui/material'
 
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateAdapter from '@mui/lab/AdapterDayjs'
@@ -20,6 +20,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 function AddContact({ open, setOpen, setContacts, progressing }) {
     const [contact, setContact] = useState({ firstName: 'none', lastName: 'none', email: '', phoneNumber: '', dateOfBirth: new Date(), belongsTo: '6128d8da5abef9dd792d90ff' })
     const [submitDisabled, setSubmitDisabled] = useState(true)
+    const [alert, setAlert] = useState()
 
     const handleClose = () => {
         setOpen(false);
@@ -37,6 +38,12 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
                     }, 200)
                 })
             }
+        }, reason => {
+            setAlert(
+                <Alert severity='error'>
+                    Failed to save contact
+                </Alert>
+            )
         })
     }
 
@@ -82,6 +89,7 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
                         Contact form
                     </Typography>
                 </Box>
+                {alert}
                 <div key='avatar'>
                     <input id='uploadImage' accept='image/*' type='file' style={{ display: 'none' }} />
                     <label htmlFor='uploadImage'>

@@ -7,14 +7,13 @@ import {
   Redirect,
 } from 'react-router-dom';
 
-import ContactList from './pages/ContactList/ContactList';
-import Contact from './pages/Contact/Contact';
-import CreateContact from './pages/CreateContact/CreateContact';
-import Login from './pages/login/login';
-import Home from './pages/home/home';
-import Frontpage from './pages/frontpage/frontpage';
-import EditContact from './pages/EditContact/EditContact';
-import Profile from './pages/Profile/profile';
+import ContactList from './pages/ContactList/ContactList'
+import Contact from './pages/Contact/Contact'
+import Login from './pages/login/login'
+import Home from './pages/home/home'
+import Frontpage from './pages/frontpage/frontpage'
+import EditContact from './pages/EditContact/EditContact'
+import Profile from './pages/Profile/profile'
 import Event from './pages/event/event';
 import EditEvent from './pages/event/editEvent';
 import { ThemeProvider } from '@mui/material/styles';
@@ -31,9 +30,6 @@ const App = () => {
           </Route>
           <Route exact path="/login">
             <Login />
-          </Route>
-          <Route path="/contact/add">
-            <CreateContact />
           </Route>
           <Route path="/contact/edit/:id">
             <EditContact />
