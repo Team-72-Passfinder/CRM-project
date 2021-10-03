@@ -7,7 +7,7 @@ import {
   Redirect,
 } from 'react-router-dom';
 
-import ContactList from './pages/ContactList/ContactList'
+import Socials from './pages/Socials'
 import Contact from './pages/Contact/Contact'
 import Login from './pages/login/login'
 import Home from './pages/home/home'
@@ -40,8 +40,8 @@ const App = () => {
           <PrivateRoute path="/profile">
             <Profile />
           </PrivateRoute>
-          <Route exact path="/contact">
-            <ContactList />
+          <Route exact path="/socials">
+            <Socials />
           </Route>
           <Route exact path="/home">
             <Home />

@@ -19,7 +19,7 @@ const routes = [
     },
     {
         text: "Socials",
-        path: "/contact",
+        path: "/socials",
         icon: <PeopleIcon sx={{ fontSize: '30px' }} />
     },
     {

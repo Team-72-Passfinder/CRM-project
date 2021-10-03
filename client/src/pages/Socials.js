@@ -5,10 +5,10 @@ import { Box, Stack, Paper, CircularProgress, InputBase, List, ListItem, ListIte
 import SortIcon from '@mui/icons-material/Sort';
 import AddIcon from '@mui/icons-material/Add';
 
-import { getContacts } from '../../api'
-import Navbar from '../../components/Navbar'
+import { getContacts } from '../api'
+import Navbar from '../components/Navbar'
 
-import AddContact from '../ContactList/AddContact';
+import AddContact from '../components/Socials/AddContact';
 
 function ContactList() {
     const [contacts, setContacts] = useState([])
@@ -17,7 +17,6 @@ function ContactList() {
     const [open, setOpen] = React.useState(false)
     const [openDialog, setOpenDialog] = useState(false)
     const [sortBy, setSortBy] = useState("Recently added")
-    let tags;
 
     const progressing = useRef(false);
 
@@ -54,7 +53,6 @@ function ContactList() {
     // Used to get contact list when the page loads.
     useEffect(() => {
         getContacts().then(res => {
-            console.log(sort(res))
             setContacts(sort(res))
         })
     }, [])
@@ -62,8 +60,6 @@ function ContactList() {
     useEffect(() => {
         sort(contacts)
     }, [sortBy])
-
-    console.log(tags)
 
     return (
         <Box 
