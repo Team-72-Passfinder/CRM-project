@@ -22,7 +22,7 @@ import DeleteEvent from './deleteEvent';
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    background: 'white',
+    background: '#fff1e1',
   },
   eventGrid: {
     maxwidth: 'md',
@@ -43,7 +43,7 @@ const useStyles = makeStyles((theme) => ({
 const maxCards = 30;
 let cardIndex = Array.from(Array(maxCards).keys());
 
-function Events() {
+function EventList() {
   const orangeTheme = createTheme({
     palette: {
       primary: {
@@ -247,4 +247,4 @@ function Events() {
     return <h3> Loading...</h3>;
   }
 }
-export default Events;
+export default EventList;
