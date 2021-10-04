@@ -49,7 +49,7 @@ function deleteData(controller, req, res) {
 function findAllData(controller, req, res) {
   // Return all data using find()
   controller
-    .find()
+    .find({ belongsTo: req.user._id })
     .then((data) => {
       res.send(data);
     })

@@ -22,7 +22,7 @@ function ContactList() {
 
     // Click on individual contact to go to detailed page.
     function handleClick(id) {
-        window.location.href = '/contact/' + id
+        window.location.href = '/socials/' + id
     }
 
     const handleClickOpen = () => {

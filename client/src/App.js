@@ -35,7 +35,7 @@ const App = () => {
           <PrivateRoute path="/contact/edit/:id">
             <EditContact />
           </PrivateRoute>
-          <PrivateRoute exact path="/contact/:id">
+          <PrivateRoute exact path="/socials/:id">
             <Contact />
           </PrivateRoute>
           <PrivateRoute path="/profile">

@@ -27,10 +27,10 @@ function Events({ events }) {
                             <Box sx={{ display: 'flex', flexDirection: 'row', }}>
                                 <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContents: 'center', mr: '20px' }}>
                                     <Typography sx={{ fontSize: '24px', fontWeight: 900, color: '#272727' }}>
-                                        {new Date(event.dateTime).getDate()}
+                                        {new Date(event.startedDateTime).getDate()}
                                     </Typography>
                                     <Typography sx={{ fontSize: '14px', fontWeight: 400, color: '#272727' }}>
-                                        {months[new Date(event.dateTime).getMonth()].value.substring(0, 3)}
+                                        {months[new Date(event.startedDateTime).getMonth()].value.substring(0, 3)}
                                     </Typography>
                                 </Box>
                                 <Box sx={{ display: 'flex', flexDirection: 'column', color: '#272727' }}>
@@ -38,7 +38,7 @@ function Events({ events }) {
                                         {event.name}
                                     </Typography>
                                     <Typography sx={{ fontWeight: '300' }}>
-                                        {new Date(event.dateTime).toTimeString().substring(0,5)}
+                                        {new Date(event.startedDateTime).toTimeString().substring(0,5)}
                                     </Typography>
                                     <AvatarGroup max={3}>
                                         {
