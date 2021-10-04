@@ -16,6 +16,7 @@ import EditContact from './pages/EditContact/EditContact'
 import Profile from './pages/Profile/profile'
 import Event from './pages/event/event';
 import EditEvent from './pages/event/editEvent';
+import UnauthorizedAccessPage from './pages/Error/unathorized-access';
 import { ThemeProvider } from '@mui/material/styles';
 
 import theme from './theme';
@@ -31,26 +32,29 @@ const App = () => {
           <Route exact path="/login">
             <Login />
           </Route>
-          <Route path="/contact/edit/:id">
+          <PrivateRoute path="/contact/edit/:id">
             <EditContact />
-          </Route>
-          <Route exact path="/contact/:id">
+          </PrivateRoute>
+          <PrivateRoute exact path="/contact/:id">
             <Contact />
-          </Route>
+          </PrivateRoute>
           <PrivateRoute path="/profile">
             <Profile />
           </PrivateRoute>
-          <Route exact path="/socials">
+          <PrivateRoute exact path="/socials">
             <Socials />
-          </Route>
-          <Route exact path="/home">
+          </PrivateRoute>
+          <PrivateRoute exact path="/home">
             <Home />
-          </Route>
+          </PrivateRoute>
           <Route exact path="/event/:id">
             <Event />
           </Route>
-          <Route exact path="/event/:id/edit">
+          <PrivateRoute exact path="/event/:id/edit">
             <EditEvent />
+          </PrivateRoute>
+          <Route exact path="/unauthorized-access">
+            <UnauthorizedAccessPage />
           </Route>
         </Switch>
       </Router>
@@ -70,7 +74,7 @@ function PrivateRoute({ children, ...rest }) {
         ) : (
           <Redirect
             to={{
-              pathname: '/login',
+              pathname: '/unauthorized-access',
               state: { from: location },
             }}
           />
