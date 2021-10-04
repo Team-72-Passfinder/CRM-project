@@ -35,7 +35,7 @@ export function setEvent(id) {
   return axios.post(endpoint, id, config).then((res) => res.data);
 }
 
-export function delEvent(id) {
+export function deleteEvent(id) {
   let endpoint = '/event/' + id;
 
   return axios.delete(endpoint, config).then((res) => res.data);

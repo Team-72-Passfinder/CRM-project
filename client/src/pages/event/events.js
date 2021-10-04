@@ -29,8 +29,7 @@ const useStyles = makeStyles((theme) => ({
     padding: 40,
   },
   AddEvent: {
-    align:"center"
-
+    align: 'center',
   },
   eventDescription: {
     overflow: 'hidden',
@@ -79,20 +78,27 @@ function Events() {
   if (events.length > 0) {
     // Prevent undefined entries
     if (events.length < maxCards)
-
-    cardIndex = Array.from(Array(events.length).keys());
-//sort events by date and time
-    var newcardIndex = cardIndex.sort((a,b) => {
+      cardIndex = Array.from(Array(events.length).keys());
+    //sort events by date and time
+    var newcardIndex = cardIndex
+      .sort((a, b) => {
         return events[a].startedDateTime > events[b].dateTime ? 1 : -1;
-    }).reverse();
+      })
+      .reverse();
 
     var currentEvents = newcardIndex.filter(function (e) {
-        return events[e].startedDateTime > Date.toLocaleString('en-GB', { timeZone: 'UTC' })
-      });
+      return (
+        events[e].startedDateTime >
+        Date.toLocaleString('en-GB', { timeZone: 'UTC' })
+      );
+    });
 
-      var pastEvents = newcardIndex.filter(function (e) {
-        return events[e].startedDateTime < Date.toLocaleString('en-GB', { timeZone: 'UTC' })
-      });
+    var pastEvents = newcardIndex.filter(function (e) {
+      return (
+        events[e].startedDateTime <
+        Date.toLocaleString('en-GB', { timeZone: 'UTC' })
+      );
+    });
 
     return (
       <Box className={classes.root}>
@@ -119,25 +125,18 @@ function Events() {
             >
               My Events: {events.length}
             </Typography>
-            <AddEvent className={classes.AddEvent}
-            />
+            <AddEvent className={classes.AddEvent} />
           </Container>
           {/* End Hero Unit */}
 
           {/* Event Grid Unit */}
-          <Typography
-              component="h3"
-              variant="h3"
-              align="center"
-              color="black"
-            >
-              Upcoming Events: {currentEvents.length}
-            </Typography>
-            
+          <Typography component="h3" variant="h3" align="center" color="black">
+            Upcoming Events: {currentEvents.length}
+          </Typography>
+
           <Grid container spacing={4} className={classes.eventGrid}>
             {currentEvents.map((i) => (
               <Grid item key={i} xs={12} sm={6} md={4}>
-
                 <Card
                   elevation={3}
                   sx={{
@@ -147,10 +146,13 @@ function Events() {
                     justifyContent: 'space-between',
                   }}
                 >
-                 <CardHeader title={events[i].name} align="center"sx={{ backgroundColor: "#DF7861" }} style={{ fontWeight: 600 }}>
-                        </CardHeader>
+                  <CardHeader
+                    title={events[i].name}
+                    align="center"
+                    sx={{ backgroundColor: '#DF7861' }}
+                    style={{ fontWeight: 600 }}
+                  ></CardHeader>
                   <CardContent>
-
                     <Typography gutterBottom variant="body1" component="h2">
                       {getDate(events[i].startedDateTime)}
                     </Typography>
@@ -158,7 +160,7 @@ function Events() {
                       variant="body2"
                       className={classes.eventParticipants}
                     >
-                     Number of Participants: {events[i].participants.length}
+                      Number of Participants: {events[i].participants.length}
                     </Typography>
                     <Typography
                       variant="body2"
@@ -183,18 +185,12 @@ function Events() {
               </Grid>
             ))}
           </Grid>
-          <Typography
-              component="h3"
-              variant="h3"
-              align="center"
-              color="black"
-            >
-              Past Events:   {pastEvents.length}
-            </Typography>
-            <Grid container spacing={4} className={classes.eventGrid}>
+          <Typography component="h3" variant="h3" align="center" color="black">
+            Past Events: {pastEvents.length}
+          </Typography>
+          <Grid container spacing={4} className={classes.eventGrid}>
             {pastEvents.map((i) => (
               <Grid item key={i} xs={12} sm={6} md={4}>
-
                 <Card
                   elevation={3}
                   sx={{
@@ -205,10 +201,11 @@ function Events() {
                     backgroundColor: '#f0f0f0',
                   }}
                 >
-                     <CardHeader title={events[i].name} sx={{ backgroundColor: "#DF7861", fontWeight: 600 }}>
-                        </CardHeader>
+                  <CardHeader
+                    title={events[i].name}
+                    sx={{ backgroundColor: '#DF7861', fontWeight: 600 }}
+                  ></CardHeader>
                   <CardContent>
-                
                     <Typography gutterBottom variant="body1" component="h2">
                       {getDate(events[i].startedDateTime)}
                     </Typography>
@@ -216,7 +213,7 @@ function Events() {
                       variant="body1"
                       className={classes.eventParticipants}
                     >
-                    Number of Participants:  {events[i].participants.length}
+                      Number of Participants: {events[i].participants.length}
                     </Typography>
                     <Typography
                       variant="body2"
@@ -226,23 +223,22 @@ function Events() {
                     </Typography>
                   </CardContent>
                   <CardActions>
-                  <ThemeProvider theme={orangeTheme}>
+                    <ThemeProvider theme={orangeTheme}>
                       <Button
                         className={classes.toolbarButton}
                         variant="contained"
-
                         onClick={(e) => handleClick(events[i]._id)}
                       >
                         View
                       </Button>
-                        <DeleteEvent/>
-                      </ThemeProvider>
+                      <DeleteEvent eventId={events[i]._id} />
+                    </ThemeProvider>
                   </CardActions>
                 </Card>
               </Grid>
             ))}
           </Grid>
-          
+
           {/* End Event Grid Unit */}
         </Box>
       </Box>
