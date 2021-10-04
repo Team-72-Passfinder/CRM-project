@@ -1,174 +1,134 @@
-import React, { useEffect, useState } from 'react';
-
-import { Stack, TextField, Button } from '@mui/material';
+import React, { useEffect, useState } from 'react'
+import TextField from '@mui/material/TextField';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogContentText from '@mui/material/DialogContentText';
+import DialogTitle from '@mui/material/DialogTitle';
+import { Box, Dialog, Slide, IconButton, AppBar, Toolbar, Typography, Avatar, FilledInput, FormControl, Button,  createTheme,ThemeProvider } from '@mui/material'
 
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DateAdapter from '@mui/lab/AdapterDayjs';
+import DateAdapter from '@mui/lab/AdapterDayjs'
 import DatePicker from '@mui/lab/DatePicker';
+import DateTimePicker from '@mui/lab/DateTimePicker';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
+import CloseIcon from '@mui/icons-material/Close';
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
+import StandardInput from '../../components/StandardInput';
 
-import Navbar from '../../components/Navbar';
-import { getEvent, updateEvent } from '../../api';
-
-const formList = [
-  {
-    label: 'Name',
-    type: 'text',
-    required: true,
-  },
-  {
-    label: 'Date Time',
-    type: 'date',
-    required: true,
-  },
-  {
-    label: 'Description',
-    type: 'text',
-  },
-];
+import { addEvent, getEvents} from '../../api';
 
 function EditEvent() {
-  // const classes = useStyles()
+    const [event, setEvent] = useState({ name: 'none', description: 'none', startedDateTime: new Date(), belongsTo: '6128d8da5abef9dd792d90ff', completed: false})
+    const [submitDisabled, setSubmitDisabled] = useState(true)
+  const [open, setOpen] = React.useState(false);
 
-  const [event, setEvent] = useState();
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
 
-  const emptyFieldErrorMessage = 'This field is required';
+  const handleClose = () => {
+    setOpen(false);
+  };
+  function saveEvent() {
+    addEvent(event).then(res => {
+        if(event.name === res.name ) {
 
-  useEffect(() => {
-    let id = window.location.pathname.split('/')[2];
-    getEvent(id).then((res) => {
-      setEvent(res);
-    });
-  }, []);
+            handleClose();
+            getEvents().then(res => {
+                setTimeout(() => {
+                    setEvent(res)
+                }, 200)
+            })
+        }
+    })
+}
 
-  function callSave() {
-    // Temporary fix
-    delete event.belongsTo;
-    console.log(event);
-    updateEvent(event);
-  }
+useEffect(() => {
+    const inputs = document.querySelectorAll('input')
+    
+    Array.from(inputs).filter(input => {
+        if(input.required === true) {
+            console.log(event)
+            if(!input.validity.valid) {
+                setSubmitDisabled(true)
+            } else {
+                setSubmitDisabled(false)
+            }
+        }
+    })
+}, [event])
 
-  function getEventData(key) {
-    switch (key) {
-      case 'Name':
-        return event.name;
-      case 'Date Time':
-        return event.dateTime;
-      case 'Description':
-        return event.description;
-      default:
-        return null;
-    }
-  }
+const orangeTheme = createTheme({
+    palette: {
+      primary: {
+        main: '#DF7861',
+      },
+    },
+  });
 
-  function setEventData(key, value) {
-    switch (key) {
-      case 'Name':
-        setEvent((prev) => ({ ...prev, name: value }));
-        break;
-      case 'Date Time':
-        setEvent((prev) => ({ ...prev, dateTime: value }));
-        break;
-      case 'Description':
-        setEvent((prev) => ({ ...prev, description: value }));
-        break;
-      default:
-        break;
-    }
-  }
-
-  function generateHelperText(element) {
-    if (element.required) {
-      return getEventData(element.label) === '' && emptyFieldErrorMessage;
-    }
-
-    if (getEventData(element.label) !== '') {
-      switch (element.type) {
-        default:
-      }
-    }
-  }
-
-  function isError(element) {
-    if (element.required) {
-      return getEventData(element.label) === '';
-    }
-
-    if (getEventData(element.label) !== '') {
-      switch (element.type) {
-        default:
-      }
-    }
-  }
 
   return (
-    <LocalizationProvider dateAdapter={DateAdapter}>
-      <div>
-        <Navbar />
-        <Stack
-          sx={{ my: 2 }}
-          alignItems="center"
-          spacing={2}
-          // sx={{ background: 'red' }}
-        >
-          {event && (
-            <React.Fragment>
-              {event !== undefined &&
-                formList.map((element) => {
-                  switch (element.type) {
-                    case 'date':
-                      return (
-                        <React.Fragment key={element.label}>
-                          <DatePicker
-                            disableFuture
-                            label={element.label}
-                            value={getEventData(element.label)}
+    <div>
+         <ThemeProvider theme={orangeTheme}>
+      <Button color="primary"
+                variant="contained" onClick={handleClickOpen}>
+        Add New Event
+      </Button>
+      </ThemeProvider>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>New Event</DialogTitle>
+        <DialogContent>
+            <StandardInput id="name" label='Name' name='name' value={event.name} setValue={setEvent} required={true} type='text' />
+            <StandardInput id="description" label='Description' name='description' value={event.description} setValue={setEvent} required={false} type='text' />
+            <LocalizationProvider dateAdapter={DateAdapter}>
+                    <FormControl margin="dense" variant="filled">
+                        <Typography sx={{ fontSize: '15px', fontWeight: 600 }} margin="none">
+                            Date
+                        </Typography>
+                        <DateTimePicker
+                            id="startedDateTime"
+                            value={event.startedDateTime}
                             onChange={(newValue) => {
-                              setEventData(element.label, newValue);
+                                setEvent(prev => ({ ...prev, startedDateTime: newValue }))
                             }}
-                            renderInput={(params) => (
-                              <TextField
-                                {...params}
-                                sx={{ width: '300px', maxWidth: '80vw' }}
-                                size="small"
-                              />
+                            renderInput={({ inputRef, inputProps, InputProps }) => (
+                                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                                    <FilledInput
+                                        sx={{
+                                            width: '300px',
+                                            height: '40px',
+                                            borderRadius: '5px',
+                                            '&.Mui-error': {
+                                                background: '#FBB5B1',
+                                                border: '1px solid #F9202B',
+                                            },
+                                            '& input:not(:placeholder-shown)': {
+                                                height: '0px',
+                                            }
+                                        }}
+                                        disableUnderline={true}
+                                        hiddenLabel={true}
+                                        endAdornment={
+                                            InputProps?.endAdornment
+                                        }
+                                        ref={inputRef} 
+                                        {...inputProps} 
+                                    />
+                                </Box>
                             )}
-                          />
-                        </React.Fragment>
-                      );
-                    default:
-                      return (
-                        <TextField
-                          key={element.label}
-                          sx={{
-                            width: '300px',
-                            maxWidth: '80vw',
-                          }}
-                          label={element.label}
-                          type={element.type}
-                          size="small"
-                          error={isError(element)}
-                          onChange={(e) =>
-                            setEventData(element.label, e.target.value)
-                          }
-                          defaultValue={getEventData(element.label)}
-                          helperText={generateHelperText(element)}
                         />
-                      );
-                  }
-                })}
-            </React.Fragment>
-          )}
-          <Button
-            sx={{ width: '300px', maxWidth: '80vw' }}
-            variant="contained"
-            onClick={callSave}
-          >
-            Save
-          </Button>
-        </Stack>
-      </div>
-    </LocalizationProvider>
+                    </FormControl>
+                </LocalizationProvider>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button sx={{ width: 300, my: '10px', '&.MuiButton-disableElevation': { boxShadow: `(${submitDisabled} && 'none') || '4px 4px 20px 5px rgba(223, 120, 97, 0.25)'` } }} color="primary" variant="contained" disableElevation disabled={submitDisabled} onClick={saveEvent}>
+                    Save
+                </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
   );
 }
 
-export default EditEvent;
+export default EditEvent

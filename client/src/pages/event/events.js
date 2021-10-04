@@ -16,7 +16,9 @@ import { makeStyles } from '@mui/styles';
 import Navbar from '../../components/Navbar';
 import { getEvents, me } from '../../api';
 import { Box } from '@mui/system';
+
 import AddEvent from './addEvent';
+import DeleteEvent from './deleteEvent';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -46,7 +48,7 @@ function Events() {
   const orangeTheme = createTheme({
     palette: {
       primary: {
-        main: '#d2601a',
+        main: '#DF7861',
       },
     },
   });
@@ -224,7 +226,7 @@ function Events() {
                     </Typography>
                   </CardContent>
                   <CardActions>
-
+                  <ThemeProvider theme={orangeTheme}>
                       <Button
                         className={classes.toolbarButton}
                         variant="contained"
@@ -233,6 +235,8 @@ function Events() {
                       >
                         View
                       </Button>
+                        <DeleteEvent/>
+                      </ThemeProvider>
                   </CardActions>
                 </Card>
               </Grid>
