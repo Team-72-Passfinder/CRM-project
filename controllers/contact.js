@@ -4,6 +4,7 @@ const controller = require('./controller-support');
 const Validator = require('./validator');
 const Search = require('./search');
 const User = require('../models/user');
+const Relationship = require('../models/relationship');
 const { isValidObjectId } = require('mongoose');
 
 // Create a new Contact ===================================================
@@ -49,7 +50,17 @@ exports.create = async (req, res) => {
   contact
     .save()
     .then((data) => {
-      res.send(data);
+      // Create new rlationship between this contact and the user
+      const newRela = new Relationship({
+        belongsTo: req.user._id,
+        people: [req.user._id, data._id].sort(),
+        tag: req.body.tags || [],
+      });
+      // Save
+      newRela.save().then((rela) => {
+        // Send the created contact to FE
+        res.send({ newContact: data, newRelationship: rela });
+      });
     })
     .catch((err) => {
       console.log(err);
@@ -95,7 +106,16 @@ exports.addFromId = async (req, res) => {
       contact
         .save()
         .then((data) => {
-          res.send(data);
+          // Create new rlationship between this contact and the user
+          const newRela = new Relationship({
+            belongsTo: req.user._id,
+            people: [req.user._id, data._id].sort(),
+          });
+          // Save
+          newRela.save().then((rela) => {
+            // Send the created contact to FE
+            res.send({ newContact: data, newRelationship: rela });
+          })
         });
     })
     // Catching the error when assessing the DB
@@ -103,7 +123,7 @@ exports.addFromId = async (req, res) => {
       console.log(err);
       res
         .status(500)
-        .send({ message: 'Error when accessing the user database!' });
+        .send({ message: 'Error when accessing the database!' });
     });
 };
 
