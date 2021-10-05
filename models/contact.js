@@ -34,6 +34,10 @@ const ContactSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    tags: {
+      type: [String],
+      required: false,
+    },
     optionalUserId: {
       type: String,
       required: false,
