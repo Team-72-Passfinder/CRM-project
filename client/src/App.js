@@ -16,6 +16,7 @@ import EditContact from './pages/EditContact/EditContact'
 import Profile from './pages/Profile/profile'
 import Event from './pages/event/event';
 import EditEvent from './pages/event/editEvent';
+import Settings from './pages/Settings'
 import { ThemeProvider } from '@mui/material/styles';
 
 import theme from './theme';
@@ -43,6 +44,9 @@ const App = () => {
           <Route exact path="/contact">
             <ContactList />
           </Route>
+          <PrivateRoute path="/settings">
+              <Settings />
+          </PrivateRoute>
           <Route exact path="/home">
             <Home />
           </Route>
