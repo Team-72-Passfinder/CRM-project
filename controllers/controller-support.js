@@ -64,9 +64,9 @@ async function getNamesFromContactIds(belongsTo, contactList) {
   // Array that stores transformed contactId
   const names = [];
   // Loop the list
-  await Contact.findOne({ _id: { $in: contactList }, belongsTo: belongsTo }).then((found) => {
+  await Contact.find({ _id: { $in: contactList }, belongsTo: belongsTo }).then((found) => {
     if (found) {
-      found.forEach(element => {
+      found.forEach((element) => {
         //const name = found.firstName + " " + found.lastName;
         names.push(element.firstName + " " + element.lastName);
       });
