@@ -57,10 +57,8 @@ exports.create = async (req, res) => {
         tag: req.body.tags || [],
       });
       // Save
-      newRela.save().then((rela) => {
-        // Send the created contact to FE
-        res.send({ newContact: data, newRelationship: rela });
-      });
+      newRela.save();
+      res.send(data);
     })
     .catch((err) => {
       console.log(err);
@@ -112,10 +110,8 @@ exports.addFromId = async (req, res) => {
             people: [req.user._id, data._id].sort(),
           });
           // Save
-          newRela.save().then((rela) => {
-            // Send the created contact to FE
-            res.send({ newContact: data, newRelationship: rela });
-          })
+          newRela.save();
+          res.send(data);
         });
     })
     // Catching the error when assessing the DB
