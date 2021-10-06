@@ -116,8 +116,5 @@ export function getEventById(id) {
 export function sendEmailInvite() {
   let endpoint = '/invite'
 
-  return axios
-    .get(endpoint, config)
-    .catch((e) => console.log(e.response));
-
+  return axios.get(endpoint, config).then((res) => res.data);
 }
