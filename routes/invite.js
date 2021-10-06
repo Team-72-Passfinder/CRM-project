@@ -4,3 +4,5 @@ const app = express();
 const controller = require('../controllers/invite');
 
 app.route('/invite').post(controller.SendInvite);
+
+module.exports = app;
