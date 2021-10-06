@@ -112,3 +112,12 @@ export function getEventById(id) {
 
     return instance.get(endpoint).then(res => res.data);
 }
+
+export function sendEmailInvite() {
+  let endpoint = '/invite'
+
+  return axios
+    .get(endpoint, config)
+    .catch((e) => console.log(e.response));
+
+}

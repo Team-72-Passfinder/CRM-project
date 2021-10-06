@@ -15,6 +15,9 @@ import 'react-edit-text/dist/index.css';
 
 import { getEvent } from '../../api';
 import { editEvent } from '../../api';
+// Remove when ready
+import EventInvite from '../../components/EventInvite';
+
 const useStyles = makeStyles((theme) => ({}));
 
 function Event() {
@@ -62,6 +65,10 @@ function Event() {
                 >
                   Edit
                 </Button>
+              </div>
+              {/*Dummy send invite button*/}
+              <div>
+                <EventInvite />
               </div>
             </main>
           </React.Fragment>
