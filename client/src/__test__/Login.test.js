@@ -2,6 +2,8 @@ import React from 'react';
 import Login from '../pages/login/login';
 import { mount, shallow } from 'enzyme';
 import { Button, TextField } from '@mui/material';
+import TestRenderer from 'react-test-renderer';
+import { loginAPI } from '../api';
 
 require('./setupTest');
 
@@ -23,5 +25,30 @@ describe('Test it rendered important component', () => {
   it('should render 1 <Button />', () => {
     const appWrapper = shallow(<Login />);
     expect(appWrapper.find(Button).length).toBe(1);
+  });
+
+  // it('renders UI correctly', () => {
+  //   const tree = TestRenderer.create(<Login />).toJSON();
+  //   expect(tree).toMatchSnapshot();
+  // });
+});
+
+describe('Test mocked behaviour', () => {
+  it('calls onLogin when button clicked', () => {
+    const mockCallback = jest.fn();
+
+    const appWrapper = shallow(<Login onClick={mockCallback} />);
+
+    appWrapper
+      .find('#input_username')
+      .simulate('change', { target: { value: 'myUser' } });
+    appWrapper
+      .find('#input_password')
+      .simulate('change', { target: { value: 'myPassword' } });
+    appWrapper
+      .find('#submit_button')
+      .simulate('click', { preventDefault() {} });
+
+    expect(mockCallback).toBeCalled();
   });
 });

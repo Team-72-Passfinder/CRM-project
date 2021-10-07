@@ -35,4 +35,9 @@ describe('Test it rendered important component', () => {
 
     expect(appWrapper.contains(titleName)).toEqual(true);
   });
+
+  // it('renders UI correctly', () => {
+  //   const tree = TestRenderer.create(<Frontpage />).toJSON();
+  //   expect(tree).toMatchSnapshot();
+  // });
 });
