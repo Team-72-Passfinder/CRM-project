@@ -2,9 +2,11 @@ const express = require('express');
 const app = express();
 
 const controller = require('../controllers/invite');
+const eventContoller = require('../controllers/event');
 
-// ? put instead of get?
+// First 2 may become obsolete
 app.route('/invite').get(controller.SendInvite);
-app.route('/testinvite').get(controller.TestsendEmail);
+
+app.route('/invite/:id').get(eventContoller.findOne);
 
 module.exports = app;
