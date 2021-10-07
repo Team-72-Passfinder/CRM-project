@@ -8,9 +8,9 @@ function StandardInput({ label, name, value, setValue, required, type, width, sx
     const invalidTelErrorMessage = 'Must only contain numbers'
 
     function isError() {
-        if (required) {
-            return value === ''
-        }
+        // if (required) {
+        //     return value === ''
+        // }
 
         if (value !== '') {
             switch (type) {
@@ -25,14 +25,14 @@ function StandardInput({ label, name, value, setValue, required, type, width, sx
     }
 
     function generateHelperText() {
-        if (required) {
-            return (
-                value === '' &&
-                <FormHelperText error>
-                    {emptyFieldErrorMessage}
-                </FormHelperText>
-            )
-        }
+        // if (required) {
+        //     return (
+        //         value === '' &&
+        //         <FormHelperText error>
+        //             {emptyFieldErrorMessage}
+        //         </FormHelperText>
+        //     )
+        // }
 
         if (value !== '') {
             switch (type) {
@@ -80,7 +80,7 @@ function StandardInput({ label, name, value, setValue, required, type, width, sx
                 onChange={e => setValue(prev => ({ ...prev, [name]: e.target.value }))}
                 value={value}
                 error={isError()}
-                required={required}
+                // required={required}
             />
             {generateHelperText()}
         </FormControl>
