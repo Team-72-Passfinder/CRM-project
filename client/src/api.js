@@ -113,8 +113,7 @@ export function getEventById(id) {
     return instance.get(endpoint).then(res => res.data);
 }
 
-export function sendEmailInvite() {
-  //Will need to be specifically linked to an event
+export function sendEmailInvite(id) {
   let endpoint = '/invite/' + id;
 
   return axios.get(endpoint, config).then((res) => res.data);

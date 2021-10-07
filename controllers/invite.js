@@ -24,11 +24,13 @@ var transporter = nodemailer.createTransport({
 var mailOptions = {
   from: 'youremail@gmail.com',
   to: 'drlovell@student.unimelb.edu.au',
-  subject: 'Sending Email using Node.js',
-  text: 'Hello from me to me',
+  subject: 'You have an event invitation from',
+  text: "You have an event invitation from",
 };
 
 function SendInvite() {
+  // Define required parameters to make ical entry from an event
+
   console.log('Sending email...');
   console.log(process.env.NODEMAILER_USER);
 
