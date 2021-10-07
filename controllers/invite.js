@@ -11,6 +11,7 @@ https://stackoverflow.com/questions/26948516/nodemailer-invalid-login
 
 require('dotenv').config();
 const nodemailer = require('nodemailer');
+const Event = require('../models/event');
 
 var transporter = nodemailer.createTransport({
   service: process.env.NODEMAILER_SERVICE,
