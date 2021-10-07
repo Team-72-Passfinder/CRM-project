@@ -30,9 +30,9 @@ describe('Test it rendered important component', () => {
     expect(appWrapper.find(AppBar).length).toBe(1);
   });
   it('should render the frontpage name', () => {
-    const frontpage = shallow(<Frontpage />);
+    const appWrapper = shallow(<Frontpage />);
     const titleName = <Typography variant="h6">Passfinders</Typography>;
 
-    expect(frontpage.contains(titleName)).toEqual(true);
+    expect(appWrapper.contains(titleName)).toEqual(true);
   });
 });
