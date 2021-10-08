@@ -25,7 +25,7 @@ var mailOptions = {
   from: 'youremail@gmail.com',
   to: 'drlovell@student.unimelb.edu.au',
   subject: 'You have an event invitation from',
-  text: "You have an event invitation from",
+  text: 'You have an event invitation from',
 };
 
 function SendInvite() {
