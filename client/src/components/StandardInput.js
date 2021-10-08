@@ -38,13 +38,13 @@ function StandardInput({ label, name, value, setValue, required, type }) {
             switch (type) {
                 case 'email':
                     return (
-                        !/\S+@\S+\.\S+/.test(value) && 
+                        !/\S+@\S+\.\S+/.test(value) &&
                         <FormHelperText error>
                             {invalidEmailErrorMessage}
                         </FormHelperText>
                     )
                 case 'tel':
-                    return (isNaN(value) && 
+                    return (isNaN(value) &&
                         <FormHelperText error>
                             {invalidTelErrorMessage}
                         </FormHelperText>

@@ -10,6 +10,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CloseIcon from '@mui/icons-material/Close';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import StandardInput from '../../components/StandardInput';
+import BioTextField from '../../components/BioTextField';
 
 import { addContact, getContacts } from '../../api';
 
@@ -18,7 +19,16 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 function AddContact({ open, setOpen, setContacts, progressing }) {
-    const [contact, setContact] = useState({ firstName: 'none', lastName: 'none', email: '', phoneNumber: '', dateOfBirth: new Date() })
+    const [contact, setContact] = useState({
+        firstName: 'none',
+        lastName: 'none',
+        email: '',
+        phoneNumber: '',
+        dateOfBirth: new Date(),
+        biography: '',
+        jobTitle: [],
+        tags: []
+    })
     const [submitDisabled, setSubmitDisabled] = useState(true)
     const [alert, setAlert] = useState()
 
@@ -105,8 +115,9 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
                 </div>
                 <StandardInput id="firstName" label='First name' name='firstName' value={contact.firstName} setValue={setContact} required={true} type='text' />
                 <StandardInput id="lastName" label='Last name' name='lastName' value={contact.lastName} setValue={setContact} required={true} type='text' />
-                <StandardInput id="email" label='Email' name='email' value={contact.email} setValue={setContact} reqeuired={false} type='email' />
-                <StandardInput id="phoneNumber" label='Phone number' name='phoneNumber' value={contact.phoneNumber} setValue={setContact} reqeuired={false} type='tel' />
+                <StandardInput id="email" label='Email' name='email' value={contact.email} setValue={setContact} required={false} type='email' />
+                <StandardInput id="phoneNumber" label='Phone number' name='phoneNumber' value={contact.phoneNumber} setValue={setContact} required={false} type='tel' />
+                <BioTextField id="biography" label='Bio' name='biography' setValue={setContact} />
                 <LocalizationProvider dateAdapter={DateAdapter}>
                     <FormControl margin="dense" variant="filled">
                         <Typography sx={{ fontSize: '15px', fontWeight: 600 }} margin="none">
