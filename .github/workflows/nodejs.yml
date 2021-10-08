@@ -40,3 +40,5 @@ jobs:
       # Test backend API
       - run: npm ci
       - run: npm test
+      # Test frontend
+      - run: npm test --prefix
