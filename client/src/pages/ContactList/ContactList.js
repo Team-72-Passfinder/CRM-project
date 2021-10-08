@@ -16,7 +16,7 @@ function ContactList() {
     const [tab, setTab] = useState('All')
     const [open, setOpen] = React.useState(false)
 
-    const progressing = useRef(false);
+    const progressing = useRef(true);
 
     // Click on individual contact to go to detailed page.
     function handleClick(id) {
@@ -34,7 +34,10 @@ function ContactList() {
     // Used to get contact list when the page loads.
     useEffect(() => {
         getContacts().then(res => {
-            setContacts(res)
+            setTimeout(() => {
+                progressing.current = false
+                setContacts(res)
+            }, 200)
         })
     }, [])
 
