@@ -160,8 +160,13 @@ function validateMessageContent(req, userList) {
 }
 
 
-// Search for messanges in a convo
-exports.search = (req, res) => {
+// Search for convo given a query 
+exports.searchConvo = (req, res) => {
   Search.convoSearch(req, res);
+};
+
+// Search for messanges in a convo
+exports.searchMessage = (req, res) => {
+  Search.messageSearch(req, res);
 };
 

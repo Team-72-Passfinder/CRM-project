@@ -7,16 +7,17 @@ import {
   Redirect,
 } from 'react-router-dom';
 
-import ContactList from './pages/ContactList/ContactList'
-import Contact from './pages/Contact/Contact'
-import Login from './pages/login/login'
-import Home from './pages/home/home'
-import Frontpage from './pages/frontpage/frontpage'
-import EditContact from './pages/EditContact/EditContact'
-import Profile from './pages/Profile/profile'
+import ContactList from './pages/ContactList/ContactList';
+import Contact from './pages/Contact/Contact';
+import Login from './pages/login/login';
+import Home from './pages/home/home';
+import Frontpage from './pages/frontpage/frontpage';
+import EditContact from './pages/EditContact/EditContact';
+import Profile from './pages/Profile/profile';
 import Event from './pages/event/event';
 import EditEvent from './pages/event/editEvent';
 import Settings from './pages/Settings'
+import UnauthorizedAccessPage from './pages/Error/unathorized-access';
 import { ThemeProvider } from '@mui/material/styles';
 
 import theme from './theme';
@@ -32,29 +33,32 @@ const App = () => {
           <Route exact path="/login">
             <Login />
           </Route>
-          <Route path="/contact/edit/:id">
+          <PrivateRoute path="/contact/edit/:id">
             <EditContact />
-          </Route>
-          <Route exact path="/contact/:id">
+          </PrivateRoute>
+          <PrivateRoute exact path="/contact/:id">
             <Contact />
-          </Route>
+          </PrivateRoute>
           <PrivateRoute path="/profile">
             <Profile />
           </PrivateRoute>
-          <Route exact path="/contact">
+          <PrivateRoute exact path="/contact">
             <ContactList />
-          </Route>
-          <PrivateRoute path="/settings">
-              <Settings />
           </PrivateRoute>
-          <Route exact path="/home">
+            <PrivateRoute path="/settings">
+                <Settings />
+            </PrivateRoute>
+          <PrivateRoute exact path="/home">
             <Home />
-          </Route>
+          </PrivateRoute>
           <Route exact path="/event/:id">
             <Event />
           </Route>
-          <Route exact path="/event/:id/edit">
+          <PrivateRoute exact path="/event/:id/edit">
             <EditEvent />
+          </PrivateRoute>
+          <Route exact path="/unauthorized-access">
+            <UnauthorizedAccessPage />
           </Route>
         </Switch>
       </Router>
@@ -74,7 +78,7 @@ function PrivateRoute({ children, ...rest }) {
         ) : (
           <Redirect
             to={{
-              pathname: '/login',
+              pathname: '/unauthorized-access',
               state: { from: location },
             }}
           />

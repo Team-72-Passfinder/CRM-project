@@ -221,8 +221,16 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
             .request(server)
             .post('/event')
             .auth(token, { type: 'bearer' })
-            .send(eventTester.newEventForPutRoute)
+            .send({
+              name: 'Visit big boss Kanyes birthday',
+              startedDateTime: '4/2/1245',
+              endedDateTime: '4/3/1245',
+              participants: [contactId1, contactId2],
+              description: 'Wholesome bro time',
+              completed: false,
+            })
             .end((err, res) => {
+              res.should.have.status(200);
               chai
                 .request(server)
                 .put('/event/' + res.body._id)

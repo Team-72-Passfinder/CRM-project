@@ -115,21 +115,16 @@ function Frontpage() {
         <Paper elevation={3} className={classes.featurePaper}>
           <Box display="flex" alignItems="center">
             <img className={classes.featureImage} src={logo} alt="Logo" />
-            <Typography align="center" p={5}>
+            <Typography align="center" p={3}>
               Feature number one. You can have relationship between your
               contacts, allow you to find potential customers from your known
               customers.
             </Typography>
           </Box>
         </Paper>
-        <Paper
-          elevation={3}
-          className={classes.featurePaper}
-          display="flex"
-          alignItems="center"
-        >
+        <Paper elevation={3} className={classes.featurePaper}>
           <Box display="flex" alignItems="center">
-            <Typography align="center" p={5}>
+            <Typography align="center" p={3}>
               Feature number two. A system that keep track of which contact you
               frequently participate in events with, thus help you estimate the
               closeness of your relationships.
