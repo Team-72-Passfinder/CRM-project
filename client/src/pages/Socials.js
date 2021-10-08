@@ -70,12 +70,13 @@ function ContactList() {
                 display: 'flex',
                 overflow: { xs: 'hidden', },
                 flexDirection: { xs: 'column', sm: 'row' },
+                height: '100vh',
             }} 
         >
             <Navbar active="Socials" />
-            <Box sx={{ flexGrow: { xs: 0, sm: 1 }, display: { sm: 'flex' } }}>
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: { sm: '50%' } }}>
-                    {/* <Box sx={{ display: 'flex', flexDirection: 'column', padding: '0', }}> */}
+            <Box sx={{ flexGrow: { xs: 0, sm: 1 }, display: { sm: 'flex' }, height: '100%' }}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', height: '100%', width: { sm: '50%' } }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', padding: '0', }}>
                         <Stack
                             sx={{
                                 width: '368px',
@@ -146,7 +147,7 @@ function ContactList() {
                                 label="User"
                             />
                         </Tabs>
-                    {/* </Box> */}
+                    </Box>
                     <Box sx={{ display: `${(progressing.current && 'flex') || 'none'}`, height: '100%', alignItems: 'center', }}>
                         <CircularProgress color="primary" />
                     </Box>
