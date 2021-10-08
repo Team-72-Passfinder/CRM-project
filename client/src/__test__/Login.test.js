@@ -2,8 +2,6 @@ import React from 'react';
 import Login from '../pages/login/login';
 import { mount, shallow } from 'enzyme';
 import { Button, TextField } from '@mui/material';
-import TestRenderer from 'react-test-renderer';
-import { loginAPI } from '../api';
 
 require('./setupTest');
 

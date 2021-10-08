@@ -1,11 +1,15 @@
 import React from 'react';
-import App from '../App';
+import Navbar from '../components/Navbar';
 import ReactDOM from 'react-dom';
-
-require('./setupTest');
+import { BrowserRouter } from 'react-router-dom';
 
 it('renders Navbar page without crashing', () => {
   const div = document.createElement('div');
-  ReactDOM.render(<App />, div);
+  ReactDOM.render(
+    <BrowserRouter>
+      <Navbar />
+    </BrowserRouter>,
+    div
+  );
   ReactDOM.unmountComponentAtNode(div);
 });
