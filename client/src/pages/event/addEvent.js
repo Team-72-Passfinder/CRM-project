@@ -14,8 +14,18 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CloseIcon from '@mui/icons-material/Close';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import StandardInput from '../../components/StandardInput';
+import { makeStyles } from '@mui/styles';
 
 import { addEvent, getEvents} from '../../api';
+
+const useStyles = makeStyles((theme) => ({
+
+    addButton: {
+        top:  '-10px',
+        right: '-400px'
+    },
+
+  }));
 
 function AddEvent() {
     const [event, setEvent] = useState({ name: 'none', description: 'none', startedDateTime: new Date(), belongsTo: '6128d8da5abef9dd792d90ff', completed: false})
@@ -65,13 +75,14 @@ const orangeTheme = createTheme({
       },
     },
   });
+  const classes = useStyles();
 
-
+  
   return (
     <div>
          <ThemeProvider theme={orangeTheme}>
-      <Button color="primary"
-                variant="contained" onClick={handleClickOpen}>
+      <Button className={classes.addButton} color="primary"
+                variant="contained" align="center"  onClick={handleClickOpen} >
         Add New Event
       </Button>
       </ThemeProvider>

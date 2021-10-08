@@ -22,7 +22,7 @@ function DeleteEvent(props) {
 
   return (
     <div>
-      <Button color="primary" variant="contained" onClick={handleClickOpen}>
+      <Button color="primary" variant="contained" sx={{ ml: 8 }} onClick={handleClickOpen}>
         Delete
       </Button>
       <Dialog open={open} onClose={handleClose}>
