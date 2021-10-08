@@ -10,6 +10,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CloseIcon from '@mui/icons-material/Close';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import StandardInput from '../../components/StandardInput';
+import TagsInput from '../../components/TagsInput';
 
 import { addContact, getContacts } from '../../api';
 
@@ -117,6 +118,7 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
                 <StandardInput id="email" label='Email' name='email' value={contact.email} setValue={setContact} required={false} type='email' />
                 <StandardInput id="phoneNumber" label='Phone number' name='phoneNumber' value={contact.phoneNumber} setValue={setContact} required={false} type='tel' />
                 <StandardInput id="biography" label='Biography' name='biography' value={contact.biography} setValue={setContact} required={false} type='text' />
+                <TagsInput id="jobTitle" label="Job Title" name="jobTitle" value={contact.jobTitle} setValue={setContact} />
                 <LocalizationProvider dateAdapter={DateAdapter}>
                     <FormControl margin="dense" variant="filled">
                         <Typography sx={{ fontSize: '15px', fontWeight: 600 }} margin="none">
