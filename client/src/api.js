@@ -35,6 +35,16 @@ export function setEvent(id) {
   return axios.post(endpoint, id, config).then((res) => res.data);
 }
 
+export function getEventsFromContactId(contactId) {
+  let endpoint = '/event/search/';
+  let query = {
+    query: "",
+    participants: [contactId],
+  }
+
+  return axios.get(endpoint, query, config).then((res) => res.data);
+}
+
 export function updateEvent(event) {
   let endpoint = '/event/' + event._id;
 

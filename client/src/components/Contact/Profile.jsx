@@ -17,6 +17,10 @@ function Profile({ info }) {
                     + new Date(info.dateOfBirth).getMonth() + '/'
                     + new Date(info.dateOfBirth).getFullYear()
                 )
+            case 'Job titles':
+                return info.jobTitle
+            case 'Tags':
+                return info.tags
             default:
                 return null;
         }
@@ -25,7 +29,7 @@ function Profile({ info }) {
     return (
         <Stack>
             {
-                ['Bio', 'Email', 'Phone number', 'Date Of Birth'].map((item) => {
+                ['Bio', 'Email', 'Phone number', 'Date Of Birth', 'Job titles', 'Tags'].map((item) => {
                     let data = getContactData(item)
 
                     if (data === "") {

@@ -15,8 +15,9 @@ function Contact() {
     const [events, setEvents] = useState([])
     const [tab, setTab] = useState('Profile')
 
+    let id = window.location.pathname.split('/')[2];
     useEffect(() => {
-        getContact(window.location.pathname.replace('/contact/', '')).then(res => { 
+        getContact(window.location.pathname.replace('/contact/', '')).then(res => {
             setContactInfo(res)
             res.events.map((event) => {
                 getEventById(event).then(res => {
@@ -29,12 +30,12 @@ function Contact() {
     useEffect(() => {
         getContact(window.location.pathname.replace('/contact/', '')).then(res => setContactInfo(res))
         setEvents([])
-        switch(tab) {
+        switch (tab) {
             case "Events":
                 contactInfo.events.map((event) => {
                     getEventById(event).then(res => {
                         setEvents(prev => [...prev, res]);
-                    }) 
+                    })
                 })
                 break;
             default:
@@ -69,10 +70,10 @@ function Contact() {
                             <Button sx={{ display: { xs: 'none', sm: 'flex' } }} variant="contained" onClick={handleClick}>
                                 Edit Profile
                             </Button>
-                            <IconPillTabs profilePanel={<Profile info={contactInfo} />} eventsPanel={<Events events={events} />} tab={tab} handleTabChange={handleTabChange} setTab={setTab}  />
+                            <IconPillTabs profilePanel={<Profile info={contactInfo} />} eventsPanel={<Events events={events} />} tab={tab} handleTabChange={handleTabChange} setTab={setTab} />
                         </Box>
                     </Box>
-                } 
+                }
             </Box>
         </Box>
     )

@@ -18,7 +18,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 function AddContact({ open, setOpen, setContacts, progressing }) {
-    const [contact, setContact] = useState({ firstName: 'none', lastName: 'none', email: '', phoneNumber: '', dateOfBirth: new Date(), belongsTo: '6128d8da5abef9dd792d90ff' })
+    const [contact, setContact] = useState({ firstName: 'none', lastName: 'none', email: '', phoneNumber: '', dateOfBirth: new Date() })
     const [submitDisabled, setSubmitDisabled] = useState(true)
     const [alert, setAlert] = useState()
 
@@ -28,7 +28,7 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
 
     function saveContact() {
         addContact(contact).then(res => {
-            if(contact.firstName === res.firstName && contact.lastName === res.lastName) {
+            if (contact.firstName === res.firstName && contact.lastName === res.lastName) {
                 progressing.current = true
                 handleClose();
                 getContacts().then(res => {
@@ -49,11 +49,11 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
 
     useEffect(() => {
         const inputs = document.querySelectorAll('input')
-        
+
         Array.from(inputs).filter(input => {
-            if(input.required === true) {
+            if (input.required === true) {
                 console.log(contact)
-                if(!input.validity.valid) {
+                if (!input.validity.valid) {
                     setSubmitDisabled(true)
                 } else {
                     setSubmitDisabled(false)
@@ -140,8 +140,8 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
                                         endAdornment={
                                             InputProps?.endAdornment
                                         }
-                                        ref={inputRef} 
-                                        {...inputProps} 
+                                        ref={inputRef}
+                                        {...inputProps}
                                     />
                                 </Box>
                             )}
