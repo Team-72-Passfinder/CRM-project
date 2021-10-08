@@ -20,7 +20,6 @@ import { Box } from '@mui/system';
 const useStyles = makeStyles((theme) => ({
   root: {
     background: '#fff1e1',
-    height: '100vh',
   },
   eventGrid: {
     maxwidth: 'md',
