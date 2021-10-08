@@ -18,7 +18,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 function AddContact({ open, setOpen, setContacts, progressing }) {
-    const [contact, setContact] = useState({ firstName: 'none', lastName: 'none', email: '', phoneNumber: '', dateOfBirth: new Date(), belongsTo: '6128d8da5abef9dd792d90ff' })
+    const [contact, setContact] = useState({ firstName: '', lastName: '', email: '', phoneNumber: '', dateOfBirth: new Date(), })
     const [submitDisabled, setSubmitDisabled] = useState(true)
     const [alert, setAlert] = useState()
 
@@ -52,7 +52,7 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
         
         Array.from(inputs).filter(input => {
             if(input.required === true) {
-                console.log(contact)
+                // console.log(contact)
                 if(!input.validity.valid) {
                     setSubmitDisabled(true)
                 } else {
@@ -60,6 +60,14 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
                 }
             }
         })
+    }, [contact])
+
+    useEffect(() => {
+        if(contact.firstName === '' || contact.lastName === '') {
+            setSubmitDisabled(true);
+        } else {
+            setSubmitDisabled(false);
+        }
     }, [contact])
 
     return (
@@ -122,7 +130,6 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
                             renderInput={({ inputRef, inputProps, InputProps }) => (
                                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                     <FilledInput
-                                        // type="date"
                                         sx={{
                                             width: '300px',
                                             height: '40px',

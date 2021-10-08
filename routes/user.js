@@ -5,6 +5,7 @@ const controller = require('../controllers/user');
 const passport = require('../config/passport');
 
 const jwt = require('jsonwebtoken');
+const user = require('../models/user');
 //const User = require('mongoose').model('User');
 
 // Login and Register route do not need Auth token ===========================================
@@ -32,6 +33,8 @@ app.post('/register', passport.authenticate('registration', { session: false }),
 app.use(passport.authenticate('jwt', { session: false }));
 
 app.get('/profile', async (req, res) => { res.send(req.user); });
+
+app.post('/user/change-password', controller.changePassword);
 
 app.route('/user').get(controller.findAll).put(controller.update).delete(controller.delete);
 
