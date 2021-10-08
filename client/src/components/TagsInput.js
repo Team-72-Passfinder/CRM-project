@@ -4,7 +4,7 @@ import Chip from "@material-ui/core/Chip";
 import { makeStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Downshift from "downshift";
-import { Typography } from '@mui/material'
+import { Typography, FormControl, FilledInput } from '@mui/material'
 
 const useStyles = makeStyles(theme => ({
     chip: {
@@ -79,30 +79,34 @@ export default function TagsInput({ ...props }) {
                     });
                     return (
                         <div>
-                            <Typography sx={{ fontSize: '15px', fontWeight: 600 }} margin="none">
-                                {label}
-                            </Typography>
-                            <TextField
-                                InputProps={{
-                                    startAdornment: selectedItem.map(item => (
-                                        <Chip
-                                            key={item}
-                                            tabIndex={-1}
-                                            label={item}
-                                            className={classes.chip}
-                                            onDelete={handleDelete(item)}
-                                        />
-                                    )),
-                                    onBlur,
-                                    onChange: event => {
-                                        handleInputChange(event);
-                                        onChange(event);
-                                    },
-                                    onFocus
-                                }}
-                                {...other}
-                                {...inputProps}
-                            />
+                            <FormControl margin="dense" variant="filled">
+                                <Typography sx={{ fontSize: '15px', fontWeight: 600 }} margin="none">
+                                    {label}
+                                </Typography>
+                                <TextField margin="dense" variant="filled"
+                                    sx={{ width: '300px', borderRadius: '5px', }}
+                                    InputProps={{
+                                        startAdornment: selectedItem.map(item => (
+                                            <Chip
+                                                key={item}
+                                                tabIndex={-1}
+                                                label={item}
+                                                className={classes.chip}
+                                                onDelete={handleDelete(item)}
+                                            />
+                                        )),
+                                        onBlur,
+                                        onChange: event => {
+                                            handleInputChange(event);
+                                            onChange(event);
+                                        },
+                                        onFocus
+                                    }}
+                                    multiline
+                                    {...other}
+                                    {...inputProps}
+                                />
+                            </FormControl>
                         </div>
                     );
                 }}
