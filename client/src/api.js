@@ -70,7 +70,7 @@ export async function login(username, password) {
 }
 
 export function getContacts() {
-  let endpoint = '/contact';
+  let endpoint = '/contact/getall';
 
   return axios.get(endpoint, config).then((res) => res.data);
 }
@@ -108,7 +108,7 @@ export function me() {
 }
 
 export function getEventById(id) {
-    let endpoint = '/event/' + id
+  let endpoint = '/event/' + id
 
-    return instance.get(endpoint).then(res => res.data);
+  return instance.get(endpoint).then(res => res.data);
 }
