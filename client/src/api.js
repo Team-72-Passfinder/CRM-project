@@ -76,7 +76,7 @@ export async function login(username, password) {
 }
 
 export function getContacts() {
-  let endpoint = '/contact';
+  let endpoint = '/contact/getall';
 
   return axios.get(endpoint, config).then((res) => res.data);
 }
