@@ -54,6 +54,36 @@ function StandardInput({ label, name, value, setValue, required, type }) {
         }
     }
 
+    if (label === 'Biography') {
+        return (
+            <FormControl margin="dense" variant="filled">
+                <Typography sx={{ fontSize: '15px', fontWeight: 600 }} margin="none">
+                    {label}{required && '*'}
+                </Typography>
+                <FilledInput
+                    id={name}
+                    sx={{
+                        width: '300px',
+                        borderRadius: '5px',
+                        '&.Mui-error': {
+                            background: '#FBB5B1',
+                            border: '1px solid #F9202B',
+                        },
+                        '& input:not(:placeholder-shown)': {
+                            height: '0px',
+                        }
+                    }}
+                    multiline
+                    disableUnderline={true}
+                    hiddenLabel={true}
+                    onChange={e => setValue(prev => ({ ...prev, [name]: e.target.value }))}
+                    error={isError()}
+                    required={required}
+                />
+                {generateHelperText()}
+            </FormControl>
+        )
+    }
 
     return (
         <FormControl margin="dense" variant="filled">
