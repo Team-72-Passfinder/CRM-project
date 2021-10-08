@@ -1,26 +1,28 @@
 import React, { useEffect, useState, useRef } from 'react'
 
-import { Box, Container, Stack, Paper, CircularProgress, InputBase, List, ListItem, ListItemText, ListItemAvatar, Avatar, Typography, Tabs, Tab, Fab, IconButton, } from '@mui/material'
+import { Box, Stack, Paper, CircularProgress, InputBase, List, ListItem, ListItemText, ListItemAvatar, Avatar, Typography, Tabs, Tab, Fab, IconButton, Dialog, DialogTitle, DialogContent, Select, MenuItem, Autocomplete, TextField } from '@mui/material'
 
 import SortIcon from '@mui/icons-material/Sort';
 import AddIcon from '@mui/icons-material/Add';
 
-import { getContacts } from '../../api'
-import Navbar from '../../components/Navbar'
+import { getContacts } from '../api'
+import Navbar from '../components/Navbar'
 
-import AddContact from '../ContactList/AddContact';
+import AddContact from '../components/Socials/AddContact';
 
 function ContactList() {
     const [contacts, setContacts] = useState([])
     const [search, setSearch] = useState('')
     const [tab, setTab] = useState('All')
     const [open, setOpen] = React.useState(false)
+    const [openDialog, setOpenDialog] = useState(false)
+    const [sortBy, setSortBy] = useState("Recently added")
 
     const progressing = useRef(true);
 
     // Click on individual contact to go to detailed page.
     function handleClick(id) {
-        window.location.href = '/contact/' + id
+        window.location.href = '/socials/' + id
     }
 
     const handleClickOpen = () => {
@@ -31,6 +33,23 @@ function ContactList() {
         setTab(newValue);
     };
 
+    function handleOpenDialog() {
+        setOpenDialog(prev => !prev)
+    }
+
+    function sort(data) {
+        return data.sort((a, b) => {
+            switch (sortBy) {
+                case "Oldest added":
+                    return new Date(a.createdAt) - new Date(b.createdAt)
+                case "Recently added":
+                    return new Date(b.createdAt) - new Date(a.createdAt)
+                default:
+                    return new Date(b.createdAt) - new Date(a.createdAt)
+            }
+        })
+    }
+
     // Used to get contact list when the page loads.
     useEffect(() => {
         getContacts().then(res => {
@@ -40,6 +59,10 @@ function ContactList() {
             }, 200)
         })
     }, [])
+
+    useEffect(() => {
+        sort(contacts)
+    }, [sortBy])
 
     return (
         <Box 
@@ -181,9 +204,58 @@ function ContactList() {
                     </Typography> */}
                 </Box>
             </Box>
-            <Fab sx={{ display: { sm: 'none' }, position: 'fixed', right: 16, bottom: 16 }}>
+            <Fab sx={{ display: { sm: 'none' }, position: 'fixed', right: 16, bottom: 16 }} onClick={handleOpenDialog}>
                 <SortIcon />
             </Fab>
+            {/* Add dialog content here */}
+            <Dialog open={openDialog} onClose={handleOpenDialog}  fullWidth>
+                <DialogTitle>
+                    Search filter
+                </DialogTitle>
+                <DialogContent>
+                    <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <Typography>
+                            Sort by
+                        </Typography>
+                        <Select 
+                            value={sortBy}
+                            variant="standard"
+                            onChange={e => setSortBy(e.target.value)}
+                            disableUnderline
+                        >
+                            <MenuItem value="Oldest added">
+                                Oldest added
+                            </MenuItem>
+                            <MenuItem value="Recently added">
+                                Recently added
+                            </MenuItem>
+                            <MenuItem value="Recently viewed">
+                                Recently viewed
+                            </MenuItem>
+                            <MenuItem value="Least contacted">
+                                Least contacted
+                            </MenuItem>
+                        </Select>
+                    </Box>
+                    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+                        <Typography>
+                            Tags
+                        </Typography>
+                        <Autocomplete
+                            id="auto"
+                            multiple
+                            options={['family', 'assistant']}
+                            onChange={(event, newValue) => console.log(newValue)}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    variant="standard"
+                                />
+                            )}
+                        />
+                    </Box>
+                </DialogContent>
+            </Dialog>
             <AddContact open={open} setOpen={setOpen} contacts={contacts} setContacts={setContacts} progressing={progressing} />
         </Box>
     )
