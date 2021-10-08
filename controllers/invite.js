@@ -19,28 +19,44 @@ var transporter = nodemailer.createTransport({
     user: process.env.NODEMAILER_USER,
     pass: process.env.NODEMAILER_PASS,
   },
+  tls: {
+    rejectUnauthorized: false
+  }
 });
 
 var mailOptions = {
   from: 'youremail@gmail.com',
-  to: 'drlovell@student.unimelb.edu.au',
+  to: 'haiha@student.unimelb.edu.au',
+  cc: 'drlovell@student.unimelb.edu.au',
   subject: 'You have an event invitation from',
   text: 'You have an event invitation from',
 };
 
-function SendInvite() {
-  // Define required parameters to make ical entry from an event
+exports.SendInvite = async (req, res) => {
+  // Check if eventId is valid
+  const id = req.params.id;
+  await Event.findById(id).then((found) => {
+    if (!found) {
+      return res.status(404).send({ message: "No event is foudn with this Id!" });
+    }
+  }).catch((err) => {
+    console.log(err);
+    res.status(500).send({ message: 'Error when accessing the database!' });
+  });
 
+  // Define required parameters to make ical entry from an event
   console.log('Sending email...');
   console.log(process.env.NODEMAILER_USER);
 
   transporter.sendMail(mailOptions, function (error, info) {
     if (error) {
       console.log(error);
+      return res.status(500).send({ message: "Error when establishing nodemailer!" });
     } else {
-      console.log('Email sent: ' + info.response);
+      res.status(200).send({ message: 'Email sent: ' + info.response });
     }
+    //transporter.close();
   });
 }
 
-module.exports = { SendInvite };
+//module.exports = { SendInvite };
