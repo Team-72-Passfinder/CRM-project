@@ -7,7 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Popover from '@mui/material/Popover';
 import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 
-import { getContact, getEventById, delContact } from '../../api'
+import { getContact, getEventById, delContact, getEventsFromContactId } from '../../api'
 import Navbar from '../../components/Navbar';
 import IconPillTabs from '../../components/Contact/IconPillTabs';
 import Profile from '../../components/Contact/Profile';
@@ -22,11 +22,8 @@ function Contact() {
     useEffect(() => {
         getContact(window.location.pathname.replace('/socials/', '')).then(res => {
             setContactInfo(res)
-            res.events.map((event) => {
-                getEventById(event).then(res => {
-                    setEvents(prev => [...prev, res]);
-                })
-            })
+            getEventsFromContactId(res._id).then(res => 
+                setEvents(res))
         })
     }, [])
 
@@ -35,11 +32,7 @@ function Contact() {
         setEvents([])
         switch (tab) {
             case "Events":
-                contactInfo.events.map((event) => {
-                    getEventById(event).then(res => {
-                        setEvents(prev => [...prev, res]);
-                    })
-                })
+                getEventsFromContactId(contactInfo._id).then(res => setEvents(res))
                 break;
             default:
                 break;
