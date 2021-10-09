@@ -7,12 +7,8 @@ import {
   CardContent,
   Grid,
   Typography,
-  Container,
-  createTheme,
-  ThemeProvider,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { shadows } from '@mui/system';
 
 import Navbar from '../../components/Navbar';
 import { getEvents, me } from '../../api';
@@ -25,13 +21,9 @@ const useStyles = makeStyles((theme) => ({
   root: {
     background: ' #fff1e1',
   },
-
   eventGrid: {
     maxwidth: 'md',
     padding: 40,
-  },
-  AddEvent: {
-    align: 'right',
   },
   eventName: {
     backgroundColor: '#DF7861',
@@ -45,10 +37,6 @@ const useStyles = makeStyles((theme) => ({
   },
   headerBox: {
     justifyContent: 'center',
-  },
-  headerText: {
-    top: '-10px',
-    right: '400px',
   },
 }));
 
@@ -120,7 +108,6 @@ function EventList() {
             className={classes.headerBox}
           >
             <Typography
-              className={classes.headerText}
               component="h1"
               variant="h2"
               color="black"
@@ -129,8 +116,13 @@ function EventList() {
             >
               My Events: {events.length}
             </Typography>
-            <Box display="flex" alignItems="center" justifyContent="center">
-              <AddEvent className={classes.addEvent} />
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              sx={{ margin: 2 }}
+            >
+              <AddEvent />
             </Box>
           </Box>
 
@@ -162,13 +154,10 @@ function EventList() {
                     }
                   ></CardHeader>
                   <CardContent>
-                    <Typography gutterBottom variant="body1" component="h2">
-                      {getDate(events[i].startedDateTime)}
+                    <Typography gutterBottom variant="body2">
+                      Datetime: {getDate(events[i].startedDateTime)}
                     </Typography>
-                    <Typography
-                      variant="body2"
-                      className={classes.eventParticipants}
-                    >
+                    <Typography variant="body2">
                       Number of Participants: {events[i].participants.length}
                     </Typography>
                     <Typography
@@ -218,21 +207,18 @@ function EventList() {
                     }
                   ></CardHeader>
                   <CardContent>
-                    <Typography gutterBottom variant="body1" component="h2">
+                    <Typography gutterBottom variant="body2">
                       {getDate(events[i].startedDateTime)}
                     </Typography>
 
-                    <Typography
-                      variant="body1"
-                      className={classes.eventParticipants}
-                    >
+                    <Typography variant="body2">
                       Number of Participants: {events[i].participants.length}
                     </Typography>
                     <Typography
                       variant="body2"
                       className={classes.overflowText}
                     >
-                      {events[i].description}
+                      Description: {events[i].description}
                     </Typography>
                   </CardContent>
                   <CardActions>
