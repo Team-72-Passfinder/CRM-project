@@ -42,7 +42,7 @@ export function getEventsFromContactId(contactId) {
     participants: [contactId],
   }
 
-  return instance.get(endpoint, query, config).then((res) => res.data);
+  return axios.post(endpoint, query, config).then((res) => res.data);
 }
 
 export function updateEvent(event) {
