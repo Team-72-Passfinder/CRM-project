@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react'
 
 import { FilledInput, InputLabel, FormControl, FormHelperText, Typography } from '@mui/material'
 
-function StandardInput({ label, name, value, setValue, required, type }) {
+function StandardInput({ label, name, value, setValue, required, type, width, sx }) {
     const emptyFieldErrorMessage = 'This field is required'
     const invalidEmailErrorMessage = 'invalid email'
     const invalidTelErrorMessage = 'Must only contain numbers'
 
     function isError() {
-        if (required) {
-            return value === ''
-        }
+        // if (required) {
+        //     return value === ''
+        // }
 
         if (value !== '') {
             switch (type) {
@@ -25,14 +25,14 @@ function StandardInput({ label, name, value, setValue, required, type }) {
     }
 
     function generateHelperText() {
-        if (required) {
-            return (
-                value === '' &&
-                <FormHelperText error>
-                    {emptyFieldErrorMessage}
-                </FormHelperText>
-            )
-        }
+        // if (required) {
+        //     return (
+        //         value === '' &&
+        //         <FormHelperText error>
+        //             {emptyFieldErrorMessage}
+        //         </FormHelperText>
+        //     )
+        // }
 
         if (value !== '') {
             switch (type) {
@@ -92,8 +92,9 @@ function StandardInput({ label, name, value, setValue, required, type }) {
             </Typography>
             <FilledInput
                 id={name}
-                sx={{
-                    width: '300px',
+                sx={sx || {
+                    width: `${(width !== undefined && width) || '300px'}`,
+                    maxWidth: '300px',
                     height: '40px',
                     borderRadius: '5px',
                     '&.Mui-error': {
@@ -107,8 +108,9 @@ function StandardInput({ label, name, value, setValue, required, type }) {
                 disableUnderline={true}
                 hiddenLabel={true}
                 onChange={e => setValue(prev => ({ ...prev, [name]: e.target.value }))}
+                value={value}
                 error={isError()}
-                required={required}
+                // required={required}
             />
             {generateHelperText()}
         </FormControl>

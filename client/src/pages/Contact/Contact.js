@@ -17,7 +17,7 @@ function Contact() {
 
     let id = window.location.pathname.split('/')[2];
     useEffect(() => {
-        getContact(window.location.pathname.replace('/contact/', '')).then(res => {
+        getContact(window.location.pathname.replace('/socials/', '')).then(res => {
             setContactInfo(res)
             res.events.map((event) => {
                 getEventById(event).then(res => {
@@ -28,7 +28,7 @@ function Contact() {
     }, [])
 
     useEffect(() => {
-        getContact(window.location.pathname.replace('/contact/', '')).then(res => setContactInfo(res))
+        getContact(window.location.pathname.replace('/socials/', '')).then(res => setContactInfo(res))
         setEvents([])
         switch (tab) {
             case "Events":

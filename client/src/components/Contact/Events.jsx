@@ -38,7 +38,7 @@ function Events({ events }) {
                                         {event.name}
                                     </Typography>
                                     <Typography sx={{ fontWeight: '300' }}>
-                                        {new Date(event.dateTime).toTimeString().substring(0, 5)}
+                                        {new Date(event.startedDateTime).toTimeString().substring(0, 5)}
                                     </Typography>
                                     <AvatarGroup max={3}>
                                         {

@@ -7,15 +7,16 @@ import {
   Redirect,
 } from 'react-router-dom';
 
-import ContactList from './pages/ContactList/ContactList';
-import Contact from './pages/Contact/Contact';
-import Login from './pages/login/login';
-import Home from './pages/home/home';
-import Frontpage from './pages/frontpage/frontpage';
-import EditContact from './pages/EditContact/EditContact';
-import Profile from './pages/Profile/profile';
+import Socials from './pages/Socials'
+import Contact from './pages/Contact/Contact'
+import Login from './pages/login/login'
+import Home from './pages/home/home'
+import Frontpage from './pages/frontpage/frontpage'
+import EditContact from './pages/EditContact/EditContact'
+import Profile from './pages/Profile/profile'
 import Event from './pages/event/event';
 import EditEvent from './pages/event/editEvent';
+import Settings from './pages/Settings'
 import UnauthorizedAccessPage from './pages/Error/unathorized-access';
 import { ThemeProvider } from '@mui/material/styles';
 
@@ -32,18 +33,21 @@ const App = () => {
           <Route exact path="/login">
             <Login />
           </Route>
-          <PrivateRoute path="/contact/edit/:id">
+          <PrivateRoute path="/socials/edit/:id">
             <EditContact />
           </PrivateRoute>
-          <PrivateRoute exact path="/contact/:id">
+          <PrivateRoute exact path="/socials/:id">
             <Contact />
           </PrivateRoute>
           <PrivateRoute path="/profile">
             <Profile />
           </PrivateRoute>
-          <PrivateRoute exact path="/contact">
-            <ContactList />
+          <PrivateRoute exact path="/socials">
+            <Socials />
           </PrivateRoute>
+            <PrivateRoute path="/settings">
+                <Settings />
+            </PrivateRoute>
           <PrivateRoute exact path="/home">
             <Home />
           </PrivateRoute>

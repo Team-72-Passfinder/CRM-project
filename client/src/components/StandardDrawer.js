@@ -7,7 +7,7 @@ import { Drawer, Box, Stack, IconButton, ButtonBase, ListItem, ListItemIcon, Lis
 import CloseIcon from '@mui/icons-material/Close'
 import HomeIcon from '@mui/icons-material/Home'
 import PeopleIcon from '@mui/icons-material/People'
-import AccountBoxIcon from '@mui/icons-material/AccountBox'
+import SettingsIcon from '@mui/icons-material/Settings';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 
 const routes = [
@@ -19,13 +19,13 @@ const routes = [
     },
     {
         text: "Socials",
-        path: "/contact",
+        path: "/socials",
         icon: <PeopleIcon sx={{ fontSize: '30px' }} />
     },
     {
-        text: "Profile",
-        path: "/profile",
-        icon: <AccountBoxIcon sx={{ fontSize: '36px' }} />
+        text: "Settings",
+        path: "/settings",
+        icon: <SettingsIcon sx={{ fontSize: '30px' }} />
     },
     {
         text: "Log out",

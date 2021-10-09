@@ -62,7 +62,7 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
 
         Array.from(inputs).filter(input => {
             if (input.required === true) {
-                console.log(contact)
+                // console.log(contact)
                 if (!input.validity.valid) {
                     setSubmitDisabled(true)
                 } else {
@@ -70,6 +70,14 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
                 }
             }
         })
+    }, [contact])
+
+    useEffect(() => {
+        if (contact.firstName === '' || contact.lastName === '') {
+            setSubmitDisabled(true);
+        } else {
+            setSubmitDisabled(false);
+        }
     }, [contact])
 
     return (
@@ -135,7 +143,6 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
                             renderInput={({ inputRef, inputProps, InputProps }) => (
                                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
                                     <FilledInput
-                                        // type="date"
                                         sx={{
                                             width: '300px',
                                             height: '40px',
