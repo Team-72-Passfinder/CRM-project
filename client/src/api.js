@@ -70,7 +70,7 @@ export async function login(username, password) {
 }
 
 export function getContacts() {
-  let endpoint = '/contact';
+  let endpoint = '/contact/getall';
 
   return axios.get(endpoint, config).then((res) => res.data);
 }
@@ -104,27 +104,30 @@ export function updateContact(contact) {
 export function me() {
   let endpoint = '/profile';
 
-  return instance.get(endpoint).then(res => res.data);
+  return instance.get(endpoint).then((res) => res.data);
 }
 
 export function updateUser(body) {
-    let endpoint = '/user/change-password'
+  let endpoint = '/user/change-password';
 
-    return instance.post(endpoint, body).then(res => res.data).catch(function (error) {
-        console.log(error.response.status);
+  return instance
+    .post(endpoint, body)
+    .then((res) => res.data)
+    .catch(function (error) {
+      console.log(error.response.status);
 
-        switch (error.response.status) {
-            case 401:
-            case 400:
-                return Promise.reject('Wrong password');
-            default:
-                return Promise.reject('Authentication failed');
-        }
-    });;
+      switch (error.response.status) {
+        case 401:
+        case 400:
+          return Promise.reject('Wrong password');
+        default:
+          return Promise.reject('Authentication failed');
+      }
+    });
 }
 
 export function getEventById(id) {
-    let endpoint = '/event/' + id
+  let endpoint = '/event/' + id;
 
-    return instance.get(endpoint).then(res => res.data);
+  return instance.get(endpoint).then((res) => res.data);
 }

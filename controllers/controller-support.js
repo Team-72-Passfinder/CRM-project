@@ -1,4 +1,3 @@
-
 // Controller to perform CRUD and other support functions
 const Contact = require('../models/contact');
 
@@ -48,7 +47,7 @@ function deleteData(controller, req, res) {
 function findAllData(controller, req, res) {
   // Return all data using find()
   controller
-    .find({ belongsTo: req.user._id })
+    .find()
     .then((data) => {
       res.send(data);
     })
@@ -64,17 +63,19 @@ async function getNamesFromContactIds(belongsTo, contactList) {
   // Array that stores transformed contactId
   const names = [];
   // Loop the list
-  await Contact.find({ _id: { $in: contactList }, belongsTo: belongsTo }).then((found) => {
-    if (found) {
-      found.forEach((element) => {
-        //const name = found.firstName + " " + found.lastName;
-        names.push(element.firstName + " " + element.lastName);
-      });
-    }
-  }).catch((err) => {
-    console.log(err);
-    // do nothing --> checks for length of participant list will give error for us
-  });
+  await Contact.find({ _id: { $in: contactList }, belongsTo: belongsTo })
+    .then((found) => {
+      if (found) {
+        found.forEach((element) => {
+          //const name = found.firstName + " " + found.lastName;
+          names.push(element.firstName + ' ' + element.lastName);
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      // do nothing --> checks for length of participant list will give error for us
+    });
   //console.log(names);
   return names;
 }
@@ -89,9 +90,12 @@ async function displayEvent(event) {
     startedDateTime: event.startedDateTime,
     endedDateTime: event.endedDateTime,
     completed: event.completed,
-    participants: await getNamesFromContactIds(event.belongsTo, event.participants),
+    participants: await getNamesFromContactIds(
+      event.belongsTo,
+      event.participants
+    ),
     description: event.description || '',
-  }
+  };
 }
 
 // Function to structure relationship for returning ============================
@@ -104,23 +108,29 @@ async function displayRela(rela) {
     startedDatetime: rela.startedDatetime,
     tag: rela.tag,
     description: rela.description,
-  }
+  };
 }
 
 // Delete data that is associated with user, called when a user is deleted
 // Including: contact, event and relationship
 // Convo??
 async function deleteDataOfUser(controller, userId) {
-  await controller.deleteMany({ belongsTo: userId }).then(() => {
-    //console.log('data deleted!');
-  }).catch((err) => {
-    console.log(err);
-  })
+  await controller
+    .deleteMany({ belongsTo: userId })
+    .then(() => {
+      //console.log('data deleted!');
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 }
 
-
 module.exports = {
-  updateData, deleteData, findAllData,
-  getNamesFromContactIds, deleteDataOfUser,
-  displayEvent, displayRela
+  updateData,
+  deleteData,
+  findAllData,
+  getNamesFromContactIds,
+  deleteDataOfUser,
+  displayEvent,
+  displayRela,
 };

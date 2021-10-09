@@ -4,11 +4,12 @@ const passport = require('../config/passport');
 
 const controller = require('../controllers/contact');
 
-app.use(passport.authenticate('jwt', { session: false }))
+app.use(passport.authenticate('jwt', { session: false }));
 
+// findAll =  all contacts in DB
 app.route('/contact').post(controller.create).get(controller.findAll);
 
-// Unnecessary as /search with empty "query" is equivalent to getall
+// getall = all contacts that belong to current user
 app.route('/contact/getall').get(controller.getall);
 
 app.route('/contact/search').get(controller.search);
