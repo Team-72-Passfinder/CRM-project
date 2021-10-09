@@ -7,7 +7,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import Popover from '@mui/material/Popover';
 import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 
-import { getContact, getEventById } from '../../api'
+import { getContact, getEventById, delContact } from '../../api'
 import Navbar from '../../components/Navbar';
 import IconPillTabs from '../../components/Contact/IconPillTabs';
 import Profile from '../../components/Contact/Profile';
@@ -55,7 +55,8 @@ function Contact() {
     };
 
     const handleDelete = () => {
-        //setDelPopup(!delPopup);
+        delContact(contactInfo._id);
+        window.location.href = '/socials/'
     }
 
     return (
