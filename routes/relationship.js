@@ -10,7 +10,7 @@ app.route('/relationship').post(controller.create).get(controller.findAll);
 
 app.route('/relationship/getall').get(controller.getall);
 
-app.route('/relationship/search').get(controller.search);
+app.route('/relationship/search').post(controller.search);
 
 app
   .route('/relationship/:id')

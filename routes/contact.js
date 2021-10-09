@@ -11,7 +11,7 @@ app.route('/contact').post(controller.create).get(controller.findAll);
 // Unnecessary as /search with empty "query" is equivalent to getall
 app.route('/contact/getall').get(controller.getall);
 
-app.route('/contact/search').get(controller.search);
+app.route('/contact/search').post(controller.search);
 
 app
   .route('/contact/:id')
