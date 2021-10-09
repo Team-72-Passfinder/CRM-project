@@ -224,8 +224,8 @@ function EditContact() {
                                 label={element.label}
                               />
                             )}
-                            onChange={(e) =>
-                              setContactData(element.label, e.target.value)
+                            onChange={(e, newValue) =>
+                              setContactData(element.label, [...getContactData(element.label), e.target.value])
                             }
                           />
                         </Stack>

@@ -6,6 +6,19 @@ import Stack from '@mui/material/Stack';
 import { FormControl, Typography } from '@mui/material'
 
 export default function Tags({ label, name, value, setValue }) {
+
+    const [data, setData] = React.useState([]);
+
+    function addData(event) {
+        const dup = data.indexOf(
+            event.target.value.trim()
+        );
+        if (dup === -1) {
+            setData(oldData => [...oldData, event.target.value]);
+            setValue(prev => ({ ...prev, [name]: data }));
+        }
+    }
+
     return (
         <FormControl margin="dense" variant="filled">
             <Typography sx={{ fontSize: '15px', fontWeight: 600 }} margin="none">
@@ -15,7 +28,7 @@ export default function Tags({ label, name, value, setValue }) {
                 <Autocomplete
                     multiple
                     id={name}
-                    options={options.map((option) => option)}
+                    options={[].map((option) => option)}
                     freeSolo
                     renderTags={(value, getTagProps) =>
                         value.map((option, index) => (
@@ -28,11 +41,9 @@ export default function Tags({ label, name, value, setValue }) {
                             variant="filled"
                         />
                     )}
-                    onChange={e => setValue(prev => ({ ...prev, [name]: e.target.value }))}
+                    onChange={e => addData(e)}
                 />
             </Stack>
         </FormControl>
     );
 }
-
-const options = [];
