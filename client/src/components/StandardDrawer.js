@@ -7,7 +7,7 @@ import { Drawer, Box, Stack, IconButton, ButtonBase, ListItem, ListItemIcon, Lis
 import CloseIcon from '@mui/icons-material/Close'
 import HomeIcon from '@mui/icons-material/Home'
 import PeopleIcon from '@mui/icons-material/People'
-import AccountBoxIcon from '@mui/icons-material/AccountBox'
+import SettingsIcon from '@mui/icons-material/Settings';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
 
 const routes = [
@@ -19,13 +19,13 @@ const routes = [
     },
     {
         text: "Socials",
-        path: "/contact",
+        path: "/socials",
         icon: <PeopleIcon sx={{ fontSize: '30px' }} />
     },
     {
-        text: "Profile",
-        path: "/profile",
-        icon: <AccountBoxIcon sx={{ fontSize: '36px' }} />
+        text: "Settings",
+        path: "/settings",
+        icon: <SettingsIcon sx={{ fontSize: '30px' }} />
     },
     {
         text: "Log out",
@@ -47,9 +47,12 @@ const activeDesktopButtonStyle ={
 
 function StandardDrawer({ active, open, handleDrawerToggle }) {
     return (
-        <React.Fragment>
+        <Box
+            component="nav"
+            sx={{ width: { sm: '120px' }, flexShrink: { sm: 0 } }}
+        >
             {/* Temporary drawer for mobile screens */}
-            <Drawer sx={{ flexShrink: 'unset' }} anchor={'left'} open={open}>
+            <Drawer anchor={'left'} open={open}>
                 <div>
                     <IconButton sx={{ marginLeft: 2, marginTop: 2 }} onClick={handleDrawerToggle}>
                         <CloseIcon />
@@ -62,10 +65,9 @@ function StandardDrawer({ active, open, handleDrawerToggle }) {
                     spacing={1}
                 >
                     {routes.map((route) => (
-                        <React.Fragment>
+                        <Link key={route.text} to={route.path} style={{ textDecoration: 'none', width: '90%', color: 'unset' }}>
                             {
                                 active === route.text ?
-                                    <Link to={route.path} style={{ textDecoration: 'none', width: '90%' }}>
                                         <ListItem
                                             sx={{
                                                 width: '100%',
@@ -80,9 +82,7 @@ function StandardDrawer({ active, open, handleDrawerToggle }) {
                                             </ListItemIcon>
                                             <ListItemText primary={route.text} />
                                         </ListItem>
-                                    </Link>
                                     :
-                                    <Link to={route.path} style={{ textDecoration: 'none', width: '90%', color: 'unset', }}>
                                         <ListItem
                                             sx={{
                                                 width: '90%',
@@ -94,9 +94,8 @@ function StandardDrawer({ active, open, handleDrawerToggle }) {
                                             </ListItemIcon>
                                             <ListItemText primary={route.text} />
                                         </ListItem>
-                                    </Link>
                             }
-                        </React.Fragment>
+                        </Link>
                     ))}
                 </Stack>
             </Drawer>
@@ -105,7 +104,6 @@ function StandardDrawer({ active, open, handleDrawerToggle }) {
             <Drawer
                 sx={{
                     display: { xs: 'none', sm: 'block' },
-                    flexShrink: { sm: 0 }
                 }}
                 variant="permanent"
             >
@@ -117,20 +115,21 @@ function StandardDrawer({ active, open, handleDrawerToggle }) {
                     spacing={4}
                 >
                     {routes.map((route) => (
-                        <React.Fragment>
+                        <Link key={route.text} to={route.path}>
                             {
                                 active === route.text ?
-                                    <Link to={route.path}>
+
                                         <ButtonBase
+                                            key={route.text}
                                             sx={activeDesktopButtonStyle}
                                             disableTouchRipple
                                         >
                                             {route.icon}
                                         </ButtonBase>
-                                    </Link>
+
                                     :
-                                    <Link to={route.path}>
                                         <ButtonBase
+                                            key={route.text}
                                             sx={{
                                                 display: 'flex',
                                                 width: '50px',
@@ -142,13 +141,12 @@ function StandardDrawer({ active, open, handleDrawerToggle }) {
                                         >
                                             {route.icon}
                                         </ButtonBase>
-                                    </Link>
                             }
-                        </React.Fragment>
+                        </Link>
                     ))}
                 </Stack>
             </Drawer>
-        </React.Fragment>
+        </Box>
     )
 }
 

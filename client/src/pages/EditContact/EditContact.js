@@ -37,8 +37,6 @@ const formList = [
 ];
 
 function EditContact() {
-  // const classes = useStyles()
-
   const [contact, setContact] = useState();
 
   const emptyFieldErrorMessage = 'This field is required';
@@ -115,16 +113,6 @@ function EditContact() {
     if (element.required) {
       return getContactData(element.label) === '';
     }
-
-    if (getContactData(element.label) !== '') {
-      switch (element.type) {
-        case 'email':
-          return !/\S+@\S+\.\S+/.test(contact.email);
-        case 'tel':
-          return isNaN(contact.phoneNumber) && invalidTelErrorMessage;
-        default:
-      }
-    }
   }
 
   return (
@@ -135,7 +123,6 @@ function EditContact() {
           sx={{ my: 2 }}
           alignItems="center"
           spacing={2}
-          // sx={{ background: 'red' }}
         >
           <div key="avatar">
             <input

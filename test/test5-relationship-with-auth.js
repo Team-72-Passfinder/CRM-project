@@ -199,7 +199,8 @@ mocha.describe('************* TEST RELATIONSHIP ROUTES *************', function 
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('array');
-            res.body.length.should.be.eql(1);
+            res.body.length.should.be.eql(3);
+            // 1 newly created and 2 created automatically when creating new contacts
             done();
           });
       });
