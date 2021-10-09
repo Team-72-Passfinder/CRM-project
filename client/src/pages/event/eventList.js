@@ -176,6 +176,11 @@ function EventList() {
                     >
                       View
                     </Button>
+                    <DeleteEvent
+                      eventId={events[i]._id}
+                      align="right"
+                      sx={{ margin: 40 }}
+                    />
                   </CardActions>
                 </Card>
               </Grid>
