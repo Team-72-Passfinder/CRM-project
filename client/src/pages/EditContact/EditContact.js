@@ -121,6 +121,13 @@ function EditContact() {
     }
   }
 
+  function handleAdd(e, label) {
+    const dup = getContactData(label).indexOf(e.target.value);
+    if (dup === -1) {
+      setContactData(label, [...getContactData(label), e.target.value]);
+    }
+  }
+
   function generateHelperText(element) {
     if (element.required) {
       return getContactData(element.label) === '' && emptyFieldErrorMessage;
@@ -209,12 +216,16 @@ function EditContact() {
                         <Stack spacing={3} sx={{ width: 300 }} >
                           <Autocomplete
                             multiple
-                            defaultValue={getContactData(element.label)}
+                            value={getContactData(element.label)}
                             options={[].map((option) => option)}
                             freeSolo
                             renderTags={(value, getTagProps) =>
                               value.map((option, index) => (
-                                <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+                                <Chip variant="outlined" label={option} {...getTagProps({ index })}
+                                  onDelete={() => {
+                                    setContactData(element.label, getContactData(element.label).filter(entry => entry !== option));
+                                  }}
+                                />
                               ))
                             }
                             renderInput={(params) => (
@@ -224,9 +235,7 @@ function EditContact() {
                                 label={element.label}
                               />
                             )}
-                            onChange={(e, newValue) =>
-                              setContactData(element.label, [...getContactData(element.label), e.target.value])
-                            }
+                            onChange={e => handleAdd(e, element.label)}
                           />
                         </Stack>
                       );
