@@ -126,7 +126,7 @@ exports.addFromId = async (req, res) => {
 // Update a contact identified by the contact's Id ==============================
 exports.update = (req, res) => {
   // Validate data before update the BD
-  if (req.body.belongsTo) {
+  if (req.body.belongsTo && req.body.belongsTo != req.user._id) {
     return res.status(400).send({
       message: 'Owner of the contact are unchangaeble!',
     });

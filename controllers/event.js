@@ -73,7 +73,7 @@ exports.create = async (req, res) => {
 // Update event identified by the event's Id ==============================
 exports.update = async (req, res) => {
   // validate DateTime, name and completness status
-  if (req.body.belongsTo) {
+  if (req.body.belongsTo && req.body.belongsTo != req.user._id) {
     return res.status(400).send({
       message: 'Owner of the event are unchangaeble!',
     });
