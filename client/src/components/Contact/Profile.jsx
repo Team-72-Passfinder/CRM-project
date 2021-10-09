@@ -45,8 +45,8 @@ function Profile({ info }) {
                                 <Typography sx={{ fontSize: '14px', fontWeight: 400, }} color='textSecondary'>
                                     {item}
                                 </Typography>
-                                <Stack direction="row" spacing={1}>
-                                    {data.map((elem) => <Chip label={data} variant="outlined" />)}
+                                <Stack direction="row" spacing={1} sx={{ fontSize: '16px', fontWeight: 500, color: '#272727' }} color='textPrimary'>
+                                    {data.map((elem) => <Chip label={elem} variant="outlined" />)}
                                 </Stack>
                             </Box>
                         )

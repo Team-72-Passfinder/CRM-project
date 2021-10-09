@@ -34,6 +34,18 @@ const formList = [
     label: 'Phone number',
     type: 'tel',
   },
+  {
+    label: 'Job Title',
+    type: ['text'],
+  },
+  {
+    label: 'Tags',
+    type: ['text'],
+  },
+  {
+    label: 'Biography',
+    type: 'text',
+  },
 ];
 
 function EditContact() {
@@ -67,6 +79,12 @@ function EditContact() {
         return contact.phoneNumber;
       case 'Date of Birth':
         return new Date(contact.dateOfBirth);
+      case 'Job Title':
+        return contact.jobTitle;
+      case 'Tags':
+        return contact.tags;
+      case 'Biography':
+        return contact.biography;
       default:
         return null;
     }
@@ -85,6 +103,15 @@ function EditContact() {
         break;
       case 'Phone number':
         setContact((prev) => ({ ...prev, phoneNumber: value }));
+        break;
+      case 'Job Title':
+        setContact((prev) => ({ ...prev, jobTitle: value }));
+        break;
+      case 'Tags':
+        setContact((prev) => ({ ...prev, tags: value }));
+        break;
+      case 'Biography':
+        setContact((prev) => ({ ...prev, biography: value }));
         break;
       default:
         break;
