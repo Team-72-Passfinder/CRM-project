@@ -42,7 +42,7 @@ export function getEventsFromContactId(contactId) {
     participants: [contactId],
   }
 
-  return axios.get(endpoint, query, config).then((res) => res.data);
+  return instance.get(endpoint, query, config).then((res) => res.data);
 }
 
 export function updateEvent(event) {
@@ -111,6 +111,12 @@ export function updateContact(contact) {
     .catch((e) => console.log(e.response));
 }
 
+export function delContact(id) {
+  let endpoint = '/contact/' + id;
+
+  return axios.delete(endpoint, config).then((res) => res.data);
+}
+
 export function me() {
   let endpoint = '/profile';
 
@@ -118,19 +124,19 @@ export function me() {
 }
 
 export function updateUser(body) {
-    let endpoint = '/user/change-password'
+  let endpoint = '/user/change-password'
 
-    return instance.post(endpoint, body).then(res => res.data).catch(function (error) {
-        console.log(error.response.status);
+  return instance.post(endpoint, body).then(res => res.data).catch(function (error) {
+    console.log(error.response.status);
 
-        switch (error.response.status) {
-            case 401:
-            case 400:
-                return Promise.reject('Wrong password');
-            default:
-                return Promise.reject('Authentication failed');
-        }
-    });;
+    switch (error.response.status) {
+      case 401:
+      case 400:
+        return Promise.reject('Wrong password');
+      default:
+        return Promise.reject('Authentication failed');
+    }
+  });;
 }
 
 export function getEventById(id) {

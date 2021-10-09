@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { Box, Avatar, Typography, Stack, Button } from '@mui/material'
+import { Box, Avatar, Typography, Stack, Button, IconButton } from '@mui/material'
+import DeleteIcon from '@mui/icons-material/Delete';
+import Popover from '@mui/material/Popover';
+import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 
 import { getContact, getEventById } from '../../api'
 import Navbar from '../../components/Navbar';
@@ -51,6 +54,10 @@ function Contact() {
         window.location.href = '/contact/edit/' + contactInfo._id
     };
 
+    const handleDelete = () => {
+        //setDelPopup(!delPopup);
+    }
+
     return (
         <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' } }}>
             <Navbar active="Socials" />
@@ -67,9 +74,36 @@ function Contact() {
                                     {contactInfo.firstName} {contactInfo.lastName}
                                 </Typography>
                             </Box>
-                            <Button sx={{ display: { xs: 'none', sm: 'flex' } }} variant="contained" onClick={handleClick}>
-                                Edit Profile
-                            </Button>
+                            <Stack spacing={3} direction="row" >
+                                <Button sx={{ display: { xs: 'none', sm: 'flex' } }} variant="contained" onClick={handleClick}>
+                                    Edit Profile
+                                </Button>
+                                <PopupState variant="popover" popupId="demo-popup-popover">
+                                    {(popupState) => (
+                                        <div>
+                                            <IconButton aria-label="delete" size="large" {...bindTrigger(popupState)} >
+                                                <DeleteIcon fontSize="inherit" />
+                                            </IconButton>
+                                            <Popover
+                                                {...bindPopover(popupState)}
+                                                anchorOrigin={{
+                                                    vertical: 'bottom',
+                                                    horizontal: 'center',
+                                                }}
+                                                transformOrigin={{
+                                                    vertical: 'top',
+                                                    horizontal: 'center',
+                                                }}
+                                            >
+                                                <Typography sx={{ p: 2 }}>Are you sure to delete this contact?</Typography>
+                                                <Button variant="contained" sx={{ left: '210px', bottom: '10px' }} onClick={handleDelete}>
+                                                    Yes
+                                                </Button>
+                                            </Popover>
+                                        </div>
+                                    )}
+                                </PopupState>
+                            </Stack>
                             <IconPillTabs profilePanel={<Profile info={contactInfo} />} eventsPanel={<Events events={events} />} tab={tab} handleTabChange={handleTabChange} setTab={setTab} />
                         </Box>
                     </Box>
