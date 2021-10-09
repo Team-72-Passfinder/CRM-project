@@ -47,14 +47,10 @@ function EventList() {
   const classes = useStyles();
 
   const [events, setEvents] = useState([]);
-  const [userData, setUserData] = useState([]);
 
   useEffect(() => {
     getEvents().then((res) => {
       setEvents(res);
-    });
-    me().then((res) => {
-      setUserData(res);
     });
   }, []);
 
