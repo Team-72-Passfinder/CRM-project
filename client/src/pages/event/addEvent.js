@@ -21,7 +21,7 @@ import DateAdapter from '@mui/lab/AdapterDayjs';
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import StandardInput from '../../components/StandardInput';
 
-import { addEvent, getContacts, getEvents } from '../../api';
+import { addEvent, getContacts } from '../../api';
 
 const useStyles = makeStyles((theme) => ({}));
 
@@ -37,11 +37,11 @@ const MenuProps = {
 };
 
 const defaultValues = {
-  name: 'none',
+  name: '',
   startedDateTime: new Date(),
-  endedDateTime: new Date(),
+  endedDateTime: null,
   participants: [],
-  description: 'none',
+  description: '',
   completed: false,
 };
 
@@ -71,11 +71,7 @@ function AddEvent() {
     addEvent(event).then((res) => {
       if (event.name === res.name) {
         handleClose();
-        getEvents().then((res) => {
-          setTimeout(() => {
-            setEvent(res);
-          }, 200);
-        });
+        window.location.reload();
       }
     });
   }
@@ -106,7 +102,6 @@ function AddEvent() {
   return (
     <div>
       <Button
-        className={classes.addButton}
         color="primary"
         variant="contained"
         align="center"
