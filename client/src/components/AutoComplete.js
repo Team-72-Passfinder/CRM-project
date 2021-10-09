@@ -10,13 +10,17 @@ export default function Tags({ label, name, value, setValue }) {
     const [data, setData] = React.useState([]);
 
     function addData(event) {
-        const dup = data.indexOf(
-            event.target.value.trim()
-        );
+        const dup = data.indexOf(event.target.value);
         if (dup === -1) {
             setData(oldData => [...oldData, event.target.value]);
             setValue(prev => ({ ...prev, [name]: data }));
         }
+    }
+
+
+    function handleDelete(option) {
+        setData(data.filter(elem => elem !== option));
+        setValue(prev => ({ ...prev, [name]: data }));
     }
 
     return (
@@ -28,11 +32,14 @@ export default function Tags({ label, name, value, setValue }) {
                 <Autocomplete
                     multiple
                     id={name}
+                    value={data}
                     options={[].map((option) => option)}
                     freeSolo
                     renderTags={(value, getTagProps) =>
                         value.map((option, index) => (
-                            <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+                            <Chip variant="outlined" label={option} {...getTagProps({ index })}
+                                onDelete={() => { handleDelete(option) }}
+                            />
                         ))
                     }
                     renderInput={(params) => (
