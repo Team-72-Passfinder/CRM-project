@@ -2,24 +2,15 @@ import React, { useEffect, useState } from 'react';
 import TextField from '@mui/material/TextField';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import {
   Box,
   Dialog,
-  Slide,
-  IconButton,
-  AppBar,
-  Toolbar,
   Typography,
-  Avatar,
   FilledInput,
   FormControl,
   Button,
-  createTheme,
-  InputLabel,
   Select,
-  OutlinedInput,
   MenuItem,
 } from '@mui/material';
 
@@ -27,21 +18,12 @@ import { makeStyles } from '@mui/styles';
 
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateAdapter from '@mui/lab/AdapterDayjs';
-import DatePicker from '@mui/lab/DatePicker';
 import DateTimePicker from '@mui/lab/DateTimePicker';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import CloseIcon from '@mui/icons-material/Close';
-import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import StandardInput from '../../components/StandardInput';
 
 import { addEvent, getContacts, getEvents } from '../../api';
 
-const useStyles = makeStyles((theme) => ({
-  addButton: {
-    top: '-10px',
-    right: '-400px',
-  },
-}));
+const useStyles = makeStyles((theme) => ({}));
 
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
@@ -77,7 +59,7 @@ function AddEvent() {
     setOpen(false);
   };
 
-  const handleInputChange = (e) => {
+  const handleParticipantsChange = (e) => {
     const { name, value } = e.target;
     setEvent({
       ...event,
@@ -103,7 +85,6 @@ function AddEvent() {
 
     Array.from(inputs).filter((input) => {
       if (input.required === true) {
-        console.log(event);
         if (!input.validity.valid) {
           setSubmitDisabled(true);
         } else {
@@ -134,8 +115,16 @@ function AddEvent() {
         Add New Event
       </Button>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>New Event</DialogTitle>
-        <DialogContent>
+        <Box display="flex" justifyContent="center" alignItems="center">
+          <DialogTitle>New Event</DialogTitle>
+        </Box>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
           <StandardInput
             label="Name"
             name="name"
@@ -153,22 +142,36 @@ function AddEvent() {
             type="text"
           />
 
-          <FormControl margin="dense" variant="filled">
-            <InputLabel>Participants</InputLabel>
-            <Select
-              name="participants"
-              multiple
-              value={event.participants}
-              onChange={handleInputChange}
-              MenuProps={MenuProps}
+          <Box>
+            <FormControl
+              margin="dense"
+              variant="filled"
+              sx={{ m: 1, width: 300 }}
             >
-              {contacts.map((contact) => (
-                <MenuItem key={String(contact._id)} value={String(contact._id)}>
-                  {contact.firstName + ' ' + contact.lastName}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
+              <Typography
+                sx={{ fontSize: '15px', fontWeight: 600 }}
+                margin="none"
+              >
+                Participants
+              </Typography>
+              <Select
+                name="participants"
+                multiple
+                value={event.participants}
+                onChange={handleParticipantsChange}
+                MenuProps={MenuProps}
+              >
+                {contacts.map((contact) => (
+                  <MenuItem
+                    key={String(contact._id)}
+                    value={String(contact._id)}
+                  >
+                    {contact.firstName + ' ' + contact.lastName}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
 
           <LocalizationProvider dateAdapter={DateAdapter}>
             <FormControl margin="dense" variant="filled">
@@ -181,7 +184,9 @@ function AddEvent() {
               <DateTimePicker
                 name="startedDateTime"
                 value={event.startedDateTime}
-                onChange={handleInputChange}
+                onChange={(newValue) => {
+                  setEvent((prev) => ({ ...prev, startedDateTime: newValue }));
+                }}
                 renderInput={({ inputRef, inputProps, InputProps }) => (
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <FilledInput
@@ -217,7 +222,9 @@ function AddEvent() {
               <DateTimePicker
                 name="endedDateTime"
                 value={event.endedDateTime}
-                onChange={handleInputChange}
+                onChange={(newValue) => {
+                  setEvent((prev) => ({ ...prev, endedDateTime: newValue }));
+                }}
                 renderInput={({ inputRef, inputProps, InputProps }) => (
                   <Box sx={{ display: 'flex', alignItems: 'center' }}>
                     <FilledInput
@@ -244,12 +251,14 @@ function AddEvent() {
               />
             </FormControl>
           </LocalizationProvider>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
+        </Box>
+        <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Button sx={{ width: 200 }} onClick={handleClose}>
+            Cancel
+          </Button>
           <Button
             sx={{
-              width: 300,
+              width: 200,
               my: '10px',
               '&.MuiButton-disableElevation': {
                 boxShadow: `(${submitDisabled} && 'none') || '4px 4px 20px 5px rgba(223, 120, 97, 0.25)'`,
