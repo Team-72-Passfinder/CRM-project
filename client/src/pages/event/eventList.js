@@ -67,20 +67,26 @@ function EventList() {
     // Prevent undefined entries
     if (events.length < maxCards)
       cardIndex = Array.from(Array(events.length).keys());
-    //sort events by date and time
-    cardIndex
-      .sort((a, b) => {
-        return events[a].startedDateTime > events[b].startedDateTime ? 1 : -1;
-      })
-      .reverse();
-    // Grouping events
-    var currentEvents = cardIndex.filter(function (e) {
+    // Grouping events and sort them
+    var upcomingEvents = cardIndex.filter(function (e) {
       return new Date(events[e].startedDateTime) > new Date(Date.now());
     });
+    // Display nearest upcoming event first
+    upcomingEvents
+      .sort((a, b) => {
+        return events[a].startedDateTime > events[b].startedDateTime ? -1 : 1;
+      })
+      .reverse();
 
     var pastEvents = cardIndex.filter(function (e) {
       return new Date(events[e].startedDateTime) < new Date(Date.now());
     });
+    // Display nearest past event first
+    pastEvents
+      .sort((a, b) => {
+        return events[a].startedDateTime > events[b].startedDateTime ? 1 : -1;
+      })
+      .reverse();
 
     return (
       <Box className={classes.root}>
@@ -126,11 +132,11 @@ function EventList() {
 
           {/* Event Grid Unit */}
           <Typography component="h3" variant="h3" align="center" color="black">
-            Upcoming Events: {currentEvents.length}
+            Upcoming Events: {upcomingEvents.length}
           </Typography>
 
           <Grid container spacing={4} className={classes.eventGrid}>
-            {currentEvents.map((i) => (
+            {upcomingEvents.map((i) => (
               <Grid item key={i} xs={12} sm={6} md={4}>
                 <Card
                   elevation={3}
@@ -172,11 +178,7 @@ function EventList() {
                     >
                       View
                     </Button>
-                    <DeleteEvent
-                      eventId={events[i]._id}
-                      align="right"
-                      sx={{ margin: 40 }}
-                    />
+                    <DeleteEvent eventId={events[i]._id} />
                   </CardActions>
                 </Card>
               </Grid>
@@ -230,11 +232,7 @@ function EventList() {
                     >
                       View
                     </Button>
-                    <DeleteEvent
-                      eventId={events[i]._id}
-                      align="right"
-                      sx={{ margin: 40 }}
-                    />
+                    <DeleteEvent eventId={events[i]._id} />
                   </CardActions>
                 </Card>
               </Grid>
