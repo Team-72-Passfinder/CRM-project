@@ -13,14 +13,8 @@ export default function Tags({ label, name, value, setValue }) {
         const dup = data.indexOf(event.target.value);
         if (dup === -1) {
             setData(oldData => [...oldData, event.target.value]);
-            setValue(prev => ({ ...prev, [name]: data }));
         }
-    }
-
-
-    function handleDelete(option) {
-        setData(data.filter(elem => elem !== option));
-        setValue(prev => ({ ...prev, [name]: data }));
+        //setValue(prev => ({ ...prev, [name]: data }));
     }
 
     return (
@@ -38,7 +32,7 @@ export default function Tags({ label, name, value, setValue }) {
                     renderTags={(value, getTagProps) =>
                         value.map((option, index) => (
                             <Chip variant="outlined" label={option} {...getTagProps({ index })}
-                                onDelete={() => { handleDelete(option) }}
+                                onDelete={() => { setData(data.filter(elem => elem !== option)) }}
                             />
                         ))
                     }
@@ -48,7 +42,10 @@ export default function Tags({ label, name, value, setValue }) {
                             variant="filled"
                         />
                     )}
-                    onChange={e => addData(e)}
+                    onChange={e => {
+                        addData(e);
+                        setValue(prev => ({ ...prev, [name]: data }));
+                    }}
                 />
             </Stack>
         </FormControl>
