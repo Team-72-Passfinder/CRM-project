@@ -44,7 +44,7 @@ function Contact() {
     };
 
     const handleClick = () => {
-        window.location.href = '/contact/edit/' + contactInfo._id
+        window.location.href = '/socials/edit/' + contactInfo._id
     };
 
     const handleDelete = () => {
