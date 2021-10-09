@@ -10,6 +10,8 @@ import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 
 import { getContact, updateContact } from '../../api';
 import Navbar from '../../components/Navbar';
+import Chip from '@mui/material/Chip';
+import Autocomplete from '@mui/material/Autocomplete';
 
 const formList = [
   {
@@ -36,15 +38,15 @@ const formList = [
   },
   {
     label: 'Job Title',
-    type: ['text'],
+    type: 'tags',
   },
   {
     label: 'Tags',
-    type: ['text'],
+    type: 'tags',
   },
   {
     label: 'Biography',
-    type: 'text',
+    type: 'para',
   },
 ];
 
@@ -179,6 +181,7 @@ function EditContact() {
               {contact !== undefined &&
                 formList.map((element) => {
                   switch (element.type) {
+                    //Case of displaying date
                     case 'date':
                       return (
                         <React.Fragment key={element.label}>
@@ -199,6 +202,52 @@ function EditContact() {
                           />
                         </React.Fragment>
                       );
+                    // Case of tags displaying
+                    case 'tags':
+                      return (
+                        <Stack spacing={3} sx={{ width: 300 }} >
+                          <Autocomplete
+                            multiple
+                            defaultValue={getContactData(element.label)}
+                            options={[].map((option) => option)}
+                            freeSolo
+                            renderTags={(value, getTagProps) =>
+                              value.map((option, index) => (
+                                <Chip variant="outlined" label={option} {...getTagProps({ index })} />
+                              ))
+                            }
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                key={element.label}
+                                label={element.label}
+                              />
+                            )}
+                            onChange={(e) =>
+                              setContactData(element.label, e.target.value)
+                            }
+                          />
+                        </Stack>
+                      );
+                    // Case of bio text paragraph
+                    case 'para':
+                      return (
+                        <TextField
+                          key={element.label}
+                          sx={{
+                            width: '300px',
+                          }}
+                          multiline
+                          label={element.label}
+                          type={element.type}
+                          size="small"
+                          onChange={(e) =>
+                            setContactData(element.label, e.target.value)
+                          }
+                          defaultValue={getContactData(element.label)}
+                        />
+                      );
+                    // Normal text box 
                     default:
                       return (
                         <TextField
