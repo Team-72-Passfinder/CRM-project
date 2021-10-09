@@ -22,6 +22,9 @@ import AddEvent from './addEvent';
 import DeleteEvent from './deleteEvent';
 
 const useStyles = makeStyles((theme) => ({
+  root: {
+    background: ' #fff1e1',
+  },
 
   eventGrid: {
     maxwidth: 'md',
@@ -30,35 +33,29 @@ const useStyles = makeStyles((theme) => ({
   AddEvent: {
     align: 'right',
   },
-  eventDescription: {
+  eventName: {
+    backgroundColor: '#DF7861',
+  },
+  overflowText: {
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     display: '-webkit-box',
     WebkitBoxOrient: 'vertical',
     WebkitLineClamp: '2',
   },
-  headerBox:{
-    justifyContent: 'center'
-    
+  headerBox: {
+    justifyContent: 'center',
   },
-  headerText:{
-    top:  '-10px',
-    right: '400px'
-  }
-  
+  headerText: {
+    top: '-10px',
+    right: '400px',
+  },
 }));
 
 const maxCards = 30;
 let cardIndex = Array.from(Array(maxCards).keys());
 
 function EventList() {
-  const orangeTheme = createTheme({
-    palette: {
-      primary: {
-        main: '#DF7861',
-      },
-    },
-  });
   const classes = useStyles();
 
   const [events, setEvents] = useState([]);
@@ -69,7 +66,6 @@ function EventList() {
       setEvents(res);
     });
     me().then((res) => {
-      console.log(res);
       setUserData(res);
     });
   }, []);
@@ -88,24 +84,18 @@ function EventList() {
     if (events.length < maxCards)
       cardIndex = Array.from(Array(events.length).keys());
     //sort events by date and time
-    var newcardIndex = cardIndex
+    cardIndex
       .sort((a, b) => {
         return events[a].startedDateTime > events[b].startedDateTime ? 1 : -1;
-      }).reverse();
-
-
+      })
+      .reverse();
+    // Grouping events
     var currentEvents = cardIndex.filter(function (e) {
-      return (
-        getDate(events[e].startedDateTime) >
-        Date.toLocaleString('en-GB', { timeZone: 'UTC' })
-      );
+      return new Date(events[e].startedDateTime) > new Date(Date.now());
     });
 
     var pastEvents = cardIndex.filter(function (e) {
-      return (
-        getDate(events[e].startedDateTime) <
-        Date.toLocaleString('en-GB', { timeZone: 'UTC' })
-      );
+      return new Date(events[e].startedDateTime) < new Date(Date.now());
     });
 
     return (
@@ -122,23 +112,27 @@ function EventList() {
         >
           {/* Hero Unit */}
 
-          <Box display="flex"  size ="lg" justifyContent="center"className={classes.headerBox}>
-            <Typography className={classes.headerText}
-
+          <Box
+            display="flex"
+            flexDirection="column"
+            size="lg"
+            justifyContent="center"
+            className={classes.headerBox}
+          >
+            <Typography
+              className={classes.headerText}
               component="h1"
               variant="h2"
-
               color="black"
               gutterBottom
               style={{ fontWeight: 600 }}
-              
             >
               My Events: {events.length}
             </Typography>
             <Box display="flex" alignItems="center" justifyContent="center">
-            <AddEvent className={classes.addEvent} />
+              <AddEvent className={classes.addEvent} />
             </Box>
-            </Box>
+          </Box>
 
           {/* End Hero Unit */}
 
@@ -160,10 +154,12 @@ function EventList() {
                   }}
                 >
                   <CardHeader
-                    title={events[i].name}
-                    align="center"
-                    sx={{ backgroundColor: '#DF7861' }}
-                    style={{ fontWeight: 600 }}
+                    className={classes.eventName}
+                    title={
+                      <Typography variant="h6" className={classes.overflowText}>
+                        {events[i].name}
+                      </Typography>
+                    }
                   ></CardHeader>
                   <CardContent>
                     <Typography gutterBottom variant="body1" component="h2">
@@ -179,25 +175,24 @@ function EventList() {
                       variant="body2"
                       className={classes.eventDescription}
                     >
-                      {events[i].description}
+                      Description: {events[i].description}
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <ThemeProvider theme={orangeTheme}>
-                      <Button
-                        className={classes.toolbarButton}
-                        variant="contained"
-                        color="primary"
-                        onClick={(e) => handleClick(events[i]._id)}
-                      >
-                        View
-                      </Button>
-                    </ThemeProvider>
+                    <Button
+                      className={classes.toolbarButton}
+                      variant="contained"
+                      color="primary"
+                      onClick={(e) => handleClick(events[i]._id)}
+                    >
+                      View
+                    </Button>
                   </CardActions>
                 </Card>
               </Grid>
             ))}
           </Grid>
+
           <Typography component="h3" variant="h3" align="center" color="black">
             Past Events: {pastEvents.length}
           </Typography>
@@ -215,8 +210,12 @@ function EventList() {
                   }}
                 >
                   <CardHeader
-                    title={events[i].name} 
-                    sx={{ backgroundColor: '#DF7861', fontWeight: 600, boxShadow: 1 }}
+                    className={classes.eventName}
+                    title={
+                      <Typography variant="h6" className={classes.overflowText}>
+                        {events[i].name}
+                      </Typography>
+                    }
                   ></CardHeader>
                   <CardContent>
                     <Typography gutterBottom variant="body1" component="h2">
@@ -231,23 +230,24 @@ function EventList() {
                     </Typography>
                     <Typography
                       variant="body2"
-                      className={classes.eventDescription}
+                      className={classes.overflowText}
                     >
                       {events[i].description}
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <ThemeProvider theme={orangeTheme}>
-                      <Button
-                        className={classes.toolbarButton}
-                        variant="contained"
-                        onClick={(e) => handleClick(events[i]._id)}
-                      >
-                        View
-                      </Button>
-                      <DeleteEvent eventId={events[i]._id} align="right"  sx={{ margin: 40 }}
-                        />
-                    </ThemeProvider>
+                    <Button
+                      className={classes.toolbarButton}
+                      variant="contained"
+                      onClick={(e) => handleClick(events[i]._id)}
+                    >
+                      View
+                    </Button>
+                    <DeleteEvent
+                      eventId={events[i]._id}
+                      align="right"
+                      sx={{ margin: 40 }}
+                    />
                   </CardActions>
                 </Card>
               </Grid>
