@@ -105,6 +105,7 @@ To runs the Mocha tests in `/test` folder.
 This file is placed at project's root (same as `server.js`)
 
 ```bash
+# Backend stuff
 port = _____
 host = _____
 
@@ -115,7 +116,13 @@ DB_URL      = _____
 DB_NAME     = _____
 DB_TEST_NAME = _____
 
+# Passport and JWT
 PASSPORT_SECRET = _____
+
+# Nodemailer
+NODEMAILER_SERVICE = _____
+NODEMAILER_USER = _____
+NODEMAILER_PASS = _____
 ```
 
 ## Coding style (for backend)
