@@ -4,10 +4,12 @@ const passport = require('../config/passport');
 
 const controller = require('../controllers/relationship');
 
-app.use(passport.authenticate('jwt', { session: false }))
+app.use(passport.authenticate('jwt', { session: false }));
 
+// findAll = all relationships in DB
 app.route('/relationship').post(controller.create).get(controller.findAll);
 
+// getall = all relationships belong to current users
 app.route('/relationship/getall').get(controller.getall);
 
 app.route('/relationship/search').post(controller.search);
