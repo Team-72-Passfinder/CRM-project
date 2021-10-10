@@ -98,6 +98,9 @@ function EditContact() {
       case 'First Name':
         setContact((prev) => ({ ...prev, firstName: value }));
         break;
+      case 'Last Name':
+        setContact((prev) => ({ ...prev, lastName: value }));
+        break;
       case 'Email':
         setContact((prev) => ({ ...prev, email: value }));
         break;
@@ -118,13 +121,6 @@ function EditContact() {
         break;
       default:
         break;
-    }
-  }
-
-  function handleAdd(e, label) {
-    const dup = getContactData(label).indexOf(e.target.value);
-    if (dup === -1) {
-      setContactData(label, [...getContactData(label), e.target.value]);
     }
   }
 
@@ -235,7 +231,7 @@ function EditContact() {
                                 label={element.label}
                               />
                             )}
-                            onChange={e => handleAdd(e, element.label)}
+                            onChange={(e, newVal) => setContactData(element.label, newVal)}
                           />
                         </Stack>
                       );
