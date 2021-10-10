@@ -9,14 +9,6 @@ export default function Tags({ label, name, value, setValue }) {
 
     const [data, setData] = React.useState([]);
 
-    function addData(event) {
-        const dup = data.indexOf(event.target.value);
-        if (dup === -1) {
-            setData(oldData => [...oldData, event.target.value]);
-        }
-        //setValue(prev => ({ ...prev, [name]: data }));
-    }
-
     return (
         <FormControl margin="dense" variant="filled">
             <Typography sx={{ fontSize: '15px', fontWeight: 600 }} margin="none">
@@ -32,7 +24,10 @@ export default function Tags({ label, name, value, setValue }) {
                     renderTags={(value, getTagProps) =>
                         value.map((option, index) => (
                             <Chip variant="outlined" label={option} {...getTagProps({ index })}
-                                onDelete={() => { setData(data.filter(elem => elem !== option)) }}
+                                onDelete={() => {
+                                    setValue(prev => ({ ...prev, [name]: data.filter(elem => elem !== option) }));
+                                    setData(data.filter(elem => elem !== option));
+                                }}
                             />
                         ))
                     }
@@ -42,9 +37,9 @@ export default function Tags({ label, name, value, setValue }) {
                             variant="filled"
                         />
                     )}
-                    onChange={e => {
-                        addData(e);
-                        setValue(prev => ({ ...prev, [name]: data }));
+                    onChange={(e, newVal) => {
+                        setValue(prev => ({ ...prev, [name]: newVal }));
+                        setData(newVal);
                     }}
                 />
             </Stack>
