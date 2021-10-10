@@ -35,6 +35,16 @@ export function setEvent(id) {
   return axios.post(endpoint, id, config).then((res) => res.data);
 }
 
+export function getEventsFromContactId(contactId) {
+  let endpoint = '/event/search/';
+  let query = {
+    query: "",
+    participants: [contactId],
+  }
+
+  return axios.post(endpoint, query, config).then((res) => res.data).catch(error => console.log(error));
+}
+
 export function deleteEvent(id) {
   let endpoint = '/event/' + id;
 
@@ -105,6 +115,12 @@ export function updateContact(contact) {
     .put(endpoint, contact, config)
     .then((res) => res.data)
     .catch((e) => console.log(e.response));
+}
+
+export function delContact(id) {
+  let endpoint = '/contact/' + id;
+
+  return axios.delete(endpoint, config).then((res) => res.data);
 }
 
 export function me() {

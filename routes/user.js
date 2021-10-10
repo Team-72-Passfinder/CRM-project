@@ -47,7 +47,7 @@ app
   .put(controller.update)
   .delete(controller.delete);
 
-app.route('/user/search').get(controller.search);
+app.route('/user/search').post(controller.search);
 
 app
   .route('/user/:id')

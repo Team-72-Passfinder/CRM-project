@@ -8,8 +8,8 @@ app.use(passport.authenticate('jwt', { session: false }))
 
 app.route('/conversation').post(controller.create).get(controller.findAll);
 
-app.route('/conversation/search').get(controller.searchConvo);
-app.route('/conversation/:id/search').get(controller.searchMessage);
+app.route('/conversation/search').post(controller.searchConvo);
+app.route('/conversation/:id/search').post(controller.searchMessage);
 
 app.route('/conversation/getall').get(controller.getall);
 

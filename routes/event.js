@@ -12,7 +12,7 @@ app.route('/event').post(controller.create).get(controller.findAll);
 // getall = all events that belong to current user
 app.route('/event/getall').get(controller.getall);
 
-app.route('/event/search').get(controller.search);
+app.route('/event/search').post(controller.search);
 
 app
   .route('/event/:id')

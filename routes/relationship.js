@@ -12,7 +12,7 @@ app.route('/relationship').post(controller.create).get(controller.findAll);
 // getall = all relationships belong to current users
 app.route('/relationship/getall').get(controller.getall);
 
-app.route('/relationship/search').get(controller.search);
+app.route('/relationship/search').post(controller.search);
 
 app
   .route('/relationship/:id')

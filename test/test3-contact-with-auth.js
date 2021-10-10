@@ -50,7 +50,7 @@ mocha.describe('************* TEST CONTACT ROUTES *************', function () {
     mocha.it('it should not give access to SEARCH without a verified token ', function (done) {
       chai
         .request(server)
-        .get('/contact/search')
+        .post('/contact/search')
         .send({ query: "" })
         .end((err, res) => {
           res.should.have.status(401);
@@ -219,7 +219,7 @@ mocha.describe('************* TEST CONTACT ROUTES *************', function () {
         };
         chai
           .request(server)
-          .get('/contact/search')
+          .post('/contact/search')
           .auth(token, { type: 'bearer' })
           .send(query)
           .end((err, res) => {

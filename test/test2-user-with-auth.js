@@ -228,7 +228,7 @@ mocha.describe('Test User routes', function () {
         };
         chai
           .request(server)
-          .get('/user/search')
+          .post('/user/search')
           .auth(token, { type: 'bearer' })
           .send(query)
           .end((err, res) => {

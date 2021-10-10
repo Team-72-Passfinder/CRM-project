@@ -83,7 +83,7 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
         function (done) {
           chai
             .request(server)
-            .get('/event/search')
+            .post('/event/search')
             .send({ query: '' })
             .end((err, res) => {
               res.should.have.status(401);
@@ -260,7 +260,7 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
           };
           chai
             .request(server)
-            .get('/event/search')
+            .post('/event/search')
             .auth(token, { type: 'bearer' })
             .send(query)
             .end((err, res) => {

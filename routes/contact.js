@@ -12,7 +12,7 @@ app.route('/contact').post(controller.create).get(controller.findAll);
 // getall = all contacts that belong to current user
 app.route('/contact/getall').get(controller.getall);
 
-app.route('/contact/search').get(controller.search);
+app.route('/contact/search').post(controller.search);
 
 app
   .route('/contact/:id')
