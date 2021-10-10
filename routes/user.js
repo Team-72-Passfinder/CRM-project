@@ -33,26 +33,32 @@ app.post(
 );
 
 // Other routes from this point require authentication ===========================================
-app.use(passport.authenticate('jwt', { session: false }));
+app.get(
+  '/profile',
+  passport.authenticate('jwt', { session: false }),
+  async (req, res) => {
+    res.send(req.user);
+  }
+);
 
-app.get('/profile', async (req, res) => {
-  res.send(req.user);
-});
-
-app.post('/user/change-password', controller.changePassword);
+app.post(
+  '/user/change-password',
+  passport.authenticate('jwt', { session: false }),
+  controller.changePassword
+);
 
 app
   .route('/user')
-  .get(controller.findAll)
-  .put(controller.update)
-  .delete(controller.delete);
+  .get(passport.authenticate('jwt', { session: false }), controller.findAll)
+  .put(passport.authenticate('jwt', { session: false }), controller.update)
+  .delete(passport.authenticate('jwt', { session: false }), controller.delete);
 
-app.route('/user/search').post(controller.search);
+app
+  .route('/user/search')
+  .post(passport.authenticate('jwt', { session: false }), controller.search);
 
 app
   .route('/user/:id')
-  //.put(controller.update)
-  //.delete(controller.delete)
-  .get(controller.findOne);
+  .get(passport.authenticate('jwt', { session: false }), controller.findOne);
 
 module.exports = app;
