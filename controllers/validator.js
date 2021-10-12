@@ -174,10 +174,36 @@ async function validRelationshipOrConvo(controller2, req, type) {
   return false;
 }
 
+async function checkValidContactList(participants, belongsTo) {
+  for (let i = 0; i < participants.length; i++) {
+    if (!isValidObjectId(participants[i])) {
+      return false;
+    }
+  }
+
+  var check;
+  // Then check if those contactIds belongs to the user
+  await Contact.find({ _id: { $in: participants }, belongsTo: belongsTo })
+    .then((data) => {
+      if (data.length != participants.length) {
+        check = false;
+      }
+      else {
+        check = true;
+      }
+      // Case of error
+    }).catch((err) => {
+      console.log(err);
+      check = false;
+    });
+  return check;
+}
+
 module.exports = {
   checkValidUser,
   checkInvalid,
   checkValidDate,
   validRelationshipOrConvo,
   checkValidId,
+  checkValidContactList,
 };

@@ -2,9 +2,12 @@ import React, { useEffect, useState } from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { Box, Avatar, Typography, Stack, Button } from '@mui/material'
+import { Box, Avatar, Typography, Stack, Button, IconButton } from '@mui/material'
+import DeleteIcon from '@mui/icons-material/Delete';
+import Popover from '@mui/material/Popover';
+import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 
-import { getContact, getEventById } from '../../api'
+import { getContact, getEventById, delContact, getEventsFromContactId } from '../../api'
 import Navbar from '../../components/Navbar';
 import IconPillTabs from '../../components/Contact/IconPillTabs';
 import Profile from '../../components/Contact/Profile';
@@ -15,27 +18,21 @@ function Contact() {
     const [events, setEvents] = useState([])
     const [tab, setTab] = useState('Profile')
 
+    let id = window.location.pathname.split('/')[2];
     useEffect(() => {
-        getContact(window.location.pathname.replace('/contact/', '')).then(res => { 
+        getContact(window.location.pathname.replace('/socials/', '')).then(res => {
             setContactInfo(res)
-            res.events.map((event) => {
-                getEventById(event).then(res => {
-                    setEvents(prev => [...prev, res]);
-                })
-            })
+            getEventsFromContactId(res._id).then(res => 
+                setEvents(res))
         })
     }, [])
 
     useEffect(() => {
-        getContact(window.location.pathname.replace('/contact/', '')).then(res => setContactInfo(res))
+        getContact(window.location.pathname.replace('/socials/', '')).then(res => setContactInfo(res))
         setEvents([])
-        switch(tab) {
+        switch (tab) {
             case "Events":
-                contactInfo.events.map((event) => {
-                    getEventById(event).then(res => {
-                        setEvents(prev => [...prev, res]);
-                    }) 
-                })
+                getEventsFromContactId(contactInfo._id).then(res => setEvents(res))
                 break;
             default:
                 break;
@@ -47,8 +44,13 @@ function Contact() {
     };
 
     const handleClick = () => {
-        window.location.href = '/contact/edit/' + contactInfo._id
+        window.location.href = '/socials/edit/' + contactInfo._id
     };
+
+    const handleDelete = () => {
+        delContact(contactInfo._id);
+        window.location.href = '/socials/'
+    }
 
     return (
         <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' } }}>
@@ -66,13 +68,40 @@ function Contact() {
                                     {contactInfo.firstName} {contactInfo.lastName}
                                 </Typography>
                             </Box>
-                            <Button sx={{ display: { xs: 'none', sm: 'flex' } }} variant="contained" onClick={handleClick}>
-                                Edit Profile
-                            </Button>
-                            <IconPillTabs profilePanel={<Profile info={contactInfo} />} eventsPanel={<Events events={events} />} tab={tab} handleTabChange={handleTabChange} setTab={setTab}  />
+                            <Stack spacing={3} direction="row" >
+                                <Button sx={{ display: { xs: 'none', sm: 'flex' } }} variant="contained" onClick={handleClick}>
+                                    Edit Profile
+                                </Button>
+                                <PopupState variant="popover" popupId="demo-popup-popover">
+                                    {(popupState) => (
+                                        <div>
+                                            <IconButton aria-label="delete" size="large" {...bindTrigger(popupState)} >
+                                                <DeleteIcon fontSize="inherit" />
+                                            </IconButton>
+                                            <Popover
+                                                {...bindPopover(popupState)}
+                                                anchorOrigin={{
+                                                    vertical: 'bottom',
+                                                    horizontal: 'center',
+                                                }}
+                                                transformOrigin={{
+                                                    vertical: 'top',
+                                                    horizontal: 'center',
+                                                }}
+                                            >
+                                                <Typography sx={{ p: 2 }}>Are you sure to delete this contact?</Typography>
+                                                <Button variant="contained" sx={{ left: '210px', bottom: '10px' }} onClick={handleDelete}>
+                                                    Yes
+                                                </Button>
+                                            </Popover>
+                                        </div>
+                                    )}
+                                </PopupState>
+                            </Stack>
+                            <IconPillTabs profilePanel={<Profile info={contactInfo} />} eventsPanel={<Events events={events} />} tab={tab} handleTabChange={handleTabChange} setTab={setTab} />
                         </Box>
                     </Box>
-                } 
+                }
             </Box>
         </Box>
     )

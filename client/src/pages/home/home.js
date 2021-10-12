@@ -20,7 +20,7 @@ import { Box } from '@mui/system';
 const useStyles = makeStyles((theme) => ({
   root: {
     background: '#fff1e1',
-    height: '100vh',
+    paddingBottom: 20,
   },
   eventGrid: {
     maxwidth: 'md',
@@ -36,7 +36,7 @@ const useStyles = makeStyles((theme) => ({
   overallCard: {},
 }));
 
-const maxCards = 10;
+const maxCards = 6;
 let cardIndex = Array.from(Array(maxCards).keys());
 
 function Home() {
@@ -128,7 +128,7 @@ function Home() {
                       {events[i].name}
                     </Typography>
                     <Typography gutterBottom variant="body1" component="h2">
-                      {getDate(events[i].dateTime)}
+                      {getDate(events[i].startedDateTime)}
                     </Typography>
                     <Typography
                       variant="body2"

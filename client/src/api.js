@@ -35,6 +35,22 @@ export function setEvent(id) {
   return axios.post(endpoint, id, config).then((res) => res.data);
 }
 
+export function getEventsFromContactId(contactId) {
+  let endpoint = '/event/search/';
+  let query = {
+    query: "",
+    participants: [contactId],
+  }
+
+  return axios.post(endpoint, query, config).then((res) => res.data).catch(error => console.log(error));
+}
+
+export function deleteEvent(id) {
+  let endpoint = '/event/' + id;
+
+  return axios.delete(endpoint, config).then((res) => res.data);
+}
+
 export function updateEvent(event) {
   let endpoint = '/event/' + event._id;
 
@@ -70,7 +86,7 @@ export async function login(username, password) {
 }
 
 export function getContacts() {
-  let endpoint = '/contact';
+  let endpoint = '/contact/getall';
 
   return axios.get(endpoint, config).then((res) => res.data);
 }
@@ -101,16 +117,41 @@ export function updateContact(contact) {
     .catch((e) => console.log(e.response));
 }
 
+export function delContact(id) {
+  let endpoint = '/contact/' + id;
+
+  return axios.delete(endpoint, config).then((res) => res.data);
+}
+
 export function me() {
   let endpoint = '/profile';
 
-  return instance.get(endpoint).then(res => res.data);
+  return instance.get(endpoint).then((res) => res.data);
+}
+
+export function updateUser(body) {
+  let endpoint = '/user/change-password';
+
+  return instance
+    .post(endpoint, body)
+    .then((res) => res.data)
+    .catch(function (error) {
+      console.log(error.response.status);
+
+      switch (error.response.status) {
+        case 401:
+        case 400:
+          return Promise.reject('Wrong password');
+        default:
+          return Promise.reject('Authentication failed');
+      }
+    });
 }
 
 export function getEventById(id) {
-    let endpoint = '/event/' + id
+  let endpoint = '/event/' + id;
 
-    return instance.get(endpoint).then(res => res.data);
+  return instance.get(endpoint).then((res) => res.data);
 }
 
 export function sendEmailInvite(id) {

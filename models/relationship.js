@@ -12,7 +12,7 @@ const RelationshipSchema = new mongoose.Schema(
     },
     startedDatetime: {
       type: Date,
-      required: true,
+      required: false,
     },
     tag: {
       type: [String],

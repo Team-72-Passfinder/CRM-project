@@ -6,13 +6,6 @@ const Search = require('./search');
 
 // Create a new relationship ===================================================
 exports.create = async (req, res) => {
-  // Validate belongsTo
-  // Check for valid datetime
-  if (!req.body.startedDatetime) {
-    return res.status(400).send({
-      message: 'Require started date of the relatioship!',
-    });
-  }
   // Check if this relationship contains exactly 2 users
   if (!req.body.people || Object.keys(req.body.people).length != 2) {
     return res.status(400).send({
@@ -43,7 +36,7 @@ exports.create = async (req, res) => {
   const relationship = new Relationship({
     belongsTo: req.user._id,
     people: req.body.people.sort(),
-    startedDatetime: req.body.startedDatetime,
+    startedDatetime: req.body.startedDatetime || '',
     tag: req.body.tag || [],
     description: req.body.description || '',
   });
@@ -66,22 +59,18 @@ exports.create = async (req, res) => {
 exports.update = (req, res) => {
   // belongsTo, people and startedDateTime are to be fixed!
   // check if the request includes these fields
-  if (req.body.belongsTo) {
+  if (req.body.belongsTo && req.body.belongsTo != req.user._id) {
     return res.status(400).send({
       message: "Owner of the relationship are unchangaeble!",
     });
   }
+  /*
   if (req.body.people) {
     return res.status(400).send({
       message: 'people in this relationship are unchangaeble!',
     });
-  }
-  if (req.body.startedDatetime) {
-    return res.status(400).send({
-      message: 'StartedDatetime in this relationship is unchangaeble!',
-    });
-  }
-  // Only tags and description can be updated
+  }*/
+  // Only tags, starteddateTime and description can be updated
   //controller.updateData(Relationship, req, res);
   const id = req.params.id;
 

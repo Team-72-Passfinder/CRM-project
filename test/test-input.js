@@ -90,18 +90,8 @@ const eventTester = {
     name: 'Yearly company meeting',
     startedDateTime: '1/2/1234',
     endedDateTime: '1/3/1234',
-    participants: ['me', 'boss', 'secretary', 'junior'],
     description: 'Fun time',
     completed: true,
-  },
-
-  newEventForPutRoute: {
-    name: 'Visit big boss Kanyes birthday',
-    startedDateTime: '4/2/1245',
-    endedDateTime: '4/3/1245',
-    participants: ['me', 'bigboss', 'underling'],
-    description: 'Wholesome bro time',
-    completed: false,
   },
 
   updateEvent: {

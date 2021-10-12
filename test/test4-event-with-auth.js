@@ -83,7 +83,7 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
         function (done) {
           chai
             .request(server)
-            .get('/event/search')
+            .post('/event/search')
             .send({ query: '' })
             .end((err, res) => {
               res.should.have.status(401);
@@ -221,8 +221,16 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
             .request(server)
             .post('/event')
             .auth(token, { type: 'bearer' })
-            .send(eventTester.newEventForPutRoute)
+            .send({
+              name: 'Visit big boss Kanyes birthday',
+              startedDateTime: '4/2/1245',
+              endedDateTime: '4/3/1245',
+              participants: [contactId1, contactId2],
+              description: 'Wholesome bro time',
+              completed: false,
+            })
             .end((err, res) => {
+              res.should.have.status(200);
               chai
                 .request(server)
                 .put('/event/' + res.body._id)
@@ -252,7 +260,7 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
           };
           chai
             .request(server)
-            .get('/event/search')
+            .post('/event/search')
             .auth(token, { type: 'bearer' })
             .send(query)
             .end((err, res) => {

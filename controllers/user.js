@@ -162,3 +162,24 @@ exports.findOne = (req, res) => {
 exports.search = (req, res) => {
   Search.userSearch(req, res);
 };
+
+exports.changePassword = async (req, res) => {
+    if (!req.user) {
+        return console.error();
+    }
+
+    console.log(req.body)
+
+    let user = await User.findOne({ username: req.user.username });
+
+    if (user.verifyPassword(req.body.oldPassword)) {
+        user.password = user.hashPassword(req.body.newPassword);
+
+        await user.save();
+
+        res.send(user);
+    } else {
+        // return new Error("Wrong password")
+        return res.status(401).send("Wrong password");
+    }
+};

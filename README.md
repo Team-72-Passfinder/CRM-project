@@ -19,6 +19,8 @@ It's a CRM with a different C. This software is used to manage the user's contac
 
 We will follow a **trunk-based approach**, where developers collaborate on a single branch and avoid creating other long-lived feature branches. We will create a branch, code it, pull request it and merge it. Then we will create another branch to code other part of the software. This avoid merge hell when we finalize the product.
 
+Note: Alway run `npm test` on root folder first before create a pull request, even if you changed only frontend. The reason is mongoDB need some time to "wake up" first (as we used free version), so this will make sure that the CI test on Github will run successful. If the `npm test` fail and you sure that you don't change anything that may affect it, re-run it a few more times.
+
 **Naming convention**:
 
 - For files and folders, use lowercase letter and hyphen between words. Examples: `file-name`, `backend`, `main-file.js`, `src/a-very-long-file-name.js`, etc..
