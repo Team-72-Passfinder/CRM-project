@@ -12,6 +12,7 @@ https://stackoverflow.com/questions/26948516/nodemailer-invalid-login
 require('dotenv').config();
 const nodemailer = require('nodemailer');
 const Event = require('../models/event');
+const Contact = require('../models/contact');
 
 var transporter = nodemailer.createTransport({
   service: process.env.NODEMAILER_SERVICE,
@@ -24,54 +25,54 @@ var transporter = nodemailer.createTransport({
   },
 });
 
-let mailOptions = {
-  from: '',
-  to: 'citrus.contact.unimelb@gmail.com',
-  subject: 'You have an event invitation from',
-  text: 'You have an event invitation from',
-};
+function ConstructEmail(userEmail, eventData, participantsNameList, emailList) {
+  let mailContent = {
+    from: '',
+    to: '',
+    subject: '',
+    text: '',
+  };
+
+  // Update the email content
+  mailContent.from = userEmail;
+  mailContent.to = emailList;
+  mailContent.subject = eventData.name;
+  mailContent.text = '\n' + 'Description: ' + eventData.description;
+  mailContent.text += '\n' + 'Participants: ' + participantsNameList.toString();
+  mailContent.text +=
+    '\n' +
+    'Start DateTime: ' +
+    new Date(eventData.startedDateTime).toLocaleString('en-GB', {
+      timeZone: 'UTC',
+    });
+
+  return mailContent;
+}
 
 exports.SendInvite = async (req, res) => {
-  // Check if eventId is valid
-  const id = req.params.id;
-  await Event.findById(id)
-    .then((found) => {
-      if (!found) {
-        return res
-          .status(404)
-          .send({ message: 'No event is foudn with this Id!' });
-      }
+  var eventData, participantsNameList, emailList;
 
-      // Update the email content
-      console.log(found);
-      mailOptions.subject = found.name;
-      mailOptions.text = 'Description: ' + found.description;
-      mailOptions.text +=
-        '\n' + 'Participants: ' + found.participants.toString();
-      mailOptions.text +=
-        '\n' +
-        'Start DateTime: ' +
-        new Date(found.startedDateTime).toLocaleString('en-GB', {
-          timeZone: 'UTC',
-        });
-      console.log(mailOptions);
-      // Send the email
-      transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-          console.log(error);
-          return res
-            .status(500)
-            .send({ message: 'Error when establishing nodemailer!' });
-        } else {
-          res.status(200).send({ message: 'Email sent: ' + info.response });
-        }
-        transporter.close();
-      });
-    })
-    .catch((err) => {
-      console.log(err);
-      res.status(500).send({ message: 'Error when accessing the database!' });
-    });
+  // Finished everything, now construct the email content
+  let mailContent = ConstructEmail(
+    req.user.email,
+    eventData,
+    participantsNameList,
+    emailList
+  );
+  // Send email
+  console.log(mailContent);
+  // Temporary comment for testing
+  // transporter.sendMail(mailContent, function (error, info) {
+  //   if (error) {
+  //     console.log(error);
+  //     return res
+  //       .status(500)
+  //       .send({ message: 'Error when establishing nodemailer!' });
+  //   } else {
+  //     res.status(200).send({ message: 'Email sent: ' + info.response });
+  //   }
+  //   transporter.close();
+  // });
 };
 
 var testMail = {

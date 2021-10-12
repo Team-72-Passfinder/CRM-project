@@ -13,13 +13,19 @@ exports.create = async (req, res) => {
     });
   }
 
-  if (!req.body.startedDateTime || Validator.checkValidDate(req.body.startedDateTime) == "Invalid Date") {
+  if (
+    !req.body.startedDateTime ||
+    Validator.checkValidDate(req.body.startedDateTime) == 'Invalid Date'
+  ) {
     return res.status(400).send({
       message: 'Missing or invalid startedDateTime!',
     });
   }
 
-  if (req.body.endedDateTime && Validator.checkValidDate(req.body.endedDateTime) == "Invalid Date") {
+  if (
+    req.body.endedDateTime &&
+    Validator.checkValidDate(req.body.endedDateTime) == 'Invalid Date'
+  ) {
     return res.status(400).send({
       message: 'Invalid endedDateTime!',
     });
@@ -32,10 +38,15 @@ exports.create = async (req, res) => {
   }
 
   // Enfore dateTime
-  if (req.body.startedDateTime.charAt(req.body.startedDateTime.length - 1) != 'Z') {
+  if (
+    req.body.startedDateTime.charAt(req.body.startedDateTime.length - 1) != 'Z'
+  ) {
     req.body.startedDateTime += 'Z';
   }
-  if (req.body.endedDateTime && req.body.endedDateTime.charAt(req.body.endedDateTime.length - 1) != 'Z') {
+  if (
+    req.body.endedDateTime &&
+    req.body.endedDateTime.charAt(req.body.endedDateTime.length - 1) != 'Z'
+  ) {
     req.body.endedDateTime += 'Z';
   }
 
@@ -74,22 +85,28 @@ exports.update = async (req, res) => {
   }
   if (req.body.name && Validator.checkInvalid(req.body.name)) {
     return res.status(400).send({
-      message: "Event name should not contain invalid characters!",
+      message: 'Event name should not contain invalid characters!',
     });
   }
-  if (req.body.startedDateTime && Validator.checkValidDate(req.body.startedDateTime) == "Invalid Date") {
+  if (
+    req.body.startedDateTime &&
+    Validator.checkValidDate(req.body.startedDateTime) == 'Invalid Date'
+  ) {
     return res.status(400).send({
-      message: "Invalid startedDateTime!",
+      message: 'Invalid startedDateTime!',
     });
   }
-  if (req.body.endedDateTime && Validator.checkValidDate(req.body.endedDateTime) == "Invalid Date") {
+  if (
+    req.body.endedDateTime &&
+    Validator.checkValidDate(req.body.endedDateTime) == 'Invalid Date'
+  ) {
     return res.status(400).send({
-      message: "Invalid endedDateTime!",
+      message: 'Invalid endedDateTime!',
     });
   }
   if (req.body.completed && req.body.completed == null) {
     return res.status(400).send({
-      message: "Event complete status should not be empty!",
+      message: 'Event complete status should not be empty!',
     });
   }
   //controller.updateData(Event, req, res);
@@ -125,8 +142,7 @@ exports.findOne = (req, res) => {
   //controller.findOne(Event, req, res);
   // ID
   const id = req.params.id;
-  Event
-    .findOne({ _id: id, belongsTo: req.user._id })
+  Event.findOne({ _id: id, belongsTo: req.user._id })
     .then(async (data) => {
       // If data with this id is not found
       if (!data) {
@@ -150,17 +166,18 @@ exports.search = (req, res) => {
   Search.eventSearch(req, res);
 };
 
-// Get all contacts that belong to a specific user ============================
+// Get all events that belong to current user ============================
 exports.getall = (req, res) => {
   const ownerId = req.user._id;
 
-  Event.find({ belongsTo: ownerId }).then(async (data) => {
-    var eventMap = [];
-    for (let i = 0; i < data.length; i++) {
-      eventMap.push(await controller.displayEvent(data[i]));
-    }
-    res.status(200).send(eventMap);
-  })
+  Event.find({ belongsTo: ownerId })
+    .then(async (data) => {
+      var eventMap = [];
+      for (let i = 0; i < data.length; i++) {
+        eventMap.push(await controller.displayEvent(data[i]));
+      }
+      res.status(200).send(eventMap);
+    })
     // Catching error
     .catch((err) => {
       console.log(err);
