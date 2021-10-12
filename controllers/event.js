@@ -3,6 +3,7 @@ const Event = require('../models/event');
 const controller = require('./controller-support');
 const Validator = require('./validator');
 const Search = require('./search');
+const Contact = require('../models/contact');
 
 // Create a new event ===================================================
 exports.create = async (req, res) => {
@@ -149,8 +150,9 @@ exports.findAll = (req, res) => {
 
 // Find a single event with the event's id ====================================
 // that returns one that belongs to the current logged-in user only
-exports.findOne = (req, res) => {
+exports.findOne = async (req, res) => {
   //controller.findOne(Event, req, res);
+  var toReturn = {};
   // ID
   const id = req.params.id;
   Event.findOne({ _id: id, belongsTo: req.user._id })
@@ -162,8 +164,27 @@ exports.findOne = (req, res) => {
           message: 'No event is found with this id!',
         });
       }
-      // else, return
-      res.send(await controller.displayEvent(data));
+      // else, store this data to toReturn
+      //res.send(await controller.displayEvent(data));
+      toReturn = await controller.displayEvent(data);
+      toReturn.participantId = data.participants;
+      toReturn.emails = [];
+
+      // Now access Contact DB to retrieve email address
+      await Contact.find({ _id: { $in: data.participants }, belongsTo: data.belongsTo })
+        .then((found) => {
+          if (found) {
+            found.forEach((element) => {
+              // some contacts don;t have email
+              if (element.email) {
+                toReturn.emails.push(element.email);
+              }
+            });
+          }
+        });
+
+      //console.log(toReturn);
+      res.status(200).send(toReturn);
     })
     // Catching the error when assessing the DB
     .catch((err) => {
