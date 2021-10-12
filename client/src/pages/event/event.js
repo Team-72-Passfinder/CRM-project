@@ -6,7 +6,7 @@ import { CardActions } from '@mui/material';
 import { CardContent } from '@mui/material';
 import { Grid } from '@mui/material';
 import { Typography } from '@mui/material';
-import { makeStyles, createTheme,ThemeProvider } from '@mui/styles';
+import { makeStyles, createTheme, ThemeProvider } from '@mui/styles';
 import { Container } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { Box } from '@mui/material';
@@ -50,8 +50,9 @@ function Event() {
                   <Box mt={5}>
                     <Typography variant="h6">{event.name}</Typography>
                     <Typography variant="h6">
-                      {getDate(event.startDateTime)}
+                      {getDate(event.startedDateTime)}
                     </Typography>
+                    <Typography variant="h6">{event.participants}</Typography>
                     <Typography variant="h6">{event.description}</Typography>
                   </Box>
                 </form>
