@@ -45,8 +45,8 @@ const useStyles = makeStyles((theme) => ({
     maxWidth: '70vw',
   },
   featureImage: {
-    marginLeft: 30,
-    marginRight: 30,
+    marginLeft: 20,
+    marginRight: 20,
     marginTop: 10,
     marginBottom: 10,
     height: '20%',

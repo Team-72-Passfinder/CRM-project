@@ -31,6 +31,12 @@ exports.create = async (req, res) => {
     });
   }
 
+  if (req.body.participants && !(await Validator.checkValidContactList(req.body.participants, req.user._id))) {
+    return res.status(400).send({
+      message: "Participant list contains invalid Ids",
+    });
+  }
+
   // Enfore dateTime
   if (req.body.startedDateTime.charAt(req.body.startedDateTime.length - 1) != 'Z') {
     req.body.startedDateTime += 'Z';
@@ -67,7 +73,7 @@ exports.create = async (req, res) => {
 // Update event identified by the event's Id ==============================
 exports.update = async (req, res) => {
   // validate DateTime, name and completness status
-  if (req.body.belongsTo) {
+  if (req.body.belongsTo && req.body.belongsTo != req.user._id) {
     return res.status(400).send({
       message: 'Owner of the event are unchangaeble!',
     });
@@ -90,6 +96,11 @@ exports.update = async (req, res) => {
   if (req.body.completed && req.body.completed == null) {
     return res.status(400).send({
       message: "Event complete status should not be empty!",
+    });
+  }
+  if (req.body.participants && !(await Validator.checkValidContactList(req.body.participants, req.user._id))) {
+    return res.status(400).send({
+      message: "Participant list contains invalid Ids",
     });
   }
   //controller.updateData(Event, req, res);

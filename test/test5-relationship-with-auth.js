@@ -72,7 +72,7 @@ mocha.describe('************* TEST RELATIONSHIP ROUTES *************', function 
     mocha.it('it should not give access to SEARCH without a verified token ', function (done) {
       chai
         .request(server)
-        .get('/relationship/search')
+        .post('/relationship/search')
         .send({ query: "" })
         .end((err, res) => {
           res.should.have.status(401);
@@ -199,7 +199,8 @@ mocha.describe('************* TEST RELATIONSHIP ROUTES *************', function 
           .end((err, res) => {
             res.should.have.status(200);
             res.body.should.be.a('array');
-            res.body.length.should.be.eql(1);
+            res.body.length.should.be.eql(3);
+            // 1 newly created and 2 created automatically when creating new contacts
             done();
           });
       });
@@ -278,7 +279,7 @@ mocha.describe('************* TEST RELATIONSHIP ROUTES *************', function 
       mocha.it('it should perform SEARCH query successfully ', (done) => {
         chai
           .request(server)
-          .get('/relationship/search')
+          .post('/relationship/search')
           .auth(token, { type: 'bearer' })
           .send({ query: "engi" })
           .end((err, res) => {
