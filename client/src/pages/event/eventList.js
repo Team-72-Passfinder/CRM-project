@@ -11,7 +11,7 @@ import {
 import { makeStyles } from '@mui/styles';
 
 import Navbar from '../../components/Navbar';
-import { getEvents, me } from '../../api';
+import { getEvents } from '../../api';
 import { Box } from '@mui/system';
 
 import AddEvent from './addEvent';

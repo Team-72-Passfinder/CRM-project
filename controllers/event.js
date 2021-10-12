@@ -38,9 +38,15 @@ exports.create = async (req, res) => {
     });
   }
 
-  if (req.body.participants && !(await Validator.checkValidContactList(req.body.participants, req.user._id))) {
+  if (
+    req.body.participants &&
+    !(await Validator.checkValidContactList(
+      req.body.participants,
+      req.user._id
+    ))
+  ) {
     return res.status(400).send({
-      message: "Participant list contains invalid Ids",
+      message: 'Participant list contains invalid Ids',
     });
   }
 
@@ -116,9 +122,15 @@ exports.update = async (req, res) => {
       message: 'Event complete status should not be empty!',
     });
   }
-  if (req.body.participants && !(await Validator.checkValidContactList(req.body.participants, req.user._id))) {
+  if (
+    req.body.participants &&
+    !(await Validator.checkValidContactList(
+      req.body.participants,
+      req.user._id
+    ))
+  ) {
     return res.status(400).send({
-      message: "Participant list contains invalid Ids",
+      message: 'Participant list contains invalid Ids',
     });
   }
   //controller.updateData(Event, req, res);
@@ -171,17 +183,19 @@ exports.findOne = async (req, res) => {
       toReturn.emails = [];
 
       // Now access Contact DB to retrieve email address
-      await Contact.find({ _id: { $in: data.participants }, belongsTo: data.belongsTo })
-        .then((found) => {
-          if (found) {
-            found.forEach((element) => {
-              // some contacts don;t have email
-              if (element.email) {
-                toReturn.emails.push(element.email);
-              }
-            });
-          }
-        });
+      await Contact.find({
+        _id: { $in: data.participants },
+        belongsTo: data.belongsTo,
+      }).then((found) => {
+        if (found) {
+          found.forEach((element) => {
+            // some contacts don;t have email
+            if (element.email) {
+              toReturn.emails.push(element.email);
+            }
+          });
+        }
+      });
 
       //console.log(toReturn);
       res.status(200).send(toReturn);
