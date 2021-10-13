@@ -1,37 +1,44 @@
-import { Button } from '@mui/material';
-import React, { useState, useEffect } from 'react';
-import { sendEmailInvite, getEvent } from '../api';
+import React from 'react';
+import DialogActions from '@mui/material/DialogActions';
+import DialogTitle from '@mui/material/DialogTitle';
+import { Dialog, Button } from '@mui/material';
+import { sendEmailInvite } from '../api';
 
-function handleClick(id) {
-  sendEmailInvite(id);
-}
-
-function EventInvite() {
-  const [event, setEvent] = useState();
-
-  // ? error here; is this actually likely to capture ID as expected in a format that the API can interact with?
-  useEffect(() => {
-    let id = window.location.pathname.split('/')[2];
-    getEvent(id).then((res) => {
-      setEvent(res);
+function EventInvite(props) {
+  const [open, setOpen] = React.useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+  function clickSendInvite() {
+    sendEmailInvite(props.eventId).then((res) => {
+      handleClose();
+      window.location.reload();
     });
-  }, []);
-
-  if (event != null) {
-    return (
-      <div>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={(e) => handleClick(event._id)}
-        >
-          Send invite!
-        </Button>
-      </div>
-    );
-  } else {
-    return <h3> Loading...</h3>;
   }
-}
 
+  return (
+    <div>
+      <Button color="primary" variant="contained" onClick={handleClickOpen}>
+        Invite
+      </Button>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Send invite to event through emails?</DialogTitle>
+        <DialogActions>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button
+            sx={{ width: 30, my: '10px' }}
+            color="primary"
+            variant="contained"
+            onClick={clickSendInvite}
+          >
+            Send
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+}
 export default EventInvite;
