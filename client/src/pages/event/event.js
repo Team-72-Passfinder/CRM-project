@@ -6,7 +6,7 @@ import { CardActions } from '@mui/material';
 import { CardContent } from '@mui/material';
 import { Grid } from '@mui/material';
 import { Typography } from '@mui/material';
-import { makeStyles, createTheme,ThemeProvider } from '@mui/styles';
+import { makeStyles, createTheme, ThemeProvider } from '@mui/styles';
 import { Container } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { Box } from '@mui/material';
@@ -15,6 +15,9 @@ import 'react-edit-text/dist/index.css';
 
 import { getEvent } from '../../api';
 import { editEvent } from '../../api';
+// Remove when ready
+import EventInvite from '../../components/EventInvite';
+
 const useStyles = makeStyles((theme) => ({}));
 
 function Event() {
@@ -47,8 +50,9 @@ function Event() {
                   <Box mt={5}>
                     <Typography variant="h6">{event.name}</Typography>
                     <Typography variant="h6">
-                      {getDate(event.startDateTime)}
+                      {getDate(event.startedDateTime)}
                     </Typography>
+                    <Typography variant="h6">{event.participants}</Typography>
                     <Typography variant="h6">{event.description}</Typography>
                   </Box>
                 </form>
@@ -62,6 +66,10 @@ function Event() {
                 >
                   Edit
                 </Button>
+              </div>
+              {/*Dummy send invite button*/}
+              <div>
+                <EventInvite />
               </div>
             </main>
           </React.Fragment>

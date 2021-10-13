@@ -11,11 +11,12 @@ import {
 import { makeStyles } from '@mui/styles';
 
 import Navbar from '../../components/Navbar';
-import { getEvents, me } from '../../api';
+import { getEvents } from '../../api';
 import { Box } from '@mui/system';
 
 import AddEvent from './addEvent';
 import DeleteEvent from './deleteEvent';
+import EventInvite from '../../components/EventInvite';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -131,6 +132,7 @@ function EventList() {
           {/* End Hero Unit */}
 
           {/* Event Grid Unit */}
+          {/* Upcoming Events */}
           <Typography component="h3" variant="h3" align="center" color="black">
             Upcoming Events: {upcomingEvents.length}
           </Typography>
@@ -170,21 +172,24 @@ function EventList() {
                     </Typography>
                   </CardContent>
                   <CardActions>
-                    <Button
-                      className={classes.toolbarButton}
-                      variant="contained"
-                      color="primary"
-                      onClick={(e) => handleClick(events[i]._id)}
-                    >
-                      View
-                    </Button>
+                    <div>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        onClick={(e) => handleClick(events[i]._id)}
+                      >
+                        View
+                      </Button>
+                    </div>
                     <DeleteEvent eventId={events[i]._id} />
+                    <EventInvite eventId={events[i]._id} />
                   </CardActions>
                 </Card>
               </Grid>
             ))}
           </Grid>
 
+          {/* Past Events */}
           <Typography component="h3" variant="h3" align="center" color="black">
             Past Events: {pastEvents.length}
           </Typography>
@@ -226,7 +231,6 @@ function EventList() {
                   </CardContent>
                   <CardActions>
                     <Button
-                      className={classes.toolbarButton}
                       variant="contained"
                       onClick={(e) => handleClick(events[i]._id)}
                     >

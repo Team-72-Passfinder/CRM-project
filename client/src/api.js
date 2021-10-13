@@ -38,11 +38,14 @@ export function setEvent(id) {
 export function getEventsFromContactId(contactId) {
   let endpoint = '/event/search/';
   let query = {
-    query: "",
+    query: '',
     participants: [contactId],
-  }
+  };
 
-  return axios.post(endpoint, query, config).then((res) => res.data).catch(error => console.log(error));
+  return axios
+    .post(endpoint, query, config)
+    .then((res) => res.data)
+    .catch((error) => console.log(error));
 }
 
 export function deleteEvent(id) {
@@ -152,4 +155,10 @@ export function getEventById(id) {
   let endpoint = '/event/' + id;
 
   return instance.get(endpoint).then((res) => res.data);
+}
+
+export function sendEmailInvite(id) {
+  let endpoint = '/invite/' + id;
+  console.log('Send invite');
+  return axios.get(endpoint, config).then((res) => res.data);
 }

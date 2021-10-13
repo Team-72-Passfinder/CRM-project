@@ -8,6 +8,7 @@ const eventRoute = require('./routes/event');
 const contactRoute = require('./routes/contact');
 const relationshipRoute = require('./routes/relationship');
 const conversationRoute = require('./routes/conversation');
+const inviteRoute = require('./routes/invite');
 const app = express();
 const path = require('path');
 
@@ -33,6 +34,7 @@ app.use(eventRoute);
 app.use(relationshipRoute);
 app.use(conversationRoute);
 app.use(contactRoute);
+app.use(inviteRoute);
 
 // Authentication
 //require('./models/user');
