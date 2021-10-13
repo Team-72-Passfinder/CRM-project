@@ -41,4 +41,4 @@ jobs:
       - run: npm ci
       - run: npm test
       # Test frontend
-      - run: npm test:ci --prefix client
+      - run: npm run test:ci --prefix client
