@@ -17,6 +17,7 @@ function ContactList() {
     const [open, setOpen] = React.useState(false)
     const [openDialog, setOpenDialog] = useState(false)
     const [sortBy, setSortBy] = useState("Recently added")
+    const [filter, setFilter] = useState([])
 
     const progressing = useRef(true);
 
@@ -160,42 +161,80 @@ function ContactList() {
                             display: `${(progressing.current && 'none') || 'initial'}`,
                         }}>
                         {search === '' ?
-                            contacts.map((element) => (
-                                <ListItem
-                                    sx={{
-                                        background: 'white',
-                                        width: 368,
-                                        maxWidth: '90vw'
-                                    }} id={element._id} key={element._id} button onClick={e => handleClick(element._id)}>
-                                    <ListItemAvatar>
-                                        <Avatar>{element.firstName[0]}</Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText>
-                                        <Typography sx={{ color: '#141010', fontWeight: 'bold', fontSize: '15px' }}>
-                                            {element.firstName} {element.lastName}
-                                        </Typography>
-                                    </ListItemText>
-                                </ListItem>
-                            ))
+                            filter.length !== 0?
+                                contacts.filter(contact => filter.every(r => contact.tags.includes(r))).map((element) => (
+                                    <ListItem
+                                        sx={{
+                                            background: 'white',
+                                            width: 368,
+                                            maxWidth: '90vw'
+                                        }} id={element._id} key={element._id} button onClick={e => handleClick(element._id)}>
+                                        <ListItemAvatar>
+                                            <Avatar>{element.firstName[0]}</Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemText>
+                                            <Typography sx={{ color: '#141010', fontWeight: 'bold', fontSize: '15px' }}>
+                                                {element.firstName} {element.lastName}
+                                            </Typography>
+                                        </ListItemText>
+                                    </ListItem>
+                                ))
+                                :
+                                contacts.map((element) => (
+                                    <ListItem
+                                        sx={{
+                                            background: 'white',
+                                            width: 368,
+                                            maxWidth: '90vw'
+                                        }} id={element._id} key={element._id} button onClick={e => handleClick(element._id)}>
+                                        <ListItemAvatar>
+                                            <Avatar>{element.firstName[0]}</Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemText>
+                                            <Typography sx={{ color: '#141010', fontWeight: 'bold', fontSize: '15px' }}>
+                                                {element.firstName} {element.lastName}
+                                            </Typography>
+                                        </ListItemText>
+                                    </ListItem>
+                                ))
                             :
+                            filter.length !== 0 ?
                             // Filtered contacts
-                            contacts.filter(contact => contact.firstName.toLowerCase().match(search.toLowerCase()) || contact.lastName.toLowerCase().match(search.toLowerCase())).map((element) => (
-                                <ListItem
-                                    sx={{
-                                        background: 'white',
-                                        width: '368px',
-                                        maxWidth: '90vw',
-                                    }} id={element._id} key={element._id} button onClick={e => handleClick(element._id)}>
-                                    <ListItemAvatar>
-                                        <Avatar>{element.firstName[0]}</Avatar>
-                                    </ListItemAvatar>
-                                    <ListItemText>
-                                        <Typography sx={{ fontWeight: 'bold', fontSize: '15px' }}>
-                                            {element.firstName} {element.lastName}
-                                        </Typography>
-                                    </ListItemText>
-                                </ListItem>
-                            ))
+                                contacts.filter(contact => filter.every(r => contact.tags.includes(r))).filter(contact => contact.firstName.toLowerCase().match(search.toLowerCase()) || contact.lastName.toLowerCase().match(search.toLowerCase())).map((element) => (
+                                    <ListItem
+                                        sx={{
+                                            background: 'white',
+                                            width: '368px',
+                                            maxWidth: '90vw',
+                                        }} id={element._id} key={element._id} button onClick={e => handleClick(element._id)}>
+                                        <ListItemAvatar>
+                                            <Avatar>{element.firstName[0]}</Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemText>
+                                            <Typography sx={{ fontWeight: 'bold', fontSize: '15px' }}>
+                                                {element.firstName} {element.lastName}
+                                            </Typography>
+                                        </ListItemText>
+                                    </ListItem>
+                                ))
+                                :
+                                contacts.filter(contact => contact.firstName.toLowerCase().match(search.toLowerCase()) || contact.lastName.toLowerCase().match(search.toLowerCase())).map((element) => (
+                                    <ListItem
+                                        sx={{
+                                            background: 'white',
+                                            width: '368px',
+                                            maxWidth: '90vw',
+                                        }} id={element._id} key={element._id} button onClick={e => handleClick(element._id)}>
+                                        <ListItemAvatar>
+                                            <Avatar>{element.firstName[0]}</Avatar>
+                                        </ListItemAvatar>
+                                        <ListItemText>
+                                            <Typography sx={{ fontWeight: 'bold', fontSize: '15px' }}>
+                                                {element.firstName} {element.lastName}
+                                            </Typography>
+                                        </ListItemText>
+                                    </ListItem>
+                                ))
                         }
                     </List>
                 </Box>
@@ -205,7 +244,7 @@ function ContactList() {
                     </Typography> */}
                 </Box>
             </Box>
-            <Fab sx={{ display: { sm: 'none' }, position: 'fixed', right: 16, bottom: 16 }} onClick={handleOpenDialog}>
+            <Fab sx={{ position: 'fixed', right: 16, bottom: 16 }} onClick={handleOpenDialog}>
                 <SortIcon />
             </Fab>
             {/* Add dialog content here */}
@@ -246,7 +285,9 @@ function ContactList() {
                             id="auto"
                             multiple
                             options={['family', 'assistant']}
-                            onChange={(event, newValue) => console.log(newValue)}
+                            onChange={(event, newValue) => {setFilter(newValue)}}
+                            value={filter}
+                            disableClearable
                             renderInput={(params) => (
                                 <TextField
                                     {...params}

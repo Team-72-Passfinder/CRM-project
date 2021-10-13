@@ -4,7 +4,7 @@ https://www.toptal.com/react/testing-react-hooks-tutorial
 */
 
 import React from 'react';
-import ContactList from '../pages/ContactList/ContactList';
+import Socials from '../pages/Socials';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 
@@ -12,7 +12,7 @@ it('renders Navbar page without crashing', () => {
   const div = document.createElement('div');
   ReactDOM.render(
     <BrowserRouter>
-      <ContactList />
+      <Socials />
     </BrowserRouter>,
     div
   );
