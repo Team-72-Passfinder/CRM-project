@@ -120,6 +120,7 @@ function Socials() {
                                 options={['family', 'assistant']}
                                 onChange={(event, newValue) => { setFilter(newValue) }}
                                 value={filter}
+                                freeSolo
                                 disableClearable
                                 renderInput={(params) => (
                                     <TextField
