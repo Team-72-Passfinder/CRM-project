@@ -69,4 +69,52 @@ function IconPillTabs({ profilePanel, eventsPanel, tab, handleTabChange, setTab 
     )
 }
 
-export default IconPillTabs
+function addContactPillTabs({ addManually, addFromUser, tab, handleTabChange, setTab }) {
+    return (
+        <TabContext value={tab}>
+            <Tabs
+                sx={{
+                    minHeight: '70px',
+                    background: '#F7F7F7',
+                    borderRadius: '10px',
+                }}
+                TabIndicatorProps={{
+                    style: {
+                        width: '50px',
+                        height: '50px',
+                        margin: '10px 0px',
+                        borderRadius: '10px',
+                        background: '#DF7861',
+                        boxShadow: '6px 6px 10px rgba(223, 120, 97, 0.25)',
+                        zIndex: 0
+                    },
+                }}
+                value={tab}
+                onChange={handleTabChange}
+            >
+                <Tab
+                    sx={tabStyle}
+                    label="Add Manually"
+                    value="Add Manually"
+                />
+                <Tab
+                    sx={tabStyle}
+                    label="Add From User"
+                    value="Add From User"
+                />
+            </Tabs>
+            <TabPanel value="Add Manually">
+                <Stack>
+                    {addManually}
+                </Stack>
+            </TabPanel>
+            <TabPanel value="Add From User">
+                <Stack>
+                    {addFromUser}
+                </Stack>
+            </TabPanel>
+        </TabContext>
+    )
+}
+
+export { IconPillTabs, addContactPillTabs }

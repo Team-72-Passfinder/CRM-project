@@ -1,18 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
 import {
-  Box,
-  Dialog,
-  Slide,
-  IconButton,
-  AppBar,
-  Toolbar,
-  Typography,
-  Avatar,
-  FilledInput,
-  FormControl,
-  Button,
-  Alert,
+  Box, Dialog, Slide, IconButton, AppBar, Toolbar, Typography, Avatar, FilledInput, FormControl, Button, Alert,
 } from '@mui/material';
 
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
@@ -24,6 +13,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import StandardInput from '../../components/StandardInput';
 import AutoComplete from '../../components/AutoComplete';
+import { addContactPillTabs } from '../../components/Contact/IconPillTabs';
 
 import { addContact, getContacts } from '../../api';
 

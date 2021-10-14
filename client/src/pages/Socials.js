@@ -13,7 +13,7 @@ import AddContact from '../components/Socials/AddContact';
 function ContactList() {
     const [contacts, setContacts] = useState([])
     const [search, setSearch] = useState('')
-    const [tab, setTab] = useState('All')
+    const [tab, setTab] = useState('All Contacts')
     const [open, setOpen] = React.useState(false)
     const [openDialog, setOpenDialog] = useState(false)
     const [sortBy, setSortBy] = useState("Recently added")
@@ -66,13 +66,13 @@ function ContactList() {
     }, [sortBy])
 
     return (
-        <Box 
+        <Box
             sx={{
                 display: 'flex',
                 overflow: { xs: 'hidden', },
                 flexDirection: { xs: 'column', sm: 'row' },
                 height: '100vh',
-            }} 
+            }}
         >
             <Navbar active="Socials" />
             <Box sx={{ flexGrow: { xs: 0, sm: 1 }, display: { sm: 'flex' }, height: '100%' }}>
@@ -89,7 +89,7 @@ function ContactList() {
                             alignItems="center"
                         >
                             <Paper sx={{ background: '#EBEBEB', width: '316px', maxWidth: '90%', mr: '10px', my: '10px' }} elevation={0}>
-                                <InputBase sx={{ ml: '10px', width: '296px', maxWidth: '90%' }} placeholder='Search for contacts' onChange={(e) => { setSearch(e.target.value) }} />
+                                <InputBase sx={{ ml: '10px', width: '296px', maxWidth: '90%' }} placeholder='Search' onChange={(e) => { setSearch(e.target.value) }} />
                             </Paper>
                             <IconButton onClick={handleClickOpen}>
                                 <AddIcon />
@@ -129,8 +129,8 @@ function ContactList() {
                                         zIndex: 1
                                     }
                                 }}
-                                value="All"
-                                label="All"
+                                value="All Contacts"
+                                label="All Contacts"
                             />
                             <Tab
                                 sx={{
@@ -161,7 +161,7 @@ function ContactList() {
                             display: `${(progressing.current && 'none') || 'initial'}`,
                         }}>
                         {search === '' ?
-                            filter.length !== 0?
+                            filter.length !== 0 ?
                                 contacts.filter(contact => filter.every(r => contact.tags.includes(r))).map((element) => (
                                     <ListItem
                                         sx={{
@@ -199,7 +199,7 @@ function ContactList() {
                                 ))
                             :
                             filter.length !== 0 ?
-                            // Filtered contacts
+                                // Filtered contacts
                                 contacts.filter(contact => filter.every(r => contact.tags.includes(r))).filter(contact => contact.firstName.toLowerCase().match(search.toLowerCase()) || contact.lastName.toLowerCase().match(search.toLowerCase())).map((element) => (
                                     <ListItem
                                         sx={{
@@ -248,7 +248,7 @@ function ContactList() {
                 <SortIcon />
             </Fab>
             {/* Add dialog content here */}
-            <Dialog open={openDialog} onClose={handleOpenDialog}  fullWidth>
+            <Dialog open={openDialog} onClose={handleOpenDialog} fullWidth>
                 <DialogTitle>
                     Search filter
                 </DialogTitle>
@@ -257,7 +257,7 @@ function ContactList() {
                         <Typography>
                             Sort by
                         </Typography>
-                        <Select 
+                        <Select
                             value={sortBy}
                             variant="standard"
                             onChange={e => setSortBy(e.target.value)}
@@ -285,7 +285,7 @@ function ContactList() {
                             id="auto"
                             multiple
                             options={['family', 'assistant']}
-                            onChange={(event, newValue) => {setFilter(newValue)}}
+                            onChange={(event, newValue) => { setFilter(newValue) }}
                             value={filter}
                             disableClearable
                             renderInput={(params) => (

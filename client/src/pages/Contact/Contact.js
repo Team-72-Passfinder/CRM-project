@@ -9,7 +9,7 @@ import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 
 import { getContact, getEventById, delContact, getEventsFromContactId } from '../../api'
 import Navbar from '../../components/Navbar';
-import IconPillTabs from '../../components/Contact/IconPillTabs';
+import { IconPillTabs } from '../../components/Contact/IconPillTabs';
 import Profile from '../../components/Contact/Profile';
 import Events from '../../components/Contact/Events';
 
