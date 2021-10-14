@@ -17,19 +17,18 @@ function StandardInput({
   type,
   width,
   sx,
+  error,
+  setErrors
 }) {
   const emptyFieldErrorMessage = 'This field is required';
   const invalidEmailErrorMessage = 'invalid email';
   const invalidTelErrorMessage = 'Must only contain numbers';
 
   function isError() {
-    // if (required) {
-    //     return value === ''
-    // }
-
     if (value !== '') {
       switch (type) {
         case 'email':
+          setErrors((prev) => ({ ...prev, email: true }))
           return !/\S+@\S+\.\S+/.test(value);
         case 'tel':
           return isNaN(value);
@@ -39,15 +38,6 @@ function StandardInput({
   }
 
   function generateHelperText() {
-    // if (required) {
-    //     return (
-    //         value === '' &&
-    //         <FormHelperText error>
-    //             {emptyFieldErrorMessage}
-    //         </FormHelperText>
-    //     )
-    // }
-
     if (value !== '') {
       switch (type) {
         case 'email':
@@ -69,7 +59,7 @@ function StandardInput({
 
   if (label === 'Biography') {
     return (
-      <FormControl margin="dense" variant="filled">
+      <FormControl margin="dense" variant="filled" error={true}>
         <Typography sx={{ fontSize: '15px', fontWeight: 600 }} margin="none">
           {label}{required && '*'}
         </Typography>
@@ -90,7 +80,7 @@ function StandardInput({
           disableUnderline={true}
           hiddenLabel={true}
           onChange={e => setValue(prev => ({ ...prev, [name]: e.target.value }))}
-          error={isError()}
+          error={true}
           required={required}
         />
         {generateHelperText()}
@@ -123,11 +113,12 @@ function StandardInput({
         }
         disableUnderline={true}
         hiddenLabel={true}
-        onChange={(e) =>
+        onChange={(e) => {
           setValue((prev) => ({ ...prev, [name]: e.target.value }))
-        }
+          isError()
+        }}
         value={value}
-        error={isError()}
+        error={error}
         required={required}
       />
       {generateHelperText()}
