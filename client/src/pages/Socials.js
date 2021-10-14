@@ -76,11 +76,11 @@ function Socials() {
             <Navbar active="Socials" />
             <Box sx={{ flexGrow: { xs: 0, sm: 1 }, display: { sm: 'flex' }, height: '100%', justifyContent: 'center', alignItems: 'center' }}>
                 <Box sx={{ display: 'flex', height: '90vh', background: '#F7F7F7', }}>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: { xs: '100%',  sm: '500px', md: '400px', lg: '600px' }, maxWidth: { xs: '100%' }, background: 'white', borderRadius: { xs: '0px', sm: '20px' }, paddingY: { xs: 0, sm: '20px' }, boxShadow: { xs: 'none', sm: '4px 4px 4px rgba(0, 0, 0, 0.25)'}, }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: { xs: '100%', sm: '500px', md: '400px', lg: '600px' }, maxWidth: { xs: '100%' }, background: 'white', borderRadius: { xs: '0px', sm: '20px' }, paddingY: { xs: 0, sm: '20px' }, boxShadow: { xs: 'none', sm: '0px 4px 4px rgba(0, 0, 0, 0.25)'}, }}>
                         <Header handleClickOpen={handleClickOpen} sortBy={sortBy} setSortBy={setSortBy} setSearch={setSearch} tab={tab} handleTabChange={handleTabChange} />
                         <ContactList contacts={contacts} search={search} filter={filter} progressing={progressing} />
                     </Box>
-                    <Box sx={{ display: { xs: 'none', md: 'flex' }, flexDirection: 'column', alignItems: 'center', width: '300px', height: '400px', background: 'white', mx: '20px', borderRadius: '20px', paddingY: '30px', boxShadow: '4px 4px 4px rgba(0, 0, 0, 0.25)', }}>
+                    <Box sx={{ display: { xs: 'none', md: 'flex' }, flexDirection: 'column', alignItems: 'center', width: '300px', height: '400px', background: 'white', mx: '20px', borderRadius: '20px', paddingY: '30px', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)', }}>
                         <Box sx={{ display: 'flex', flexDirection: 'column', width: '80%' }}>
                             <Typography sx={{ fontSize: '22px', fontWeight: 500, mb: '20px', }}>
                                 Search filter
