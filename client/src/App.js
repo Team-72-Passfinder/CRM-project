@@ -19,6 +19,7 @@ import EditEvent from './pages/event/editEvent';
 import EventList from './pages/event/eventList';
 import Settings from './pages/Settings';
 import UnauthorizedAccessPage from './pages/Error/unathorized-access';
+import Register from './pages/Register/register';
 import { ThemeProvider } from '@mui/material/styles';
 
 import theme from './theme';
@@ -33,6 +34,9 @@ const App = () => {
           </Route>
           <Route exact path="/login">
             <Login />
+          </Route>
+          <Route exact path="/register">
+            <Register />
           </Route>
           <PrivateRoute path="/socials/edit/:id">
             <EditContact />
