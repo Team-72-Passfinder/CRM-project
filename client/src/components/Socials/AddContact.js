@@ -156,65 +156,13 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
             </Avatar>
           </label>
         </div>
-        <StandardInput
-          id="firstName"
-          label="First name"
-          name="firstName"
-          value={contact.firstName}
-          setValue={setContact}
-          required={true}
-          type="text"
-        />
-        <StandardInput
-          id="lastName"
-          label="Last name"
-          name="lastName"
-          value={contact.lastName}
-          setValue={setContact}
-          required={true}
-          type="text"
-        />
-        <StandardInput
-          id="email"
-          label="Email"
-          name="email"
-          value={contact.email}
-          setValue={setContact}
-          required={false}
-          type="email"
-        />
-        <StandardInput
-          id="phoneNumber"
-          label="Phone number"
-          name="phoneNumber"
-          value={contact.phoneNumber}
-          setValue={setContact}
-          required={false}
-          type="tel"
-        />
-        <StandardInput
-          id="biography"
-          label="Biography"
-          name="biography"
-          value={contact.biography}
-          setValue={setContact}
-          required={false}
-          type="text"
-        />
-        <AutoComplete
-          id="jobTitle"
-          label="Job Title"
-          name="jobTitle"
-          value={contact.jobTitle}
-          setValue={setContact}
-        />
-        <AutoComplete
-          id="tags"
-          label="Tags"
-          name="tags"
-          value={contact.tags}
-          setValue={setContact}
-        />
+        <StandardInput id="firstName" label="First name" name="firstName" value={contact.firstName} setValue={setContact} required={true} type="text" />
+        <StandardInput id="lastName" label="Last name" name="lastName" value={contact.lastName} setValue={setContact} required={true} type="text" />
+        <StandardInput id="email" label="Email" name="email" value={contact.email} setValue={setContact} required={false} type="email" />
+        <StandardInput id="phoneNumber" label="Phone number" name="phoneNumber" value={contact.phoneNumber} setValue={setContact} required={false} type="tel" />
+        <StandardInput id="biography" label="Biography" name="biography" value={contact.biography} setValue={setContact} required={false} type="text" />
+        <AutoComplete id="jobTitle" label="Job Title" name="jobTitle" value={contact.jobTitle} setValue={setContact} />
+        <AutoComplete id="tags" label="Tags" name="tags" value={contact.tags} setValue={setContact} />
         <LocalizationProvider dateAdapter={DateAdapter}>
           <FormControl margin="dense" variant="filled">
             <Typography
