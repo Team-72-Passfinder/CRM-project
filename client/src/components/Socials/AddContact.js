@@ -100,24 +100,26 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
 
   // Used to add from user
   function add() {
-    /*
     addByUserId(user._id).then(
       (res) => {
-        if (res) {
-          progressing.current = true;
-          handleClose();
-          getContacts().then((res) => {
-            setTimeout(() => {
-              progressing.current = false;
-              setContacts(res);
-            }, 200);
-          });
-        }
+        //if (res) {
+        window.location.href = '/socials/' + res._id
+        //}
+        /*
+        progressing.current = true;
+        handleClose();
+        getContacts().then((res) => {
+          setTimeout(() => {
+            progressing.current = false;
+            setContacts(res);
+          }, 200);
+        });*/
+
       },
       (reason) => {
         setAlert(<Alert severity="error">Failed to add contact</Alert>);
       }
-    );*/
+    );
   }
 
   useEffect(() => {
@@ -279,8 +281,8 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
             <Box sx={wrapperBoxStyle} >
               <Box
                 sx={{ width: '300px', justifyContent: 'center', mt: '10px', mb: '20px', }} >
-                <Typography sx={{ fontSize: '22px', fontWeight: 600 }}>
-                  Search for username or email
+                <Typography sx={{ fontSize: '21px', fontWeight: 600 }}>
+                  Search with username or email
                 </Typography>
                 <Stack
                   sx={{ width: '350px', maxWidth: '90vw', }}
