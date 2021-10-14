@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { Stack, Box, Typography, Button } from '@mui/material'
+import { Stack, Box, Typography, Avatar } from '@mui/material'
 import Alert from '@mui/material/Alert';
 
 function viewUserInfo({ info, handleClick }) {
@@ -46,6 +46,11 @@ function viewUserInfo({ info, handleClick }) {
 
     return (
         <Stack>
+            <Box sx={{ width: '300px', justifyContent: 'center', mt: '10px', mb: '20px', }}>
+                <Avatar sx={{ width: '80px', height: '80px', fontSize: '28px' }}
+                    alt={info.firstName}
+                    src="/broken-image.jpg" />
+            </Box>
             {
                 ['Username', 'First Name', 'Last Name', 'Email', 'Phone Number', 'Date Of Birth', 'Bio'].map((item) => {
                     let data = getUserData(item)
@@ -66,9 +71,6 @@ function viewUserInfo({ info, handleClick }) {
                     )
                 })
             }
-            <Button sx={{ width: 300, my: '10px', }} color="primary" variant="contained" disableElevation onClick={handleClick} >
-                Add
-            </Button>
         </Stack >
     )
 }

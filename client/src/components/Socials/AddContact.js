@@ -38,6 +38,7 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
     tags: [],
   });
   const [submitDisabled, setSubmitDisabled] = useState(true);
+  const [addDisable, setAddDisable] = useState(true);
   const [alert, setAlert] = useState();
   const [user, setUser] = useState();
   const [tab, setTab] = useState('Add manually');
@@ -87,30 +88,36 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
     searchUser(search).then(res => {
       // If error message: 404/400/500
       if (!res) {
-        setUser({ status: '404' });
+        setUser({ status: 'error' });
+        setAddDisable(true);
         return;
       }
       // Else, set user's info
       setUser(res);
+      setAddDisable(false);
     });
   }
 
   // Used to add from user
   function add() {
     /*
-    var id = user._id;
-    addByUserId(id).then(res => {
-      if (res) {
-        progressing.current = true;
-        handleClose();
-        getContacts().then((res) => {
-          setTimeout(() => {
-            progressing.current = false;
-            setContacts(res);
-          }, 200);
-        });
+    addByUserId(user._id).then(
+      (res) => {
+        if (res) {
+          progressing.current = true;
+          handleClose();
+          getContacts().then((res) => {
+            setTimeout(() => {
+              progressing.current = false;
+              setContacts(res);
+            }, 200);
+          });
+        }
+      },
+      (reason) => {
+        setAlert(<Alert severity="error">Failed to add contact</Alert>);
       }
-    });*/
+    );*/
   }
 
   useEffect(() => {
@@ -290,8 +297,23 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
                 </Stack>
                 <ViewUserInfo info={user} handleClick={add} />
               </Box>
+              <Button
+                sx={{
+                  width: 300,
+                  my: '10px',
+                  '&.MuiButton-disableElevation': {
+                    boxShadow: `(${addDisable} && 'none') || '4px 4px 20px 5px rgba(223, 120, 97, 0.25)'`,
+                  },
+                }}
+                color="primary"
+                variant="contained"
+                disableElevation
+                disabled={addDisable}
+                onClick={add}
+              >
+                Add
+              </Button>
             </Box>
-
           </TabPanel>
         </TabContext>
       </Box>
