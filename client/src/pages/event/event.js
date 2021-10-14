@@ -1,20 +1,15 @@
 import React, { useState, useEffect, Component } from 'react';
 import { AppBar } from '@mui/material';
-import { Button } from '@mui/material';
-import { Card } from '@mui/material';
-import { CardActions } from '@mui/material';
-import { CardContent } from '@mui/material';
-import { Grid } from '@mui/material';
+import { Button ,Grid} from '@mui/material';
 import { Typography } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Container } from '@mui/material';
-import { Link } from 'react-router-dom';
-import { Box } from '@mui/material';
-import { EditText, EditTextarea } from 'react-edit-text';
+import { Box,createTheme,
+  ThemeProvider, } from '@mui/material';
 import 'react-edit-text/dist/index.css';
 
 import { getEvent } from '../../api';
 import { editEvent } from '../../api';
+import Navbar from '../../components/Navbar';
 const useStyles = makeStyles((theme) => ({}));
 
 function Event() {
@@ -35,38 +30,85 @@ function Event() {
     window.location.href =
       '/event/' + window.location.pathname.split('/')[2] + '/edit';
   };
+  const orangeTheme = createTheme({
+    palette: {
+      primary: {
+        main: '#DF7861',
+      },
+    },
+  });
+  
+
+const maxCards = 10;
+let eventParticipants = Array.from(Array(maxCards).keys());
   if (event != null) {
+    eventParticipants = Array.from(Array(event.participants.length).keys());
     return (
-      <div className={classes.root}>
+      <Box className={classes.root}sx={{
+        backgroundColor: 'grey'
+      }} >  
         {
           <React.Fragment>
             <main>
-              <Box className={classes.formContainer}>
-                <Typography className={classes.title}>Event</Typography>
-                <form className={classes.form}>
-                  <Box mt={5}>
-                    <Typography variant="h6">{event.name}</Typography>
-                    <Typography variant="h6">
-                      {getDate(event.dateTime)}
+              
+            <Navbar  />
+            <Box sx={{display: 'flex', flexDirection: 'row',  alignItems: 'center',ml: '100px', padding: '20px', backgroundColor: '#f7e0d2'
+        }} >  
+
+          <Box sx={{display: 'flex', flexDirection: 'row', width: '80vw',  alignItems: 'center',ml: '80px', backgroundColor: '#f7e0d2', justifyContent:'space-between',
+        }} >
+          <Typography variant="h5">
+                      {getDate(Date()) }
                     </Typography>
-                    <Typography variant="h6">{event.description}</Typography>
-                  </Box>
-                </form>
-              </Box>
-              <div>
-                <Button
-                  className={classes.button}
-                  color="primary"
-                  variant="outlined"
-                  onClick={goToEdit}
-                >
+                    </Box>
+     <Box sx={{display: 'flex', flexDirection: 'row', width: '20vw',  alignItems: 'left',ml: '40px', backgroundColor: '#f7e0d2', justifyContent:'space-between',
+        }} >
+          <ThemeProvider theme={orangeTheme}>
+             <Button
+                  className={classes.button} color="primary" variant="contained"onClick={goToEdit}>
                   Edit
                 </Button>
-              </div>
+                  <Button
+                    className={classes.button}
+                    color="primary"
+                    variant="contained">
+                    Delete
+                  </Button>
+                  </ThemeProvider>
+                 </Box>
+                 </Box>
+
+                  <Box  sx={{  align: 'center',width: '40vw', height: '100%', mt: '80px', ml: '500px', padding: '20px',display: 'flex', flexDirection: 'column', alignItems: 'left',justifyContent:'space-between',
+                 borderRadius: 4,boxShadow: 2}}>
+                   <Box sx={{display: 'flex',  alignItems: 'center',mb: '20px', backgroundColor: '#DF7861', padding: '20px',borderRadius: 4
+        }} >
+              <Typography variant="h3">{event.name}</Typography> 
+              </Box>
+              <Box sx={{display: 'flex',  alignItems: 'center',mb: '20px', backgroundColor: '#f7e0d2', padding: '20px',borderRadius: 4
+                      }} >
+                    <Typography variant="h5">
+                      Starts at: {getDate(event.startedDateTime)}
+                    </Typography>
+                    <Typography variant="h5">
+                      Ends at: {getDate(event.endedDateTime)}
+                    </Typography>
+                    </Box>
+                    <Box sx={{display: 'flex',  alignItems: 'center',mb: '20px', backgroundColor: '', padding: '20px',borderRadius: 4
+        }} >
+                    <Typography variant="h6">{event.description}</Typography>
+                    </Box>
+                    <Box sx={{display: 'flex',  alignItems: 'center',mb: '20px', padding: '20px',borderRadius: 4
+        }} >
+<Typography variant="h5"> Participants:</Typography> {event.participants.map((i) => (
+                      <Typography variant="h6">{event.participants[i]}</Typography>
+                      ))}
+      </Box>
+
+                </Box>
             </main>
           </React.Fragment>
         }
-      </div>
+      </Box>
     );
   } else {
     return <h3> Loading...</h3>;
