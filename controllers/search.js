@@ -58,14 +58,14 @@ function userSearch(req, res) {
     }) // full-text search
     .then((data) => {
       if (!data) {
-        res.status(404).send({ message: "No use is foudn with this username or email!" });
+        res.status(404).send({ message: "No user is found with this username or email!" });
         return;
       }
       const toReturn = {
         _id: data._id,
         username: data.username,
         email: data.email,
-        firstname: data.firstName,
+        firstName: data.firstName,
         lastName: data.lastName,
         dateOfBirth: data.dateOfBirth,
         biography: data.biography || '',

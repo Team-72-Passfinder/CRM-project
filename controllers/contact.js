@@ -92,7 +92,7 @@ exports.addFromId = async (req, res) => {
         firstName: userData.firstName,
         lastName: userData.lastName,
         email: userData.email,
-        phoneNumber: '',
+        phoneNumber: userData.phoneNumber,
         dateOfBirth: userData.dateOfBirth,
         jobTitle: [],
         tags: [],
