@@ -45,13 +45,11 @@ function viewUserInfo({ info }) {
     }
 
     return (
-        <Stack>
-            <Box sx={{ my: '5px' }}>
-                <Avatar sx={{ width: '80px', height: '80px', fontSize: '28px' }}
-                    //style={{ alignSelf: 'center' }}
-                    alt={info.firstName}
-                    src="/broken-image.jpg" />
-            </Box>
+        <Stack >
+            <Avatar sx={{ my: '10px', width: '80px', height: '80px', fontSize: '28px' }}
+                style={{ alignSelf: 'center' }}
+                alt={info.firstName}
+                src="/broken-image.jpg" />
             {
                 ['Username', 'First Name', 'Last Name', 'Email', 'Phone Number', 'Date Of Birth', 'Bio'].map((item) => {
                     let data = getUserData(item)
