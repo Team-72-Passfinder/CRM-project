@@ -96,11 +96,12 @@ exports.update = async (req, res) => {
       message: 'Owner of the event are unchangaeble!',
     });
   }
+  /*
   if (req.body.name && Validator.checkInvalid(req.body.name)) {
     return res.status(400).send({
       message: 'Event name should not contain invalid characters!',
     });
-  }
+  }*/
   if (
     req.body.startedDateTime &&
     Validator.checkValidDate(req.body.startedDateTime) == 'Invalid Date'

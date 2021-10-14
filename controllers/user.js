@@ -14,6 +14,7 @@ exports.update = (req, res) => {
   // Validate firstname, lastname, dateOfBirth information
   // since username and email can't be changed
   // Password is going to be considered sepeartedly due to security matter!
+
   if (Validator.checkInvalid(req.body.firstName)) {
     return res.status(400).send({
       message: 'Firstname contains invalid characters!',
@@ -36,19 +37,20 @@ exports.update = (req, res) => {
 
   // Check for un-changaeble field -- in case of hacking on the way the info is sent to
   // username
-  if (req.body.username) {
+
+  if (req.body.username && req.body.username != req.user.username) {
     return res.status(400).send({
       message: 'username is unchangaeble!',
     });
   }
   // password
-  if (req.body.password) {
+  if (req.body.password && req.body.password != req.user.password) {
     return res.status(400).send({
       message: 'password must be changed under protection!',
     });
   }
   // email
-  if (req.body.email) {
+  if (req.body.email && req.body.email != req.user.email) {
     return res.status(400).send({
       message: 'email must be changed under protection!',
     });

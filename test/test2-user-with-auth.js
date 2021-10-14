@@ -13,6 +13,7 @@ const { userTester } = require('./test-input');
 
 chai.use(chaiHttp);
 let should = chai.should();
+var searchUsername = userTester.validUser.username;
 
 mocha.describe('Test User routes', function () {
 
@@ -221,10 +222,12 @@ mocha.describe('Test User routes', function () {
       });
     });
 
+
+    // Will re-write this later
     mocha.describe('/GET/SEARCH route', () => {
       mocha.it('it should perform SEARCH query successfully ', (done) => {
         let query = {
-          query: "user"
+          query: searchUsername
         };
         chai
           .request(server)
@@ -233,8 +236,8 @@ mocha.describe('Test User routes', function () {
           .send(query)
           .end((err, res) => {
             res.should.have.status(200);
-            res.body.should.be.a('array');
-            res.body.length.should.be.eql(2);
+            res.body.should.be.a('object');
+            res.body.should.have.property('username').eql(searchUsername);
             done();
           });
       });
