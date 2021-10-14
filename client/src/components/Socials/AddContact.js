@@ -102,24 +102,23 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
   function add() {
     addByUserId(user._id).then(
       (res) => {
-        //if (res) {
-        window.location.href = '/socials/' + res._id
-        //}
-        /*
-        progressing.current = true;
-        handleClose();
-        getContacts().then((res) => {
-          setTimeout(() => {
-            progressing.current = false;
-            setContacts(res);
-          }, 200);
-        });*/
+        if (res) {
+          //window.location.href = '/socials/' + res._id
+          progressing.current = true;
+          handleClose();
+          getContacts().then((res) => {
+            setTimeout(() => {
+              progressing.current = false;
+              setContacts(res);
+            }, 200);
+          },
 
-      },
-      (reason) => {
-        setAlert(<Alert severity="error">Failed to add contact</Alert>);
-      }
-    );
+            (reason) => {
+              setAlert(<Alert severity="error">Failed to add contact</Alert>);
+            }
+          );
+        }
+      });
   }
 
   useEffect(() => {

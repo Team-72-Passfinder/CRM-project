@@ -115,7 +115,7 @@ export function addByUserId(userId) {
   let endpoint = '/contact/add/' + userId;
 
   return axios
-    .post(endpoint, config)
+    .post(endpoint, {}, config)
     .then((res) => res.data)
     .catch((e) => console.log(e.response));
 }
