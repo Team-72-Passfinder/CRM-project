@@ -74,6 +74,7 @@ passport.use(
         newUser.firstName = req.body.firstName;
         newUser.lastName = req.body.lastName;
         newUser.dateOfBirth = new Date(req.body.dateOfBirth);
+        newUser.phoneNumber = req.body.phoneNumber;
 
         newUser.save();
         return done(null, newUser);

@@ -48,32 +48,30 @@ function userSearch(req, res) {
   if (!checkValidQuery(req)) {
     return res.status(500).send({ message: 'Missing query!' });
   }
-  var userMap = [];
-  const text = req.body.query;
+  //var userMap = [];
   User
-    //.find({ $text: { $search: req.body.query } }) // full-text search
-    // partial-text-search:
-    .find({
+    .findOne({
       $or: [
-        { username: { $regex: text, $options: 'i' } },
-        { firstName: { $regex: text, $options: 'i' } },
-        { lastName: { $regex: text, $options: 'i' } },
-        { email: { $regex: text, $options: 'i' } },
-      ],
-    })
+        { username: req.body.query },
+        { email: req.body.query },
+      ]
+    }) // full-text search
     .then((data) => {
-      data.forEach((user) => {
-        userMap.push({
-          _id: user._id,
-          username: user.username,
-          email: user.email,
-          firstname: user.firstName,
-          lastName: user.lastName,
-          dateOfBirth: user.dateOfBirth,
-          biography: user.biography || '',
-        });
-      });
-      res.status(200).send(userMap);
+      if (!data) {
+        res.status(404).send({ message: "No use is foudn with this username or email!" });
+        return;
+      }
+      const toReturn = {
+        _id: data._id,
+        username: data.username,
+        email: data.email,
+        firstname: data.firstName,
+        lastName: data.lastName,
+        dateOfBirth: data.dateOfBirth,
+        biography: data.biography || '',
+      }
+
+      res.status(200).send(toReturn);
     })
     // Catching error when accessing the database
     .catch((err) => {

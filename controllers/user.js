@@ -66,6 +66,7 @@ exports.update = (req, res) => {
         lastName: updatedData.lastName,
         dateOfBirth: updatedData.dateOfBirth,
         biography: updatedData.biography,
+        phoneNumber: updatedData.phoneNumber,
       });
     }
   );
@@ -116,6 +117,7 @@ exports.findAll = (req, res) => {
           lastName: user.lastName,
           dateOfBirth: user.dateOfBirth,
           biography: user.biography,
+          phoneNumber: user.phoneNumber,
         });
       });
       res.send(userMap);
@@ -149,6 +151,7 @@ exports.findOne = (req, res) => {
         lastName: data.lastName,
         dateOfBirth: data.dateOfBirth,
         biography: data.biography,
+        phoneNumber: data.phoneNumber,
       });
     })
     // Catching the error when assessing the DB
@@ -164,22 +167,22 @@ exports.search = (req, res) => {
 };
 
 exports.changePassword = async (req, res) => {
-    if (!req.user) {
-        return console.error();
-    }
+  if (!req.user) {
+    return console.error();
+  }
 
-    console.log(req.body)
+  console.log(req.body)
 
-    let user = await User.findOne({ username: req.user.username });
+  let user = await User.findOne({ username: req.user.username });
 
-    if (user.verifyPassword(req.body.oldPassword)) {
-        user.password = user.hashPassword(req.body.newPassword);
+  if (user.verifyPassword(req.body.oldPassword)) {
+    user.password = user.hashPassword(req.body.newPassword);
 
-        await user.save();
+    await user.save();
 
-        res.send(user);
-    } else {
-        // return new Error("Wrong password")
-        return res.status(401).send("Wrong password");
-    }
+    res.send(user);
+  } else {
+    // return new Error("Wrong password")
+    return res.status(401).send("Wrong password");
+  }
 };
