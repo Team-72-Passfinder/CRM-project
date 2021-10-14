@@ -40,7 +40,7 @@ app.post(
         return next(err);
       }
       if (!user) {
-        return res.json({ message: info.message });
+        return res.status(400).send({ message: info.message });
       }
 
       req.user = user;

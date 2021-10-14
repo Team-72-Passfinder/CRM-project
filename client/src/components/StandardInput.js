@@ -18,7 +18,7 @@ function StandardInput({
   width,
   sx,
   error,
-  setErrors
+  setErrors,
 }) {
   const emptyFieldErrorMessage = 'This field is required';
   const invalidEmailErrorMessage = 'invalid email';
@@ -28,11 +28,11 @@ function StandardInput({
     if (value !== '') {
       switch (type) {
         case 'email':
-            if (!/\S+@\S+\.\S+/.test(value)) {
-                setErrors((prev) => ({ ...prev, email: true }))
-            } else {
-                setErrors((prev) => ({ ...prev, email: false }))
-            }
+          if (!/\S+@\S+\.\S+/.test(value)) {
+            setErrors((prev) => ({ ...prev, email: true }));
+          } else {
+            setErrors((prev) => ({ ...prev, email: false }));
+          }
           return !/\S+@\S+\.\S+/.test(value);
         case 'tel':
           return isNaN(value);
@@ -65,7 +65,8 @@ function StandardInput({
     return (
       <FormControl margin="dense" variant="filled" error={true}>
         <Typography sx={{ fontSize: '15px', fontWeight: 600 }} margin="none">
-          {label}{required && '*'}
+          {label}
+          {required && '*'}
         </Typography>
         <FilledInput
           id={name}
@@ -78,18 +79,20 @@ function StandardInput({
             },
             '& input:not(:placeholder-shown)': {
               height: '0px',
-            }
+            },
           }}
           multiline
           disableUnderline={true}
           hiddenLabel={true}
-          onChange={e => setValue(prev => ({ ...prev, [name]: e.target.value }))}
+          onChange={(e) =>
+            setValue((prev) => ({ ...prev, [name]: e.target.value }))
+          }
           error={true}
           required={required}
         />
         {generateHelperText()}
       </FormControl>
-    )
+    );
   }
 
   return (
@@ -118,12 +121,13 @@ function StandardInput({
         disableUnderline={true}
         hiddenLabel={true}
         onChange={(e) => {
-          setValue((prev) => ({ ...prev, [name]: e.target.value }))
-          isError()
+          setValue((prev) => ({ ...prev, [name]: e.target.value }));
+          isError();
         }}
         value={value}
         error={error}
         required={required}
+        type={type}
       />
       {generateHelperText()}
     </FormControl>

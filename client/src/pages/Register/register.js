@@ -3,16 +3,14 @@ import React, { useEffect, useState } from 'react';
 import {
   Box,
   Container,
-  TextField,
   Button,
-  Link,
   Alert,
   Typography,
   FilledInput,
   FormControl,
 } from '@mui/material';
 
-import { login } from '../../api';
+import { registerUserdata } from '../../api';
 import StandardInput from '../../components/StandardInput';
 import DateAdapter from '@mui/lab/AdapterDayjs';
 import DatePicker from '@mui/lab/DatePicker';
@@ -32,41 +30,45 @@ function Register(props) {
 
   const [alert, setAlert] = useState();
   const [submitDisabled, setSubmitDisabled] = useState(true);
-  const [errors, setErrors] = useState({ username: false, password: false, firstName: false, lastName: false, email: false, })
+  const [errors, setErrors] = useState({
+    username: false,
+    password: false,
+    firstName: false,
+    lastName: false,
+    email: false,
+  });
 
   function saveUserToDB() {
-    console.log(userdata);
+    registerUserdata(userdata).then(null, (res) => {
+      if (res) {
+        setAlert(<Alert severity="error">{res}</Alert>);
+      }
+    });
   }
 
   useEffect(() => {
     const inputs = document.querySelectorAll('input');
-    let length = inputs.length
-    let validInputs = 0
+    let length = inputs.length;
+    let validInputs = 0;
 
     Array.from(inputs).filter((input) => {
-    //   if (input.id !== "dateOfBirthInput") {
-          console.log(input.validity)
-        if (input.validity.valid) {
-          validInputs += 1;
-        }
-    //   }
+      if (input.validity.valid) {
+        validInputs += 1;
+      }
     });
 
     let isError = false;
-
-    for(const prop in errors) {
-        if(errors[prop] === true) {
-            isError = true
-        }
+    for (const prop in errors) {
+      if (errors[prop] === true) {
+        isError = true;
+      }
     }
-    console.log(isError)
-
-    if(validInputs === length && !isError) {
-        setSubmitDisabled(false)
+    if (validInputs === length && !isError) {
+      setSubmitDisabled(false);
     } else {
-        setSubmitDisabled(true)
+      setSubmitDisabled(true);
     }
-  }, [userdata]);
+  }, [errors, userdata]);
 
   return (
     <Container
@@ -115,7 +117,7 @@ function Register(props) {
           value={userdata.password}
           setValue={setUserdata}
           required={true}
-          type="text"
+          type="password"
           error={errors.password}
           setErrors={setErrors}
         />
@@ -127,8 +129,8 @@ function Register(props) {
           setValue={setUserdata}
           required={true}
           type="text"
-            error={errors.firstName}
-            setErrors={setErrors}
+          error={errors.firstName}
+          setErrors={setErrors}
         />
         <StandardInput
           id="lastName"
@@ -138,8 +140,8 @@ function Register(props) {
           setValue={setUserdata}
           required={true}
           type="text"
-        error={errors.lastName}
-        setErrors={setErrors}
+          error={errors.lastName}
+          setErrors={setErrors}
         />
         <StandardInput
           id="email"
