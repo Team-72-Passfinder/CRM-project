@@ -18,6 +18,8 @@ import DateAdapter from '@mui/lab/AdapterDayjs';
 import DatePicker from '@mui/lab/DatePicker';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 
+// let errors = [];
+
 function Register(props) {
   const [userdata, setUserdata] = useState({
     username: '',
@@ -30,6 +32,7 @@ function Register(props) {
 
   const [alert, setAlert] = useState();
   const [submitDisabled, setSubmitDisabled] = useState(true);
+  const [errors, setErrors] = useState({ username: false, password: false, firstName: false, lastName: false, email: false, })
 
   function saveUserToDB() {
     console.log(userdata);
@@ -37,16 +40,32 @@ function Register(props) {
 
   useEffect(() => {
     const inputs = document.querySelectorAll('input');
+    let length = inputs.length
+    let validInputs = 0
 
     Array.from(inputs).filter((input) => {
-      if (input.required === true) {
-        if (!input.validity.valid) {
-          setSubmitDisabled(true);
-        } else {
-          setSubmitDisabled(false);
+    //   if (input.id !== "dateOfBirthInput") {
+          console.log(input.validity)
+        if (input.validity.valid) {
+          validInputs += 1;
         }
-      }
+    //   }
     });
+
+    let isError = false;
+
+    for(const prop in errors) {
+        if(errors[prop] === true) {
+            isError = true
+        }
+    }
+    console.log(isError)
+
+    if(validInputs === length && !isError) {
+        setSubmitDisabled(false)
+    } else {
+        setSubmitDisabled(true)
+    }
   }, [userdata]);
 
   return (
@@ -86,6 +105,8 @@ function Register(props) {
           setValue={setUserdata}
           required={true}
           type="text"
+          error={errors.username}
+          setErrors={setErrors}
         />
         <StandardInput
           id="password"
@@ -95,6 +116,8 @@ function Register(props) {
           setValue={setUserdata}
           required={true}
           type="text"
+          error={errors.password}
+          setErrors={setErrors}
         />
         <StandardInput
           id="firstName"
@@ -104,6 +127,8 @@ function Register(props) {
           setValue={setUserdata}
           required={true}
           type="text"
+            error={errors.firstName}
+            setErrors={setErrors}
         />
         <StandardInput
           id="lastName"
@@ -113,6 +138,8 @@ function Register(props) {
           setValue={setUserdata}
           required={true}
           type="text"
+        error={errors.lastName}
+        setErrors={setErrors}
         />
         <StandardInput
           id="email"
@@ -122,6 +149,8 @@ function Register(props) {
           setValue={setUserdata}
           required={true}
           type="email"
+          error={errors.email}
+          setErrors={setErrors}
         />
         <LocalizationProvider dateAdapter={DateAdapter}>
           <FormControl margin="dense" variant="filled">
@@ -153,6 +182,7 @@ function Register(props) {
                         height: '0px',
                       },
                     }}
+                    id="dateOfBirthInput"
                     disableUnderline={true}
                     hiddenLabel={true}
                     endAdornment={InputProps?.endAdornment}
