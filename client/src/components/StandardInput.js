@@ -28,7 +28,11 @@ function StandardInput({
     if (value !== '') {
       switch (type) {
         case 'email':
-          setErrors((prev) => ({ ...prev, email: true }))
+            if (!/\S+@\S+\.\S+/.test(value)) {
+                setErrors((prev) => ({ ...prev, email: true }))
+            } else {
+                setErrors((prev) => ({ ...prev, email: false }))
+            }
           return !/\S+@\S+\.\S+/.test(value);
         case 'tel':
           return isNaN(value);
