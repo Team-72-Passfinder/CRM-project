@@ -295,7 +295,7 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
                     <ArrowForwardIcon />
                   </IconButton>
                 </Stack>
-                <ViewUserInfo info={user} handleClick={add} />
+                <ViewUserInfo info={user} />
               </Box>
               <Button
                 sx={{

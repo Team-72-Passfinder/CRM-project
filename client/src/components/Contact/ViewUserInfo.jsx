@@ -3,7 +3,7 @@ import React from 'react'
 import { Stack, Box, Typography, Avatar } from '@mui/material'
 import Alert from '@mui/material/Alert';
 
-function viewUserInfo({ info, handleClick }) {
+function viewUserInfo({ info }) {
 
     // Case of nothing
     if (!info) {
@@ -46,8 +46,9 @@ function viewUserInfo({ info, handleClick }) {
 
     return (
         <Stack>
-            <Box sx={{ width: '300px', justifyContent: 'center', mt: '10px', mb: '20px', }}>
+            <Box sx={{ my: '5px' }}>
                 <Avatar sx={{ width: '80px', height: '80px', fontSize: '28px' }}
+                    //style={{ alignSelf: 'center' }}
                     alt={info.firstName}
                     src="/broken-image.jpg" />
             </Box>
