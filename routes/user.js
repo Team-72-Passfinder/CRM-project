@@ -20,39 +20,41 @@ app.post(
   }
 );
 
-app.post(
-  '/register',
-  passport.authenticate('registration', { session: false }),
-  async (req, res) => {
-    let token = jwt.sign({ _id: req.user._id }, process.env.PASSPORT_SECRET, {
-      expiresIn: '10d',
-    });
-
-    return res.json({ token: token });
-  }
-);
-
 // app.post(
 //   '/register',
-//   function (req, res, next) {
-//     passport.authenticate('registration', function (err, user, info) {
-//       if (err) {
-//         return next(err);
-//       }
-//       if (!user) {
-//         return res.json({ message: info.message });
-//       }
-//       next();
-//     })(req, res, next);
-//   },
+//   passport.authenticate('registration', { session: false }),
 //   async (req, res) => {
-//     console.log(req.user);
 //     let token = jwt.sign({ _id: req.user._id }, process.env.PASSPORT_SECRET, {
 //       expiresIn: '10d',
 //     });
+
 //     return res.json({ token: token });
 //   }
 // );
+
+app.post(
+  '/register',
+  function (req, res, next) {
+    passport.authenticate('registration', function (err, user, info) {
+      if (err) {
+        return next(err);
+      }
+      if (!user) {
+        return res.json({ message: info.message });
+      }
+
+      req.user = user;
+      next();
+    })(req, res, next);
+  },
+  async (req, res) => {
+    // console.log(req.user);
+    let token = jwt.sign({ _id: req.user._id }, process.env.PASSPORT_SECRET, {
+      expiresIn: '10d',
+    });
+    return res.json({ token: token });
+  }
+);
 
 // Other routes from this point require authentication ===========================================
 app.get(
