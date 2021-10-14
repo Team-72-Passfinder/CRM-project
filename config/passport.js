@@ -70,7 +70,7 @@ passport.use(
 
         newUser.username = username;
         newUser.password = newUser.hashPassword(password);
-        newUser.email = req.body.email;
+        newUser.email = req.body.email.toLowerCase();
         newUser.firstName = req.body.firstName;
         newUser.lastName = req.body.lastName;
         newUser.dateOfBirth = new Date(req.body.dateOfBirth);

@@ -53,7 +53,7 @@ function userSearch(req, res) {
     .findOne({
       $or: [
         { username: req.body.query },
-        { email: req.body.query },
+        { email: req.body.query.toLowerCase() },
       ]
     }) // full-text search
     .then((data) => {
