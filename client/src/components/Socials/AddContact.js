@@ -126,7 +126,6 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
 
     Array.from(inputs).filter((input) => {
       if (input.required === true) {
-        // console.log(contact)
         if (!input.validity.valid) {
           setSubmitDisabled(true);
         } else {

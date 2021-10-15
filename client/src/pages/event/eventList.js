@@ -21,6 +21,8 @@ import EventInvite from '../../components/EventInvite';
 const useStyles = makeStyles((theme) => ({
   root: {
     background: ' #fff1e1',
+    paddingBottom: 20,
+    minHeight: '100vh',
   },
   eventGrid: {
     maxwidth: 'md',
@@ -64,191 +66,186 @@ function EventList() {
     window.location.href = '/event/' + id;
   }
 
-  if (events.length > 0) {
-    // Prevent undefined entries
-    if (events.length < maxCards)
-      cardIndex = Array.from(Array(events.length).keys());
-    // Grouping events and sort them
-    var upcomingEvents = cardIndex.filter(function (e) {
-      return new Date(events[e].startedDateTime) > new Date(Date.now());
-    });
-    // Display nearest upcoming event first
-    upcomingEvents
-      .sort((a, b) => {
-        return events[a].startedDateTime > events[b].startedDateTime ? -1 : 1;
-      })
-      .reverse();
+  // Prevent undefined entries
+  if (events.length < maxCards)
+    cardIndex = Array.from(Array(events.length).keys());
+  // Grouping events and sort them
+  var upcomingEvents = cardIndex.filter(function (e) {
+    return new Date(events[e].startedDateTime) > new Date(Date.now());
+  });
+  // Display nearest upcoming event first
+  upcomingEvents
+    .sort((a, b) => {
+      return events[a].startedDateTime > events[b].startedDateTime ? -1 : 1;
+    })
+    .reverse();
 
-    var pastEvents = cardIndex.filter(function (e) {
-      return new Date(events[e].startedDateTime) < new Date(Date.now());
-    });
-    // Display nearest past event first
-    pastEvents
-      .sort((a, b) => {
-        return events[a].startedDateTime > events[b].startedDateTime ? 1 : -1;
-      })
-      .reverse();
+  var pastEvents = cardIndex.filter(function (e) {
+    return new Date(events[e].startedDateTime) < new Date(Date.now());
+  });
+  // Display nearest past event first
+  pastEvents
+    .sort((a, b) => {
+      return events[a].startedDateTime > events[b].startedDateTime ? 1 : -1;
+    })
+    .reverse();
 
-    return (
-      <Box className={classes.root}>
-        <Navbar active="Home" />
+  return (
+    <Box className={classes.root}>
+      <Navbar active="Home" />
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          paddingLeft: '10vw',
+          paddingRight: '10vw',
+        }}
+      >
+        {/* Hero Unit */}
+
         <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            paddingLeft: '10vw',
-            paddingRight: '10vw',
-          }}
+          display="flex"
+          flexDirection="column"
+          size="lg"
+          justifyContent="center"
+          className={classes.headerBox}
         >
-          {/* Hero Unit */}
-
+          <Typography
+            component="h1"
+            variant="h2"
+            color="black"
+            gutterBottom
+            style={{ fontWeight: 600 }}
+          >
+            My Events: {events.length}
+          </Typography>
           <Box
             display="flex"
-            flexDirection="column"
-            size="lg"
+            alignItems="center"
             justifyContent="center"
-            className={classes.headerBox}
+            sx={{ margin: 2 }}
           >
-            <Typography
-              component="h1"
-              variant="h2"
-              color="black"
-              gutterBottom
-              style={{ fontWeight: 600 }}
-            >
-              My Events: {events.length}
-            </Typography>
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="center"
-              sx={{ margin: 2 }}
-            >
-              <AddEvent />
-            </Box>
+            <AddEvent />
           </Box>
+        </Box>
 
-          {/* End Hero Unit */}
+        {/* End Hero Unit */}
 
-          {/* Event Grid Unit */}
-          {/* Upcoming Events */}
-          <Typography component="h3" variant="h3" align="center" color="black">
-            Upcoming Events: {upcomingEvents.length}
-          </Typography>
+        {/* Event Grid Unit */}
+        {/* Upcoming Events */}
+        <Typography component="h3" variant="h3" align="center" color="black">
+          Upcoming Events: {upcomingEvents.length}
+        </Typography>
 
-          <Grid container spacing={4} className={classes.eventGrid}>
-            {upcomingEvents.map((i) => (
-              <Grid item key={i} xs={12} sm={6} md={4}>
-                <Card
-                  elevation={3}
-                  sx={{
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <CardHeader
-                    className={classes.eventName}
-                    title={
-                      <Typography variant="h6" className={classes.overflowText}>
-                        {events[i].name}
-                      </Typography>
-                    }
-                  ></CardHeader>
-                  <CardContent>
-                    <Typography gutterBottom variant="body2">
-                      Datetime: {getDate(events[i].startedDateTime)}
+        <Grid container spacing={4} className={classes.eventGrid}>
+          {upcomingEvents.map((i) => (
+            <Grid item key={i} xs={12} sm={6} md={4}>
+              <Card
+                elevation={3}
+                sx={{
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                }}
+              >
+                <CardHeader
+                  className={classes.eventName}
+                  title={
+                    <Typography variant="h6" className={classes.overflowText}>
+                      {events[i].name}
                     </Typography>
-                    <Typography variant="body2">
-                      Number of Participants: {events[i].participants.length}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      className={classes.eventDescription}
+                  }
+                ></CardHeader>
+                <CardContent>
+                  <Typography gutterBottom variant="body2">
+                    Datetime: {getDate(events[i].startedDateTime)}
+                  </Typography>
+                  <Typography variant="body2">
+                    Number of Participants: {events[i].participants.length}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    className={classes.eventDescription}
+                  >
+                    Description: {events[i].description}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <div>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={(e) => handleClick(events[i]._id)}
                     >
-                      Description: {events[i].description}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
-                    <div>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={(e) => handleClick(events[i]._id)}
-                      >
-                        View
-                      </Button>
-                    </div>
-                    <DeleteEvent eventId={events[i]._id} />
-                    <EventInvite eventId={events[i]._id} />
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
+                      View
+                    </Button>
+                  </div>
+                  <DeleteEvent eventId={events[i]._id} />
+                  <EventInvite eventId={events[i]._id} />
+                </CardActions>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
 
-          {/* Past Events */}
-          <Typography component="h3" variant="h3" align="center" color="black">
-            Past Events: {pastEvents.length}
-          </Typography>
-          <Grid container spacing={4} className={classes.eventGrid}>
-            {pastEvents.map((i) => (
-              <Grid item key={i} xs={12} sm={6} md={4}>
-                <Card
-                  elevation={3}
-                  sx={{
-                    height: '100%',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'space-between',
-                    backgroundColor: '#f0f0f0',
-                  }}
-                >
-                  <CardHeader
-                    className={classes.eventName}
-                    title={
-                      <Typography variant="h6" className={classes.overflowText}>
-                        {events[i].name}
-                      </Typography>
-                    }
-                  ></CardHeader>
-                  <CardContent>
-                    <Typography gutterBottom variant="body2">
-                      {getDate(events[i].startedDateTime)}
+        {/* Past Events */}
+        <Typography component="h3" variant="h3" align="center" color="black">
+          Past Events: {pastEvents.length}
+        </Typography>
+        <Grid container spacing={4} className={classes.eventGrid}>
+          {pastEvents.map((i) => (
+            <Grid item key={i} xs={12} sm={6} md={4}>
+              <Card
+                elevation={3}
+                sx={{
+                  height: '100%',
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'space-between',
+                  backgroundColor: '#f0f0f0',
+                }}
+              >
+                <CardHeader
+                  className={classes.eventName}
+                  title={
+                    <Typography variant="h6" className={classes.overflowText}>
+                      {events[i].name}
                     </Typography>
+                  }
+                ></CardHeader>
+                <CardContent>
+                  <Typography gutterBottom variant="body2">
+                    {getDate(events[i].startedDateTime)}
+                  </Typography>
 
-                    <Typography variant="body2">
-                      Number of Participants: {events[i].participants.length}
-                    </Typography>
-                    <Typography
-                      variant="body2"
-                      className={classes.overflowText}
-                    >
-                      Description: {events[i].description}
-                    </Typography>
-                  </CardContent>
-                  <CardActions>
+                  <Typography variant="body2">
+                    Number of Participants: {events[i].participants.length}
+                  </Typography>
+                  <Typography variant="body2" className={classes.overflowText}>
+                    Description: {events[i].description}
+                  </Typography>
+                </CardContent>
+                <CardActions>
+                  <div>
                     <Button
                       variant="contained"
                       onClick={(e) => handleClick(events[i]._id)}
                     >
                       View
                     </Button>
-                    <DeleteEvent eventId={events[i]._id} />
-                  </CardActions>
-                </Card>
-              </Grid>
-            ))}
-          </Grid>
+                  </div>
+                  <DeleteEvent eventId={events[i]._id} />
+                </CardActions>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
 
-          {/* End Event Grid Unit */}
-        </Box>
+        {/* End Event Grid Unit */}
       </Box>
-    );
-  } else {
-    return <h3> Loading...</h3>;
-  }
+    </Box>
+  );
 }
 export default EventList;

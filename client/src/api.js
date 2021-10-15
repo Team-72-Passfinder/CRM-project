@@ -88,6 +88,27 @@ export async function login(username, password) {
     });
 }
 
+export async function registerUserdata(userdata) {
+  await axios
+    .post('/register', {
+      username: userdata.username,
+      password: userdata.password,
+      email: userdata.email,
+      firstName: userdata.firstName,
+      lastName: userdata.lastName,
+      dateOfBirth: userdata.dateOfBirth,
+    })
+    .then(function (response) {
+      localStorage.setItem('token-myapp', response.data.token);
+      instance.headers = { Authorization: `bearer ${response.data.token}` };
+      window.location.href = '/home';
+    })
+    .catch(function (error) {
+      console.log(error.response.status);
+      return Promise.reject(error.response.data.message);
+    });
+}
+
 export function getContacts() {
   let endpoint = '/contact/getall';
 
