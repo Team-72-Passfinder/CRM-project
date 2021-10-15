@@ -36,9 +36,12 @@ function ConstructEmail(userEmail, eventData, participantNameList, emailList) {
 
   // Update the email content
   //mailContent.from = userEmail;
+  // Add user email too
+  emailList.push(userEmail);
   mailContent.to = emailList;
   mailContent.subject = eventData.name;
-  mailContent.text = '\n' + 'Description: ' + eventData.description;
+  mailContent.text = 'Event send by ' + userEmail;
+  mailContent.text += '\n' + 'Description: ' + eventData.description;
   mailContent.text += '\n' + 'Participants: ' + participantNameList.toString();
   mailContent.text +=
     '\n' +
