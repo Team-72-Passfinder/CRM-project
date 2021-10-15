@@ -25,6 +25,7 @@ function Register(props) {
     firstName: '',
     lastName: '',
     email: '',
+    phoneNumber: '',
     dateOfBirth: new Date(),
   });
 
@@ -153,6 +154,15 @@ function Register(props) {
           type="email"
           error={errors.email}
           setErrors={setErrors}
+        />
+        <StandardInput
+          id="phoneNumber"
+          label="Phone Number"
+          name="phoneNumber"
+          value={userdata.phoneNumber}
+          setValue={setUserdata}
+          required={false}
+          type="phoneNumber"
         />
         <LocalizationProvider dateAdapter={DateAdapter}>
           <FormControl margin="dense" variant="filled">
