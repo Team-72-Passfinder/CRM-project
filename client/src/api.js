@@ -121,6 +121,15 @@ export function getContact(id) {
   return axios.get(endpoint, config).then((res) => res.data);
 }
 
+export function getContactsForReminder(query) {
+  let endpoint = '/contact/reminder';
+
+  return axios
+    .post(endpoint, query, config)
+    .then((res) => res.data)
+    .catch((e) => console.log(e.response));
+}
+
 export function addContact(contact) {
   let endpoint = '/contact';
 
