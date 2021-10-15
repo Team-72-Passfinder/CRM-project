@@ -13,7 +13,6 @@ import TabContext from '@mui/lab/TabContext'
 import TabPanel from '@mui/lab/TabPanel'
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CloseIcon from '@mui/icons-material/Close';
 import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import StandardInput from '../../components/StandardInput';
