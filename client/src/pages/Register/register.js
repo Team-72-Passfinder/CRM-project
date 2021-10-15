@@ -178,12 +178,12 @@ function Register(props) {
           />
           <StandardInput
             id="phoneNumber"
-            label="Phone Number"
+            label="Phone number"
             name="phoneNumber"
             value={userdata.phoneNumber}
             setValue={setUserdata}
             required={false}
-            type="phoneNumber"
+            type="tel"
           />
           <LocalizationProvider dateAdapter={DateAdapter}>
             <FormControl margin="dense" variant="filled">
