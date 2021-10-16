@@ -31,4 +31,8 @@ app
   .route('/contact/add/:userId')
   .post(passport.authenticate('jwt', { session: false }), controller.addFromId);
 
+app
+  .route('/contact/reminder')
+  .post(passport.authenticate('jwt', { session: false }), controller.toRemind);
+
 module.exports = app;

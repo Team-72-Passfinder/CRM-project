@@ -5,20 +5,21 @@ import { Box, Typography, Fab, IconButton, Dialog, DialogTitle, DialogContent, S
 import SortIcon from '@mui/icons-material/Sort';
 import AddIcon from '@mui/icons-material/Add';
 
-import { getContacts } from '../api'
+import { getContacts, getEventsFromContactId } from '../api'
 import Navbar from '../components/Navbar'
 
 import AddContact from '../components/Socials/AddContact';
 import Header from '../components/Socials/Header';
 import ContactList from '../components/Socials/ContactList';
+import Reminder from '../components/Socials/Reminder';
 
 function Socials() {
     const [contacts, setContacts] = useState([])
     const [search, setSearch] = useState('')
-    const [tab, setTab] = useState('All Contacts')
+    const [tab, setTab] = useState('All')
     const [open, setOpen] = React.useState(false)
     const [openDialog, setOpenDialog] = useState(false)
-    const [sortBy, setSortBy] = useState("Recently added")
+    const [sortBy, setSortBy] = useState('Recently added')
     const [filter, setFilter] = useState([])
 
     const progressing = useRef(true);
@@ -50,10 +51,11 @@ function Socials() {
 
     // Used to get contact list when the page loads.
     useEffect(() => {
+        let list = []
         getContacts().then(res => {
             setTimeout(() => {
                 progressing.current = false
-                setContacts(res)
+                setContacts(sort(res))
             }, 200)
         })
     }, [])
@@ -61,6 +63,12 @@ function Socials() {
     useEffect(() => {
         sort(contacts)
     }, [sortBy])
+
+    useEffect(() => {
+        if(contacts.length !== 0) {
+            sort(contacts)
+        }
+    }, [contacts])
 
     return (
         <Box
@@ -78,7 +86,7 @@ function Socials() {
                 <Box sx={{ display: 'flex', height: '90vh', background: '#F7F7F7', }}>
                     <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: { xs: '100%', sm: '500px', md: '400px', lg: '600px' }, maxWidth: { xs: '100%' }, background: 'white', borderRadius: { xs: '0px', sm: '20px' }, paddingY: { xs: 0, sm: '20px' }, boxShadow: { xs: 'none', sm: '0px 4px 4px rgba(0, 0, 0, 0.25)' }, }}>
                         <Header handleClickOpen={handleClickOpen} sortBy={sortBy} setSortBy={setSortBy} setSearch={setSearch} tab={tab} handleTabChange={handleTabChange} />
-                        <ContactList contacts={contacts} search={search} filter={filter} progressing={progressing} />
+                        <ContactList contacts={contacts} search={search} filter={filter} progressing={progressing} tab={tab} />
                     </Box>
                     <Box sx={{ display: { xs: 'none', md: 'flex' }, flexDirection: 'column', alignItems: 'center', width: '300px', height: '400px', background: 'white', mx: '20px', borderRadius: '20px', paddingY: '30px', boxShadow: '0px 4px 4px rgba(0, 0, 0, 0.25)', }}>
                         <Box sx={{ display: 'flex', flexDirection: 'column', width: '80%' }}>
@@ -101,12 +109,6 @@ function Socials() {
                                 </MenuItem>
                                 <MenuItem value="Recently added">
                                     Recently added
-                                </MenuItem>
-                                <MenuItem value="Recently viewed">
-                                    Recently viewed
-                                </MenuItem>
-                                <MenuItem value="Least contacted">
-                                    Least contacted
                                 </MenuItem>
                             </Select>
                         </Box>
@@ -158,12 +160,6 @@ function Socials() {
                             <MenuItem value="Recently added">
                                 Recently added
                             </MenuItem>
-                            <MenuItem value="Recently viewed">
-                                Recently viewed
-                            </MenuItem>
-                            <MenuItem value="Least contacted">
-                                Least contacted
-                            </MenuItem>
                         </Select>
                     </Box>
                     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -188,6 +184,7 @@ function Socials() {
                 </DialogContent>
             </Dialog>
             <AddContact open={open} setOpen={setOpen} contacts={contacts} setContacts={setContacts} progressing={progressing} />
+            <Reminder contacts={contacts} />
         </Box>
     )
 }

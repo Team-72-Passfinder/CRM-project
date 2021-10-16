@@ -1,5 +1,6 @@
 // Controller to perform CRUD and other support functions
 const Contact = require('../models/contact');
+const Event = require('../models/event');
 
 // Update a data identified by the data's Id =====================================
 function updateData(controller, req, res) {
@@ -125,12 +126,99 @@ async function deleteDataOfUser(controller, userId) {
     });
 }
 
+// Function that search contacts that user has not been in touch recently
+/* Show receive req.body as:
+{
+  from: date
+  to: date
+}*/
+async function getNotInTouchRecently(req, res) {
+
+  const from = req.body.from;
+  const to = req.body.to;
+  const belongsTo = req.user._id;
+
+  // List contains recently contacted contacts
+  const recentlyContact = new Set();
+  var allContacts = [];
+
+  //
+  await Contact.find({ belongsTo: belongsTo }).then((data) => {
+    // If data is found, return empty
+    if (data) {
+      data.forEach((cont) => {
+        allContacts.push(cont._id);
+      });
+    }
+  });
+  //console.log("Line 155: {all contactIds}");
+  //console.log(allContacts);
+  // Get list of events that are in this date range
+  // Retrieve contacts that participate in these events
+  Event.find({
+    belongsTo: belongsTo,
+    $or: [{
+      startedDateTime: {
+        $gte: new Date(new Date(from).setHours(0, 0, 0)),
+        $lt: new Date(new Date(to).setHours(23, 59, 59)),
+      }
+    },
+    {
+      endedDateTime: {
+        $gte: new Date(new Date(from).setHours(0, 0, 0)),
+        $lt: new Date(new Date(to).setHours(23, 59, 59)),
+      }
+    }]
+  }).then(async (events) => {
+    //allContacts = await getAllContactIdList(belongsTo);
+    // If no event found, should return all the contacts
+    if (!events) {
+      const names = await getNamesFromContactIds(belongsTo, allContacts);
+
+      return res.status(200).send({
+        contactIds: allContacts,
+        names: names,
+      });
+    }
+    //console.log("Line 184: {found events}");
+    //console.log(events.length);
+    // Else retrieve contactId from each of found events
+    events.forEach((ev) => {
+      ev.participants.forEach((part) => {
+        recentlyContact.add(part);
+      });
+    });
+
+    //recentlyContact.forEach(elem=>{c = mongoose.Types.ObjectId(elem)})
+
+    //console.log("Line 193: {recentlyContact}");
+    // console.log(recentlyContact);
+    // filter those that are not in this recentlyContact list to return
+    const toReturnIds = allContacts.filter(elem =>
+      !Array.from(recentlyContact).some(contact => elem.equals(contact))
+    );
+
+    const toReturnNames = await getNamesFromContactIds(belongsTo, toReturnIds);
+    // return the data
+    //console.log("Line 207: {toReturnIds}");
+    //console.log(toReturnIds);
+    return res.status(200).send({
+      contactIds: toReturnIds,
+      names: toReturnNames,
+    });
+
+  }).catch((err) => {
+    console.log(err);
+    return res.status(500).send({ message: 'Error when accessing the database!' });
+  });
+}
+
 module.exports = {
   updateData,
   deleteData,
   findAllData,
   getNamesFromContactIds,
   deleteDataOfUser,
-  displayEvent,
-  displayRela,
+  displayEvent, displayRela,
+  getNotInTouchRecently,
 };

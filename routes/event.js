@@ -24,4 +24,10 @@ app
   .put(passport.authenticate('jwt', { session: false }), controller.update)
   .delete(passport.authenticate('jwt', { session: false }), controller.delete);
 
+// app
+//   .route('/event/log')
+//   .get(passport.authenticate('jwt', { session: false }), async (req, res) => {
+
+//   })
+
 module.exports = app;
