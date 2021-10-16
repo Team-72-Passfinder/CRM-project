@@ -63,7 +63,7 @@ function StandardInput({
 
   if (label === 'Biography') {
     return (
-      <FormControl margin="dense" variant="filled" error={true}>
+      <FormControl margin="dense" variant="filled">
         <Typography sx={{ fontSize: '15px', fontWeight: 600 }} margin="none">
           {label}
           {required && '*'}
@@ -87,7 +87,7 @@ function StandardInput({
           onChange={(e) =>
             setValue((prev) => ({ ...prev, [name]: e.target.value }))
           }
-          error={true}
+          //error={true}
           required={required}
         />
         {generateHelperText()}

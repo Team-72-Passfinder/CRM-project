@@ -97,6 +97,7 @@ export async function registerUserdata(userdata) {
       firstName: userdata.firstName,
       lastName: userdata.lastName,
       dateOfBirth: userdata.dateOfBirth,
+      phoneNumber: userdata.phoneNumber,
     })
     .then(function (response) {
       localStorage.setItem('token-myapp', response.data.token);
