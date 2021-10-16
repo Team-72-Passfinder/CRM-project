@@ -42,6 +42,10 @@ const ContactSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    avatar: {
+      data: Buffer,
+      contentType: String
+    }
   },
   {
     timestamps: true,

@@ -2,11 +2,14 @@ const express = require('express');
 const app = express();
 const passport = require('../config/passport');
 const controller = require('../controllers/contact');
+const upload = require('../config/multer');
+//const multer = require('multer')
+//const upload = multer({ dest: 'uploads/' })
 
 // findAll =  all contacts in DB
 app
   .route('/contact')
-  .post(passport.authenticate('jwt', { session: false }), controller.create)
+  .post(passport.authenticate('jwt', { session: false }), upload.single('uploadImage'), controller.create)
   .get(passport.authenticate('jwt', { session: false }), controller.findAll);
 
 // getall = all contacts that belong to current user
@@ -20,7 +23,7 @@ app
 
 app
   .route('/contact/:id')
-  .put(passport.authenticate('jwt', { session: false }), controller.update)
+  .put(passport.authenticate('jwt', { session: false }), upload.single('uploadImage'), controller.update)
   .delete(passport.authenticate('jwt', { session: false }), controller.delete)
   .get(passport.authenticate('jwt', { session: false }), controller.findOne);
 

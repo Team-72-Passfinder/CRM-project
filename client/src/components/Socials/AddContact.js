@@ -41,7 +41,7 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
   const [alert, setAlert] = useState();
   const [user, setUser] = useState();
   const [tab, setTab] = useState('Add manually');
-  const [search, setSearch] = useState('')
+  const [search, setSearch] = useState('');
 
   const handleClose = () => {
     setOpen(false);

@@ -6,6 +6,8 @@ const Search = require('./search');
 const User = require('../models/user');
 const Relationship = require('../models/relationship');
 const { isValidObjectId } = require('mongoose');
+const path = require('path');
+const fs = require('fs');
 
 // Create a new Contact ===================================================
 exports.create = async (req, res) => {
@@ -44,6 +46,10 @@ exports.create = async (req, res) => {
     jobTitle: req.body.jobTitle || [],
     tags: req.body.tags || [],
     biography: req.body.biography || '',
+    avatar: {
+      data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
+      contentType: 'image/png'
+    }
   });
 
   // Save this contact to database
@@ -98,6 +104,7 @@ exports.addFromId = async (req, res) => {
         tags: [],
         biography: userData.biography || '',
         optionalUserId: userId,
+        avatar: userData.avatar,
       });
 
       // Save this contact to database
@@ -161,7 +168,27 @@ exports.update = (req, res) => {
       req.body.dateOfBirth += 'Z';
   }
   // Update the info
-  controller.updateData(Contact, req, res);
+  //
+  var avatar;
+  if (req.file) {
+    avatar = {
+      data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
+      contentType: 'image/png'
+    }
+  }
+  //controller.updateData(Contact, req, res);
+  Contact
+    .findByIdAndUpdate(req.params.id, { $set: req.body, avatar }, { new: true })
+    .then((updatedData) => {
+      res.status(200).send(updatedData);
+    })
+    // Case of error
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({
+        message: 'Error when updating Data!',
+      });
+    });
 };
 
 // Delete a contact with the specified contact's Id ==============================
