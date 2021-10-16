@@ -110,7 +110,7 @@ function Frontpage() {
           color="text.primary"
           gutterBottom
         >
-          Feature
+          Features
         </Typography>
         <Paper elevation={3} className={classes.featurePaper}>
           <Box display="flex" alignItems="center">

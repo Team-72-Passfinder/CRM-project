@@ -10,13 +10,13 @@ const { isValidObjectId } = require('mongoose');
 // Create a new Contact ===================================================
 exports.create = async (req, res) => {
   // Validate requests
-  if (!req.body.firstName || Validator.checkInvalid(req.body.firstName)) {
+  if (!req.body.firstName /*|| Validator.checkInvalid(req.body.firstName)*/) {
     return res.status(400).send({
       message: 'Missing or invalid firstname!',
     });
   }
 
-  if (!req.body.lastName || Validator.checkInvalid(req.body.lastName)) {
+  if (!req.body.lastName /*|| Validator.checkInvalid(req.body.lastName)*/) {
     return res.status(400).send({
       message: 'Missing or invalid lastName!',
     });
@@ -92,7 +92,7 @@ exports.addFromId = async (req, res) => {
         firstName: userData.firstName,
         lastName: userData.lastName,
         email: userData.email,
-        phoneNumber: '',
+        phoneNumber: userData.phoneNumber,
         dateOfBirth: userData.dateOfBirth,
         jobTitle: [],
         tags: [],
@@ -131,22 +131,24 @@ exports.update = (req, res) => {
       message: 'Owner of the contact are unchangaeble!',
     });
   }
-  if (req.body.firstName && Validator.checkInvalid(req.body.firstName)) {
+  /*
+  if (!req.body.firstName && Validator.checkInvalid(req.body.firstName)) {
     return res.status(400).send({
       message: 'invalid firstname!',
     });
   }
-  if (req.body.lastName && Validator.checkInvalid(req.body.lastName)) {
+  if (!req.body.lastName && Validator.checkInvalid(req.body.lastName)) {
     return res.status(400).send({
       message: 'invalid lastname!',
     });
   }
+  /*
   // Prevent update optionalUserId so it less messy
   if (req.body.optionalUserId) {
     return res.status(400).send({
       message: 'Cannot change optionalUserId!',
     });
-  }
+  }*/
 
   // Enforce UTC timezone
   if (req.body.dateOfBirth) {
