@@ -192,7 +192,7 @@ async function getNotInTouchRecently(req, res) {
     //recentlyContact.forEach(elem=>{c = mongoose.Types.ObjectId(elem)})
 
     //console.log("Line 193: {recentlyContact}");
-    //console.log(recentlyContact);
+    // console.log(recentlyContact);
     // filter those that are not in this recentlyContact list to return
     const toReturnIds = allContacts.filter(elem =>
       !Array.from(recentlyContact).some(contact => elem.equals(contact))
