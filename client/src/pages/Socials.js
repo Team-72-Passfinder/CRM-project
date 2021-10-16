@@ -5,15 +5,17 @@ import { Box, Typography, Fab, IconButton, Dialog, DialogTitle, DialogContent, S
 import SortIcon from '@mui/icons-material/Sort';
 import AddIcon from '@mui/icons-material/Add';
 
-import { getContacts } from '../api'
+import { getContacts, getEventsFromContactId } from '../api'
 import Navbar from '../components/Navbar'
 
 import AddContact from '../components/Socials/AddContact';
 import Header from '../components/Socials/Header';
 import ContactList from '../components/Socials/ContactList';
+import Reminder from '../components/Socials/Reminder';
 
 function Socials() {
     const [contacts, setContacts] = useState([])
+    const [uncontact, setUncontact] = useState([]);
     const [search, setSearch] = useState('')
     const [tab, setTab] = useState('All Contacts')
     const [open, setOpen] = React.useState(false)
@@ -50,11 +52,29 @@ function Socials() {
 
     // Used to get contact list when the page loads.
     useEffect(() => {
+        let list = []
         getContacts().then(res => {
             setTimeout(() => {
                 progressing.current = false
                 setContacts(res)
             }, 200)
+
+            // res.map(async (contact) => {
+            //     let events;
+            //     await getEventsFromContactId(contact._id).then(res => {
+            //         events = (res.sort((a, b) => new Date(b.startedDateTime) - new Date(a.startedDateTime)))
+
+            //         if (events.length === 0) {
+            //             if (!uncontact.includes(contact)) {
+            //                 list.push(contact)
+            //             }
+            //         }
+            //     })
+
+            //     console.log(list.length)
+            // })
+
+            // setUncontact(list)
         })
     }, [])
 
@@ -188,6 +208,7 @@ function Socials() {
                 </DialogContent>
             </Dialog>
             <AddContact open={open} setOpen={setOpen} contacts={contacts} setContacts={setContacts} progressing={progressing} />
+            <Reminder contacts={contacts} uncontact={uncontact} />
         </Box>
     )
 }

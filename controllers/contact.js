@@ -217,3 +217,8 @@ exports.getall = (req, res) => {
       res.status(500).send({ message: 'Error when accessing the database!' });
     });
 };
+
+// Get all contacts that have not been in touch recently
+exports.toRemind = (req, res) => {
+  controller.getNotInTouchRecently(req, res);
+}

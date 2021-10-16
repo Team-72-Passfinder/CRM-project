@@ -207,6 +207,8 @@ async function eventSearch(req, res) {
   res.status(200).send(returnedEv);
 }
 
+// =================== Relationship, convo and message search =========================== //
+
 // Function to search a relationship ==============================================
 // Searching by tags
 async function relationshipSearch(req, res) {
