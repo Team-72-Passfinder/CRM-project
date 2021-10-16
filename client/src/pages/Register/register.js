@@ -8,6 +8,7 @@ import {
   Typography,
   FilledInput,
   FormControl,
+  IconButton,
 } from '@mui/material';
 
 import { registerUserdata } from '../../api';
@@ -15,6 +16,7 @@ import StandardInput from '../../components/StandardInput';
 import DateAdapter from '@mui/lab/AdapterDayjs';
 import DatePicker from '@mui/lab/DatePicker';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 // let errors = [];
 
@@ -25,6 +27,7 @@ function Register(props) {
     firstName: '',
     lastName: '',
     email: '',
+    phoneNumber: '',
     dateOfBirth: new Date(),
   });
 
@@ -45,6 +48,10 @@ function Register(props) {
       }
     });
   }
+
+  const handleBack = () => {
+    window.location.href = '/';
+  };
 
   useEffect(() => {
     const inputs = document.querySelectorAll('input');
@@ -71,158 +78,183 @@ function Register(props) {
   }, [errors, userdata]);
 
   return (
-    <Container
-      sx={{
-        display: 'flex',
-        width: '100vw',
-        height: '100vh',
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-      maxWidth="xs"
-    >
-      <Box
+    <Box>
+      <IconButton
+        sx={{
+          mt: '20px',
+          ml: '20px',
+          color: 'black',
+        }}
+        edge="start"
+        onClick={handleBack}
+        aria-label="back"
+      >
+        <ArrowBackIcon />
+      </IconButton>
+      <Container
         sx={{
           display: 'flex',
-          flexDirection: 'column',
+          width: '100vw',
+          height: '100vh',
+          justifyContent: 'center',
           alignItems: 'center',
-          width: '300px',
-          maxWidth: '80vw',
         }}
+        maxWidth="xs"
       >
-        <Typography
-          sx={{
-            mb: 2,
-          }}
-          variant="h5"
-        >
-          Register
-        </Typography>
-        <Box sx={{ width: '300px' }}>{alert}</Box>
-        <StandardInput
-          id="username"
-          label="Username"
-          name="username"
-          value={userdata.username}
-          setValue={setUserdata}
-          required={true}
-          type="text"
-          error={errors.username}
-          setErrors={setErrors}
-        />
-        <StandardInput
-          id="password"
-          label="Password"
-          name="password"
-          value={userdata.password}
-          setValue={setUserdata}
-          required={true}
-          type="password"
-          error={errors.password}
-          setErrors={setErrors}
-        />
-        <StandardInput
-          id="firstName"
-          label="First name"
-          name="firstName"
-          value={userdata.firstName}
-          setValue={setUserdata}
-          required={true}
-          type="text"
-          error={errors.firstName}
-          setErrors={setErrors}
-        />
-        <StandardInput
-          id="lastName"
-          label="Last name"
-          name="lastName"
-          value={userdata.lastName}
-          setValue={setUserdata}
-          required={true}
-          type="text"
-          error={errors.lastName}
-          setErrors={setErrors}
-        />
-        <StandardInput
-          id="email"
-          label="Email"
-          name="email"
-          value={userdata.email}
-          setValue={setUserdata}
-          required={true}
-          type="email"
-          error={errors.email}
-          setErrors={setErrors}
-        />
-        <LocalizationProvider dateAdapter={DateAdapter}>
-          <FormControl margin="dense" variant="filled">
-            <Typography
-              sx={{ fontSize: '15px', fontWeight: 600 }}
-              margin="none"
-            >
-              Date of birth
-            </Typography>
-            <DatePicker
-              id="dateOfBirth"
-              value={userdata.dateOfBirth}
-              disableFuture
-              onChange={(newValue) => {
-                setUserdata((prev) => ({ ...prev, dateOfBirth: newValue }));
-              }}
-              renderInput={({ inputRef, inputProps, InputProps }) => (
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <FilledInput
-                    sx={{
-                      width: '300px',
-                      height: '40px',
-                      borderRadius: '5px',
-                      '&.Mui-error': {
-                        background: '#FBB5B1',
-                        border: '1px solid #F9202B',
-                      },
-                      '& input:not(:placeholder-shown)': {
-                        height: '0px',
-                      },
-                    }}
-                    id="dateOfBirthInput"
-                    disableUnderline={true}
-                    hiddenLabel={true}
-                    endAdornment={InputProps?.endAdornment}
-                    ref={inputRef}
-                    {...inputProps}
-                  />
-                </Box>
-              )}
-            />
-          </FormControl>
-        </LocalizationProvider>
-
         <Box
           sx={{
             display: 'flex',
-            width: '100%',
-            justifyContent: 'right',
-            mb: 2,
+            flexDirection: 'column',
+            alignItems: 'center',
+            width: '300px',
+            maxWidth: '80vw',
           }}
-        ></Box>
-        <Button
-          sx={{
-            width: 300,
-            my: '10px',
-            '&.MuiButton-disableElevation': {
-              boxShadow: `(${submitDisabled} && 'none') || '4px 4px 20px 5px rgba(223, 120, 97, 0.25)'`,
-            },
-          }}
-          color="primary"
-          variant="contained"
-          disableElevation
-          disabled={submitDisabled}
-          onClick={saveUserToDB}
         >
-          Save
-        </Button>
-      </Box>
-    </Container>
+          <Typography
+            sx={{
+              fontSize: '28px',
+              fontWeight: 700,
+              mb: 2,
+            }}
+            variant="h5"
+          >
+            Register
+          </Typography>
+          <Box sx={{ width: '300px' }}>{alert}</Box>
+          <StandardInput
+            id="username"
+            label="Username"
+            name="username"
+            value={userdata.username}
+            setValue={setUserdata}
+            required={true}
+            type="text"
+            error={errors.username}
+            setErrors={setErrors}
+          />
+          <StandardInput
+            id="password"
+            label="Password"
+            name="password"
+            value={userdata.password}
+            setValue={setUserdata}
+            required={true}
+            type="password"
+            error={errors.password}
+            setErrors={setErrors}
+          />
+          <StandardInput
+            id="firstName"
+            label="First name"
+            name="firstName"
+            value={userdata.firstName}
+            setValue={setUserdata}
+            required={true}
+            type="text"
+            error={errors.firstName}
+            setErrors={setErrors}
+          />
+          <StandardInput
+            id="lastName"
+            label="Last name"
+            name="lastName"
+            value={userdata.lastName}
+            setValue={setUserdata}
+            required={true}
+            type="text"
+            error={errors.lastName}
+            setErrors={setErrors}
+          />
+          <StandardInput
+            id="email"
+            label="Email"
+            name="email"
+            value={userdata.email}
+            setValue={setUserdata}
+            required={true}
+            type="email"
+            error={errors.email}
+            setErrors={setErrors}
+          />
+          <StandardInput
+            id="phoneNumber"
+            label="Phone number"
+            name="phoneNumber"
+            value={userdata.phoneNumber}
+            setValue={setUserdata}
+            required={false}
+            type="tel"
+          />
+          <LocalizationProvider dateAdapter={DateAdapter}>
+            <FormControl margin="dense" variant="filled">
+              <Typography
+                sx={{ fontSize: '15px', fontWeight: 600 }}
+                margin="none"
+              >
+                Date of birth
+              </Typography>
+              <DatePicker
+                id="dateOfBirth"
+                value={userdata.dateOfBirth}
+                disableFuture
+                onChange={(newValue) => {
+                  setUserdata((prev) => ({ ...prev, dateOfBirth: newValue }));
+                }}
+                renderInput={({ inputRef, inputProps, InputProps }) => (
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <FilledInput
+                      sx={{
+                        width: '300px',
+                        height: '40px',
+                        borderRadius: '5px',
+                        '&.Mui-error': {
+                          background: '#FBB5B1',
+                          border: '1px solid #F9202B',
+                        },
+                        '& input:not(:placeholder-shown)': {
+                          height: '0px',
+                        },
+                      }}
+                      id="dateOfBirthInput"
+                      disableUnderline={true}
+                      hiddenLabel={true}
+                      endAdornment={InputProps?.endAdornment}
+                      ref={inputRef}
+                      {...inputProps}
+                    />
+                  </Box>
+                )}
+              />
+            </FormControl>
+          </LocalizationProvider>
+
+          <Box
+            sx={{
+              display: 'flex',
+              width: '100%',
+              justifyContent: 'right',
+              mb: 2,
+            }}
+          ></Box>
+          <Button
+            sx={{
+              width: 300,
+              my: '10px',
+              '&.MuiButton-disableElevation': {
+                boxShadow: `(${submitDisabled} && 'none') || '4px 4px 20px 5px rgba(223, 120, 97, 0.25)'`,
+              },
+            }}
+            color="primary"
+            variant="contained"
+            disableElevation
+            disabled={submitDisabled}
+            onClick={saveUserToDB}
+          >
+            Save
+          </Button>
+        </Box>
+      </Container>
+    </Box>
   );
 }
 

@@ -141,6 +141,15 @@ export function addContact(contact) {
     .catch((e) => console.log(e.response));
 }
 
+export function addByUserId(userId) {
+  let endpoint = '/contact/add/' + userId;
+
+  return axios
+    .post(endpoint, {}, config)
+    .then((res) => res.data)
+    .catch((e) => console.log(e.response));
+}
+
 export function updateContact(contact) {
   let endpoint = '/contact/' + contact._id;
 
@@ -191,4 +200,16 @@ export function sendEmailInvite(id) {
   let endpoint = '/invite/' + id;
   console.log('Send invite');
   return axios.get(endpoint, config).then((res) => res.data);
+}
+
+export function searchUser(searchQuery) {
+  let endpoint = '/user/search/';
+  let query = {
+    query: searchQuery,
+  }
+
+  return axios
+    .post(endpoint, query, config)
+    .then((res) => res.data)
+    .catch((error) => console.log(error));
 }

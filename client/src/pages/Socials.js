@@ -17,7 +17,7 @@ function Socials() {
     const [contacts, setContacts] = useState([])
     const [uncontact, setUncontact] = useState([]);
     const [search, setSearch] = useState('')
-    const [tab, setTab] = useState('All')
+    const [tab, setTab] = useState('All Contacts')
     const [open, setOpen] = React.useState(false)
     const [openDialog, setOpenDialog] = useState(false)
     const [sortBy, setSortBy] = useState("Recently added")
@@ -83,7 +83,7 @@ function Socials() {
     }, [sortBy])
 
     return (
-        <Box 
+        <Box
             sx={{
                 display: 'flex',
                 overflow: { xs: 'hidden', },
@@ -91,12 +91,12 @@ function Socials() {
                 width: '100vw',
                 height: '100vh',
                 background: { xs: 'white', sm: '#F7F7F7' }
-            }} 
+            }}
         >
             <Navbar active="Socials" />
             <Box sx={{ flexGrow: { xs: 0, sm: 1 }, display: { sm: 'flex' }, height: '100%', justifyContent: 'center', alignItems: 'center' }}>
                 <Box sx={{ display: 'flex', height: '90vh', background: '#F7F7F7', }}>
-                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: { xs: '100%', sm: '500px', md: '400px', lg: '600px' }, maxWidth: { xs: '100%' }, background: 'white', borderRadius: { xs: '0px', sm: '20px' }, paddingY: { xs: 0, sm: '20px' }, boxShadow: { xs: 'none', sm: '0px 4px 4px rgba(0, 0, 0, 0.25)'}, }}>
+                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: { xs: '100%', sm: '500px', md: '400px', lg: '600px' }, maxWidth: { xs: '100%' }, background: 'white', borderRadius: { xs: '0px', sm: '20px' }, paddingY: { xs: 0, sm: '20px' }, boxShadow: { xs: 'none', sm: '0px 4px 4px rgba(0, 0, 0, 0.25)' }, }}>
                         <Header handleClickOpen={handleClickOpen} sortBy={sortBy} setSortBy={setSortBy} setSearch={setSearch} tab={tab} handleTabChange={handleTabChange} />
                         <ContactList contacts={contacts} search={search} filter={filter} progressing={progressing} />
                     </Box>
@@ -140,6 +140,7 @@ function Socials() {
                                 options={['family', 'assistant']}
                                 onChange={(event, newValue) => { setFilter(newValue) }}
                                 value={filter}
+                                freeSolo
                                 disableClearable
                                 renderInput={(params) => (
                                     <TextField
@@ -156,7 +157,7 @@ function Socials() {
                 <SortIcon />
             </Fab>
             {/* Add dialog content here */}
-            <Dialog open={openDialog} onClose={handleOpenDialog}  fullWidth>
+            <Dialog open={openDialog} onClose={handleOpenDialog} fullWidth>
                 <DialogTitle>
                     Search filter
                 </DialogTitle>
@@ -165,7 +166,7 @@ function Socials() {
                         <Typography>
                             Sort by
                         </Typography>
-                        <Select 
+                        <Select
                             value={sortBy}
                             variant="standard"
                             onChange={e => setSortBy(e.target.value)}
@@ -193,7 +194,7 @@ function Socials() {
                             id="auto"
                             multiple
                             options={['family', 'assistant']}
-                            onChange={(event, newValue) => {setFilter(newValue)}}
+                            onChange={(event, newValue) => { setFilter(newValue) }}
                             value={filter}
                             disableClearable
                             renderInput={(params) => (

@@ -56,11 +56,12 @@ exports.create = async (req, res) => {
 exports.update = (req, res) => {
   // people's userIds can't be changed because they're default
   // Check if people's userId is included in the sent data
+  /*
   if (req.body.people) {
     return res.status(400).send({
       message: 'Users of this conversation is unchangeable!',
     });
-  }
+  }*/
   // new list of messages is added to the convo
   const id = req.params.id;
 

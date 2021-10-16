@@ -14,6 +14,7 @@ exports.update = (req, res) => {
   // Validate firstname, lastname, dateOfBirth information
   // since username and email can't be changed
   // Password is going to be considered sepeartedly due to security matter!
+
   if (Validator.checkInvalid(req.body.firstName)) {
     return res.status(400).send({
       message: 'Firstname contains invalid characters!',
@@ -36,19 +37,20 @@ exports.update = (req, res) => {
 
   // Check for un-changaeble field -- in case of hacking on the way the info is sent to
   // username
-  if (req.body.username) {
+
+  if (req.body.username && req.body.username != req.user.username) {
     return res.status(400).send({
       message: 'username is unchangaeble!',
     });
   }
   // password
-  if (req.body.password) {
+  if (req.body.password && req.body.password != req.user.password) {
     return res.status(400).send({
       message: 'password must be changed under protection!',
     });
   }
   // email
-  if (req.body.email) {
+  if (req.body.email && req.body.email != req.user.email) {
     return res.status(400).send({
       message: 'email must be changed under protection!',
     });
@@ -66,6 +68,7 @@ exports.update = (req, res) => {
         lastName: updatedData.lastName,
         dateOfBirth: updatedData.dateOfBirth,
         biography: updatedData.biography,
+        phoneNumber: updatedData.phoneNumber,
       });
     }
   );
@@ -116,6 +119,7 @@ exports.findAll = (req, res) => {
           lastName: user.lastName,
           dateOfBirth: user.dateOfBirth,
           biography: user.biography,
+          phoneNumber: user.phoneNumber,
         });
       });
       res.send(userMap);
@@ -149,6 +153,7 @@ exports.findOne = (req, res) => {
         lastName: data.lastName,
         dateOfBirth: data.dateOfBirth,
         biography: data.biography,
+        phoneNumber: data.phoneNumber,
       });
     })
     // Catching the error when assessing the DB
@@ -164,22 +169,22 @@ exports.search = (req, res) => {
 };
 
 exports.changePassword = async (req, res) => {
-    if (!req.user) {
-        return console.error();
-    }
+  if (!req.user) {
+    return console.error();
+  }
 
-    console.log(req.body)
+  console.log(req.body)
 
-    let user = await User.findOne({ username: req.user.username });
+  let user = await User.findOne({ username: req.user.username });
 
-    if (user.verifyPassword(req.body.oldPassword)) {
-        user.password = user.hashPassword(req.body.newPassword);
+  if (user.verifyPassword(req.body.oldPassword)) {
+    user.password = user.hashPassword(req.body.newPassword);
 
-        await user.save();
+    await user.save();
 
-        res.send(user);
-    } else {
-        // return new Error("Wrong password")
-        return res.status(401).send("Wrong password");
-    }
+    res.send(user);
+  } else {
+    // return new Error("Wrong password")
+    return res.status(401).send("Wrong password");
+  }
 };
