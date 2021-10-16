@@ -36,9 +36,54 @@ const scroll = {
     },
 }
 
-function ContactList({ contacts, search, filter, handleClick, progressing }) {
+function ContactList({ contacts, search, filter, handleClick, progressing, tab }) {
     function handleClick(id) {
         window.location.href = '/socials/' + id
+    }
+
+    function filterConditions() {
+        let filtered = contacts;
+
+        if(tab === 'All') {
+            if(search === '') {
+                if(filter.length !== 0) {
+                    return contacts.filter(contact => filter.every(r => contact.tags.includes(r)))
+                } else {
+                    return contacts
+                }
+            } else {
+                if (filter.length !== 0) {
+                    return contacts.filter(contact => {
+                        return (
+                            filter.every(r => contact.tags.includes(r))
+                            && (contact.firstName.toLowerCase().match(search.toLowerCase()) || contact.lastName.toLowerCase().match(search.toLowerCase()))
+                        )
+                    })
+                } else {
+                    return contacts.filter(contact => contact.firstName.toLowerCase().match(search.toLowerCase()) || contact.lastName.toLowerCase().match(search.toLowerCase()))
+                }
+            }
+        } else {
+            filtered = contacts.filter(contact => contact.optionalUserId !== undefined && contact.optionalUserId !== '')
+            if (search === '') {
+                if (filter.length !== 0) {
+                    return filtered.filter(contact => filter.every(r => contact.tags.includes(r)))
+                } else {
+                    return filtered
+                }
+            } else {
+                if (filter.length !== 0) {
+                    return filtered.filter(contact => {
+                        return (
+                            filter.every(r => contact.tags.includes(r))
+                            && (contact.firstName.toLowerCase().match(search.toLowerCase()) || contact.lastName.toLowerCase().match(search.toLowerCase()))
+                        )
+                    })
+                } else {
+                    return filtered.filter(contact => contact.firstName.toLowerCase().match(search.toLowerCase()) || contact.lastName.toLowerCase().match(search.toLowerCase()))
+                }
+            }
+        }
     }
 
     return (
@@ -54,21 +99,7 @@ function ContactList({ contacts, search, filter, handleClick, progressing }) {
                     display: `${(progressing.current && 'none') || 'initial'}`,
                 }, scroll)}
             >
-                {search === '' ?
-                    filter.length !== 0 ?
-                        iterateContacts(contacts.filter(contact => filter.every(r => contact.tags.includes(r))), handleClick)
-                        :
-                        iterateContacts(contacts, handleClick)
-                    :
-                    filter.length !== 0 ?
-                        iterateContacts(contacts.filter(contact => {
-                                return (
-                                    filter.every(r => contact.tags.includes(r)) 
-                                    && (contact.firstName.toLowerCase().match(search.toLowerCase()) || contact.lastName.toLowerCase().match(search.toLowerCase()))
-                                )}), handleClick)
-                        :
-                        iterateContacts(contacts.filter(contact => contact.firstName.toLowerCase().match(search.toLowerCase()) || contact.lastName.toLowerCase().match(search.toLowerCase())), handleClick)
-                }
+                {iterateContacts(filterConditions(), handleClick)}
             </List>
         </React.Fragment>
     )
