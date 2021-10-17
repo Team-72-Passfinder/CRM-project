@@ -1,16 +1,14 @@
-import React, { useState, useEffect, Component } from 'react';
-import { AppBar } from '@mui/material';
-import { Button, Grid, Stack, Chip } from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Button, Stack, Chip, Box, createTheme } from '@mui/material';
 import { Typography } from '@mui/material';
 import { makeStyles, ThemeProvider } from '@mui/styles';
-import { Container } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { Box, createTheme } from '@mui/material';
 import { EditText, EditTextarea } from 'react-edit-text';
+import Popover from '@mui/material/Popover';
+import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 import 'react-edit-text/dist/index.css';
 
-import { getEvent } from '../../api';
-import { editEvent } from '../../api';
+import { getEvent, deleteEvent, editEvent } from '../../api';
 import Navbar from '../../components/Navbar';
 // Remove when ready
 import EventInvite from '../../components/EventInvite';
@@ -43,6 +41,10 @@ function Event() {
     },
   });
 
+  const handleDelete = () => {
+    deleteEvent(event._id);
+    window.location.href = '/home/'
+  }
 
   const maxCards = 10;
   let eventParticipants = Array.from(Array(maxCards).keys());
@@ -72,16 +74,42 @@ function Event() {
                   display: 'flex', flexDirection: 'row', width: '20vw', alignItems: 'left', ml: '40px', backgroundColor: '#f7e0d2', justifyContent: 'space-between',
                 }} >
                   <ThemeProvider theme={orangeTheme}>
-                    <Button
-                      className={classes.button} color="primary" variant="contained" onClick={goToEdit}>
-                      Edit
-                    </Button>
-                    <Button
-                      className={classes.button}
-                      color="primary"
-                      variant="contained">
-                      Delete
-                    </Button>
+                    <Stack spacing={3} direction="row">
+                      <Button
+                        className={classes.button} color="primary" variant="contained" onClick={goToEdit}>
+                        Edit
+                      </Button>
+                      <PopupState variant="popover" popupId="demo-popup-popover">
+                        {(popupState) => (
+                          <div>
+                            <Button
+                              color="primary"
+                              variant="contained"
+                              aria-label="delete"
+                              size="large"
+                              {...bindTrigger(popupState)} >
+                              Delete
+                            </Button>
+                            <Popover
+                              {...bindPopover(popupState)}
+                              anchorOrigin={{
+                                vertical: 'bottom',
+                                horizontal: 'center',
+                              }}
+                              transformOrigin={{
+                                vertical: 'top',
+                                horizontal: 'center',
+                              }}
+                            >
+                              <Typography sx={{ p: 2 }}>Are you sure to delete this event?</Typography>
+                              <Button variant="contained" sx={{ left: '195px', bottom: '10px' }} onClick={handleDelete}>
+                                Yes
+                              </Button>
+                            </Popover>
+                          </div>
+                        )}
+                      </PopupState>
+                    </Stack>
                   </ThemeProvider>
                 </Box>
               </Box>

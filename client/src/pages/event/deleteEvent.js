@@ -1,3 +1,4 @@
+/*
 import React from 'react';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
@@ -43,3 +44,4 @@ function DeleteEvent(props) {
   );
 }
 export default DeleteEvent;
+*/
