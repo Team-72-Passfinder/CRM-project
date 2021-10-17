@@ -12,43 +12,15 @@ import DatePicker from '@mui/lab/DatePicker';
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import CloseIcon from '@mui/icons-material/Close';
+import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 import StandardInput from '../../components/StandardInput';
 
-import { getEvents, updateEvent } from '../../api';
-
-const formList = [
-  {
-    label: 'Name',
-    type: 'text',
-    required: true,
-  },
-  {
-    label: 'Started Date Time',
-    type: 'date',
-    required: true,
-  },
-  {
-    label: 'Ended Date Time',
-    type: 'date',
-  },
-  {
-    label: 'Participants',
-    type: 'email',
-  },
-  {
-    label: 'Description',
-    type: 'tel',
-  },
-  {
-    label: 'Completed',
-    type: 'tags',
-  }
-];
+import { addEvent, getEvents } from '../../api';
 
 function EditEvent() {
   const [event, setEvent] = useState({ name: 'none', description: 'none', startedDateTime: new Date(), belongsTo: '6128d8da5abef9dd792d90ff', completed: false })
   const [submitDisabled, setSubmitDisabled] = useState(true)
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -58,8 +30,17 @@ function EditEvent() {
     setOpen(false);
   };
   function saveEvent() {
-    updateEvent(event);
-    window.location.href = '/myevent/' + event._id;
+    addEvent(event).then(res => {
+      if (event.name === res.name) {
+
+        handleClose();
+        getEvents().then(res => {
+          setTimeout(() => {
+            setEvent(res)
+          }, 200)
+        })
+      }
+    })
   }
 
   useEffect(() => {

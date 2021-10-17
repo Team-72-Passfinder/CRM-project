@@ -8,7 +8,6 @@ import {
   Typography,
   Container,
   CardHeader,
-  Stack,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
@@ -86,6 +85,7 @@ function Home() {
         }}
       >
         {/* Hero Unit */}
+
         <img src={logo} alt="Logo" width="120px" style={{ padding: 10 }} />
 
         <Container maxWidth="sm">
