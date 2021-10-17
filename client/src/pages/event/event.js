@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Stack, Chip, Box, createTheme } from '@mui/material';
+import { Button, Stack, Chip, Box, createTheme, IconButton } from '@mui/material';
 import { Typography } from '@mui/material';
 import { makeStyles, ThemeProvider } from '@mui/styles';
 import { Link } from 'react-router-dom';
@@ -12,6 +12,8 @@ import { getEvent, deleteEvent, editEvent } from '../../api';
 import Navbar from '../../components/Navbar';
 // Remove when ready
 import EventInvite from '../../components/EventInvite';
+
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const useStyles = makeStyles((theme) => ({}));
 
@@ -34,6 +36,10 @@ function Event() {
   const goToEdit = () => {
     window.location.href =
       '/myevent/edit/' + event._id;
+  };
+
+  const goBack = () => {
+    window.location.href = '/events/';
   };
 
   const orangeTheme = createTheme({
@@ -69,9 +75,20 @@ function Event() {
                 <Box sx={{
                   display: 'flex', flexDirection: 'row', width: '80vw', alignItems: 'center', ml: '80px', backgroundColor: '#f7e0d2', justifyContent: 'space-between',
                 }} >
-                  <Typography variant="h5">
-                    {getDate(Date())}
-                  </Typography>
+                  <Stack spacing={5} direction="row">
+                    <IconButton
+                      color="primary"
+                      size="large"
+                      edge="start"
+                      onClick={goBack}
+                      aria-label="close"
+                    >
+                      <ArrowBackIcon />
+                    </IconButton>
+                    <Typography variant="h5">
+                      {getDate(Date())}
+                    </Typography>
+                  </Stack>
                 </Box>
                 <Box sx={{
                   display: 'flex', flexDirection: 'row', width: '20vw', alignItems: 'left', ml: '40px', backgroundColor: '#f7e0d2', justifyContent: 'space-between',
@@ -144,10 +161,10 @@ function Event() {
                 <Box sx={{
                   display: 'flex', alignItems: 'center', mb: '20px', padding: '20px', borderRadius: 4
                 }} >
-                  <Typography variant="h5"> Participants:</Typography>
+                  <Typography variant="h5"> Participants: </Typography>
                   <Stack sx={{ ml: '15px' }} direction="row" spacing={1}>
                     {event.participants.map((i) => (
-                      <Chip label={i} /*href={/*Contact link goes here} clickable*/ />
+                      <Chip label={i} clickable />
                     ))}
                   </Stack>
                 </Box>

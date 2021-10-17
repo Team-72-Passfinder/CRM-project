@@ -63,7 +63,7 @@ function EventList() {
   };
 
   function handleClick(id) {
-    window.location.href = '/event/' + id;
+    window.location.href = '/myevent/' + id;
   }
 
   // Prevent undefined entries

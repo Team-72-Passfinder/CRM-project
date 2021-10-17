@@ -56,7 +56,7 @@ const App = () => {
           <PrivateRoute exact path="/home">
             <Home />
           </PrivateRoute>
-          <PrivateRoute exact path="/event">
+          <PrivateRoute exact path="/events">
             <EventList />
           </PrivateRoute>
           <PrivateRoute exact path="/myevent/:id">

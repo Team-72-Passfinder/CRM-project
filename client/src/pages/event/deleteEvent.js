@@ -30,7 +30,7 @@ function DeleteEvent(props) {
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
           <Button
-            sx={{ width: 30, my: '10px' }}
+            sx={{ width: 30, my: '10px', mr: '10px' }}
             color="primary"
             variant="contained"
             onClick={clickDeleteEvent}
