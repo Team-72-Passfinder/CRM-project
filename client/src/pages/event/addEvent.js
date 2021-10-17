@@ -114,7 +114,7 @@ function AddEvent() {
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <Box display="flex" justifyContent="center" alignItems="center">
-          <DialogTitle>New Event</DialogTitle>
+          <DialogTitle sx={{ fontSize: '24px', fontWeight: 600, color: '#272727' }}>New Event</DialogTitle>
         </Box>
         <Box
           sx={{

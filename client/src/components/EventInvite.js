@@ -26,7 +26,7 @@ function EventInvite(props) {
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Send invite to event through emails?</DialogTitle>
-        <DialogActions>
+        <DialogActions sx={{ mr: '20px' }}>
           <Button onClick={handleClose}>Cancel</Button>
           <Button
             sx={{ width: 30, my: '10px' }}

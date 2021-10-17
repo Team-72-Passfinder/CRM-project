@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Button, Stack, Chip, Box, createTheme, IconButton } from '@mui/material';
+import { Button, Stack, Chip, Box, createTheme, FormControlLabel, Switch } from '@mui/material';
 import { Typography } from '@mui/material';
 import { makeStyles, ThemeProvider } from '@mui/styles';
 import { Link } from 'react-router-dom';
@@ -12,6 +12,7 @@ import { getEvent, deleteEvent, getContact } from '../../api';
 import Navbar from '../../components/Navbar';
 // Remove when ready
 import EventInvite from '../../components/EventInvite';
+import DeleteEvent from './deleteEvent';
 
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
@@ -69,22 +70,20 @@ function Event() {
 
               <Navbar />
               <Box sx={{
-                display: 'flex', flexDirection: 'row', alignItems: 'center', ml: '100px', padding: '20px', backgroundColor: '#f7e0d2'
+                display: 'flex', flexDirection: 'row', alignItems: 'center', ml: '100px', padding: '15px', backgroundColor: '#f7e0d2'
               }} >
-                <IconButton
+                <Button
+                  variant="contained"
                   sx={{ ml: '40px' }}
                   color="primary"
-                  size="large"
-                  edge="start"
                   onClick={goBack}
-                  aria-label="close"
                 >
-                  <ArrowBackIcon />
-                </IconButton>
+                  BACK
+                </Button>
                 <Box sx={{
                   display: 'flex', flexDirection: 'row', width: '80vw', alignItems: 'center', ml: '80px', backgroundColor: '#f7e0d2', justifyContent: 'space-between',
                 }} >
-                  <Typography variant="h5">
+                  <Typography sx={{ fontSize: { xs: '24px', sm: '24px' }, fontWeight: 700, color: '#272727' }}>
                     {getDate(Date())}
                   </Typography>
 
@@ -94,79 +93,77 @@ function Event() {
                 }} >
                   <ThemeProvider theme={orangeTheme}>
                     <Stack spacing={3} direction="row">
+                      <EventInvite eventId={event._id} />
                       <Button
                         className={classes.button} color="primary" variant="contained" onClick={goToEdit}>
                         Edit
                       </Button>
-                      <PopupState variant="popover" popupId="demo-popup-popover">
-                        {(popupState) => (
-                          <div>
-                            <Button
-                              color="primary"
-                              variant="contained"
-                              aria-label="delete"
-                              size="large"
-                              {...bindTrigger(popupState)} >
-                              Delete
-                            </Button>
-                            <Popover
-                              {...bindPopover(popupState)}
-                              anchorOrigin={{
-                                vertical: 'bottom',
-                                horizontal: 'center',
-                              }}
-                              transformOrigin={{
-                                vertical: 'top',
-                                horizontal: 'center',
-                              }}
-                            >
-                              <Typography sx={{ p: 2 }}>Are you sure to delete this event?</Typography>
-                              <Button variant="contained" sx={{ left: '195px', bottom: '10px' }} onClick={handleDelete}>
-                                Yes
-                              </Button>
-                            </Popover>
-                          </div>
-                        )}
-                      </PopupState>
+                      <DeleteEvent eventId={event._id} />
                     </Stack>
                   </ThemeProvider>
                 </Box>
               </Box>
 
               <Box sx={{
-                align: 'center', width: '40vw', height: '100%', mt: '80px', ml: '500px', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'left', justifyContent: 'space-between',
+                align: 'center', width: '40vw', height: '100%', mt: '80px', ml: '500px', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-between',
                 borderRadius: 4, boxShadow: 2
               }}>
                 <Box sx={{
-                  display: 'flex', alignItems: 'center', mb: '20px', backgroundColor: '#DF7861', padding: '20px', borderRadius: 4
+                  display: 'flex', width: '38vw', alignItems: 'center', mb: '20px', backgroundColor: '#DF7861', padding: '20px', borderRadius: 4
                 }} >
-                  <Typography variant="h3">{event.name}</Typography>
+                  <Typography sx={{ fontSize: { xs: '30px', sm: '30px' }, fontWeight: 700, color: '#272727' }}>
+                    {event.name}
+                  </Typography>
                 </Box>
                 <Box sx={{
-                  display: 'flex', alignItems: 'center', mb: '20px', backgroundColor: '#f7e0d2', padding: '20px', borderRadius: 4
+                  display: 'flex', width: '38vw', alignItems: 'center', mb: '20px', backgroundColor: '#f7e0d2', padding: '20px', borderRadius: 4
                 }} >
-                  <Typography variant="h5">
+                  <Typography sx={{ fontSize: { xs: '24px', sm: '24px' }, fontWeight: 500, color: '#272727' }}>
                     Starts at: {getDate(event.startedDateTime)}
                   </Typography>
-                  <Typography variant="h5">
+                  <Typography sx={{ fontSize: { xs: '24px', sm: '24px' }, fontWeight: 500, color: '#272727' }}>
                     Ends at: {getDate(event.endedDateTime)}
                   </Typography>
                 </Box>
                 <Box sx={{
                   display: 'flex', alignItems: 'center', mb: '20px', backgroundColor: '', padding: '20px', borderRadius: 4
                 }} >
-                  <Typography variant="h6">{event.description}</Typography>
+                  <Typography sx={{ fontSize: { xs: '22px', sm: '22px' }, fontWeight: 450, color: '#272727' }}>
+                    {event.description}
+                  </Typography>
                 </Box>
                 <Box sx={{
                   display: 'flex', alignItems: 'center', mb: '20px', padding: '20px', borderRadius: 4
                 }} >
-                  <Typography variant="h5"> Participants: </Typography>
+                  <Typography sx={{ fontSize: { xs: '24px', sm: '24px' }, fontWeight: 500, color: '#272727' }}>
+                    Participants:
+                  </Typography>
                   <Stack sx={{ ml: '15px' }} direction="row" spacing={1}>
                     {event.participantNames.map((todo, index) => (
                       <Chip label={todo} clickable onClick={e => window.location.href = '/socials/' + event.participants[index]} />
                     ))}
                   </Stack>
                 </Box>
+                <Stack direction="row">
+                  <Box sx={{
+                    display: 'flex', flexDirection: 'row', alignItems: 'center', backgroundColor: '', padding: '20px', borderRadius: 4
+                  }} >
+                    <Typography sx={{ fontSize: { xs: '24px', sm: '24px' }, fontWeight: 500, color: '#272727' }}>
+                      Completed:
+                    </Typography>
+                  </Box>
+                  <Box sx={{
+                    display: 'flex', flexDirection: 'row', alignItems: 'left', backgroundColor: '', padding: '20px', borderRadius: 4
+                  }} >
+                    <FormControlLabel
+                      margin="none"
+                      label=""
+                      control={<Switch checked={event.completed}
+                        disabled
+                        color="primary" />}
+                    />
+                  </Box>
+                </Stack>
 
               </Box>
             </main>

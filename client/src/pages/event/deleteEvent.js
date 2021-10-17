@@ -16,7 +16,7 @@ function DeleteEvent(props) {
   function clickDeleteEvent() {
     deleteEvent(props.eventId).then((res) => {
       handleClose();
-      window.location.reload();
+      window.location.href = '/events/';
     });
   }
 
