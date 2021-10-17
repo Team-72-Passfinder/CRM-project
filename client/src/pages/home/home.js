@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Button,
   Card,
@@ -8,6 +8,7 @@ import {
   Typography,
   Container,
   CardHeader,
+  Stack,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
@@ -15,6 +16,7 @@ import Navbar from '../../components/Navbar';
 import { getEvents, me } from '../../api';
 import logo from './citrus-contact-logo.png';
 import { Box } from '@mui/system';
+import NewEvent from '../event/newEvent';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,6 +49,9 @@ function Home() {
 
   const [events, setEvents] = useState([]);
   const [userData, setUserData] = useState([]);
+  const [open, setOpen] = React.useState(false);
+
+  const progressing = useRef(true);
 
   useEffect(() => {
     getEvents().then((res) => {
@@ -85,7 +90,6 @@ function Home() {
         }}
       >
         {/* Hero Unit */}
-
         <img src={logo} alt="Logo" width="120px" style={{ padding: 10 }} />
 
         <Container maxWidth="sm">
@@ -150,6 +154,9 @@ function Home() {
           ))}
         </Grid>
         {/* End Event Grid Unit */}
+        <Box sx={{ mt: '30px', ml: '800px' }} display='flex'>
+          <NewEvent open={open} setOpen={setOpen} contacts={events} setContacts={setEvents} progressing={progressing} />
+        </Box>
       </Box>
     </Box>
   );

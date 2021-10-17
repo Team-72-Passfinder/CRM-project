@@ -4,51 +4,29 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Box, Dialog, Slide, IconButton, AppBar, Toolbar, Typography, Avatar, FilledInput, FormControl, Button, createTheme, ThemeProvider } from '@mui/material'
+import { Box, Dialog, Slide, IconButton, AppBar, Toolbar, Typography, FilledInput, FormControl, Button, createTheme, ThemeProvider } from '@mui/material'
 
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateAdapter from '@mui/lab/AdapterDayjs'
 import DatePicker from '@mui/lab/DatePicker';
 import DateTimePicker from '@mui/lab/DateTimePicker';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import CloseIcon from '@mui/icons-material/Close';
 import StandardInput from '../../components/StandardInput';
+import AutoComplete from '../../components/AutoComplete';
 
-import { getEvents, updateEvent } from '../../api';
+import { addEvent } from '../../api';
 
-const formList = [
-  {
-    label: 'Name',
-    type: 'text',
-    required: true,
-  },
-  {
-    label: 'Started Date Time',
-    type: 'date',
-    required: true,
-  },
-  {
-    label: 'Ended Date Time',
-    type: 'date',
-  },
-  {
-    label: 'Participants',
-    type: 'email',
-  },
-  {
-    label: 'Description',
-    type: 'tel',
-  },
-  {
-    label: 'Completed',
-    type: 'tags',
-  }
-];
-
-function EditEvent() {
-  const [event, setEvent] = useState({ name: 'none', description: 'none', startedDateTime: new Date(), belongsTo: '6128d8da5abef9dd792d90ff', completed: false })
+function NewEvent({ open, setOpen, setEvents, progressing }) {
+  const [event, setEvent] = useState({
+    name: '',
+    description: '',
+    startedDateTime: new Date(),
+    endedDateTime: new Date(),
+    completed: false, // By default
+    participants: [],
+  })
   const [submitDisabled, setSubmitDisabled] = useState(true)
-  const [open, setOpen] = useState(false);
+  //const [alert, setAlert] = useState();
+  //const [user, setUser] = useState();
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -58,7 +36,7 @@ function EditEvent() {
     setOpen(false);
   };
   function saveEvent() {
-    updateEvent(event);
+    addEvent(event);
     window.location.href = '/myevent/' + event._id;
   }
 
@@ -89,7 +67,7 @@ function EditEvent() {
   return (
     <div>
       <ThemeProvider theme={orangeTheme}>
-        <Button color="primary"
+        <Button color="primary" sx={{ width: 180, height: 40, my: '10px', fontSize: '16px' }}
           variant="contained" onClick={handleClickOpen}>
           Add New Event
         </Button>
@@ -102,7 +80,7 @@ function EditEvent() {
           <LocalizationProvider dateAdapter={DateAdapter}>
             <FormControl margin="dense" variant="filled">
               <Typography sx={{ fontSize: '15px', fontWeight: 600 }} margin="none">
-                Date
+                Started Date
               </Typography>
               <DateTimePicker
                 id="startedDateTime"
@@ -138,6 +116,46 @@ function EditEvent() {
               />
             </FormControl>
           </LocalizationProvider>
+          <LocalizationProvider dateAdapter={DateAdapter}>
+            <FormControl margin="dense" variant="filled">
+              <Typography sx={{ fontSize: '15px', fontWeight: 600 }} margin="none">
+                Ended Date
+              </Typography>
+              <DateTimePicker
+                id="endedDateTime"
+                value={event.endedDateTime}
+                onChange={(newValue) => {
+                  setEvent(prev => ({ ...prev, endedDateTime: newValue }))
+                }}
+                renderInput={({ inputRef, inputProps, InputProps }) => (
+                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                    <FilledInput
+                      sx={{
+                        width: '300px',
+                        height: '40px',
+                        borderRadius: '5px',
+                        '&.Mui-error': {
+                          background: '#FBB5B1',
+                          border: '1px solid #F9202B',
+                        },
+                        '& input:not(:placeholder-shown)': {
+                          height: '0px',
+                        }
+                      }}
+                      disableUnderline={true}
+                      hiddenLabel={true}
+                      endAdornment={
+                        InputProps?.endAdornment
+                      }
+                      ref={inputRef}
+                      {...inputProps}
+                    />
+                  </Box>
+                )}
+              />
+            </FormControl>
+          </LocalizationProvider>
+          <AutoComplete id="participants" label="Participants" name="participants" value={event.participants} setValue={setEvent} />
         </DialogContent>
         <DialogActions>
           <Button onClick={handleClose}>Cancel</Button>
@@ -150,4 +168,4 @@ function EditEvent() {
   );
 }
 
-export default EditEvent
+export default NewEvent

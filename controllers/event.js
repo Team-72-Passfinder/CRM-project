@@ -32,11 +32,12 @@ exports.create = async (req, res) => {
     });
   }
 
+  /*
   if (req.body.completed == null) {
     return res.status(400).send({
       message: "Should mark event's completeness!",
     });
-  }
+  }*/
 
   if (
     req.body.participants &&
