@@ -1,3 +1,4 @@
+/*
 // Run higher order test first
 require('./test4-event-with-auth');
 
@@ -103,7 +104,7 @@ mocha.describe('************* TEST RELATIONSHIP ROUTES *************', function 
       );
     });
     */
-
+/*
     mocha.describe('/POST route', () => {
       mocha.it(
         'it should not POST a relationship without contactId field',
@@ -309,3 +310,4 @@ mocha.describe('************* TEST RELATIONSHIP ROUTES *************', function 
     });
   });
 });
+*/
