@@ -91,7 +91,8 @@ async function displayEvent(event) {
     startedDateTime: event.startedDateTime,
     endedDateTime: event.endedDateTime,
     completed: event.completed,
-    participants: await getNamesFromContactIds(
+    participants: event.participants,
+    participantNames: await getNamesFromContactIds(
       event.belongsTo,
       event.participants
     ),

@@ -162,7 +162,7 @@ function Event() {
                 }} >
                   <Typography variant="h5"> Participants: </Typography>
                   <Stack sx={{ ml: '15px' }} direction="row" spacing={1}>
-                    {event.participants.map((i) => (
+                    {event.participantNames.map((i) => (
                       <Chip label={i} clickable />
                     ))}
                   </Stack>

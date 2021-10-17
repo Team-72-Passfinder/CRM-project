@@ -73,10 +73,7 @@ function EditEvent() {
 
   const handleParticipantsChange = (e) => {
     const { name, value } = e.target;
-    setEvent({
-      ...event,
-      [name]: value,
-    });
+    setEventData('Participants', value);
   };
 
   function getEventData(key) {
@@ -130,8 +127,13 @@ function EditEvent() {
   }
 
   function saveEvent() {
-    updateEvent(event);
-    window.location.href = '/myevent/' + event._id;
+    updateEvent(event).then((res) => {
+      // This is for debugging
+      if (res) {
+        window.location.href = '/myevent/' + event._id;
+      }
+    });
+    //window.location.href = '/myevent/' + event._id;
   }
 
   function isError(element) {
