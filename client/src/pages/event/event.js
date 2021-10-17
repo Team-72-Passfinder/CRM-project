@@ -25,14 +25,17 @@ function Event() {
       setEvent(res);
     });
   }, []);
+
   const getDate = (date) => {
     var jsDate = new Date(date);
     return jsDate.toLocaleString('en-GB', { timeZone: 'UTC' });
   };
+
   const goToEdit = () => {
     window.location.href =
       '/event/' + window.location.pathname.split('/')[2] + '/edit';
   };
+
   const orangeTheme = createTheme({
     palette: {
       primary: {
