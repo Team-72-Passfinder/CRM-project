@@ -9,6 +9,7 @@ import HomeIcon from '@mui/icons-material/Home'
 import PeopleIcon from '@mui/icons-material/People'
 import SettingsIcon from '@mui/icons-material/Settings';
 import ExitToAppIcon from '@mui/icons-material/ExitToApp'
+import EventIcon from '@mui/icons-material/Event';
 
 const routes = [
     {
@@ -16,6 +17,11 @@ const routes = [
         path: "/home",
         exact: true,
         icon: <HomeIcon sx={{ fontSize: '36px' }} />
+    },
+    {
+        text: "Events",
+        path: "/events",
+        icon: <EventIcon sx={{ fontSize: '30px' }} />
     },
     {
         text: "Socials",
@@ -34,7 +40,7 @@ const routes = [
     }
 ];
 
-const activeDesktopButtonStyle ={
+const activeDesktopButtonStyle = {
     display: 'flex',
     width: '50px',
     height: '50px',
@@ -68,32 +74,32 @@ function StandardDrawer({ active, open, handleDrawerToggle }) {
                         <Link key={route.text} to={route.path} style={{ textDecoration: 'none', width: '90%', color: 'unset' }}>
                             {
                                 active === route.text ?
-                                        <ListItem
-                                            sx={{
-                                                width: '100%',
-                                                background: '#DF7861',
-                                                borderRadius: '10px',
-                                                color: 'white',
-                                                boxShadow: '4px 4px 8px rgba(223, 120, 97, 0.25)',
-                                            }}
-                                        >
-                                            <ListItemIcon sx={{ color: 'white', ml: 2 }}>
-                                                {route.icon}
-                                            </ListItemIcon>
-                                            <ListItemText primary={route.text} />
-                                        </ListItem>
+                                    <ListItem
+                                        sx={{
+                                            width: '100%',
+                                            background: '#DF7861',
+                                            borderRadius: '10px',
+                                            color: 'white',
+                                            boxShadow: '4px 4px 8px rgba(223, 120, 97, 0.25)',
+                                        }}
+                                    >
+                                        <ListItemIcon sx={{ color: 'white', ml: 2 }}>
+                                            {route.icon}
+                                        </ListItemIcon>
+                                        <ListItemText primary={route.text} />
+                                    </ListItem>
                                     :
-                                        <ListItem
-                                            sx={{
-                                                width: '90%',
-                                                borderRadius: '10px',
-                                            }}
-                                        >
-                                            <ListItemIcon sx={{ ml: 2 }}>
-                                                {route.icon}
-                                            </ListItemIcon>
-                                            <ListItemText primary={route.text} />
-                                        </ListItem>
+                                    <ListItem
+                                        sx={{
+                                            width: '90%',
+                                            borderRadius: '10px',
+                                        }}
+                                    >
+                                        <ListItemIcon sx={{ ml: 2 }}>
+                                            {route.icon}
+                                        </ListItemIcon>
+                                        <ListItemText primary={route.text} />
+                                    </ListItem>
                             }
                         </Link>
                     ))}
@@ -119,28 +125,28 @@ function StandardDrawer({ active, open, handleDrawerToggle }) {
                             {
                                 active === route.text ?
 
-                                        <ButtonBase
-                                            key={route.text}
-                                            sx={activeDesktopButtonStyle}
-                                            disableTouchRipple
-                                        >
-                                            {route.icon}
-                                        </ButtonBase>
+                                    <ButtonBase
+                                        key={route.text}
+                                        sx={activeDesktopButtonStyle}
+                                        disableTouchRipple
+                                    >
+                                        {route.icon}
+                                    </ButtonBase>
 
                                     :
-                                        <ButtonBase
-                                            key={route.text}
-                                            sx={{
-                                                display: 'flex',
-                                                width: '50px',
-                                                height: '50px',
-                                                justifyContent: 'center',
-                                                color: '#C4C4C4',
-                                            }}
-                                            disableTouchRipple
-                                        >
-                                            {route.icon}
-                                        </ButtonBase>
+                                    <ButtonBase
+                                        key={route.text}
+                                        sx={{
+                                            display: 'flex',
+                                            width: '50px',
+                                            height: '50px',
+                                            justifyContent: 'center',
+                                            color: '#C4C4C4',
+                                        }}
+                                        disableTouchRipple
+                                    >
+                                        {route.icon}
+                                    </ButtonBase>
                             }
                         </Link>
                     ))}

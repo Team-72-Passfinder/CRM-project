@@ -71,24 +71,23 @@ function Event() {
               <Box sx={{
                 display: 'flex', flexDirection: 'row', alignItems: 'center', ml: '100px', padding: '20px', backgroundColor: '#f7e0d2'
               }} >
-
+                <IconButton
+                  sx={{ ml: '40px' }}
+                  color="primary"
+                  size="large"
+                  edge="start"
+                  onClick={goBack}
+                  aria-label="close"
+                >
+                  <ArrowBackIcon />
+                </IconButton>
                 <Box sx={{
                   display: 'flex', flexDirection: 'row', width: '80vw', alignItems: 'center', ml: '80px', backgroundColor: '#f7e0d2', justifyContent: 'space-between',
                 }} >
-                  <Stack spacing={5} direction="row">
-                    <IconButton
-                      color="primary"
-                      size="large"
-                      edge="start"
-                      onClick={goBack}
-                      aria-label="close"
-                    >
-                      <ArrowBackIcon />
-                    </IconButton>
-                    <Typography variant="h5">
-                      {getDate(Date())}
-                    </Typography>
-                  </Stack>
+                  <Typography variant="h5">
+                    {getDate(Date())}
+                  </Typography>
+
                 </Box>
                 <Box sx={{
                   display: 'flex', flexDirection: 'row', width: '20vw', alignItems: 'left', ml: '40px', backgroundColor: '#f7e0d2', justifyContent: 'space-between',

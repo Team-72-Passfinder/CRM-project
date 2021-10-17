@@ -92,7 +92,7 @@ function EventList() {
 
   return (
     <Box className={classes.root}>
-      <Navbar active="Home" />
+      <Navbar active="Events" />
       <Box
         sx={{
           display: 'flex',
