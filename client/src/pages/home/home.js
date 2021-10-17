@@ -7,8 +7,7 @@ import {
   Grid,
   Typography,
   Container,
-  createTheme,
-  ThemeProvider,
+  CardHeader,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
@@ -27,7 +26,10 @@ const useStyles = makeStyles((theme) => ({
     maxwidth: 'md',
     paddingLeft: 30,
   },
-  eventDescription: {
+  eventName: {
+    backgroundColor: '#DF7861',
+  },
+  overflowText: {
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     display: '-webkit-box',
@@ -38,16 +40,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const maxCards = 6;
-let cardIndex = Array.from(Array(maxCards).keys());
 
 function Home() {
-  const orangeTheme = createTheme({
-    palette: {
-      primary: {
-        main: '#d2601a',
-      },
-    },
-  });
   const classes = useStyles();
 
   const [events, setEvents] = useState([]);
@@ -60,7 +54,7 @@ function Home() {
     me().then((res) => {
       setUserData(res);
     });
-  }, [events]);
+  }, []);
 
   const getDate = (date) => {
     var jsDate = new Date(date);
@@ -71,6 +65,8 @@ function Home() {
     window.location.href = '/event/' + id;
   }
 
+  // Only displayed maximum number of events on home eo we use cardIndex
+  let cardIndex = Array.from(Array(maxCards).keys());
   // Prevent undefined entries
   if (events.length < maxCards)
     cardIndex = Array.from(Array(events.length).keys());
@@ -90,6 +86,7 @@ function Home() {
         {/* Hero Unit */}
 
         <img src={logo} alt="Logo" width="120px" style={{ padding: 10 }} />
+
         <Container maxWidth="sm">
           <Typography
             component="h1"
@@ -115,39 +112,37 @@ function Home() {
                   display: 'flex',
                   flexDirection: 'column',
                   justifyContent: 'space-between',
-                  backgroundColor: '#f7e0d2',
                 }}
               >
+                <CardHeader
+                  className={classes.eventName}
+                  title={
+                    <Typography variant="h6" className={classes.overflowText}>
+                      {events[i].name}
+                    </Typography>
+                  }
+                ></CardHeader>
                 <CardContent>
-                  <Typography
-                    gutterBottom
-                    variant="h4"
-                    component="h2"
-                    style={{ fontWeight: 600 }}
-                  >
-                    {events[i].name}
+                  <Typography gutterBottom variant="body2">
+                    Datetime: {getDate(events[i].startedDateTime)}
                   </Typography>
-                  <Typography gutterBottom variant="body1" component="h2">
-                    {getDate(events[i].startedDateTime)}
+                  <Typography variant="body2">
+                    Number of Participants: {events[i].participants.length}
                   </Typography>
-                  <Typography
-                    variant="body2"
-                    className={classes.eventDescription}
-                  >
-                    {events[i].description}
+                  <Typography variant="body2" className={classes.overflowText}>
+                    Description: {events[i].description}
                   </Typography>
                 </CardContent>
                 <CardActions>
-                  <ThemeProvider theme={orangeTheme}>
+                  <div>
                     <Button
-                      className={classes.toolbarButton}
                       variant="contained"
                       color="primary"
                       onClick={(e) => handleClick(events[i]._id)}
                     >
                       View
                     </Button>
-                  </ThemeProvider>
+                  </div>
                 </CardActions>
               </Card>
             </Grid>
