@@ -59,16 +59,17 @@ exports.create = async (req, res) => {
 exports.update = (req, res) => {
   // belongsTo, people and startedDateTime are to be fixed!
   // check if the request includes these fields
-  if (req.body.belongsTo) {
+  if (req.body.belongsTo && req.body.belongsTo != req.user._id) {
     return res.status(400).send({
       message: "Owner of the relationship are unchangaeble!",
     });
   }
+  /*
   if (req.body.people) {
     return res.status(400).send({
       message: 'people in this relationship are unchangaeble!',
     });
-  }
+  }*/
   // Only tags, starteddateTime and description can be updated
   //controller.updateData(Relationship, req, res);
   const id = req.params.id;

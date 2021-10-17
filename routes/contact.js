@@ -1,25 +1,35 @@
 const express = require('express');
 const app = express();
 const passport = require('../config/passport');
-
 const controller = require('../controllers/contact');
 
-app.use(passport.authenticate('jwt', { session: false }));
-
 // findAll =  all contacts in DB
-app.route('/contact').post(controller.create).get(controller.findAll);
+app
+  .route('/contact')
+  .post(passport.authenticate('jwt', { session: false }), controller.create)
+  .get(passport.authenticate('jwt', { session: false }), controller.findAll);
 
 // getall = all contacts that belong to current user
-app.route('/contact/getall').get(controller.getall);
+app
+  .route('/contact/getall')
+  .get(passport.authenticate('jwt', { session: false }), controller.getall);
 
-app.route('/contact/search').get(controller.search);
+app
+  .route('/contact/search')
+  .post(passport.authenticate('jwt', { session: false }), controller.search);
 
 app
   .route('/contact/:id')
-  .put(controller.update)
-  .delete(controller.delete)
-  .get(controller.findOne);
+  .put(passport.authenticate('jwt', { session: false }), controller.update)
+  .delete(passport.authenticate('jwt', { session: false }), controller.delete)
+  .get(passport.authenticate('jwt', { session: false }), controller.findOne);
 
-app.route('/contact/add/:userId').post(controller.addFromId);
+app
+  .route('/contact/add/:userId')
+  .post(passport.authenticate('jwt', { session: false }), controller.addFromId);
+
+app
+  .route('/contact/reminder')
+  .post(passport.authenticate('jwt', { session: false }), controller.toRemind);
 
 module.exports = app;

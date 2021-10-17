@@ -10,13 +10,13 @@ const { isValidObjectId } = require('mongoose');
 // Create a new Contact ===================================================
 exports.create = async (req, res) => {
   // Validate requests
-  if (!req.body.firstName || Validator.checkInvalid(req.body.firstName)) {
+  if (!req.body.firstName /*|| Validator.checkInvalid(req.body.firstName)*/) {
     return res.status(400).send({
       message: 'Missing or invalid firstname!',
     });
   }
 
-  if (!req.body.lastName || Validator.checkInvalid(req.body.lastName)) {
+  if (!req.body.lastName /*|| Validator.checkInvalid(req.body.lastName)*/) {
     return res.status(400).send({
       message: 'Missing or invalid lastName!',
     });
@@ -92,7 +92,7 @@ exports.addFromId = async (req, res) => {
         firstName: userData.firstName,
         lastName: userData.lastName,
         email: userData.email,
-        phoneNumber: '',
+        phoneNumber: userData.phoneNumber,
         dateOfBirth: userData.dateOfBirth,
         jobTitle: [],
         tags: [],
@@ -126,27 +126,29 @@ exports.addFromId = async (req, res) => {
 // Update a contact identified by the contact's Id ==============================
 exports.update = (req, res) => {
   // Validate data before update the BD
-  if (req.body.belongsTo) {
+  if (req.body.belongsTo && req.body.belongsTo != req.user._id) {
     return res.status(400).send({
       message: 'Owner of the contact are unchangaeble!',
     });
   }
-  if (req.body.firstName && Validator.checkInvalid(req.body.firstName)) {
+  /*
+  if (!req.body.firstName && Validator.checkInvalid(req.body.firstName)) {
     return res.status(400).send({
       message: 'invalid firstname!',
     });
   }
-  if (req.body.lastName && Validator.checkInvalid(req.body.lastName)) {
+  if (!req.body.lastName && Validator.checkInvalid(req.body.lastName)) {
     return res.status(400).send({
       message: 'invalid lastname!',
     });
   }
+  /*
   // Prevent update optionalUserId so it less messy
   if (req.body.optionalUserId) {
     return res.status(400).send({
       message: 'Cannot change optionalUserId!',
     });
-  }
+  }*/
 
   // Enforce UTC timezone
   if (req.body.dateOfBirth) {
@@ -215,3 +217,8 @@ exports.getall = (req, res) => {
       res.status(500).send({ message: 'Error when accessing the database!' });
     });
 };
+
+// Get all contacts that have not been in touch recently
+exports.toRemind = (req, res) => {
+  controller.getNotInTouchRecently(req, res);
+}

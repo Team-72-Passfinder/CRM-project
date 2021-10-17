@@ -7,17 +7,19 @@ import {
   Redirect,
 } from 'react-router-dom';
 
-import Socials from './pages/Socials'
-import Contact from './pages/Contact/Contact'
-import Login from './pages/login/login'
-import Home from './pages/home/home'
-import Frontpage from './pages/frontpage/frontpage'
-import EditContact from './pages/EditContact/EditContact'
-import Profile from './pages/Profile/profile'
+import Socials from './pages/Socials';
+import Contact from './pages/Contact/Contact';
+import Login from './pages/login/login';
+import Home from './pages/home/home';
+import Frontpage from './pages/frontpage/frontpage';
+import EditContact from './pages/EditContact/EditContact';
+import Profile from './pages/Profile/profile';
 import Event from './pages/event/event';
 import EditEvent from './pages/event/editEvent';
-import Settings from './pages/Settings'
+import EventList from './pages/event/eventList';
+import Settings from './pages/Settings';
 import UnauthorizedAccessPage from './pages/Error/unathorized-access';
+import Register from './pages/Register/register';
 import { ThemeProvider } from '@mui/material/styles';
 
 import theme from './theme';
@@ -33,6 +35,9 @@ const App = () => {
           <Route exact path="/login">
             <Login />
           </Route>
+          <Route exact path="/register">
+            <Register />
+          </Route>
           <PrivateRoute path="/socials/edit/:id">
             <EditContact />
           </PrivateRoute>
@@ -45,15 +50,18 @@ const App = () => {
           <PrivateRoute exact path="/socials">
             <Socials />
           </PrivateRoute>
-            <PrivateRoute path="/settings">
-                <Settings />
-            </PrivateRoute>
+          <PrivateRoute path="/settings">
+            <Settings />
+          </PrivateRoute>
           <PrivateRoute exact path="/home">
             <Home />
           </PrivateRoute>
-          <Route exact path="/event/:id">
+          <PrivateRoute exact path="/event">
+            <EventList />
+          </PrivateRoute>
+          <PrivateRoute exact path="/event/:id">
             <Event />
-          </Route>
+          </PrivateRoute>
           <PrivateRoute exact path="/event/:id/edit">
             <EditEvent />
           </PrivateRoute>

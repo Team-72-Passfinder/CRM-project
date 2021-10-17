@@ -1,8 +1,10 @@
 import React from 'react'
 
 import { Stack, Box, Typography } from '@mui/material'
+import Chip from '@mui/material/Chip';
 
 function Profile({ info }) {
+
     function getContactData(key) {
         switch (key) {
             case 'Bio':
@@ -17,6 +19,10 @@ function Profile({ info }) {
                     + new Date(info.dateOfBirth).getMonth() + '/'
                     + new Date(info.dateOfBirth).getFullYear()
                 )
+            case 'Job Title':
+                return info.jobTitle
+            case 'Tags':
+                return info.tags
             default:
                 return null;
         }
@@ -25,11 +31,25 @@ function Profile({ info }) {
     return (
         <Stack>
             {
-                ['Bio', 'Email', 'Phone number', 'Date Of Birth'].map((item) => {
+                ['Bio', 'Email', 'Phone number', 'Date Of Birth', 'Job Title', 'Tags'].map((item) => {
                     let data = getContactData(item)
 
                     if (data === "") {
                         return null
+                    }
+
+                    if (item === 'Job Title' || item === 'Tags') {
+                        // formating as chips
+                        return (
+                            <Box sx={{ my: '5px' }}>
+                                <Typography sx={{ fontSize: '14px', fontWeight: 400, }} color='textSecondary'>
+                                    {item}
+                                </Typography>
+                                <Stack direction="row" spacing={1} sx={{ fontSize: '16px', fontWeight: 500, color: '#272727' }} color='textPrimary'>
+                                    {data.map((elem) => <Chip label={elem} variant="outlined" />)}
+                                </Stack>
+                            </Box>
+                        )
                     }
 
                     return (
@@ -44,7 +64,7 @@ function Profile({ info }) {
                     )
                 })
             }
-        </Stack>
+        </Stack >
     )
 }
 

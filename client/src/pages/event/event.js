@@ -2,16 +2,19 @@ import React, { useState, useEffect, Component } from 'react';
 import { AppBar } from '@mui/material';
 import { Button, Grid, Stack, Chip } from '@mui/material';
 import { Typography } from '@mui/material';
-import { makeStyles } from '@mui/styles';
-import {
-  Box, createTheme,
-  ThemeProvider,
-} from '@mui/material';
+import { makeStyles, ThemeProvider } from '@mui/styles';
+import { Container } from '@mui/material';
+import { Link } from 'react-router-dom';
+import { Box, createTheme } from '@mui/material';
+import { EditText, EditTextarea } from 'react-edit-text';
 import 'react-edit-text/dist/index.css';
 
 import { getEvent } from '../../api';
 import { editEvent } from '../../api';
 import Navbar from '../../components/Navbar';
+// Remove when ready
+import EventInvite from '../../components/EventInvite';
+
 const useStyles = makeStyles((theme) => ({}));
 
 function Event() {
