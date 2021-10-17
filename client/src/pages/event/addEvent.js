@@ -12,6 +12,9 @@ import {
   Button,
   Select,
   MenuItem,
+  FormControlLabel,
+  Switch,
+  Stack,
 } from '@mui/material';
 
 import { makeStyles } from '@mui/styles';
@@ -39,7 +42,7 @@ const MenuProps = {
 const defaultValues = {
   name: '',
   startedDateTime: new Date(),
-  endedDateTime: null,
+  endedDateTime: new Date(),
   participants: [],
   description: '',
   completed: false,
@@ -101,7 +104,7 @@ function AddEvent() {
 
   return (
     <div>
-      <Button
+      <Button sx={{ width: 180, height: 40, my: '10px', fontSize: '16px' }}
         color="primary"
         variant="contained"
         align="center"
@@ -174,7 +177,7 @@ function AddEvent() {
                 sx={{ fontSize: '15px', fontWeight: 600 }}
                 margin="none"
               >
-                start Date
+                Start Date
               </Typography>
               <DateTimePicker
                 name="startedDateTime"
@@ -212,7 +215,7 @@ function AddEvent() {
                 sx={{ fontSize: '15px', fontWeight: 600 }}
                 margin="none"
               >
-                end Date
+                End Date
               </Typography>
               <DateTimePicker
                 name="endedDateTime"
@@ -245,6 +248,23 @@ function AddEvent() {
                 )}
               />
             </FormControl>
+            <FormControl margin="dense" variant="filled">
+              <Stack spacing={21} direction="row">
+                <Typography
+                  sx={{ fontSize: '15px', fontWeight: 600 }}
+                  margin="none"
+                >
+                  Completed
+                </Typography>
+                <FormControlLabel
+                  margin="none"
+                  label=""
+                  control={<Switch checked={event.completed}
+                    onChange={e => { setEvent((prev) => ({ ...prev, completed: e.target.checked })) }}
+                    color="primary" />}
+                />
+              </Stack>
+            </FormControl>
           </LocalizationProvider>
         </Box>
         <DialogActions sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -269,7 +289,7 @@ function AddEvent() {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </div >
   );
 }
 
