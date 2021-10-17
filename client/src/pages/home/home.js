@@ -63,7 +63,7 @@ function Home() {
   };
 
   function handleClick(id) {
-    window.location.href = '/event/' + id;
+    window.location.href = '/myevent/' + id;
   }
 
   // Only displayed maximum number of events on home eo we use cardIndex

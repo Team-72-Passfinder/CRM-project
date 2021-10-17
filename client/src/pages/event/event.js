@@ -33,7 +33,7 @@ function Event() {
 
   const goToEdit = () => {
     window.location.href =
-      '/event/' + window.location.pathname.split('/')[2] + '/edit';
+      '/myevent/edit/' + event._id;
   };
 
   const orangeTheme = createTheme({

@@ -59,10 +59,10 @@ const App = () => {
           <PrivateRoute exact path="/event">
             <EventList />
           </PrivateRoute>
-          <PrivateRoute exact path="/event/:id">
+          <PrivateRoute exact path="/myevent/:id">
             <Event />
           </PrivateRoute>
-          <PrivateRoute exact path="/event/:id/edit">
+          <PrivateRoute exact path="/myevent/edit/:id">
             <EditEvent />
           </PrivateRoute>
           <Route exact path="/unauthorized-access">
