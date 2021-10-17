@@ -165,12 +165,6 @@ export function delContact(id) {
   return axios.delete(endpoint, config).then((res) => res.data);
 }
 
-export function getParticipants() {
-  let endpoint = '/contact/participants';
-
-  return axios.get(endpoint, config).then((res) => res.data);
-}
-
 export function me() {
   let endpoint = '/profile';
 

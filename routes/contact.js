@@ -14,11 +14,13 @@ app
   .route('/contact/getall')
   .get(passport.authenticate('jwt', { session: false }), controller.getall);
 
+/*
 // Get list of names and Ids of all contacts that user has
 // Used to set option for event's participants
 app
-  .route('/contact/participants')
-  .get(passport.authenticate('jwt', { session: false }), controller.getParticipants);
+.route('/contact/participants')
+.get(passport.authenticate('jwt', { session: false }), controller.getParticipants);
+*/
 
 app
   .route('/contact/search')

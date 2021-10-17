@@ -1,3 +1,4 @@
+/*
 import React, { useEffect, useState } from 'react'
 import TextField from '@mui/material/TextField';
 import DialogActions from '@mui/material/DialogActions';
@@ -8,7 +9,6 @@ import { Box, Dialog, Slide, IconButton, AppBar, Toolbar, Typography, FilledInpu
 
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateAdapter from '@mui/lab/AdapterDayjs'
-import DatePicker from '@mui/lab/DatePicker';
 import DateTimePicker from '@mui/lab/DateTimePicker';
 import StandardInput from '../../components/StandardInput';
 import AutoComplete from '../../components/AutoComplete';
@@ -169,3 +169,4 @@ function NewEvent({ open, setOpen, setEvents, progressing }) {
 }
 
 export default NewEvent
+*/
