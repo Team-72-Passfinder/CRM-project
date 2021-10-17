@@ -60,7 +60,7 @@ function Home() {
     me().then((res) => {
       setUserData(res);
     });
-  }, []);
+  }, [events]);
 
   const getDate = (date) => {
     var jsDate = new Date(date);
