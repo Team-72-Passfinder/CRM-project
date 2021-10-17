@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Button,
   Card,
@@ -16,7 +16,6 @@ import Navbar from '../../components/Navbar';
 import { getEvents, me } from '../../api';
 import logo from './citrus-contact-logo.png';
 import { Box } from '@mui/system';
-import NewEvent from '../event/newEvent';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,9 +48,6 @@ function Home() {
 
   const [events, setEvents] = useState([]);
   const [userData, setUserData] = useState([]);
-  const [open, setOpen] = React.useState(false);
-
-  const progressing = useRef(true);
 
   useEffect(() => {
     getEvents().then((res) => {
@@ -154,9 +150,6 @@ function Home() {
           ))}
         </Grid>
         {/* End Event Grid Unit */}
-        <Box sx={{ mt: '30px', ml: '800px' }} display='flex'>
-          <NewEvent open={open} setOpen={setOpen} contacts={events} setContacts={setEvents} progressing={progressing} />
-        </Box>
       </Box>
     </Box>
   );

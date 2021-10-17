@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Button,
   Card,
@@ -17,6 +17,7 @@ import { Box } from '@mui/system';
 import AddEvent from './addEvent';
 import DeleteEvent from './deleteEvent';
 import EventInvite from '../../components/EventInvite';
+import NewEvent from '../event/newEvent';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -50,6 +51,9 @@ function EventList() {
   const classes = useStyles();
 
   const [events, setEvents] = useState([]);
+  const [open, setOpen] = React.useState(false);
+
+  const progressing = useRef(true);
 
   useEffect(() => {
     getEvents().then((res) => {
@@ -244,6 +248,9 @@ function EventList() {
         </Grid>
 
         {/* End Event Grid Unit */}
+        <Box sx={{ mt: '30px', ml: '800px' }} display='flex'>
+          <NewEvent open={open} setOpen={setOpen} contacts={events} setContacts={setEvents} progressing={progressing} />
+        </Box>
       </Box>
     </Box>
   );
