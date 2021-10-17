@@ -8,7 +8,7 @@ import Popover from '@mui/material/Popover';
 import PopupState, { bindTrigger, bindPopover } from 'material-ui-popup-state';
 import 'react-edit-text/dist/index.css';
 
-import { getEvent, deleteEvent, editEvent } from '../../api';
+import { getEvent, deleteEvent, getContact } from '../../api';
 import Navbar from '../../components/Navbar';
 // Remove when ready
 import EventInvite from '../../components/EventInvite';
@@ -162,8 +162,8 @@ function Event() {
                 }} >
                   <Typography variant="h5"> Participants: </Typography>
                   <Stack sx={{ ml: '15px' }} direction="row" spacing={1}>
-                    {event.participantNames.map((i) => (
-                      <Chip label={i} clickable />
+                    {event.participantNames.map((todo, index) => (
+                      <Chip label={todo} clickable onClick={e => window.location.href = '/socials/' + event.participants[index]} />
                     ))}
                   </Stack>
                 </Box>

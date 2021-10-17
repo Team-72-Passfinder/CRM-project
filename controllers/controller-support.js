@@ -63,20 +63,22 @@ function findAllData(controller, req, res) {
 async function getNamesFromContactIds(belongsTo, contactList) {
   // Array that stores transformed contactId
   const names = [];
-  // Loop the list
-  await Contact.find({ _id: { $in: contactList }, belongsTo: belongsTo })
-    .then((found) => {
-      if (found) {
-        found.forEach((element) => {
-          //const name = found.firstName + " " + found.lastName;
-          names.push(element.firstName + ' ' + element.lastName);
-        });
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-      // do nothing --> checks for length of participant list will give error for us
-    });
+  // Loop the list - to get the corresponding order with the Id list
+  for (var i = 0; i < contactList.length; i++) {
+    const id = contactList[i];
+    await Contact.findOne({ _id: id, belongsTo: belongsTo })
+      .then((found) => {
+        if (found) {
+
+          names.push(found.firstName + ' ' + found.lastName);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+        // do nothing --> checks for length of participant list will give error for us
+      });
+  }
+
   //console.log(names);
   return names;
 }
