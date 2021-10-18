@@ -5,9 +5,9 @@ import {
   Link,
   Toolbar,
   Typography,
+  Box,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
-import { Box } from '@mui/system';
 import React from 'react';
 
 const useStyles = makeStyles((theme) => ({

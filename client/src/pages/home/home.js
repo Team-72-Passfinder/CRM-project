@@ -8,13 +8,13 @@ import {
   Typography,
   Container,
   CardHeader,
+  Box,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 import Navbar from '../../components/Navbar';
 import { getEvents, me } from '../../api';
 import logo from './citrus-contact-logo.png';
-import { Box } from '@mui/system';
 
 const useStyles = makeStyles((theme) => ({
   root: {

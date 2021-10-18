@@ -10,8 +10,6 @@ import {
   Paper,
   Grid,
   Link,
-  createTheme,
-  ThemeProvider,
 } from '@mui/material';
 
 import useStyles from './styles';
@@ -27,13 +25,6 @@ function Frontpage() {
   const scrollToContact = () =>
     contactRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
-  const orangeTheme = createTheme({
-    palette: {
-      primary: {
-        main: '#d2601a',
-      },
-    },
-  });
   const classes = useStyles();
 
   return (
@@ -87,16 +78,14 @@ function Frontpage() {
             unique and easy-to-use solution for all of your problems.
           </Typography>
           <Box display="flex" justifyContent="center">
-            <ThemeProvider theme={orangeTheme}>
-              <Button
-                color="primary"
-                variant="contained"
-                onClick={goToRegister}
-                sx={{ margin: 4 }}
-              >
-                Get started
-              </Button>
-            </ThemeProvider>
+            <Button
+              color="primary"
+              variant="contained"
+              onClick={goToRegister}
+              sx={{ margin: 4 }}
+            >
+              Get started
+            </Button>
           </Box>
         </Container>
       </Box>

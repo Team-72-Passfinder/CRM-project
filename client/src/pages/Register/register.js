@@ -88,7 +88,7 @@ function Register(props) {
         edge="start"
         onClick={handleBack}
         aria-label="back"
-      >
+        size="large">
         <ArrowBackIcon />
       </IconButton>
       <Container

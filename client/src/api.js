@@ -206,7 +206,7 @@ export function searchUser(searchQuery) {
   let endpoint = '/user/search/';
   let query = {
     query: searchQuery,
-  }
+  };
 
   return axios
     .post(endpoint, query, config)

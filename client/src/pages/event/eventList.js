@@ -7,12 +7,12 @@ import {
   CardContent,
   Grid,
   Typography,
+  Box,
 } from '@mui/material';
 import { makeStyles } from '@mui/styles';
 
 import Navbar from '../../components/Navbar';
 import { getEvents } from '../../api';
-import { Box } from '@mui/system';
 
 import AddEvent from './addEvent';
 import DeleteEvent from './deleteEvent';
@@ -117,11 +117,7 @@ function EventList() {
           >
             My Events: {events.length}
           </Typography>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-          >
+          <Box display="flex" alignItems="center" justifyContent="center">
             <AddEvent />
           </Box>
         </Box>
@@ -130,7 +126,14 @@ function EventList() {
 
         {/* Event Grid Unit */}
         {/* Upcoming Events */}
-        <Typography sx={{ fontSize: '40px', mt: '20px', fontWeight: 650, color: '#272727' }}>
+        <Typography
+          sx={{
+            fontSize: '40px',
+            mt: '20px',
+            fontWeight: 650,
+            color: '#272727',
+          }}
+        >
           Upcoming Events: {upcomingEvents.length}
         </Typography>
 
@@ -149,16 +152,24 @@ function EventList() {
                 <CardHeader
                   className={classes.eventName}
                   title={
-                    <Typography sx={{ fontSize: '24px', fontWeight: 500, color: 'black' }} className={classes.overflowText}>
+                    <Typography
+                      sx={{ fontSize: '24px', fontWeight: 500, color: 'black' }}
+                      className={classes.overflowText}
+                    >
                       {events[i].name}
                     </Typography>
                   }
                 ></CardHeader>
                 <CardContent>
-                  <Typography gutterBottom sx={{ fontSize: '20px', fontWeight: 450, color: 'black' }}>
+                  <Typography
+                    gutterBottom
+                    sx={{ fontSize: '20px', fontWeight: 450, color: 'black' }}
+                  >
                     Datetime: {getDate(events[i].startedDateTime)}
                   </Typography>
-                  <Typography sx={{ fontSize: '16px', fontWeight: 430, color: 'black' }}>
+                  <Typography
+                    sx={{ fontSize: '16px', fontWeight: 430, color: 'black' }}
+                  >
                     Number of Participants: {events[i].participants.length}
                   </Typography>
                   <Typography
@@ -187,7 +198,14 @@ function EventList() {
         </Grid>
 
         {/* Past Events */}
-        <Typography sx={{ fontSize: '40px', mt: '20px', fontWeight: 650, color: '#272727' }}>
+        <Typography
+          sx={{
+            fontSize: '40px',
+            mt: '20px',
+            fontWeight: 650,
+            color: '#272727',
+          }}
+        >
           Past Events: {pastEvents.length}
         </Typography>
         <Grid container spacing={4} className={classes.eventGrid}>
@@ -206,20 +224,31 @@ function EventList() {
                 <CardHeader
                   className={classes.eventName}
                   title={
-                    <Typography sx={{ fontSize: '24px', fontWeight: 500, color: 'black' }} className={classes.overflowText}>
+                    <Typography
+                      sx={{ fontSize: '24px', fontWeight: 500, color: 'black' }}
+                      className={classes.overflowText}
+                    >
                       {events[i].name}
                     </Typography>
                   }
                 ></CardHeader>
                 <CardContent>
-                  <Typography gutterBottom sx={{ fontSize: '20px', fontWeight: 450, color: 'black' }}>
+                  <Typography
+                    gutterBottom
+                    sx={{ fontSize: '20px', fontWeight: 450, color: 'black' }}
+                  >
                     {getDate(events[i].startedDateTime)}
                   </Typography>
 
-                  <Typography sx={{ fontSize: '16px', fontWeight: 430, color: 'black' }}>
+                  <Typography
+                    sx={{ fontSize: '16px', fontWeight: 430, color: 'black' }}
+                  >
                     Number of Participants: {events[i].participants.length}
                   </Typography>
-                  <Typography sx={{ fontSize: '16px', fontWeight: 430, color: 'black' }} className={classes.overflowText}>
+                  <Typography
+                    sx={{ fontSize: '16px', fontWeight: 430, color: 'black' }}
+                    className={classes.overflowText}
+                  >
                     Description: {events[i].description}
                   </Typography>
                 </CardContent>

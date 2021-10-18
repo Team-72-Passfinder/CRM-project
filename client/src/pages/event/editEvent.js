@@ -1,13 +1,23 @@
-import React, { useEffect, useState } from 'react'
-import { Box, FormControlLabel, Typography, Stack, Select, FilledInput, MenuItem, Button, createTheme, ThemeProvider, TextField, Switch } from '@mui/material'
-
+import React, { useEffect, useState } from 'react';
+import {
+  Box,
+  FormControlLabel,
+  Typography,
+  Stack,
+  Select,
+  FilledInput,
+  MenuItem,
+  Button,
+  createTheme,
+  TextField,
+  Switch,
+} from '@mui/material';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import DateAdapter from '@mui/lab/AdapterDayjs'
+import DateAdapter from '@mui/lab/AdapterDayjs';
 import DateTimePicker from '@mui/lab/DateTimePicker';
-import Navbar from '../../components/Navbar';
-
 import { makeStyles } from '@mui/styles';
 
+import Navbar from '../../components/Navbar';
 import { getEvent, updateEvent, getContacts } from '../../api';
 
 const formList = [
@@ -159,43 +169,72 @@ function EditEvent() {
     },
   });
 
-
   return (
     <LocalizationProvider dateAdapter={DateAdapter}>
       <div>
         <Navbar />
-        <Box sx={{
-          display: 'flex', flexDirection: 'row', alignItems: 'center', ml: '100px', padding: '20px', backgroundColor: '#f7e0d2'
-        }} >
-          <Box sx={{
-            display: 'flex', flexDirection: 'row', width: '80vw', alignItems: 'center', ml: '80px', backgroundColor: '#f7e0d2', justifyContent: 'space-between',
-          }} >
-            <Typography variant="h5">
-              {getDate(Date())}
-            </Typography>
-
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            ml: '100px',
+            padding: '20px',
+            backgroundColor: '#f7e0d2',
+          }}
+        >
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              width: '80vw',
+              alignItems: 'center',
+              ml: '80px',
+              backgroundColor: '#f7e0d2',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Typography variant="h5">{getDate(Date())}</Typography>
           </Box>
-          <Box sx={{
-            display: 'flex', flexDirection: 'row', width: '20vw', alignItems: 'left', ml: '40px', backgroundColor: '#f7e0d2', justifyContent: 'space-between',
-          }} >
-            <ThemeProvider theme={orangeTheme}>
-              <Button
-                className={classes.button} color="primary" variant="contained" onClick={cancel}>
-                Cancel
-              </Button>
-            </ThemeProvider>
+          <Box
+            sx={{
+              display: 'flex',
+              flexDirection: 'row',
+              width: '20vw',
+              alignItems: 'left',
+              ml: '40px',
+              backgroundColor: '#f7e0d2',
+              justifyContent: 'space-between',
+            }}
+          >
+            <Button
+              className={classes.button}
+              color="primary"
+              variant="contained"
+              onClick={cancel}
+            >
+              Cancel
+            </Button>
           </Box>
         </Box>
 
-        <Box sx={{
-          align: 'center', width: '40vw', height: '100%', mt: '80px', ml: '500px', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'left', justifyContent: 'space-between',
-          borderRadius: 4, boxShadow: 2
-        }}>
-          <Stack
-            sx={{ my: 2 }}
-            alignItems="center"
-            spacing={2}
-          >
+        <Box
+          sx={{
+            align: 'center',
+            width: '40vw',
+            height: '100%',
+            mt: '80px',
+            ml: '500px',
+            padding: '20px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'left',
+            justifyContent: 'space-between',
+            borderRadius: 4,
+            boxShadow: 2,
+          }}
+        >
+          <Stack sx={{ my: 2 }} alignItems="center" spacing={2}>
             {event && (
               <React.Fragment>
                 {event !== undefined &&
@@ -217,8 +256,14 @@ function EditEvent() {
                               onChange={(newValue) => {
                                 setEventData(element.label, newValue);
                               }}
-                              renderInput={({ inputRef, inputProps, InputProps }) => (
-                                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                              renderInput={({
+                                inputRef,
+                                inputProps,
+                                InputProps,
+                              }) => (
+                                <Box
+                                  sx={{ display: 'flex', alignItems: 'center' }}
+                                >
                                   <FilledInput
                                     sx={{
                                       width: '300px',
@@ -246,7 +291,7 @@ function EditEvent() {
                       // Case of participants displaying
                       case 'list':
                         return (
-                          <Stack spacing={1} sx={{ width: 300 }} >
+                          <Stack spacing={1} sx={{ width: 300 }}>
                             <Typography
                               sx={{ fontSize: '15px', fontWeight: 600 }}
                               margin="none"
@@ -273,7 +318,7 @@ function EditEvent() {
                       // Case of description text paragraph
                       case 'para':
                         return (
-                          <Stack spacing={1} sx={{ width: 300 }} >
+                          <Stack spacing={1} sx={{ width: 300 }}>
                             <Typography
                               sx={{ fontSize: '15px', fontWeight: 600 }}
                               margin="none"
@@ -309,16 +354,25 @@ function EditEvent() {
                             <FormControlLabel
                               margin="none"
                               label=""
-                              control={<Switch checked={getEventData(element.label)}
-                                onChange={e => { setEventData(element.label, e.target.checked) }}
-                                color="primary" />}
+                              control={
+                                <Switch
+                                  checked={getEventData(element.label)}
+                                  onChange={(e) => {
+                                    setEventData(
+                                      element.label,
+                                      e.target.checked
+                                    );
+                                  }}
+                                  color="primary"
+                                />
+                              }
                             />
                           </Stack>
                         );
-                      // Normal text box 
+                      // Normal text box
                       default:
                         return (
-                          <Stack spacing={1} sx={{ width: 300 }} >
+                          <Stack spacing={1} sx={{ width: 300 }}>
                             <Typography
                               sx={{ fontSize: '15px', fontWeight: 600 }}
                               margin="none"
@@ -356,8 +410,8 @@ function EditEvent() {
           </Stack>
         </Box>
       </div>
-    </LocalizationProvider >
+    </LocalizationProvider>
   );
 }
 
-export default EditEvent
+export default EditEvent;
