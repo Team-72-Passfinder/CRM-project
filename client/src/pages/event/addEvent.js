@@ -80,6 +80,7 @@ function AddEvent() {
   useEffect(() => {
     const inputs = document.querySelectorAll('input');
 
+    // eslint-disable-next-line array-callback-return
     Array.from(inputs).filter((input) => {
       if (input.required === true) {
         if (!input.validity.valid) {
@@ -98,6 +99,7 @@ function AddEvent() {
     });
   }, []);
 
+  // eslint-disable-next-line no-unused-vars
   const classes = useStyles();
 
   return (

@@ -8,7 +8,6 @@ import {
   FilledInput,
   MenuItem,
   Button,
-  createTheme,
   TextField,
   Switch,
 } from '@mui/material';
@@ -82,6 +81,7 @@ function EditEvent() {
   }, []);
 
   const handleParticipantsChange = (e) => {
+    // eslint-disable-next-line no-unused-vars
     const { name, value } = e.target;
     setEventData('Participants', value);
   };
@@ -160,14 +160,6 @@ function EditEvent() {
   const cancel = () => {
     window.location.href = '/myevent/' + event._id;
   };
-
-  const orangeTheme = createTheme({
-    palette: {
-      primary: {
-        main: '#DF7861',
-      },
-    },
-  });
 
   return (
     <LocalizationProvider dateAdapter={DateAdapter}>

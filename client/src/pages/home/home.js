@@ -40,7 +40,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const maxCards = 6;
-let cardIndex = Array.from(Array(maxCards).keys());
 
 function Home() {
   const classes = useStyles();
