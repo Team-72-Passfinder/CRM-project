@@ -1,64 +1,157 @@
 import React, { useEffect, useState } from 'react'
-import TextField from '@mui/material/TextField';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import { Box, Dialog, Slide, IconButton, AppBar, Toolbar, Typography, Avatar, FilledInput, FormControl, Button,  createTheme,ThemeProvider } from '@mui/material'
+import { Box, FormControlLabel, Typography, Stack, Select, FilledInput, MenuItem, Button, createTheme, ThemeProvider, TextField, Switch } from '@mui/material'
 
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateAdapter from '@mui/lab/AdapterDayjs'
-import DatePicker from '@mui/lab/DatePicker';
 import DateTimePicker from '@mui/lab/DateTimePicker';
-import ArrowBackIcon from '@mui/icons-material/ArrowBack';
-import CloseIcon from '@mui/icons-material/Close';
-import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
-import StandardInput from '../../components/StandardInput';
+import Navbar from '../../components/Navbar';
 
-import { addEvent, getEvents} from '../../api';
+import { makeStyles } from '@mui/styles';
+
+import { getEvent, updateEvent, getContacts } from '../../api';
+
+const formList = [
+  {
+    label: 'Name',
+    type: 'text',
+    required: true,
+  },
+  {
+    label: 'Description',
+    type: 'para',
+  },
+  {
+    label: 'Start Date',
+    type: 'date',
+  },
+  {
+    label: 'End Date',
+    type: 'date',
+  },
+  {
+    label: 'Participants',
+    type: 'list',
+  },
+  {
+    label: 'Completed',
+    type: 'checked',
+  },
+];
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+const useStyles = makeStyles((theme) => ({}));
 
 function EditEvent() {
-    const [event, setEvent] = useState({ name: 'none', description: 'none', startedDateTime: new Date(), belongsTo: '6128d8da5abef9dd792d90ff', completed: false})
-    const [submitDisabled, setSubmitDisabled] = useState(true)
-  const [open, setOpen] = React.useState(false);
+  const classes = useStyles();
+  const [event, setEvent] = useState();
+  const [contacts, setContacts] = useState([]);
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const emptyFieldErrorMessage = 'This field is required';
+
+  useEffect(() => {
+    getEvent(window.location.pathname.split('/')[3]).then((res) =>
+      setEvent(res)
+    );
+  }, []);
+
+  // Used to get data when the page loads;
+  useEffect(() => {
+    getContacts().then((res) => {
+      setContacts(res);
+    });
+  }, []);
+
+  const handleParticipantsChange = (e) => {
+    const { name, value } = e.target;
+    setEventData('Participants', value);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
+  function getEventData(key) {
+    switch (key) {
+      case 'Name':
+        return event.name;
+      case 'Start Date':
+        return new Date(event.startedDateTime);
+      case 'End Date':
+        return new Date(event.endedDateTime);
+      case 'Description':
+        return event.description;
+      case 'Participants':
+        return event.participants;
+      case 'Completed':
+        return event.completed;
+      default:
+        return null;
+    }
+  }
+
+  function setEventData(key, value) {
+    switch (key) {
+      case 'Name':
+        setEvent((prev) => ({ ...prev, name: value }));
+        break;
+      case 'Start Date':
+        setEvent((prev) => ({ ...prev, startedDateTime: value }));
+        break;
+      case 'End Date':
+        setEvent((prev) => ({ ...prev, endedDateTime: value }));
+        break;
+      case 'Description':
+        setEvent((prev) => ({ ...prev, description: value }));
+        break;
+      case 'Participants':
+        setEvent((prev) => ({ ...prev, participants: value }));
+        break;
+      case 'Completed':
+        setEvent((prev) => ({ ...prev, completed: value }));
+        break;
+      default:
+        return null;
+    }
+  }
+
+  function generateHelperText(element) {
+    if (element.required) {
+      return getEventData(element.label) === '' && emptyFieldErrorMessage;
+    }
+  }
+
   function saveEvent() {
-    addEvent(event).then(res => {
-        if(event.name === res.name ) {
+    updateEvent(event).then((res) => {
+      // This is for debugging
+      if (res) {
+        window.location.href = '/myevent/' + event._id;
+      }
+    });
+    //window.location.href = '/myevent/' + event._id;
+  }
 
-            handleClose();
-            getEvents().then(res => {
-                setTimeout(() => {
-                    setEvent(res)
-                }, 200)
-            })
-        }
-    })
-}
+  function isError(element) {
+    if (element.required) {
+      return getEventData(element.label) === '';
+    }
+  }
 
-useEffect(() => {
-    const inputs = document.querySelectorAll('input')
-    
-    Array.from(inputs).filter(input => {
-        if(input.required === true) {
-            console.log(event)
-            if(!input.validity.valid) {
-                setSubmitDisabled(true)
-            } else {
-                setSubmitDisabled(false)
-            }
-        }
-    })
-}, [event])
+  const getDate = (date) => {
+    var jsDate = new Date(date);
+    return jsDate.toLocaleString('en-GB', { timeZone: 'UTC' });
+  };
 
-const orangeTheme = createTheme({
+  const cancel = () => {
+    window.location.href = '/myevent/' + event._id;
+  };
+
+  const orangeTheme = createTheme({
     palette: {
       primary: {
         main: '#DF7861',
@@ -68,66 +161,202 @@ const orangeTheme = createTheme({
 
 
   return (
-    <div>
-         <ThemeProvider theme={orangeTheme}>
-      <Button color="primary"
-                variant="contained" onClick={handleClickOpen}>
-        Add New Event
-      </Button>
-      </ThemeProvider>
-      <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>New Event</DialogTitle>
-        <DialogContent>
-            <StandardInput id="name" label='Name' name='name' value={event.name} setValue={setEvent} required={true} type='text' />
-            <StandardInput id="description" label='Description' name='description' value={event.description} setValue={setEvent} required={false} type='text' />
-            <LocalizationProvider dateAdapter={DateAdapter}>
-                    <FormControl margin="dense" variant="filled">
-                        <Typography sx={{ fontSize: '15px', fontWeight: 600 }} margin="none">
-                            Date
-                        </Typography>
-                        <DateTimePicker
-                            id="startedDateTime"
-                            value={event.startedDateTime}
-                            onChange={(newValue) => {
-                                setEvent(prev => ({ ...prev, startedDateTime: newValue }))
-                            }}
-                            renderInput={({ inputRef, inputProps, InputProps }) => (
+    <LocalizationProvider dateAdapter={DateAdapter}>
+      <div>
+        <Navbar />
+        <Box sx={{
+          display: 'flex', flexDirection: 'row', alignItems: 'center', ml: '100px', padding: '20px', backgroundColor: '#f7e0d2'
+        }} >
+          <Box sx={{
+            display: 'flex', flexDirection: 'row', width: '80vw', alignItems: 'center', ml: '80px', backgroundColor: '#f7e0d2', justifyContent: 'space-between',
+          }} >
+            <Typography variant="h5">
+              {getDate(Date())}
+            </Typography>
+
+          </Box>
+          <Box sx={{
+            display: 'flex', flexDirection: 'row', width: '20vw', alignItems: 'left', ml: '40px', backgroundColor: '#f7e0d2', justifyContent: 'space-between',
+          }} >
+            <ThemeProvider theme={orangeTheme}>
+              <Button
+                className={classes.button} color="primary" variant="contained" onClick={cancel}>
+                Cancel
+              </Button>
+            </ThemeProvider>
+          </Box>
+        </Box>
+
+        <Box sx={{
+          align: 'center', width: '40vw', height: '100%', mt: '80px', ml: '500px', padding: '20px', display: 'flex', flexDirection: 'column', alignItems: 'left', justifyContent: 'space-between',
+          borderRadius: 4, boxShadow: 2
+        }}>
+          <Stack
+            sx={{ my: 2 }}
+            alignItems="center"
+            spacing={2}
+          >
+            {event && (
+              <React.Fragment>
+                {event !== undefined &&
+                  formList.map((element) => {
+                    switch (element.type) {
+                      //Case of displaying date
+                      case 'date':
+                        return (
+                          <Stack spacing={1}>
+                            <Typography
+                              sx={{ fontSize: '15px', fontWeight: 600 }}
+                              margin="none"
+                            >
+                              {element.label}
+                            </Typography>
+                            <DateTimePicker
+                              label={element.label}
+                              value={getEventData(element.label)}
+                              onChange={(newValue) => {
+                                setEventData(element.label, newValue);
+                              }}
+                              renderInput={({ inputRef, inputProps, InputProps }) => (
                                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                                    <FilledInput
-                                        sx={{
-                                            width: '300px',
-                                            height: '40px',
-                                            borderRadius: '5px',
-                                            '&.Mui-error': {
-                                                background: '#FBB5B1',
-                                                border: '1px solid #F9202B',
-                                            },
-                                            '& input:not(:placeholder-shown)': {
-                                                height: '0px',
-                                            }
-                                        }}
-                                        disableUnderline={true}
-                                        hiddenLabel={true}
-                                        endAdornment={
-                                            InputProps?.endAdornment
-                                        }
-                                        ref={inputRef} 
-                                        {...inputProps} 
-                                    />
+                                  <FilledInput
+                                    sx={{
+                                      width: '300px',
+                                      height: '40px',
+                                      borderRadius: '5px',
+                                      '&.Mui-error': {
+                                        background: '#FBB5B1',
+                                        border: '1px solid #F9202B',
+                                      },
+                                      '& input:not(:placeholder-shown)': {
+                                        height: '0px',
+                                      },
+                                    }}
+                                    disableUnderline={true}
+                                    hiddenLabel={true}
+                                    endAdornment={InputProps?.endAdornment}
+                                    ref={inputRef}
+                                    {...inputProps}
+                                  />
                                 </Box>
-                            )}
-                        />
-                    </FormControl>
-                </LocalizationProvider>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button sx={{ width: 300, my: '10px', '&.MuiButton-disableElevation': { boxShadow: `(${submitDisabled} && 'none') || '4px 4px 20px 5px rgba(223, 120, 97, 0.25)'` } }} color="primary" variant="contained" disableElevation disabled={submitDisabled} onClick={saveEvent}>
-                    Save
-                </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+                              )}
+                            />
+                          </Stack>
+                        );
+                      // Case of participants displaying
+                      case 'list':
+                        return (
+                          <Stack spacing={1} sx={{ width: 300 }} >
+                            <Typography
+                              sx={{ fontSize: '15px', fontWeight: 600 }}
+                              margin="none"
+                            >
+                              {element.label}
+                            </Typography>
+                            <Select
+                              multiple
+                              value={getEventData(element.label)}
+                              onChange={handleParticipantsChange}
+                              MenuProps={MenuProps}
+                            >
+                              {contacts.map((contact) => (
+                                <MenuItem
+                                  key={String(contact._id)}
+                                  value={String(contact._id)}
+                                >
+                                  {contact.firstName + ' ' + contact.lastName}
+                                </MenuItem>
+                              ))}
+                            </Select>
+                          </Stack>
+                        );
+                      // Case of description text paragraph
+                      case 'para':
+                        return (
+                          <Stack spacing={1} sx={{ width: 300 }} >
+                            <Typography
+                              sx={{ fontSize: '15px', fontWeight: 600 }}
+                              margin="none"
+                            >
+                              {element.label}
+                            </Typography>
+                            <TextField
+                              key={element.label}
+                              sx={{
+                                width: '300px',
+                              }}
+                              multiline
+                              type={element.type}
+                              size="small"
+                              onChange={(e) =>
+                                setEventData(element.label, e.target.value)
+                              }
+                              defaultValue={getEventData(element.label)}
+                            />
+                          </Stack>
+                        );
+
+                      // Case of switch
+                      case 'checked':
+                        return (
+                          <Stack spacing={21} direction="row">
+                            <Typography
+                              sx={{ fontSize: '15px', fontWeight: 600 }}
+                              margin="none"
+                            >
+                              Completed
+                            </Typography>
+                            <FormControlLabel
+                              margin="none"
+                              label=""
+                              control={<Switch checked={getEventData(element.label)}
+                                onChange={e => { setEventData(element.label, e.target.checked) }}
+                                color="primary" />}
+                            />
+                          </Stack>
+                        );
+                      // Normal text box 
+                      default:
+                        return (
+                          <Stack spacing={1} sx={{ width: 300 }} >
+                            <Typography
+                              sx={{ fontSize: '15px', fontWeight: 600 }}
+                              margin="none"
+                            >
+                              {element.label}
+                            </Typography>
+                            <TextField
+                              key={element.label}
+                              sx={{
+                                width: '300px',
+                                maxWidth: '80vw',
+                              }}
+                              type={element.type}
+                              size="small"
+                              error={isError(element)}
+                              onChange={(e) =>
+                                setEventData(element.label, e.target.value)
+                              }
+                              defaultValue={getEventData(element.label)}
+                              helperText={generateHelperText(element)}
+                            />
+                          </Stack>
+                        );
+                    }
+                  })}
+              </React.Fragment>
+            )}
+            <Button
+              sx={{ width: '280px', maxWidth: '80vw' }}
+              variant="contained"
+              onClick={saveEvent}
+            >
+              Save
+            </Button>
+          </Stack>
+        </Box>
+      </div>
+    </LocalizationProvider >
   );
 }
 

@@ -65,7 +65,7 @@ function EditContact() {
 
   function callSave() {
     updateContact(contact);
-    window.location.href = '/socials/' + contact._id
+    window.location.href = '/socials/' + contact._id;
   }
 
   function getContactData(key) {
