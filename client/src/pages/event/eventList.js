@@ -63,7 +63,7 @@ function EventList() {
   };
 
   function handleClick(id) {
-    window.location.href = '/event/' + id;
+    window.location.href = '/myevent/' + id;
   }
 
   // Prevent undefined entries
@@ -92,7 +92,7 @@ function EventList() {
 
   return (
     <Box className={classes.root}>
-      <Navbar active="Home" />
+      <Navbar active="Events" />
       <Box
         sx={{
           display: 'flex',
@@ -105,6 +105,7 @@ function EventList() {
         {/* Hero Unit */}
 
         <Box
+          sx={{ mt: '15px' }}
           display="flex"
           flexDirection="column"
           size="lg"
@@ -112,11 +113,7 @@ function EventList() {
           className={classes.headerBox}
         >
           <Typography
-            component="h1"
-            variant="h2"
-            color="black"
-            gutterBottom
-            style={{ fontWeight: 600 }}
+            sx={{ fontSize: '50px', fontWeight: 700, color: '#272727' }}
           >
             My Events: {events.length}
           </Typography>
@@ -124,7 +121,6 @@ function EventList() {
             display="flex"
             alignItems="center"
             justifyContent="center"
-            sx={{ margin: 2 }}
           >
             <AddEvent />
           </Box>
@@ -134,7 +130,7 @@ function EventList() {
 
         {/* Event Grid Unit */}
         {/* Upcoming Events */}
-        <Typography component="h3" variant="h3" align="center" color="black">
+        <Typography sx={{ fontSize: '40px', mt: '20px', fontWeight: 650, color: '#272727' }}>
           Upcoming Events: {upcomingEvents.length}
         </Typography>
 
@@ -153,26 +149,26 @@ function EventList() {
                 <CardHeader
                   className={classes.eventName}
                   title={
-                    <Typography variant="h6" className={classes.overflowText}>
+                    <Typography sx={{ fontSize: '24px', fontWeight: 500, color: 'black' }} className={classes.overflowText}>
                       {events[i].name}
                     </Typography>
                   }
                 ></CardHeader>
                 <CardContent>
-                  <Typography gutterBottom variant="body2">
+                  <Typography gutterBottom sx={{ fontSize: '20px', fontWeight: 450, color: 'black' }}>
                     Datetime: {getDate(events[i].startedDateTime)}
                   </Typography>
-                  <Typography variant="body2">
+                  <Typography sx={{ fontSize: '16px', fontWeight: 430, color: 'black' }}>
                     Number of Participants: {events[i].participants.length}
                   </Typography>
                   <Typography
-                    variant="body2"
+                    sx={{ fontSize: '16px', fontWeight: 430, color: 'black' }}
                     className={classes.eventDescription}
                   >
                     Description: {events[i].description}
                   </Typography>
                 </CardContent>
-                <CardActions>
+                <CardActions sx={{ ml: '10px', mb: '10px' }}>
                   <div>
                     <Button
                       variant="contained"
@@ -191,7 +187,7 @@ function EventList() {
         </Grid>
 
         {/* Past Events */}
-        <Typography component="h3" variant="h3" align="center" color="black">
+        <Typography sx={{ fontSize: '40px', mt: '20px', fontWeight: 650, color: '#272727' }}>
           Past Events: {pastEvents.length}
         </Typography>
         <Grid container spacing={4} className={classes.eventGrid}>
@@ -210,24 +206,24 @@ function EventList() {
                 <CardHeader
                   className={classes.eventName}
                   title={
-                    <Typography variant="h6" className={classes.overflowText}>
+                    <Typography sx={{ fontSize: '24px', fontWeight: 500, color: 'black' }} className={classes.overflowText}>
                       {events[i].name}
                     </Typography>
                   }
                 ></CardHeader>
                 <CardContent>
-                  <Typography gutterBottom variant="body2">
+                  <Typography gutterBottom sx={{ fontSize: '20px', fontWeight: 450, color: 'black' }}>
                     {getDate(events[i].startedDateTime)}
                   </Typography>
 
-                  <Typography variant="body2">
+                  <Typography sx={{ fontSize: '16px', fontWeight: 430, color: 'black' }}>
                     Number of Participants: {events[i].participants.length}
                   </Typography>
-                  <Typography variant="body2" className={classes.overflowText}>
+                  <Typography sx={{ fontSize: '16px', fontWeight: 430, color: 'black' }} className={classes.overflowText}>
                     Description: {events[i].description}
                   </Typography>
                 </CardContent>
-                <CardActions>
+                <CardActions sx={{ ml: '10px', mb: '10px' }}>
                   <div>
                     <Button
                       variant="contained"

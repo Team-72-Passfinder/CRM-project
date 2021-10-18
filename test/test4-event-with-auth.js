@@ -159,7 +159,7 @@ mocha.describe('************* TEST EVENT ROUTES *************', function () {
               res.body.should.have.property('endedDateTime');
               res.body.should.have.property('completed');
               res.body.should.have
-                .property('participants')
+                .property('participantNames')
                 .eql(['Nunu Theboy', 'Koma Komin']);
               eventIdForDelRoute = res.body._id;
               done();

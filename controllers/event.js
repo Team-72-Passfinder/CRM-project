@@ -32,11 +32,12 @@ exports.create = async (req, res) => {
     });
   }
 
+  /*
   if (req.body.completed == null) {
     return res.status(400).send({
       message: "Should mark event's completeness!",
     });
-  }
+  }*/
 
   if (
     req.body.participants &&
@@ -118,11 +119,7 @@ exports.update = async (req, res) => {
       message: 'Invalid endedDateTime!',
     });
   }
-  if (req.body.completed && req.body.completed == null) {
-    return res.status(400).send({
-      message: 'Event complete status should not be empty!',
-    });
-  }
+
   if (
     req.body.participants &&
     !(await Validator.checkValidContactList(
@@ -180,7 +177,6 @@ exports.findOne = async (req, res) => {
       // else, store this data to toReturn
       //res.send(await controller.displayEvent(data));
       toReturn = await controller.displayEvent(data);
-      toReturn.participantId = data.participants;
       toReturn.emails = [];
 
       // Now access Contact DB to retrieve email address

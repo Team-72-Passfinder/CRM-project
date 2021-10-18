@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const maxCards = 6;
+let cardIndex = Array.from(Array(maxCards).keys());
 
 function Home() {
   const classes = useStyles();
@@ -54,7 +55,7 @@ function Home() {
     me().then((res) => {
       setUserData(res);
     });
-  }, []);
+  }, [events]);
 
   const getDate = (date) => {
     var jsDate = new Date(date);
@@ -62,7 +63,7 @@ function Home() {
   };
 
   function handleClick(id) {
-    window.location.href = '/event/' + id;
+    window.location.href = '/myevent/' + id;
   }
 
   // Only displayed maximum number of events on home eo we use cardIndex

@@ -222,3 +222,34 @@ exports.getall = (req, res) => {
 exports.toRemind = (req, res) => {
   controller.getNotInTouchRecently(req, res);
 }
+
+/*
+// Get event's participants
+exports.getParticipants = async (req, res) => {
+  const belongsTo = req.user._id;
+  var toReturnIds = [];
+  //
+  await Contact.find({ belongsTo: belongsTo }).then(async (data) => {
+    // If data is found, return empty
+    if (data) {
+      data.forEach((cont) => {
+        toReturnIds.push(cont._id);
+      });
+
+      const toReturnNames = await controller.getNamesFromContactIds(belongsTo, toReturnIds);
+      return res.status(200).send({
+        contactIds: toReturnIds,
+        names: toReturnNames,
+      });
+    }
+    else {
+      return res.status(200).send({
+        contactIds: [],
+        names: [],
+      });
+    }
+  }).catch((err) => {
+    console.log(err);
+    return res.status(500).send({ message: 'Error when accessing the database!' });
+  });
+}*/
