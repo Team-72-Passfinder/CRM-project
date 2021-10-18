@@ -42,10 +42,19 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
   const [user, setUser] = useState();
   const [tab, setTab] = useState('Add manually');
   const [search, setSearch] = useState('')
+  const [errors, setErrors] = useState({
+        username: false,
+        password: false,
+        firstName: false,
+        lastName: false,
+        email: false,
+    });
 
   const handleClose = () => {
     setOpen(false);
   };
+
+  
 
   const tabStyle = {
     minWidth: '50px',
@@ -121,25 +130,28 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
   }
 
   useEffect(() => {
-    const inputs = document.querySelectorAll('input');
+      const inputs = document.querySelectorAll('input');
+      let length = inputs.length;
+      let validInputs = 0;
 
-    Array.from(inputs).filter((input) => {
-      if (input.required === true) {
-        if (!input.validity.valid) {
-          setSubmitDisabled(true);
-        } else {
-          setSubmitDisabled(false);
-        }
+      Array.from(inputs).filter((input) => {
+          if (input.validity.valid) {
+              validInputs += 1;
+          }
+      });
+
+      let isError = false;
+      for (const prop in errors) {
+          if (errors[prop] === true) {
+              isError = true;
+          }
       }
-    });
-  }, [contact]);
 
-  useEffect(() => {
-    if (contact.firstName === '' || contact.lastName === '') {
-      setSubmitDisabled(true);
-    } else {
-      setSubmitDisabled(false);
-    }
+      if (validInputs === length && !isError) {
+          setSubmitDisabled(false);
+      } else {
+          setSubmitDisabled(true);
+      }
   }, [contact]);
 
   return (
@@ -194,7 +206,7 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
             />
           </Tabs>
           <TabPanel value="Add manually">
-            <Box sx={wrapperBoxStyle} >
+            <Box sx={wrapperBoxStyle}>
               <Box
                 sx={{ width: '300px', justifyContent: 'center', mt: '10px', mb: '20px', }} >
                 <Typography sx={{ fontSize: '24px', fontWeight: 700 }}>
@@ -210,9 +222,17 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
                   </Avatar>
                 </label>
               </div>
-              <StandardInput id="firstName" label="First name" name="firstName" value={contact.firstName} setValue={setContact} required={true} type="text" />
+              <StandardInput 
+                id="firstName" 
+                label="First name" 
+                name="firstName" 
+                value={contact.firstName} 
+                setValue={setContact} 
+                required={true} 
+                type="text" 
+              />
               <StandardInput id="lastName" label="Last name" name="lastName" value={contact.lastName} setValue={setContact} required={true} type="text" />
-              <StandardInput id="email" label="Email" name="email" value={contact.email} setValue={setContact} required={false} type="email" />
+              <StandardInput id="email" label="Email" name="email" value={contact.email} setValue={setContact} required={false} type="email" errors={errors.email} setErrors={setErrors} />
               <StandardInput id="phoneNumber" label="Phone number" name="phoneNumber" value={contact.phoneNumber} setValue={setContact} required={false} type="tel" />
               <StandardInput id="biography" label="Biography" name="biography" value={contact.biography} setValue={setContact} required={false} type="text" />
               <AutoComplete id="jobTitle" label="Job Title" name="jobTitle" value={contact.jobTitle} setValue={setContact} />

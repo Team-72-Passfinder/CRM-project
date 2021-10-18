@@ -7,6 +7,7 @@ import {
   FormHelperText,
   Typography,
 } from '@mui/material';
+import { validateDate } from '@mui/lab/internal/pickers/date-utils';
 
 function StandardInput({
   label,
@@ -20,39 +21,40 @@ function StandardInput({
   error,
   setErrors,
 }) {
-  const emptyFieldErrorMessage = 'This field is required';
   const invalidEmailErrorMessage = 'invalid email';
   const invalidTelErrorMessage = 'Must only contain numbers';
 
-  function isError() {
-    if (value !== '') {
+  function isError(val) {
+    if (validateDate !== '') {
       switch (type) {
         case 'email':
-          if (!/\S+@\S+\.\S+/.test(value)) {
-            setErrors((prev) => ({ ...prev, email: true }));
-          } else {
-            setErrors((prev) => ({ ...prev, email: false }));
+          if (setErrors !== undefined) {
+              if (!/\S+@\S+\.\S+/.test(val)) {
+                  setErrors((prev) => ({ ...prev, email: true }));
+              } else {
+                  setErrors((prev) => ({ ...prev, email: false }));
+              }
           }
-          return !/\S+@\S+\.\S+/.test(value);
+          return !/\S+@\S+\.\S+/.test(val);
         case 'tel':
-          return isNaN(value);
+          return isNaN(val);
         default:
       }
     }
   }
 
-  function generateHelperText() {
-    if (value !== '') {
+  function generateHelperText(val) {
+    if (val !== '') {
       switch (type) {
         case 'email':
           return (
-            !/\S+@\S+\.\S+/.test(value) && (
+            !/\S+@\S+\.\S+/.test(val) && (
               <FormHelperText error>{invalidEmailErrorMessage}</FormHelperText>
             )
           );
         case 'tel':
           return (
-            isNaN(value) && (
+            isNaN(val) && (
               <FormHelperText error>{invalidTelErrorMessage}</FormHelperText>
             )
           );
@@ -122,14 +124,14 @@ function StandardInput({
         hiddenLabel={true}
         onChange={(e) => {
           setValue((prev) => ({ ...prev, [name]: e.target.value }));
-          isError();
+          isError(e.target.value);
         }}
         value={value}
         error={error}
         required={required}
         type={type}
       />
-      {generateHelperText()}
+      {generateHelperText(value)}
     </FormControl>
   );
 }
