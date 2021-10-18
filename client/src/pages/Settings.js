@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react'
 
-import { Router, Switch, Route, Link } from 'react-router-dom' 
+import { Router, Switch, Route, Link } from 'react-router-dom'
 
 import Navbar from '../components/Navbar'
 import ProfileEdit from '../components/Settings/Profile-Edit'
 import PasswordChange from '../components/Settings/PasswordChange'
+import AppSettings from '../components/Settings/AppSettings'
 import { me } from '../api'
 
 import { Box, List, ListItem, ListItemText, Typography } from '@mui/material'
@@ -26,7 +27,7 @@ function Settings() {
     return (
         <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' } }}>
             <Navbar active="Settings" />
-            <Box sx={{ display: 'flex', flexGrow: { xs: 0, sm: 1 }, flexDirection: 'column', justifyContent: { md: 'center' }, alignItems: { md: 'center' }, background: { md: '#F7F7F7' }, height: { sm:'100vh' }, width: '100%', }}>                    
+            <Box sx={{ display: 'flex', flexGrow: { xs: 0, sm: 1 }, flexDirection: 'column', justifyContent: { md: 'center' }, alignItems: { md: 'center' }, background: { md: '#F7F7F7' }, height: { sm: '100vh' }, width: '100%', }}>
                 <Typography sx={{ display: { md: 'none' }, fontSize: '24px', background: 'white', fontWeight: 500, ml: '10px' }}>
                     Settings
                 </Typography>
