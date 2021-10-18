@@ -54,6 +54,16 @@ function Reminder({ contacts }) {
   const [close, setClose] = useState(true);
 
   useEffect(() => {
+      let kit = window.localStorage.getItem('notif')
+
+      if(kit === null) {
+        window.localStorage.setItem('notif', true);
+      }
+
+      window.onbeforeunload = () => {
+        window.localStorage.removeItem('notif')
+      }
+
     let today = new Date();
     let past = new Date(new Date().setDate(today.getDate() - 30));
 
@@ -65,10 +75,12 @@ function Reminder({ contacts }) {
   }, []);
 
   useEffect(() => {
-    if (uncontact.length !== 0) {
-      setClose(!close);
+      if (uncontact.length !== 0 && window.localStorage.getItem('notif') === 'true') {
+        setClose(false)
+        window.localStorage.setItem('notif', false)
+    } else {
+        setClose(true)
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [uncontact]);
 
   const handleClose = () => {
