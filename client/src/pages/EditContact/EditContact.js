@@ -10,6 +10,8 @@ import AddAPhotoIcon from '@mui/icons-material/AddAPhoto';
 
 import { getContact, updateContact } from '../../api';
 import Navbar from '../../components/Navbar';
+import Chip from '@mui/material/Chip';
+import Autocomplete from '@mui/material/Autocomplete';
 
 const formList = [
   {
@@ -34,6 +36,18 @@ const formList = [
     label: 'Phone number',
     type: 'tel',
   },
+  {
+    label: 'Job Title',
+    type: 'tags',
+  },
+  {
+    label: 'Tags',
+    type: 'tags',
+  },
+  {
+    label: 'Biography',
+    type: 'para',
+  },
 ];
 
 function EditContact() {
@@ -51,6 +65,7 @@ function EditContact() {
 
   function callSave() {
     updateContact(contact);
+    window.location.href = '/socials/' + contact._id;
   }
 
   function getContactData(key) {
@@ -67,6 +82,12 @@ function EditContact() {
         return contact.phoneNumber;
       case 'Date of Birth':
         return new Date(contact.dateOfBirth);
+      case 'Job Title':
+        return contact.jobTitle;
+      case 'Tags':
+        return contact.tags;
+      case 'Biography':
+        return contact.biography;
       default:
         return null;
     }
@@ -77,6 +98,9 @@ function EditContact() {
       case 'First Name':
         setContact((prev) => ({ ...prev, firstName: value }));
         break;
+      case 'Last Name':
+        setContact((prev) => ({ ...prev, lastName: value }));
+        break;
       case 'Email':
         setContact((prev) => ({ ...prev, email: value }));
         break;
@@ -85,6 +109,15 @@ function EditContact() {
         break;
       case 'Phone number':
         setContact((prev) => ({ ...prev, phoneNumber: value }));
+        break;
+      case 'Job Title':
+        setContact((prev) => ({ ...prev, jobTitle: value }));
+        break;
+      case 'Tags':
+        setContact((prev) => ({ ...prev, tags: value }));
+        break;
+      case 'Biography':
+        setContact((prev) => ({ ...prev, biography: value }));
         break;
       default:
         break;
@@ -152,6 +185,7 @@ function EditContact() {
               {contact !== undefined &&
                 formList.map((element) => {
                   switch (element.type) {
+                    //Case of displaying date
                     case 'date':
                       return (
                         <React.Fragment key={element.label}>
@@ -172,6 +206,54 @@ function EditContact() {
                           />
                         </React.Fragment>
                       );
+                    // Case of tags displaying
+                    case 'tags':
+                      return (
+                        <Stack spacing={3} sx={{ width: 300 }} >
+                          <Autocomplete
+                            multiple
+                            value={getContactData(element.label)}
+                            options={[].map((option) => option)}
+                            freeSolo
+                            renderTags={(value, getTagProps) =>
+                              value.map((option, index) => (
+                                <Chip variant="outlined" label={option} {...getTagProps({ index })}
+                                  onDelete={() => {
+                                    setContactData(element.label, getContactData(element.label).filter(entry => entry !== option));
+                                  }}
+                                />
+                              ))
+                            }
+                            renderInput={(params) => (
+                              <TextField
+                                {...params}
+                                key={element.label}
+                                label={element.label}
+                              />
+                            )}
+                            onChange={(e, newVal) => setContactData(element.label, newVal)}
+                          />
+                        </Stack>
+                      );
+                    // Case of bio text paragraph
+                    case 'para':
+                      return (
+                        <TextField
+                          key={element.label}
+                          sx={{
+                            width: '300px',
+                          }}
+                          multiline
+                          label={element.label}
+                          type={element.type}
+                          size="small"
+                          onChange={(e) =>
+                            setContactData(element.label, e.target.value)
+                          }
+                          defaultValue={getContactData(element.label)}
+                        />
+                      );
+                    // Normal text box 
                     default:
                       return (
                         <TextField

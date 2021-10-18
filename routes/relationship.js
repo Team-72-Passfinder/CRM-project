@@ -4,18 +4,25 @@ const passport = require('../config/passport');
 
 const controller = require('../controllers/relationship');
 
-app.use(passport.authenticate('jwt', { session: false }))
+// findAll = all relationships in DB
+app
+  .route('/relationship')
+  .post(passport.authenticate('jwt', { session: false }), controller.create)
+  .get(passport.authenticate('jwt', { session: false }), controller.findAll);
 
-app.route('/relationship').post(controller.create).get(controller.findAll);
+// getall = all relationships belong to current users
+app
+  .route('/relationship/getall')
+  .get(passport.authenticate('jwt', { session: false }), controller.getall);
 
-app.route('/relationship/getall').get(controller.getall);
-
-app.route('/relationship/search').get(controller.search);
+app
+  .route('/relationship/search')
+  .post(passport.authenticate('jwt', { session: false }), controller.search);
 
 app
   .route('/relationship/:id')
-  .put(controller.update)
-  .delete(controller.delete)
-  .get(controller.findOne);
+  .put(passport.authenticate('jwt', { session: false }), controller.update)
+  .delete(passport.authenticate('jwt', { session: false }), controller.delete)
+  .get(passport.authenticate('jwt', { session: false }), controller.findOne);
 
 module.exports = app;

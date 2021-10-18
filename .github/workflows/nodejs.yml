@@ -5,7 +5,7 @@ name: Node.js CI
 
 on:
   push:
-    branches: [test-CI]
+    branches: [main]
   pull_request:
     branches: [main]
     paths-ignore:
@@ -41,4 +41,5 @@ jobs:
       - run: npm ci
       - run: npm test
       # Test frontend
-      - run: npm test --prefix
+      - run: npm install --prefix client
+      - run: npm test --prefix client
