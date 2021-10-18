@@ -17,6 +17,7 @@ import Profile from './pages/Profile/profile'
 import Event from './pages/event/event';
 import EditEvent from './pages/event/editEvent';
 import Settings from './pages/Settings'
+import ProfileEdit from './components/Settings/Profile-Edit';
 import UnauthorizedAccessPage from './pages/Error/unathorized-access';
 import { ThemeProvider } from '@mui/material/styles';
 
@@ -45,6 +46,9 @@ const App = () => {
           <PrivateRoute exact path="/socials">
             <Socials />
           </PrivateRoute>
+            {/* <PrivateRoute path="/settings/edit-profile">
+                <ProfileEdit />
+            </PrivateRoute> */}
             <PrivateRoute path="/settings">
                 <Settings />
             </PrivateRoute>

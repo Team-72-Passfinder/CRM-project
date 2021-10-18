@@ -1,4 +1,6 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
+
+import { me } from '../../api'
 
 import { Box, Avatar, Button } from '@mui/material'
 import StandardInput from '../StandardInput'
@@ -17,29 +19,39 @@ const input = {
     }
 }
 
-function ProfileEdit({ user }) {
+function ProfileEdit({ setCurrent }) {
+    const [user, setUser] = useState()
+
+    useEffect(() => {
+        me().then(res => setUser(res))
+    }, [])
+
     return (
-        <Box sx={{ width: '100%', height: '100%', display: 'flex', flexDirection: 'column', justifyContent: 'center', }}>
-            <Box sx={{ display: 'flex', alignItems: 'center', width: '100%', }}>
-                <Avatar sx={{ width: '80px', height: '80px', fontSize: '28px', mx: '20px', my: '20px' }} alt={user.firstName} src="/broken-image.jpg" />
+        user !== undefined &&
+        <Box sx={{ display: 'flex', width: { xs: '100vw', md: 'auto' }, height: '100%', flexDirection: 'column', justifyContent: 'center', alignItems: 'center'  }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', flexDirection: { xs: 'column', md: 'row' }, width: { md: '100%' } }}>
+                <Avatar sx={{ width: '80px', height: '80px', fontSize: '28px' }} alt={user.firstName} src="/broken-image.jpg" />
                 <Button sx={{ height: '40px' }}>
                     Update
                 </Button>
             </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-                <Box sx={{ mx: '20px' }}>
+            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: { sm: 'space-between' } }}>
+                <Box sx={{ mr: { xs: 0, md: '20px' } }}>
                     <StandardInput sx={input} label="First name" value={user.firstName} />
                 </Box>
                 <StandardInput label="Last name" value={user.lastName} />
             </Box>
-            <Box sx={{ display: 'flex', justifyContent: 'space-evenly' }}>
-                <Box sx={{ mx: '20px' }}>
+            <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: { sm: 'space-between' } }}>
+                <Box sx={{ mr: { xs: 0, md: '20px' } }}>
                     <StandardInput sx={input} label="Email" value={user.email} />
                 </Box>
                 <StandardInput label="Phone number" value={user.phoneNumber} />
             </Box>
-            <Box sx={{ display: 'flex', width: '100%', justifyContent: 'end', alignItems: 'end' }}>
-                <Button sx={{ width: '150px', height: '40px', mt: '40px' }} variant="contained">
+            <Box sx={{ display: 'flex', width: '100%', justifyContent: { xs: 'center', md: 'end' }, alignItems: { md: 'end' } }}>
+                <Button sx={{ width: '150px', height: '40px', background: 'gray', mt: '10px', mr: '10px' }} variant="contained" onClick={e => setCurrent()}>
+                    Cancel
+                </Button>
+                <Button sx={{ width: '150px', height: '40px', mt: '10px' }} variant="contained">
                     Save
                 </Button>
             </Box>

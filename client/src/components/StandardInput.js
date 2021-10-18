@@ -80,6 +80,7 @@ function StandardInput({ label, name, value, setValue, required, type, width, sx
                 onChange={e => setValue(prev => ({ ...prev, [name]: e.target.value }))}
                 value={value}
                 error={isError()}
+                type={type}
                 // required={required}
             />
             {generateHelperText()}
