@@ -54,14 +54,14 @@ function Reminder({ contacts }) {
   const [close, setClose] = useState(true);
 
   useEffect(() => {
-      let kit = window.localStorage.getItem('notif')
+      let reminder = window.localStorage.getItem('reminder')
 
-      if(kit === null) {
-        window.localStorage.setItem('notif', true);
+      if(reminder === null) {
+        window.localStorage.setItem('reminder', true);
       }
 
       window.onbeforeunload = () => {
-        window.localStorage.removeItem('notif')
+        window.localStorage.removeItem('reminder')
       }
 
     let today = new Date();
@@ -75,9 +75,9 @@ function Reminder({ contacts }) {
   }, []);
 
   useEffect(() => {
-      if (uncontact.length !== 0 && window.localStorage.getItem('notif') === 'true') {
+      if (uncontact.length !== 0 && window.localStorage.getItem('reminder') === 'true') {
         setClose(false)
-        window.localStorage.setItem('notif', false)
+        window.localStorage.setItem('reminder', false)
     } else {
         setClose(true)
     }
