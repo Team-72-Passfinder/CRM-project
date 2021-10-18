@@ -58,6 +58,7 @@ function Register(props) {
     let length = inputs.length;
     let validInputs = 0;
 
+    // eslint-disable-next-line array-callback-return
     Array.from(inputs).filter((input) => {
       if (input.validity.valid) {
         validInputs += 1;
@@ -88,6 +89,7 @@ function Register(props) {
         edge="start"
         onClick={handleBack}
         aria-label="back"
+        size="large"
       >
         <ArrowBackIcon />
       </IconButton>

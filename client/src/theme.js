@@ -1,11 +1,11 @@
-import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
+import { createTheme } from '@mui/material/styles';
 
 let theme = createTheme({
-    palette: {
-        primary: {
-            main: '#DF7861'
-        },
+  palette: {
+    primary: {
+      main: '#DF7861',
     },
+  },
 });
 
-export default theme
+export default theme;

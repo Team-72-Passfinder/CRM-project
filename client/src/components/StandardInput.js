@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import {
   FilledInput,
-  InputLabel,
   FormControl,
   FormHelperText,
   Typography,
@@ -20,6 +19,7 @@ function StandardInput({
   error,
   setErrors,
 }) {
+  // eslint-disable-next-line no-unused-vars
   const emptyFieldErrorMessage = 'This field is required';
   const invalidEmailErrorMessage = 'invalid email';
   const invalidTelErrorMessage = 'Must only contain numbers';

@@ -1,7 +1,7 @@
 import React from 'react';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
-import { Dialog, Button, createTheme, ThemeProvider } from '@mui/material';
+import { Dialog, Button } from '@mui/material';
 
 import { deleteEvent } from '../../api';
 

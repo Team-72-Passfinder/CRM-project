@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import TextField from '@mui/material/TextField';
 import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import {
   Box,
@@ -82,6 +80,7 @@ function AddEvent() {
   useEffect(() => {
     const inputs = document.querySelectorAll('input');
 
+    // eslint-disable-next-line array-callback-return
     Array.from(inputs).filter((input) => {
       if (input.required === true) {
         if (!input.validity.valid) {
@@ -100,11 +99,13 @@ function AddEvent() {
     });
   }, []);
 
+  // eslint-disable-next-line no-unused-vars
   const classes = useStyles();
 
   return (
     <div>
-      <Button sx={{ width: 180, height: 40, my: '10px', fontSize: '16px' }}
+      <Button
+        sx={{ width: 180, height: 40, my: '10px', fontSize: '16px' }}
         color="primary"
         variant="contained"
         align="center"
@@ -114,7 +115,11 @@ function AddEvent() {
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <Box display="flex" justifyContent="center" alignItems="center">
-          <DialogTitle sx={{ fontSize: '24px', fontWeight: 600, color: '#272727' }}>New Event</DialogTitle>
+          <DialogTitle
+            sx={{ fontSize: '24px', fontWeight: 600, color: '#272727' }}
+          >
+            New Event
+          </DialogTitle>
         </Box>
         <Box
           sx={{
@@ -259,9 +264,18 @@ function AddEvent() {
                 <FormControlLabel
                   margin="none"
                   label=""
-                  control={<Switch checked={event.completed}
-                    onChange={e => { setEvent((prev) => ({ ...prev, completed: e.target.checked })) }}
-                    color="primary" />}
+                  control={
+                    <Switch
+                      checked={event.completed}
+                      onChange={(e) => {
+                        setEvent((prev) => ({
+                          ...prev,
+                          completed: e.target.checked,
+                        }));
+                      }}
+                      color="primary"
+                    />
+                  }
                 />
               </Stack>
             </FormControl>
@@ -289,7 +303,7 @@ function AddEvent() {
           </Button>
         </DialogActions>
       </Dialog>
-    </div >
+    </div>
   );
 }
 

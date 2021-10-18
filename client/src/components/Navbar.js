@@ -1,27 +1,6 @@
 import React, { useState } from 'react';
-
-import { Link } from 'react-router-dom';
-
-import {
-  AppBar,
-  Toolbar,
-  IconButton,
-  Drawer,
-  List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
-  Stack,
-  Box,
-  ButtonBase,
-} from '@mui/material';
-
+import { AppBar, Toolbar, IconButton } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import CloseIcon from '@mui/icons-material/Close';
-import HomeIcon from '@mui/icons-material/Home';
-import PeopleIcon from '@mui/icons-material/People';
-import AccountBoxIcon from '@mui/icons-material/AccountBox';
-import ExitToAppIcon from '@mui/icons-material/ExitToApp';
 
 import StandardDrawer from './StandardDrawer';
 
@@ -49,6 +28,7 @@ function Navbar({ active }) {
             edge="start"
             onClick={handleDrawerToggle}
             sx={{ display: { sm: 'none' } }}
+            size="large"
           >
             <MenuIcon />
           </IconButton>
