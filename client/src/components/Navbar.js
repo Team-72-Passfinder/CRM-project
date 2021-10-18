@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import { AppBar, Toolbar, IconButton } from '@mui/material';
+import { AppBar, Toolbar, IconButton, Box } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 
 import StandardDrawer from './StandardDrawer';
 
-function Navbar({ active }) {
+function Navbar({ active, buttons }) {
   const [open, setOpen] = useState(false);
 
   const handleDrawerToggle = () => {
@@ -32,6 +32,10 @@ function Navbar({ active }) {
           >
             <MenuIcon />
           </IconButton>
+          <Box sx={{ flexGrow: 1 }} />
+          <Box>
+            {buttons}
+          </Box>
         </Toolbar>
       </AppBar>
 

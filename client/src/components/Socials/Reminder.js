@@ -49,21 +49,10 @@ const scroll = {
   },
 };
 
-function Reminder({ contacts }) {
+function Reminder({ contacts, close, handleClose }) {
   const [uncontact, setUncontact] = useState([]);
-  const [close, setClose] = useState(true);
 
   useEffect(() => {
-      let reminder = window.localStorage.getItem('reminder')
-
-      if(reminder === null) {
-        window.localStorage.setItem('reminder', true);
-      }
-
-      window.onbeforeunload = () => {
-        window.localStorage.removeItem('reminder')
-      }
-
     let today = new Date();
     let past = new Date(new Date().setDate(today.getDate() - 30));
 
@@ -73,19 +62,6 @@ function Reminder({ contacts }) {
     };
     getContactsForReminder(body).then((res) => setUncontact(res));
   }, []);
-
-  useEffect(() => {
-      if (uncontact.length !== 0 && window.localStorage.getItem('reminder') === 'true') {
-        setClose(false)
-        window.localStorage.setItem('reminder', false)
-    } else {
-        setClose(true)
-    }
-  }, [uncontact]);
-
-  const handleClose = () => {
-    setClose(!close);
-  };
 
   function handleClick(id) {
     window.location.href = '/socials/' + id;
