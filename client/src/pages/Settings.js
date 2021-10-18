@@ -14,15 +14,6 @@ import Profile from './Profile/profile'
 
 function Settings() {
     const [current, setCurrent] = useState()
-    const [tab, setTab] = useState("Account")
-
-    const handleTabChange = (event, newValue) => {
-        setTab(newValue);
-    };
-
-    function handleClick() {
-
-    }
 
     return (
         <Box sx={{ display: 'flex', flexDirection: { xs: 'column', sm: 'row' } }}>

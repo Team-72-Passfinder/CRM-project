@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react'
 
-import { me } from '../../api'
-
 import { Box, Avatar, Button } from '@mui/material'
 import StandardInput from '../StandardInput'
+
+import { me, updateUserDetail } from '../../api'
 
 const input = {
     width: '300px',
@@ -23,8 +23,30 @@ function ProfileEdit({ setCurrent }) {
     const [user, setUser] = useState()
 
     useEffect(() => {
-        me().then(res => setUser(res))
+        me().then(res => {
+            setUser({
+            firstName: res.firstName,
+            lastName: res.lastName,
+            email: res.email,
+            phoneNumber: res.phoneNumber || "",
+            })
+        })
     }, [])
+
+    function saveChanges() {
+        console.log(user)
+        delete user.email
+        updateUserDetail(user).then(res => {
+            console.log(res)
+            setUser({
+            firstName: res.firstName,
+            lastName: res.lastName,
+            email: res.email,
+            phoneNumber: res.phoneNumber,
+            })
+        }
+        )
+    }
 
     return (
         user !== undefined &&
@@ -39,19 +61,19 @@ function ProfileEdit({ setCurrent }) {
                 <Box sx={{ mr: { xs: 0, md: '20px' } }}>
                     <StandardInput sx={input} label="First name" value={user.firstName} />
                 </Box>
-                <StandardInput label="Last name" value={user.lastName} />
+                <StandardInput label="Last name" name="lastName" value={user.lastName} setValue={setUser} />
             </Box>
             <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, justifyContent: { sm: 'space-between' } }}>
                 <Box sx={{ mr: { xs: 0, md: '20px' } }}>
-                    <StandardInput sx={input} label="Email" value={user.email} />
+                    <StandardInput sx={input} label="Email" value={user.email} disable={true} />
                 </Box>
-                <StandardInput label="Phone number" value={user.phoneNumber} />
+                <StandardInput label="Phone number" name="phoneNumber" value={user.phoneNumber} setValue={setUser} type='tel' required={false} />
             </Box>
             <Box sx={{ display: 'flex', width: '100%', justifyContent: { xs: 'center', md: 'end' }, alignItems: { md: 'end' } }}>
                 <Button sx={{ width: '150px', height: '40px', background: 'gray', mt: '10px', mr: '10px' }} variant="contained" onClick={e => setCurrent()}>
                     Cancel
                 </Button>
-                <Button sx={{ width: '150px', height: '40px', mt: '10px' }} variant="contained">
+                <Button sx={{ width: '150px', height: '40px', mt: '10px' }} variant="contained" onClick={saveChanges}>
                     Save
                 </Button>
             </Box>
