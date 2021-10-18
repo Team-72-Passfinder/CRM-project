@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import { Stack, Avatar, TextField, Box, Button } from '@mui/material';
+import { Stack, Avatar, TextField, Button } from '@mui/material';
 
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import DateAdapter from '@mui/lab/AdapterDayjs';
@@ -152,11 +152,7 @@ function EditContact() {
     <LocalizationProvider dateAdapter={DateAdapter}>
       <div>
         <Navbar />
-        <Stack
-          sx={{ my: 2 }}
-          alignItems="center"
-          spacing={2}
-        >
+        <Stack sx={{ my: 2 }} alignItems="center" spacing={2}>
           <div key="avatar">
             <input
               id="uploadImage"
@@ -209,7 +205,7 @@ function EditContact() {
                     // Case of tags displaying
                     case 'tags':
                       return (
-                        <Stack spacing={3} sx={{ width: 300 }} >
+                        <Stack spacing={3} sx={{ width: 300 }}>
                           <Autocomplete
                             multiple
                             value={getContactData(element.label)}
@@ -217,9 +213,17 @@ function EditContact() {
                             freeSolo
                             renderTags={(value, getTagProps) =>
                               value.map((option, index) => (
-                                <Chip variant="outlined" label={option} {...getTagProps({ index })}
+                                <Chip
+                                  variant="outlined"
+                                  label={option}
+                                  {...getTagProps({ index })}
                                   onDelete={() => {
-                                    setContactData(element.label, getContactData(element.label).filter(entry => entry !== option));
+                                    setContactData(
+                                      element.label,
+                                      getContactData(element.label).filter(
+                                        (entry) => entry !== option
+                                      )
+                                    );
                                   }}
                                 />
                               ))
@@ -231,7 +235,9 @@ function EditContact() {
                                 label={element.label}
                               />
                             )}
-                            onChange={(e, newVal) => setContactData(element.label, newVal)}
+                            onChange={(e, newVal) =>
+                              setContactData(element.label, newVal)
+                            }
                           />
                         </Stack>
                       );
@@ -253,7 +259,7 @@ function EditContact() {
                           defaultValue={getContactData(element.label)}
                         />
                       );
-                    // Normal text box 
+                    // Normal text box
                     default:
                       return (
                         <TextField

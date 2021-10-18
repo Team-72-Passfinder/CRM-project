@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react'
+import { Box, Avatar, Button } from '@mui/material';
 
-import { Box, Avatar, Button } from '@mui/material'
-import StandardInput from '../StandardInput'
+import StandardInput from '../StandardInput';
 
 import { me, updateUserDetail } from '../../api'
 
 const input = {
-    width: '300px',
-    maxWidth: '300px',
-    height: '40px',
-    borderRadius: '5px',
-    '&.Mui-error': {
-        background: '#FBB5B1',
-        border: '1px solid #F9202B',
-    },
-    '& input:not(:placeholder-shown)': {
-        height: '0px',
-    }
-}
+  width: '300px',
+  maxWidth: '300px',
+  height: '40px',
+  borderRadius: '5px',
+  '&.Mui-error': {
+    background: '#FBB5B1',
+    border: '1px solid #F9202B',
+  },
+  '& input:not(:placeholder-shown)': {
+    height: '0px',
+  },
+};
 
 function ProfileEdit({ setCurrent }) {
     const [user, setUser] = useState()
@@ -78,7 +78,7 @@ function ProfileEdit({ setCurrent }) {
                 </Button>
             </Box>
         </Box>
-    )
+    );
 }
 
-export default ProfileEdit
+export default ProfileEdit;

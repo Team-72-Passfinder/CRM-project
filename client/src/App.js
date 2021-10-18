@@ -20,6 +20,7 @@ import EventList from './pages/event/eventList';
 import Settings from './pages/Settings';
 import UnauthorizedAccessPage from './pages/Error/unathorized-access';
 import Register from './pages/Register/register';
+import LogoutPage from './pages/logout';
 import { ThemeProvider } from '@mui/material/styles';
 
 import theme from './theme';
@@ -67,6 +68,9 @@ const App = () => {
           </PrivateRoute>
           <Route exact path="/unauthorized-access">
             <UnauthorizedAccessPage />
+          </Route>
+          <Route exact path="/log-out">
+            <LogoutPage />
           </Route>
         </Switch>
       </Router>

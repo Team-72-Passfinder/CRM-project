@@ -65,15 +65,15 @@ function Settings() {
                             current !== undefined?
                             current.fragment
                             :
-                            <Typography sx={{ fontWeight: 500, display: { xs: 'none' } }}>
+                            <Typography sx={{ fontWeight: 500, display: { xs: 'none', md: 'initial' } }}>
                                 Please select one of the options on the left
                             </Typography>
                         }
                     </Box>
                 </Box>
             </Box>
-        </Box>
-    )
+    </Box>
+  );
 }
 
-export default Settings
+export default Settings;
