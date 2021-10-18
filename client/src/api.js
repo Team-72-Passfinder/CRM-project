@@ -168,7 +168,7 @@ export function delContact(id) {
 export function me() {
   let endpoint = '/profile';
 
-  return instance.get(endpoint).then((res) => res.data);
+  return instance.get(endpoint, config).then((res) => res.data);
 }
 
 export function updateUser(body) {
@@ -206,7 +206,7 @@ export function searchUser(searchQuery) {
   let endpoint = '/user/search/';
   let query = {
     query: searchQuery,
-  }
+  };
 
   return axios
     .post(endpoint, query, config)
