@@ -107,7 +107,13 @@ export function me() {
   return instance.get(endpoint).then(res => res.data);
 }
 
-export function updateUser(body) {
+export function updateUserDetail(body) {
+    let endpoint = '/user'
+
+    return instance.put(endpoint, body).then(res => res.data).catch((e) => console.log(e.response));
+}
+
+export function updateUserPassword(body) {
     let endpoint = '/user/change-password'
 
     return instance.post(endpoint, body).then(res => res.data).catch(function (error) {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 
 import { FilledInput, InputLabel, FormControl, FormHelperText, Typography } from '@mui/material'
 
-function StandardInput({ label, name, value, setValue, required, type, width, sx }) {
+function StandardInput({ label, name, value, setValue, required, type, width, sx, disable }) {
     const emptyFieldErrorMessage = 'This field is required'
     const invalidEmailErrorMessage = 'invalid email'
     const invalidTelErrorMessage = 'Must only contain numbers'
@@ -79,6 +79,7 @@ function StandardInput({ label, name, value, setValue, required, type, width, sx
                 hiddenLabel={true}
                 onChange={e => setValue(prev => ({ ...prev, [name]: e.target.value }))}
                 value={value}
+                disabled={disable}
                 error={isError()}
                 type={type}
                 // required={required}

@@ -114,7 +114,7 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
                 <StandardInput id="firstName" label='First name' name='firstName' value={contact.firstName} setValue={setContact} required={true} type='text' />
                 <StandardInput id="lastName" label='Last name' name='lastName' value={contact.lastName} setValue={setContact} required={true} type='text' />
                 <StandardInput id="email" label='Email' name='email' value={contact.email} setValue={setContact} reqeuired={false} type='email' />
-                <StandardInput id="phoneNumber" label='Phone number' name='phoneNumber' value={contact.phoneNumber} setValue={setContact} reqeuired={false} type='tel' />
+                <StandardInput id="phoneNumber" label='Phone number' name='phoneNumber' value={contact.phoneNumber} setValue={setContact} required={false} type='tel' />
                 <LocalizationProvider dateAdapter={DateAdapter}>
                     <FormControl margin="dense" variant="filled">
                         <Typography sx={{ fontSize: '15px', fontWeight: 600 }} margin="none">

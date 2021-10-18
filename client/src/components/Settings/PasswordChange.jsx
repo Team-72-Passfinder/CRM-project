@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { Box, Button, Alert } from '@mui/material'
 import StandardInput from '../StandardInput'
 
-import { updateUser } from '../../api';
+import { updateUserPassword } from '../../api';
 
 function PasswordChange({ setCurrent }) {
     const [content, setContent] = useState({ oldPassword: '', newPassword: '', confirmNewPassword: '' });
@@ -11,7 +11,7 @@ function PasswordChange({ setCurrent }) {
     const [alert, setAlert] = useState('')
 
     function changePassword() {
-        updateUser(content).then(null, reason => {
+        updateUserPassword(content).then(null, reason => {
             if (reason === 'Wrong password') {
                 setAlert(
                     <Alert severity='error'>

@@ -9,13 +9,13 @@ function VerticalTabs({ tabs, tab, handleTabChange }) {
             <Tabs sx={{ padding: '20px' }} orientation="vertical" value={tab} onChange={handleTabChange}>
                 {
                     tabs.map(tab => (
-                        <Tab label={tab.key} value={tab.key} />
+                        <Tab label={tab.key} key={tab.key} value={tab.key} />
                     ))
                 }
             </Tabs>
             {
                 tabs.map(tab => (
-                    <TabPanel sx={{  borderRadius: '20px', background: 'white', justifyContent: 'center' }} value={tab.key}>
+                    <TabPanel sx={{  borderRadius: '20px', background: 'white', justifyContent: 'center' }} key={tab.key} value={tab.key}>
                         {tab.panel}
                     </TabPanel>
                 ))
