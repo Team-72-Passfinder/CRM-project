@@ -46,15 +46,17 @@ function Home() {
 
   const [events, setEvents] = useState([]);
   const [userData, setUserData] = useState([]);
+  const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
     getEvents().then((res) => {
       setEvents(res);
+      setLoading(false);
     });
     me().then((res) => {
       setUserData(res);
     });
-  }, [events]);
+  }, []);
 
   const getDate = (date) => {
     var jsDate = new Date(date);
@@ -71,37 +73,11 @@ function Home() {
   if (events.length < maxCards)
     cardIndex = Array.from(Array(events.length).keys());
 
-  return (
-    <Box className={classes.root}>
-      <Navbar active="Home" />
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          paddingLeft: '20vw',
-          paddingRight: '20vw',
-        }}
-      >
-        {/* Hero Unit */}
-
-        <img src={logo} alt="Logo" width="120px" style={{ padding: 10 }} />
-
-        <Container maxWidth="sm">
-          <Typography
-            component="h1"
-            variant="h2"
-            align="center"
-            color="black"
-            gutterBottom
-            style={{ fontWeight: 600 }}
-          >
-            Welcome Back {userData.username}
-          </Typography>
-        </Container>
-        {/* End Hero Unit */}
-
-        {/* Event Grid Unit */}
+  const EventGridUnit = () => {
+    if (isLoading) {
+      return <Typography>Loading...</Typography>;
+    } else {
+      return (
         <Grid container spacing={4} className={classes.eventGrid}>
           {cardIndex.map((i) => (
             <Grid item key={i} xs={12} sm={6} md={4}>
@@ -148,6 +124,42 @@ function Home() {
             </Grid>
           ))}
         </Grid>
+      );
+    }
+  };
+
+  return (
+    <Box className={classes.root}>
+      <Navbar active="Home" />
+      <Box
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          paddingLeft: '20vw',
+          paddingRight: '20vw',
+        }}
+      >
+        {/* Hero Unit */}
+
+        <img src={logo} alt="Logo" width="120px" style={{ padding: 10 }} />
+
+        <Container maxWidth="sm">
+          <Typography
+            component="h1"
+            variant="h2"
+            align="center"
+            color="black"
+            gutterBottom
+            style={{ fontWeight: 600 }}
+          >
+            Welcome Back {userData.username}
+          </Typography>
+        </Container>
+        {/* End Hero Unit */}
+
+        {/* Event Grid Unit */}
+        {EventGridUnit()}
         {/* End Event Grid Unit */}
       </Box>
     </Box>
