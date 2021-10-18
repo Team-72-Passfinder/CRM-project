@@ -5,8 +5,8 @@ const controller = require('../controllers/conversation');
 
 app
   .route('/conversation')
-  .post(passport.authenticate('jwt', { session: false }), controller.create)
-  .get(passport.authenticate('jwt', { session: false }), controller.findAll);
+  .post(passport.authenticate('jwt', { session: false }), controller.create);
+//.get(passport.authenticate('jwt', { session: false }), controller.findAll); //Admin uses only
 
 app
   .route('/conversation/search')

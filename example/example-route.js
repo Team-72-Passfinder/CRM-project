@@ -1,5 +1,7 @@
+// THIS WAS USED AS TEMPLATE FOR ESTABLISHING
+// ROUTES, CONTROLLERS AND INDEXES
 //Testing file, not used in actual production
-
+/*
 const express = require('express');
 const Example = require('.');
 const router = express.Router();
@@ -108,3 +110,4 @@ router.delete('/:exampleId', async (req, res) => {
 });
 
 module.exports = router;
+*/

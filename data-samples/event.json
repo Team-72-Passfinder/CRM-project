@@ -4,11 +4,9 @@
     "dateTime": "2021-08-31",
     "completed": true,
     "participants": [
-      "user1",
-      "user2",
-      "user3",
-      "user4",
-      "user5"
+      "6128f7781f70352b9160407f",
+      "6128f7431f70352b9160407d",
+      "612b497f5eb1853ce6da5a88"
     ],
     "description": "Priotise what needs to be done this week!"
   },
@@ -17,12 +15,9 @@
     "dateTime": "2021-09-02",
     "completed": false,
     "participants": [
-      "user1",
-      "user2",
-      "user3",
-      "user4",
-      "user5",
-      "client"
+      "6128f7781f70352b9160407f",
+      "6128f7431f70352b9160407d",
+      "612b497f5eb1853ce6da5a88"
     ],
     "description": ""
   },
@@ -31,7 +26,7 @@
     "dateTime": "2021-10-10",
     "completed": false,
     "participants": [
-      "user1"
+      "6128f7431f70352b9160407d"
     ],
     "description": "This will raise an error of missing event's name!"
   },
@@ -39,22 +34,14 @@
     "name": "Billie's show",
     "dateTime": "",
     "completed": false,
-    "participants": [
-      "fan1",
-      "fan2",
-      "fan3"
-    ],
+    "participants": [],
     "description": "This will raise an error of missing event's datetime!"
   },
   {
     "name": "Standup",
     "dateTime": "2021-08-31",
-    "completed": null,
-    "participants": [
-      "team member 1",
-      "team member 2",
-      "team member 3"
-    ],
+    "completed": false,
+    "participants": [],
     "description": "This will raise an error of missing event's completeness!"
   }
 ]

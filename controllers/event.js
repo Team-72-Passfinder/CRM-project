@@ -32,13 +32,6 @@ exports.create = async (req, res) => {
     });
   }
 
-  /*
-  if (req.body.completed == null) {
-    return res.status(400).send({
-      message: "Should mark event's completeness!",
-    });
-  }*/
-
   if (
     req.body.participants &&
     !(await Validator.checkValidContactList(
@@ -97,12 +90,7 @@ exports.update = async (req, res) => {
       message: 'Owner of the event are unchangaeble!',
     });
   }
-  /*
-  if (req.body.name && Validator.checkInvalid(req.body.name)) {
-    return res.status(400).send({
-      message: 'Event name should not contain invalid characters!',
-    });
-  }*/
+
   if (
     req.body.startedDateTime &&
     Validator.checkValidDate(req.body.startedDateTime) == 'Invalid Date'
@@ -175,7 +163,6 @@ exports.findOne = async (req, res) => {
         });
       }
       // else, store this data to toReturn
-      //res.send(await controller.displayEvent(data));
       toReturn = await controller.displayEvent(data);
       toReturn.emails = [];
 
@@ -194,7 +181,6 @@ exports.findOne = async (req, res) => {
         }
       });
 
-      //console.log(toReturn);
       res.status(200).send(toReturn);
     })
     // Catching the error when assessing the DB

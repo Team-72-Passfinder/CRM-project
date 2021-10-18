@@ -1,5 +1,7 @@
+// THIS WAS USED AS TEMPLATE FOR ESTABLISHING
+// ROUTES, CONTROLLERS AND INDEXES
 //Testing file, not used in actual production
-
+/*
 const express = require('express');
 const app = express();
 const cors = require('cors');
@@ -31,3 +33,4 @@ app.listen(port, function () {
   console.log('Runnning on ' + port);
 });
 module.exports = app;
+*/

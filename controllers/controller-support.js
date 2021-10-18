@@ -154,8 +154,6 @@ async function getNotInTouchRecently(req, res) {
       });
     }
   });
-  //console.log("Line 155: {all contactIds}");
-  //console.log(allContacts);
   // Get list of events that are in this date range
   // Retrieve contacts that participate in these events
   Event.find({
@@ -183,8 +181,6 @@ async function getNotInTouchRecently(req, res) {
         names: names,
       });
     }
-    //console.log("Line 184: {found events}");
-    //console.log(events.length);
     // Else retrieve contactId from each of found events
     events.forEach((ev) => {
       ev.participants.forEach((part) => {
@@ -192,19 +188,14 @@ async function getNotInTouchRecently(req, res) {
       });
     });
 
-    //recentlyContact.forEach(elem=>{c = mongoose.Types.ObjectId(elem)})
-
-    //console.log("Line 193: {recentlyContact}");
-    // console.log(recentlyContact);
     // filter those that are not in this recentlyContact list to return
     const toReturnIds = allContacts.filter(elem =>
       !Array.from(recentlyContact).some(contact => elem.equals(contact))
     );
 
     const toReturnNames = await getNamesFromContactIds(belongsTo, toReturnIds);
+
     // return the data
-    //console.log("Line 207: {toReturnIds}");
-    //console.log(toReturnIds);
     return res.status(200).send({
       contactIds: toReturnIds,
       names: toReturnNames,

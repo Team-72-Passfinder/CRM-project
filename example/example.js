@@ -1,5 +1,7 @@
+// THIS WAS USED AS TEMPLATE FOR ESTABLISHING
+// ROUTES, CONTROLLERS AND INDEXES
 //Testing file, not used in actual production
-
+/*
 const mongoose = require('mongoose');
 let Schema = mongoose.Schema;
 
@@ -21,3 +23,4 @@ let exampleSchema = new Schema(
 let Example = mongoose.model('example', exampleSchema);
 
 module.exports = Example;
+*/

@@ -8,7 +8,7 @@ const controller = require('../controllers/relationship');
 app
   .route('/relationship')
   .post(passport.authenticate('jwt', { session: false }), controller.create)
-  .get(passport.authenticate('jwt', { session: false }), controller.findAll);
+//.get(passport.authenticate('jwt', { session: false }), controller.findAll);
 
 // getall = all relationships belong to current users
 app

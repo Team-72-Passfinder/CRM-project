@@ -20,18 +20,6 @@ app.post(
   }
 );
 
-// app.post(
-//   '/register',
-//   passport.authenticate('registration', { session: false }),
-//   async (req, res) => {
-//     let token = jwt.sign({ _id: req.user._id }, process.env.PASSPORT_SECRET, {
-//       expiresIn: '10d',
-//     });
-
-//     return res.json({ token: token });
-//   }
-// );
-
 app.post(
   '/register',
   function (req, res, next) {

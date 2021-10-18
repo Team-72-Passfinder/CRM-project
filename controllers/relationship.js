@@ -40,7 +40,6 @@ exports.create = async (req, res) => {
     tag: req.body.tag || [],
     description: req.body.description || '',
   });
-  //console.log("new rela created!");
   // Save this relationship to database
   relationship
     .save()
@@ -71,7 +70,6 @@ exports.update = (req, res) => {
     });
   }*/
   // Only tags, starteddateTime and description can be updated
-  //controller.updateData(Relationship, req, res);
   const id = req.params.id;
 
   // Case of updated sucessfully
