@@ -28,11 +28,11 @@ function StandardInput({
       switch (type) {
         case 'email':
           if (setErrors !== undefined) {
-              if (!/\S+@\S+\.\S+/.test(val)) {
-                  setErrors((prev) => ({ ...prev, email: true }));
-              } else {
-                  setErrors((prev) => ({ ...prev, email: false }));
-              }
+            if (!/\S+@\S+\.\S+/.test(val)) {
+              setErrors((prev) => ({ ...prev, email: true }));
+            } else {
+              setErrors((prev) => ({ ...prev, email: false }));
+            }
           }
           return !/\S+@\S+\.\S+/.test(val);
         case 'tel':
@@ -64,7 +64,7 @@ function StandardInput({
 
   if (label === 'Biography') {
     return (
-      <FormControl margin="dense" variant="filled" error={true}>
+      <FormControl margin="dense" variant="filled">
         <Typography sx={{ fontSize: '15px', fontWeight: 600 }} margin="none">
           {label}
           {required && '*'}
@@ -86,9 +86,7 @@ function StandardInput({
           disableUnderline={true}
           hiddenLabel={true}
           onChange={(e) =>
-            setValue((prev) => ({ ...prev, [name]: e.target.value }))
-          }
-          error={true}
+            setValue((prev) => ({ ...prev, [name]: e.target.value }))}
           required={required}
         />
         {generateHelperText()}
