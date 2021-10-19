@@ -49,9 +49,8 @@ const scroll = {
   },
 };
 
-function Reminder({ contacts }) {
+function Reminder({ contacts, close, handleClose }) {
   const [uncontact, setUncontact] = useState([]);
-  const [close, setClose] = useState(true);
 
   useEffect(() => {
     let today = new Date();
@@ -63,17 +62,6 @@ function Reminder({ contacts }) {
     };
     getContactsForReminder(body).then((res) => setUncontact(res));
   }, []);
-
-  useEffect(() => {
-    if (uncontact.length !== 0) {
-      setClose(!close);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [uncontact]);
-
-  const handleClose = () => {
-    setClose(!close);
-  };
 
   function handleClick(id) {
     window.location.href = '/socials/' + id;

@@ -12,9 +12,14 @@ import {
   MenuItem,
   Autocomplete,
   TextField,
+  Button,
+  IconButton
 } from '@mui/material';
 
+import Divider from '@mui/material/Divider'
+
 import SortIcon from '@mui/icons-material/Sort';
+import NotificationsIcon from '@mui/icons-material/Notifications';
 
 import { getContacts } from '../api';
 import Navbar from '../components/Navbar';
@@ -32,6 +37,7 @@ function Socials() {
   const [openDialog, setOpenDialog] = useState(false);
   const [sortBy, setSortBy] = useState('Recently added');
   const [filter, setFilter] = useState([]);
+  const [closeReminder, setCloseReminder] = useState(true);
 
   const progressing = useRef(true);
 
@@ -91,7 +97,12 @@ function Socials() {
         background: { xs: 'white', sm: '#F7F7F7' },
       }}
     >
-      <Navbar active="Socials" />
+      <Navbar active="Socials" buttons={
+        <IconButton size="large" onClick={e => setCloseReminder(false)}>
+            <NotificationsIcon />
+        </IconButton>
+        } 
+      />
       <Box
         sx={{
           flexGrow: { xs: 0, sm: 1 },
@@ -173,6 +184,7 @@ function Socials() {
                 display: 'flex',
                 flexDirection: 'column',
                 width: '80%',
+                height: '50%',
                 my: '20px',
               }}
             >
@@ -192,6 +204,10 @@ function Socials() {
                 )}
               />
             </Box>
+            <Divider sx={{ width: '90%' }} />
+            <Button sx={{ mt: '20px' }} onClick={e => setCloseReminder(false)}>
+                Reminder
+            </Button>
           </Box>
         </Box>
       </Box>
@@ -253,7 +269,7 @@ function Socials() {
         setContacts={setContacts}
         progressing={progressing}
       />
-      <Reminder contacts={contacts} />
+      <Reminder contacts={contacts} close={closeReminder} handleClose={e => setCloseReminder(true)} />
     </Box>
   );
 }

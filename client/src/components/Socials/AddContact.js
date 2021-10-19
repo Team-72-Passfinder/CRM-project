@@ -57,11 +57,20 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
   const [alert, setAlert] = useState();
   const [user, setUser] = useState();
   const [tab, setTab] = useState('Add manually');
-  const [search, setSearch] = useState('');
+  const [search, setSearch] = useState('')
+  const [errors, setErrors] = useState({
+        username: false,
+        password: false,
+        firstName: false,
+        lastName: false,
+        email: false,
+    });
 
   const handleClose = () => {
     setOpen(false);
   };
+
+  
 
   const tabStyle = {
     minWidth: '50px',
@@ -138,26 +147,28 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
   }
 
   useEffect(() => {
-    const inputs = document.querySelectorAll('input');
+      const inputs = document.querySelectorAll('input');
+      let length = inputs.length;
+      let validInputs = 0;
 
-    // eslint-disable-next-line array-callback-return
-    Array.from(inputs).filter((input) => {
-      if (input.required === true) {
-        if (!input.validity.valid) {
-          setSubmitDisabled(true);
-        } else {
-          setSubmitDisabled(false);
-        }
+      Array.from(inputs).filter((input) => {
+          if (input.validity.valid) {
+              validInputs += 1;
+          }
+      });
+
+      let isError = false;
+      for (const prop in errors) {
+          if (errors[prop] === true) {
+              isError = true;
+          }
       }
-    });
-  }, [contact]);
 
-  useEffect(() => {
-    if (contact.firstName === '' || contact.lastName === '') {
-      setSubmitDisabled(true);
-    } else {
-      setSubmitDisabled(false);
-    }
+      if (validInputs === length && !isError) {
+          setSubmitDisabled(false);
+      } else {
+          setSubmitDisabled(true);
+      }
   }, [contact]);
 
   return (
