@@ -151,7 +151,7 @@ function EventList() {
                       Number of Participants: {events[i].participants.length}
                     </Typography>
                     <Typography
-                      sx={{ fontSize: '16px', fontWeight: 430, color: 'black' }}
+                      sx={{ fontSize: '15px', fontWeight: 400, color: 'black' }}
                       className={classes.eventDescription}
                     >
                       Description: {events[i].description}
@@ -228,7 +228,7 @@ function EventList() {
                       Number of Participants: {events[i].participants.length}
                     </Typography>
                     <Typography
-                      sx={{ fontSize: '16px', fontWeight: 430, color: 'black' }}
+                      sx={{ fontSize: '15px', fontWeight: 400, color: 'black' }}
                       className={classes.overflowText}
                     >
                       Description: {events[i].description}

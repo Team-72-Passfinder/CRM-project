@@ -87,7 +87,7 @@ function Event() {
                     sx={{
                       fontSize: { xs: '24px', sm: '24px' },
                       fontWeight: 700,
-                      color: '#272727',
+                      color: '#3A3A3A',
                     }}
                   >
                     {getDate(Date())}
@@ -230,8 +230,8 @@ function Event() {
                         label={todo}
                         clickable
                         onClick={(e) =>
-                          (window.location.href =
-                            '/socials/' + event.participants[index])
+                        (window.location.href =
+                          '/socials/' + event.participants[index])
                         }
                       />
                     ))}
