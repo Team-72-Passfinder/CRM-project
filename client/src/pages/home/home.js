@@ -39,8 +39,6 @@ const useStyles = makeStyles((theme) => ({
   overallCard: {},
 }));
 
-const maxCards = 6;
-
 function Home() {
   const classes = useStyles();
 
@@ -67,11 +65,17 @@ function Home() {
     window.location.href = '/myevent/' + id;
   }
 
-  // Only displayed maximum number of events on home eo we use cardIndex
-  let cardIndex = Array.from(Array(maxCards).keys());
-  // Prevent undefined entries
-  if (events.length < maxCards)
-    cardIndex = Array.from(Array(events.length).keys());
+  let cardIndex = Array.from(Array(events.length).keys());
+  var upcomingEvents = cardIndex.filter(function (e) {
+    return new Date(events[e].startedDateTime) > new Date(Date.now());
+  });
+  upcomingEvents
+    .sort((a, b) => {
+      return events[a].startedDateTime > events[b].startedDateTime ? -1 : 1;
+    })
+    .reverse();
+  let maxCards = 6;
+  upcomingEvents = upcomingEvents.slice(0, maxCards);
 
   const EventGridUnit = () => {
     if (isLoading) {
@@ -79,7 +83,7 @@ function Home() {
     } else {
       return (
         <Grid container spacing={4} className={classes.eventGrid}>
-          {cardIndex.map((i) => (
+          {upcomingEvents.map((i) => (
             <Grid item key={i} xs={12} sm={6} md={4}>
               <Card
                 elevation={3}
@@ -93,19 +97,30 @@ function Home() {
                 <CardHeader
                   className={classes.eventName}
                   title={
-                    <Typography sx={{ fontSize: '24px', fontWeight: 500, color: 'black', }} className={classes.overflowText}>
+                    <Typography
+                      sx={{ fontSize: '24px', fontWeight: 500, color: 'black' }}
+                      className={classes.overflowText}
+                    >
                       {events[i].name}
                     </Typography>
                   }
                 ></CardHeader>
                 <CardContent>
-                  <Typography gutterBottom sx={{ fontSize: '20px', fontWeight: 450, color: 'black' }}>
+                  <Typography
+                    gutterBottom
+                    sx={{ fontSize: '20px', fontWeight: 450, color: 'black' }}
+                  >
                     Datetime: {getDate(events[i].startedDateTime)}
                   </Typography>
-                  <Typography sx={{ fontSize: '16px', fontWeight: 430, color: 'black' }}>
+                  <Typography
+                    sx={{ fontSize: '16px', fontWeight: 430, color: 'black' }}
+                  >
                     Number of Participants: {events[i].participants.length}
                   </Typography>
-                  <Typography sx={{ fontSize: '15px', fontWeight: 400, color: 'black' }} className={classes.overflowText}>
+                  <Typography
+                    sx={{ fontSize: '15px', fontWeight: 400, color: 'black' }}
+                    className={classes.overflowText}
+                  >
                     Description: {events[i].description}
                   </Typography>
                 </CardContent>

@@ -60,7 +60,7 @@ function Settings() {
                             ))
                         }
                     </List>
-                    <Box sx={{ display: 'flex', zIndex: { xs: 1, md: 0 }, position: { xs: 'relative', md: 'static' }, background: 'white', borderRadius: { sm: '20px' }, width: { md: '40vw' }, height: { md: '60vh' }, justifyContent: 'center', alignItems: 'center', boxShadow: {xs: 'none', sm: '0px 4px 4px rgba(0, 0, 0, 0.25)' }, }}>
+                    <Box sx={{ display: 'flex', zIndex: { xs: 1, md: 0 }, position: { xs: 'relative', md: 'static' }, background: 'white', borderRadius: { sm: '20px' }, width: { md: '700px' }, height: { md: '60vh' }, justifyContent: 'center', alignItems: 'center', boxShadow: {xs: 'none', sm: '0px 4px 4px rgba(0, 0, 0, 0.25)' }, }}>
                         {
                             current !== undefined?
                             current.fragment
