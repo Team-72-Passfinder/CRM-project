@@ -47,9 +47,11 @@ exports.create = async (req, res) => {
     tags: req.body.tags || [],
     biography: req.body.biography || '',
     avatar: {
-      data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
-      contentType: 'image/png'
-    }
+      data: fs.readFileSync(
+        path.join(__dirname + '/uploads/' + req.file.filename)
+      ),
+      contentType: 'image/png',
+    },
   });
 
   // Save this contact to database
@@ -76,7 +78,7 @@ exports.create = async (req, res) => {
 
 // If contact is to be added from an existed userId ===============================
 exports.addFromId = async (req, res) => {
-  // Validate the UserId 
+  // Validate the UserId
   if (!req.params.userId || !isValidObjectId(req.params.userId)) {
     return res.status(400).send({
       message: 'Missing userId!',
@@ -108,25 +110,21 @@ exports.addFromId = async (req, res) => {
       });
 
       // Save this contact to database
-      contact
-        .save()
-        .then((data) => {
-          // Create new rlationship between this contact and the user
-          const newRela = new Relationship({
-            belongsTo: req.user._id,
-            people: [req.user._id, data._id].sort(),
-          });
-          // Save
-          newRela.save();
-          res.send(data);
+      contact.save().then((data) => {
+        // Create new rlationship between this contact and the user
+        const newRela = new Relationship({
+          belongsTo: req.user._id,
+          people: [req.user._id, data._id].sort(),
         });
+        // Save
+        newRela.save();
+        res.send(data);
+      });
     })
     // Catching the error when assessing the DB
     .catch((err) => {
       console.log(err);
-      res
-        .status(500)
-        .send({ message: 'Error when accessing the database!' });
+      res.status(500).send({ message: 'Error when accessing the database!' });
     });
 };
 
@@ -172,13 +170,18 @@ exports.update = (req, res) => {
   var avatar;
   if (req.file) {
     avatar = {
-      data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)),
-      contentType: 'image/png'
-    }
+      data: fs.readFileSync(
+        path.join(__dirname + '/uploads/' + req.file.filename)
+      ),
+      contentType: 'image/png',
+    };
   }
   //controller.updateData(Contact, req, res);
-  Contact
-    .findByIdAndUpdate(req.params.id, { $set: req.body, avatar }, { new: true })
+  Contact.findByIdAndUpdate(
+    req.params.id,
+    { $set: req.body, avatar },
+    { new: true }
+  )
     .then((updatedData) => {
       res.status(200).send(updatedData);
     })
@@ -206,8 +209,7 @@ exports.findAll = (req, res) => {
 exports.findOne = (req, res) => {
   // ID
   const id = req.params.id;
-  Contact
-    .findOne({ _id: id, belongsTo: req.user._id })
+  Contact.findOne({ _id: id, belongsTo: req.user._id })
     .then((data) => {
       // If data with this id is not found
       if (!data) {
@@ -235,9 +237,10 @@ exports.search = (req, res) => {
 exports.getall = (req, res) => {
   const ownerId = req.user._id;
 
-  Contact.find({ belongsTo: ownerId }).then((data) => {
-    res.status(200).send(data);
-  })
+  Contact.find({ belongsTo: ownerId })
+    .then((data) => {
+      res.status(200).send(data);
+    })
     // Catching error
     .catch((err) => {
       console.log(err);
@@ -248,7 +251,25 @@ exports.getall = (req, res) => {
 // Get all contacts that have not been in touch recently
 exports.toRemind = (req, res) => {
   controller.getNotInTouchRecently(req, res);
-}
+};
+
+exports.updateAvatar = (req, res) => {
+  const url = req.protocol + '://' + req.get('host');
+  var avatar = url + '/uploaded_image/' + req.file.filename;
+  console.log('AAAAAAAAAAAa');
+  console.log(url);
+  Contact.findByIdAndUpdate(req.params.id, { avatar }, { new: true })
+    .then((updatedData) => {
+      res.status(200).send(updatedData);
+    })
+    // Case of error
+    .catch((err) => {
+      console.log(err);
+      res.status(500).send({
+        message: 'Error when updating Data!',
+      });
+    });
+};
 
 /*
 // Get event's participants

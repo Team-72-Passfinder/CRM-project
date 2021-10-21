@@ -29,6 +29,7 @@
     "passport-jwt": "^4.0.0",
     "passport-local": "^1.0.0",
     "react-edit-text": "^4.2.0",
+    "uuid": "^8.3.2",
     "validate-date": "^2.0.0"
   },
   "devDependencies": {

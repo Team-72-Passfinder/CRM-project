@@ -6,10 +6,17 @@ const upload = require('../config/multer');
 //const multer = require('multer')
 //const upload = multer({ dest: 'uploads/' })
 
+app
+  .route('/contact/:id/image')
+  .put(upload.single('avatar'), controller.updateAvatar);
 // findAll =  all contacts in DB
 app
   .route('/contact')
-  .post(passport.authenticate('jwt', { session: false }), upload.single('uploadImage'), controller.create)
+  .post(
+    passport.authenticate('jwt', { session: false }),
+    upload.single('uploadImage'),
+    controller.create
+  )
   .get(passport.authenticate('jwt', { session: false }), controller.findAll);
 
 // getall = all contacts that belong to current user
@@ -23,7 +30,11 @@ app
 
 app
   .route('/contact/:id')
-  .put(passport.authenticate('jwt', { session: false }), upload.single('uploadImage'), controller.update)
+  .put(
+    passport.authenticate('jwt', { session: false }),
+    upload.single('uploadImage'),
+    controller.update
+  )
   .delete(passport.authenticate('jwt', { session: false }), controller.delete)
   .get(passport.authenticate('jwt', { session: false }), controller.findOne);
 
