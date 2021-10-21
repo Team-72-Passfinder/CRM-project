@@ -6,8 +6,8 @@ const controller = require('../controllers/contact');
 // findAll =  all contacts in DB
 app
   .route('/contact')
-  .post(passport.authenticate('jwt', { session: false }), controller.create)
-  .get(passport.authenticate('jwt', { session: false }), controller.findAll);
+  .post(passport.authenticate('jwt', { session: false }), controller.create);
+//.get(passport.authenticate('jwt', { session: false }), controller.findAll);
 
 // getall = all contacts that belong to current user
 app

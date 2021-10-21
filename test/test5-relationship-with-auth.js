@@ -1,3 +1,4 @@
+// THIS IS NOT ON TEST BECAUSE RELATIONSHIP IS NOT ACTUALLY DEPLOYED //
 /*
 // Run higher order test first
 require('./test4-event-with-auth');

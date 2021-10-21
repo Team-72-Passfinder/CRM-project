@@ -5,7 +5,11 @@
     "email": "charlie.email",
     "phoneNumber": "193746xxxx",
     "dateOfBirth": "1991-02-12",
-    "biography": "American singer-songwriter"
+    "biography": "American singer-songwriter",
+    "jobTitle": [
+      "software engineer"
+    ],
+    "tags": []
   },
   {
     "firstName": "",
@@ -13,7 +17,9 @@
     "email": "bruno.email",
     "phoneNumber": "6381xxxxxx",
     "dateOfBirth": "1985-10-08",
-    "biography": "This will raise an error of missing first name!"
+    "biography": "This will raise an error of missing first name!",
+    "jobTitle": [],
+    "tags": []
   },
   {
     "firstName": "Beyonce",

@@ -124,7 +124,6 @@ exports.findOne = (req, res) => {
 
 // Get all conversation that belong to a specific user ============================
 exports.getall = (req, res) => {
-  //controller.getAllByUserId(Conversation, req, res);
   const ownerId = req.user._id;
   // Validate the given UserId first
   Conversation.find({ people: ownerId }).then((match) => {
@@ -159,7 +158,6 @@ function validateMessageContent(req, userList) {
   }
   return true;
 }
-
 
 // Search for convo given a query 
 exports.searchConvo = (req, res) => {
