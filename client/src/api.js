@@ -168,17 +168,20 @@ export function delContact(id) {
 export function me() {
   let endpoint = '/profile';
 
-  return instance.get(endpoint, config).then((res) => res.data);
+  return instance.get(endpoint).then((res) => res.data);
 }
 
 export function updateUserDetail(body) {
-    let endpoint = '/user'
+  let endpoint = '/user';
 
-    return instance.put(endpoint, body).then(res => res.data).catch((e) => console.log(e.response));
+  return instance
+    .put(endpoint, body)
+    .then((res) => res.data)
+    .catch((e) => console.log(e.response));
 }
 
 export function updateUserPassword(body) {
-    let endpoint = '/user/change-password'
+  let endpoint = '/user/change-password';
 
   return instance
     .post(endpoint, body)
