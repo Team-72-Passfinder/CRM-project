@@ -58,13 +58,13 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
   const [user, setUser] = useState();
   const [tab, setTab] = useState('Add manually');
   const [search, setSearch] = useState('')
-  const [errors, setErrors] = useState({
-        username: false,
-        password: false,
-        firstName: false,
-        lastName: false,
-        email: false,
-    });
+  // const [errors, setErrors] = useState({
+  //       username: false,
+  //       password: false,
+  //       firstName: false,
+  //       lastName: false,
+  //       email: false,
+  //   });
 
   const handleClose = () => {
     setOpen(false);
@@ -151,18 +151,18 @@ function AddContact({ open, setOpen, setContacts, progressing }) {
       let length = inputs.length;
       let validInputs = 0;
 
-      Array.from(inputs).filter((input) => {
+      Array.from(inputs).forEach((input) => {
           if (input.validity.valid) {
               validInputs += 1;
           }
       });
 
       let isError = false;
-      for (const prop in errors) {
-          if (errors[prop] === true) {
-              isError = true;
-          }
-      }
+      // for (const prop in errors) {
+      //     if (errors[prop] === true) {
+      //         isError = true;
+      //     }
+      // }
 
       if (validInputs === length && !isError) {
           setSubmitDisabled(false);

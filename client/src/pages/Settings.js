@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react'
 
-import { Router, Switch, Route, Link } from 'react-router-dom'
+// import { Router, Switch, Route, Link } from 'react-router-dom'
 
 import Navbar from '../components/Navbar'
 import ProfileEdit from '../components/Settings/Profile-Edit'
 import PasswordChange from '../components/Settings/PasswordChange'
-import AppSettings from '../components/Settings/AppSettings'
-import { me } from '../api'
+// import AppSettings from '../components/Settings/AppSettings'
+// import { me } from '../api'
 
 import { Box, List, ListItem, ListItemIcon, ListItemText, Typography } from '@mui/material'
 
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import PasswordIcon from '@mui/icons-material/Password';
 
-import VerticalTabs from '../components/Settings/VeritcalTabs'
-import Profile from './Profile/profile'
+// import VerticalTabs from '../components/Settings/VeritcalTabs'
+// import Profile from './Profile/profile'
 
 function Settings() {
     const [current, setCurrent] = useState()
