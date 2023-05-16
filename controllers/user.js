@@ -1,3 +1,6 @@
+require('dotenv').config();
+const nodemailer = require('nodemailer');
+
 // Controller to perform CRUD on user parameter
 const User = require('../models/user');
 const controller = require('./controller-support');
@@ -188,3 +191,37 @@ exports.changePassword = async (req, res) => {
     return res.status(401).send("Wrong password");
   }
 };
+
+var transporter = nodemailer.createTransport({
+  service: process.env.NODEMAILER_SERVICE,
+  auth: {
+    user: process.env.NODEMAILER_USER,
+    pass: process.env.NODEMAILER_PASS,
+  },
+  tls: {
+    rejectUnauthorized: false,
+  },
+});
+
+exports.forgotPassword = async (req, res) => {
+  const email = req.body.email;
+
+  let mailContent = {
+    from: process.env.NODEMAILER_SERVICE,
+    to: email,
+    subject: 'Forgot Password',
+    text: '',
+  };
+
+  transporter.sendMail(mailContent, function (error, info) {
+    if (error) {
+      console.log(error);
+      return res
+        .status(500)
+        .send({ message: 'Error when establishing nodemailer!' });
+    } else {
+      res.status(200).send({ message: 'Email sent: ' + info.response });
+    }
+    transporter.close();
+  })
+}
