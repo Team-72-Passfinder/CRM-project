@@ -44,6 +44,11 @@ app.post(
   }
 );
 
+app.post(
+  '/forgot-password',
+  controller.forgotPassword
+)
+
 // Other routes from this point require authentication ===========================================
 app.get(
   '/profile',

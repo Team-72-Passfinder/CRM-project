@@ -222,3 +222,19 @@ export function searchUser(searchQuery) {
     .then((res) => res.data)
     .catch((error) => console.log(error));
 }
+
+export function forgotPassword(email) {
+  let endpoint = '/forgot-password';
+  let query = {
+    email: email,
+  };
+
+  return axios
+    .post(endpoint, query)
+    .then((res) => res.data)
+    .catch((error) => console.log(error));
+}
+
+export function searchUserById(id) {
+  let endpoint = '/user/search'
+}

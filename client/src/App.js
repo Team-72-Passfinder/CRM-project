@@ -24,6 +24,8 @@ import LogoutPage from './pages/logout';
 import { ThemeProvider } from '@mui/material/styles';
 
 import theme from './theme';
+import ForgotPassword from './pages/forgotPassword/forgotPassword';
+import ResetPassword from './pages/resetPassword/resetPassword';
 
 const App = () => {
   return (
@@ -38,6 +40,12 @@ const App = () => {
           </Route>
           <Route exact path="/register">
             <Register />
+          </Route>
+          <Route exact path="/forgot-password">
+            <ForgotPassword />
+          </Route>
+          <Route path={["/reset-password/:id", "/reset-password"]}>
+            <ResetPassword />
           </Route>
           <PrivateRoute path="/socials/edit/:id">
             <EditContact />
