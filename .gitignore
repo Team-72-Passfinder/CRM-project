@@ -5,3 +5,5 @@ dist
 .env
 build
 # Other
+# Local Netlify folder
+.netlify
