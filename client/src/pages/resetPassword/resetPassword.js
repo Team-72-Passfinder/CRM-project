@@ -1,25 +1,21 @@
-import React, { useState } from 'react';
+import React, { useEffect } from 'react';
+import { useParams, useHistory } from 'react-router-dom';
 
-import Alert from '@mui/material/Alert';
-import Button from '@mui/material/Button';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
-import { forgotPassword } from '../../api';
+function ResetPassword() {
+  const { id } = useParams();
+  const history = useHistory();
 
-function ForgotPassword() {
-  const [email, setEmail] = useState('');
-  const [alert, setAlert] = useState('');
-
-  const submitHandler = async (e) => {
-    e.preventDefault();
-
-    await forgotPassword(email).then((res) => {
-      setAlert("Please check your email for resetting password");
-    });
-  }
+  useEffect(() => {
+    console.log(id, 'we')
+    if (id === undefined ) {
+      history.push("/");
+    }
+  }, [])
 
   return (
     <Container
@@ -49,13 +45,7 @@ function ForgotPassword() {
         >
           Forgot Password
         </Typography>
-        {
-          alert.length !== 0 &&
-          <Alert>
-            {alert}
-          </Alert>
-        }
-        <TextField
+        {/* <TextField
           id="input_email"
           margin="normal"
           variant="outlined"
@@ -67,20 +57,10 @@ function ForgotPassword() {
           sx={{
             mb: 2,
           }}
-        />
-        <Button
-          id="submit_button"
-          margin="normal"
-          variant="contained"
-          color="primary"
-          fullWidth
-          onClick={submitHandler}
-        >
-          Submit
-        </Button>
+        /> */}
       </Box>
     </Container>
   )
 }
 
-export default ForgotPassword;
+export default ResetPassword;

@@ -234,3 +234,7 @@ export function forgotPassword(email) {
     .then((res) => res.data)
     .catch((error) => console.log(error));
 }
+
+export function searchUserById(id) {
+  let endpoint = '/user/search'
+}

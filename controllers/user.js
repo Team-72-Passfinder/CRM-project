@@ -205,12 +205,27 @@ var transporter = nodemailer.createTransport({
 
 exports.forgotPassword = async (req, res) => {
   const email = req.body.email;
+  let userId = '';
+
+  await User.findOne({
+    'email': email
+  })
+  .then((data) => {
+    if (!data) {
+      res.status(404).send({ message: "No user is found with this username or email!" });
+      return;
+    }
+    userId = data._id;
+  })
 
   let mailContent = {
     from: process.env.NODEMAILER_SERVICE,
     to: email,
     subject: 'Forgot Password',
-    text: '',
+    text: `
+          Click this link below to reset your password\n 
+          https://citrus-contract.netlify.app/reset-password/?q=${userId}
+          `
   };
 
   transporter.sendMail(mailContent, function (error, info) {
